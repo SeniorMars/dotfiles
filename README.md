@@ -1,0 +1,2 @@
+# dotfiles
+My Rice Setup
