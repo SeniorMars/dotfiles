@@ -5,7 +5,7 @@ My First Rice Setup:
 
 Running programs (gotop, pipes.sh, cava, ranger, neofetch)
 
-This setup is for Arch Linux running KDE Plasma as your Desktop Environment and i3-gaps-rounded.
+This setup is for Arch Linux running KDE Plasma as your Desktop Environment and i3-gaps-rounded as your Window Manager.
 
 Just some basic files for my rice config. This project currenly is empty, but soon I will be adding scripts and a lot of stuff - as soon as I find out how to do so.
 
