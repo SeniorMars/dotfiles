@@ -1,7 +1,12 @@
 # dotfiles
-My Rice Setup
-I am setting this up from Arch Linux, i3-gaps as my WM and KDE Plasma 5 as my DE.
+My First Rice Setup:
 
+![Picture of my setup](https://i.imgur.com/cBr9unV.png)
 
-Just some basic files for my rice configs. This project currenly is empty, but soon I will be adding scripts and a lot of stuff - as soon as I find out how to do so.
+Running programs (gotop, pipes.sh, cava, ranger, neofetch)
 
+This setup is for Arch Linux running KDE Plasma as your Desktop Environment and i3-gaps-rounded.
+
+Just some basic files for my rice config. This project currenly is empty, but soon I will be adding scripts and a lot of stuff - as soon as I find out how to do so.
+
+I have imgur-screenshot as my screenshot tool, cmus as my music manager and feh as my wallpaper manager.
