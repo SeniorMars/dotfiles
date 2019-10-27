@@ -4,19 +4,14 @@ syntax enable
 " activates filetype detection
 filetype plugin indent on
 
-" allows you to deal with multiple unsaved
-" buffers simultaneously without resorting
-" to misusing tabs
-set hidden
-
-set backspace=indent,eol,start "who knows what this does.
+set hidden "work with mutiple unsaved buffers.
+set backspace=indent,eol,start "Fixes the backspace 
 
 "sets line numbers
 set number
 
 "other stuff
 set nocp "meant to fix syntax on
-filetype on "same as above
 set encoding=utf-8 "required by YCM
 
 "plugin shit
@@ -43,7 +38,12 @@ Plugin 'powerline/fonts'
 Plugin 'wellle/targets.vim'
 Plugin 'Yggdroot/indentLine'
 Plugin 'mbbill/undotree'
-" All of your Plugins must be added before the following line
+Plugin 'tpope/vim-fugitive'
+Plugin 'gko/vim-coloresque'
+
+
+
+"All of your Plugins must be added before the following line
 call vundle#end()            " required
 
 "second vim plugin just in case
@@ -58,15 +58,15 @@ filetype plugin indent on    " required
 let mapleader = ","
 noremap <Leader>x :x<cr>
 noremap <Leader>l :UndotreeToggle<cr>
+nmap <CR> o<Esc>
 inoremap jk <Esc>
 inoremap <C-k> <Esc>O<Esc>jA
 vnoremap <Leader>y "*y :let @+=@*<cr>
 map <Leader>p "+p
 
 
-
-"Other:
+"Extra
 
 let g:airline_powerline_fonts = 1
 let g:powerline_pycmd="py3"
-let g:airline#extensions#tabline#enabled = 1 "airline thing
+lt g:airline#extensions#tabline#enabled = 1 "airline thing
