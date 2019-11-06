@@ -11,6 +11,8 @@ Just some basic files for my rice config. This project currenly is "empty", but 
 
 I have imgur-screenshot as my screenshot tool, cmus as my music manager and feh as my wallpaper manager.
 
+mail client: neomutt
+
 Fonts: Inconsolata 14pt
 
 Terminal Emulator: konsole
