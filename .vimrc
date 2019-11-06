@@ -40,8 +40,7 @@ Plugin 'Yggdroot/indentLine'
 Plugin 'mbbill/undotree'
 Plugin 'tpope/vim-fugitive'
 Plugin 'gko/vim-coloresque'
-
-
+Plugin 'metakirby5/codi.vim'
 
 "All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -69,4 +68,22 @@ map <Leader>p "+p
 
 let g:airline_powerline_fonts = 1
 let g:powerline_pycmd="py3"
-lt g:airline#extensions#tabline#enabled = 1 "airline thing
+let g:airline#extensions#tabline#enabled = 1 "airline thing
+let g:user_emmet_leader_key='<leader>'
+
+
+
+
+"Java Suppport!
+
+autocmd Filetype java set makeprg=javac\ %
+set errorformat=%A%f:%l:\ %m,%-Z%p^,%-C%.%#
+noremap <leader>8 :make<return>:copen<return>
+noremap <leader>6 :cprevious<Return>
+noremap <leader>7 :cnext<Return>
+noremap <leader>9 :!echo %\|awk -F. '{print $1}'\|xargs java<return>
+
+
+"python Support!
+noremap <leader>0 <Esc>:w<CR>:!clear;python %<CR>
+

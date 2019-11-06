@@ -1,0 +1,4 @@
+text/html; firefox %s; test=test -n "$DISPLAY"; needsterminal;
+text/html; w3m -I %{charset} -T text/html; copiousoutput;
+text/plain; cat %s; copiousoutput
+

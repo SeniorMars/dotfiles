@@ -1,5 +1,4 @@
-# i3 config file (v4)
-#
+# i2 config file (v4) 
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
 #===[ GENERAL SETTINGS ]====================#
@@ -147,7 +146,7 @@ new_window 1pixel
 #---( i2 stuff )---#
 
 # reload the configuration file
-bindsym $mod+Shift+c reload
+bindsym $mod+Shift+i reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
@@ -166,16 +165,18 @@ bindsym $mod+Shift+F2 exec "firefox"
 bindsym $mod+Shift+F3 exec "discord"
 bindsym $mod+Shift+F4 exec systemsettings5
 bindsym $mod+Shift+F5 exec --no-startup-id "XDG_CURRENT_DESKTOP=kde kcalc"
+bindsym $mod+Shift+F6 exec "konsole -e ssh chernandez10@homer.stuy.edu"
 bindsym $mod+shift+F1 exec --no-startup-id "konsole -e ranger" exec --no-startup-id "konsole -e gotop" exec --no-startup-id "konsole -e pipes.sh" exec konsole
 bindsym $mod+backslash exec --no-startup-id "XDG_CURRENT_DESKTOP=kde dolphin"
+bindsym $mod+Shift+c exec --no-startup-id sh Downloads/imgur-screenshot/imgur-screenshot.sh -l true 
 
-# gaps 
+#gaps 
 gaps inner 15
 gaps outer 15
 
 bindsym $mod+z		gaps outer current plus 5
 bindsym $mod+Shift+z	gaps outer current minus 5
-
+border_radius 12	#rounded borders
 
 #----------[ STATUS BAR ]----------#
 
@@ -239,7 +240,7 @@ client.background       #000000
 for_window [class="(?i)firefox"] border none
 for_window [class="(?i)gvim"] border none
 for_window [class="(?i)konsole"] border none
-for_window [class="^.*"] border pixel 1
+for_window [class="^.*"] border pixel 0
 
 # Float by name
 for_window [title="Nitrogen"] floating enable
@@ -265,7 +266,6 @@ no_focus [window_role="pop-up"]
 no_focus [window_type="notification"]
 
 focus_on_window_activation none
-
 
 ## Plasma Integration
 # Try to kill the wallpaper set by Plasma (it takes up the entire workspace and hides everythiing)
@@ -295,5 +295,6 @@ for_window [class="Klipper"] floating enable; border none
 
 for_window [class="Plasmoidviewer"] floating enable; border none
 
-
-exec --no-startup-id feh --bg-scale ~/Downloads/ix0nd1hv1su21.png
+# Terminal execs
+exec --no-startup-id feh --bg-scale ~/Pictures/tokyo_cityscape-2560x1440.jpg
+exec --no-startup-id compton

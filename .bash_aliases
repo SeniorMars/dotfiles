@@ -4,3 +4,6 @@ alias pac='sudo pacman -Syu'
 alias vimrc="vim ~/.vimrc"
 alias i3conf="vim ~/.config/i3/config"
 alias bashrc="vim ~/.bashrc"
+alias mail="neomutt"
+alias mutt=neomutt
+alias muttrc="vim ~/.config/mutt/muttrc"
