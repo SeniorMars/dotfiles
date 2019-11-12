@@ -58,9 +58,9 @@ bindsym $mod+v split v
 bindsym $mod+f fullscreen
 
 # change container layout (stacked, tabbed, toggle split)
-bindsym $mod+s layout stacking
-bindsym $mod+w layout tabbed
-bindsym $mod+t layout toggle split
+#bindsym $mod+s layout stacking
+#bindsym $mod+w layout tabbed
+#bindsym $mod+t layout toggle split
 
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
@@ -153,29 +153,33 @@ bindsym $mod+Shift+r restart
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
 # start application launchers
-bindsym $mod+x exec --no-startup-id i3-dmenu-desktop --dmenu="dmenu -p 'Run: ' -l 10 -i -nb '#000000' -nf '#4c7899' -fn 'Droid Sans Mono-9:bold'"
+bindsym $mod+x exec --no-startup-id i3-dmenu-desktop --dmenu="dmenu -p 'Run: ' -l 10 -i -nb '#fff' -nf '#4c7899' -fn 'Droid Sans Mono-9:bold'"
 bindsym $mod+d exec krunner
 
 
 #---( direct launchers )---#
 
 bindsym $mod+Return exec konsole
-bindsym $mod+F1 exec --no-startup-id "konsole -e ranger"
-bindsym $mod+Shift+F2 exec "firefox"
-bindsym $mod+Shift+F3 exec "discord"
-bindsym $mod+Shift+F4 exec systemsettings5
-bindsym $mod+Shift+F5 exec --no-startup-id "XDG_CURRENT_DESKTOP=kde kcalc"
+bindsym $mod+F1 exec "konsole -e ranger"
+bindsym $mod+Shift+F2 exec firefox
+bindsym $mod+Shift+F3 exec discord
+bindsym $mod+Shift+F4 exec "konsole -e neomutt"
+bindsym $mod+Shift+F5 exec systemsettings5
 bindsym $mod+Shift+F6 exec "konsole -e ssh chernandez10@homer.stuy.edu"
+bindsym $mod+Shift+F7 exec --no-startup-id "XDG_CURRENT_DESKTOP=kde kcalc"
 bindsym $mod+shift+F1 exec --no-startup-id "konsole -e ranger" exec --no-startup-id "konsole -e gotop" exec --no-startup-id "konsole -e pipes.sh" exec konsole
-bindsym $mod+backslash exec --no-startup-id "XDG_CURRENT_DESKTOP=kde dolphin"
+bindsym $mod+e exec --no-startup-id "XDG_CURRENT_DESKTOP=kde dolphin"
 bindsym $mod+Shift+c exec --no-startup-id sh Downloads/imgur-screenshot/imgur-screenshot.sh -l true 
 
 #gaps 
 gaps inner 15
 gaps outer 15
 
-bindsym $mod+z		gaps outer current plus 5
-bindsym $mod+Shift+z	gaps outer current minus 5
+bindsym $mod+z		gaps inner current set 0; gaps outer current set 0
+bindsym $mod+Shift+z	gaps inner current set 15; gaps outer current set 15
+
+bindsym $mod+w		gaps outer current plus 5
+bindsym $mod+Shift+w	gaps outer current minus 5
 border_radius 12	#rounded borders
 
 #----------[ STATUS BAR ]----------#
