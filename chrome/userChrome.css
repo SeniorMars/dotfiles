@@ -1,0 +1,191 @@
+/* Remember to change your username */
+@import url('file:///home/karl/.cache/wal/colors.css'); 
+
+window#main-window {
+    --toolbar-bgcolor: #111111 !important;
+    --lwt-accent-color: #111111 !important;
+    --lwt-toolbar-field-background-color: #111111 !important;
+    --lwt-toolbar-field-color: #cccccc !important;
+    --chrome-content-separator-color: none !important;
+    --backbutton-background: none !important;
+    --arrowpanel-background: #111111 !important;
+    --arrowpanel-border-color: #111111 !important;
+    --lwt-sidebar-background-color: #111111 !important;
+}  
+
+textbox {
+    background-color: #111111 !important;
+    border: none !important;
+}
+
+vbox[style], hbox[style] {
+  background-color: #111111 !important;
+  border: none !important;
+}
+.sidebar-placesTree {
+    background-color: #111111 !important;
+    border: none !important;
+}
+:root[lwt-popup-brighttext] {
+    --panel-separator-color: #111111 !important;
+    border: none !important;
+}
+
+#sidebar-header {
+    border: none !important;
+}
+
+:root:not([uidensity="compact"]):not([chromehidden~="toolbar"]) #nav-bar[brighttext] > #PanelUI-button {
+    border-image-source: linear-gradient(transparent, transparent) !important;
+}
+
+#urlbar,
+#searchbar {
+    border: none !important;
+}
+
+#identity-box,
+#tracking-protection-icon-container,
+.urlbar-icon, .tab-icon-image {
+    display: none !important;
+}
+
+#toolbar-menubar:not([autohide="true"])+#TabsToolbar .tabbrowser-tab>.tab-stack>.tab-background,
+:root:not([tabsintitlebar]) .tab-background,
+:root[extradragspace] .tab-background {
+    border-top: 0 !important;
+}
+
+.tab-line {
+    height: 0 !important;
+}
+
+.close-icon {
+    display: none !important;
+}
+
+#page-action-buttons>*:not(#star-button-box),
+.urlbar-history-dropmarker {
+    opacity: 0 !important;
+}
+
+#urlbar:hover #page-action-buttons>*,
+#urlbar:hover .urlbar-history-dropmarker {
+    opacity: 1 !important;
+}
+
+/* Removal of black bottom 1px line */
+#navigator-toolbox::after {
+    display: none !important;
+}
+
+menubar,
+menubutton,
+menulist,
+menu,
+menuitem,
+textbox,
+toolbar,
+tab,
+tree,
+.tree-rows {
+    font-family: 'Input Condensed', monospace !important;
+    font-size: 12pt !important;
+    font-weight: bold;
+    font-style: normal !important;
+    -moz-appearance: none !important;
+    color: var(--color7) !important;
+}
+
+menupopup {
+	-moz-appearance: none !important;
+	padding: 8px !important;
+	background-color: #111111 !important;
+}
+
+#navigator-toolbox {
+    --tabs-border-color: none !important;
+
+}
+
+/* This removes the tab separators */
+.tabbrowser-tab::before,
+.tabbrowser-tab::after {
+    display: none !important;
+}
+
+.tab-background[selected=true] {
+  color: #111111 !important;
+}
+
+#sidebar-search-container {
+	background-color: #111111;
+}
+
+.panel-arrowcontainer, .panel-arrowcontainer, .panel-arrowcontent {
+    border-radius: 13px !important;
+}
+
+/* This moves the tabs under the URL bar */
+#titlebar {
+    -moz-box-ordinal-group: 3 !important;
+  }
+.tabbrowser-tab {
+    /* transition: color 0.25s !important; */
+    text-align: center !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tabbrowser-tab[selected="true"], .tab-label-container[selected="true"] {
+  color: #c33dab !important;
+  /* background-color: var(--color3) !important; */
+  /* background-image: linear-gradient(var(--color3), var(--color3)) !important; */
+}
+
+.chromeclass-location {
+    border: none !important;
+    box-shadow: none !important;
+    background-image: none !important;
+    
+}
+
+.urlbarView:not(.megabar) {
+    box-shadow: none !important;
+    background-color: #111111 !important;
+    font-family: 'Input Condensed', monospace !important;
+    font-size: 12pt !important;
+}
+
+.urlbarView-favicon {
+    display: none !important;
+}
+
+.urlbarView-row[selected] {
+    background: #c33dab !important;
+    color: #111111 !important;
+    fill-opacity: 1 !important;;
+}
+
+.sidebar-splitter {
+
+    -moz-appearance: none;
+    border: none !important;
+}   
+    
+.customization-target {
+    padding: 18px !important;   
+}
+
+#statuspanel-label {
+    background-color: black !important;
+    border: 1px none black !important;
+    border-top-style: solid !important;
+    color: white !important;
+}
+
+/* Hide minimize, restore, close in full screen */
+
+#minimize-button, #restore-button, #close-button
+{ display: none !important; }
