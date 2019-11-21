@@ -2,15 +2,15 @@ syntax on "activates syntax highlighting among other things
 
 set hidden "work with multiple unsaved buffers.
 set backspace=indent,eol,start "Fixes the backspace
-
-"sets line numbers
-set number
+set incsearch "highlights as you search
+set rnu "sets line numbers
 set foldmethod=indent "fold your code.
 set foldlevel=99
 
 "other stuff
-set encoding=utf-8 "required by CM
+set encoding=utf-8 "required by YCM
 set noshowmode "make the current mode label disappear - I have airline for this.
+
 "plugin shit
 
 set nocompatible              " be improved, required
@@ -36,11 +36,10 @@ Plugin 'Yggdroot/indentLine' "indent lines like atom. See python file for ex
 Plugin 'mbbill/undotree' "undo tree to see recent changed
 Plugin 'tpope/vim-fugitive' "git control to vim
 Plugin 'gko/vim-coloresque' "css html color highlighting
-Plugin 'metakirby5/codi.vim' "live python interp kinda usless tbh
 Plugin 'SirVer/ultisnips' "Track the engine.
 Plugin 'honza/vim-snippets' " Snippets are separated from the engine
 Plugin 'Chiel92/vim-autoformat' "autoformat
-
+Plugin 'wikitopian/hardmode' "Hardmode to get rid of arrow keys and hj
 
 "All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -49,31 +48,28 @@ call vundle#end()            " required
 execute pathogen#infect()
 
 filetype plugin indent on    " required
-
 set runtimepath^=~/.vim/bundle/ctrlp.vim "Allows ctrl p to work
 
 "Key remapping
 let mapleader = ","
-noremap <Leader>x :x<cr>
-noremap <Leader>l :UndotreeToggle<cr>
+noremap <leader>x :x<cr>
+noremap <leader>l :UndotreeToggle<cr>
 noremap <leader>w <C-w><C-w>
 noremap <leader>z [s1z=
 noremap <leader>q :NERDTreeToggle<CR>
 noremap <leader>s :source ~/.vimrc<cr>
-noremap <Leader>p "+p
-noremap <Leader>P :+p
+noremap <leader>p "+p
+noremap <leader>P "+P
 noremap <space> za
-noremap <tab> i<tab><Esc>
 noremap <CR> o<Esc>
 inoremap jk <Esc>
 inoremap <C-k> <Esc>O<Esc>jA
-vnoremap <Leader>y "*y :let @+=@*<cr>
+vnoremap <leader>y "*y :let @+=@*<cr>
 map <leader>1 :bn<cr>
 map <leader>2 :bp<cr>
 map <leader>3 :retab<cr>:RemoveTrailingSpaces<cr>
 map <leader>4 :Autoformat<CR>
 map <leader>5 :set spell spelllang=en_us<cr>
-
 
 "Extra
 let g:airline_powerline_fonts = 1
@@ -96,3 +92,17 @@ autocmd FileType java noremap <buffer> <leader>9 :!echo %\|awk -F. '{print $1}'\
 
 "python Support!
 autocmd FileType python noremap <buffer> <leader>9 <Esc>:w<CR>:!clear;python %<CR>
+au BufNewFile,BufRead *.py set tabstop=4
+au BufNewFile,BufRead *.py set softtabstop=4
+au BufNewFile,BufRead *.py set shiftwidth=4
+au BufNewFile,BufRead *.py set textwidth=79
+au BufNewFile,BufRead *.py set expandtab
+au BufNewFile,BufRead *.py set autoindent
+au BufNewFile,BufRead *.py set fileformat=unix
+
+" Full stack development
+au BufNewFile,BufRead *.js,*.html,*.css set tabstop=2
+au BufNewFile,BufRead *.js,*.html,*.css set softtabstop=2
+au BufNewFile,BufRead *.js,*.html,*.css set shiftwidth=2
+au BufNewFile,BufRead *.js,*.html,*.css set expandtab
+au BufNewFile,BufRead *.js,*.html,*.css set autoindent
