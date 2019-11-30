@@ -1,27 +1,10 @@
-syntax on "activates syntax highlighting among other things
-
-set hidden "work with multiple unsaved buffers.
-set backspace=indent,eol,start "Fixes the backspace
-set incsearch "highlights as you search
-set rnu "sets line numbers
-set foldmethod=indent "fold your code.
-set foldlevel=99
-
-"other stuff
-set encoding=utf-8 "required by YCM
-set noshowmode "make the current mode label disappear - I have airline for this.
-
-"plugin shit
-
+"plugins!
 set nocompatible              " be improved, required
 filetype off                  " required
 
 " set the run time path to include Bundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-
-" let bundle manage Bundle, required
-
 
 "~~~~~~~~~~~~~~" Plugins here
 Plugin 'VundleVim/Vundle.vim' "vundle plguin mngr
@@ -39,25 +22,34 @@ Plugin 'gko/vim-coloresque' "css html color highlighting
 Plugin 'SirVer/ultisnips' "Track the engine.
 Plugin 'honza/vim-snippets' " Snippets are separated from the engine
 Plugin 'Chiel92/vim-autoformat' "autoformat
-Plugin 'wikitopian/hardmode' "Hardmode to get rid of arrow keys and hj
 
-"All of your Plugins must be added before the following line
-call vundle#end()            " required
+call vundle#end()            " required - all plugins must be before this line!
 
 "second plugin mgnr just in case
 execute pathogen#infect()
 
+
+"Global settings!
 filetype plugin indent on    " required
+syntax on "activates syntax highlighting among other things
+set hidden "work with multiple unsaved buffers.
+set backspace=indent,eol,start "Fixes the backspace
+set incsearch "highlights as you search
+set rnu "sets line numbers
+set foldmethod=indent "fold your code.
+set foldlevel=99
+set encoding=utf-8 "required by YCM
+set noshowmode "make the current mode label disappear - I have airline for this.
 set runtimepath^=~/.vim/bundle/ctrlp.vim "Allows ctrl p to work
 
 "Key remapping
 let mapleader = ","
-noremap <leader>x :x<cr>
-noremap <leader>l :UndotreeToggle<cr>
-noremap <leader>w <C-w><C-w>
-noremap <leader>z [s1z=
-noremap <leader>q :NERDTreeToggle<CR>
 noremap <leader>s :source ~/.vimrc<cr>
+noremap <leader>l :UndotreeToggle<cr>
+noremap <leader>q :NERDTreeToggle<CR>
+noremap <leader>w <C-w><C-w>
+noremap <leader>x :x<cr>
+noremap <leader>z [s1z=
 noremap <leader>p "+p
 noremap <leader>P "+P
 noremap <space> za
@@ -67,7 +59,7 @@ inoremap <C-k> <Esc>O<Esc>jA
 vnoremap <leader>y "*y :let @+=@*<cr>
 map <leader>1 :bn<cr>
 map <leader>2 :bp<cr>
-map <leader>3 :retab<cr>:RemoveTrailingSpaces<cr>
+map <leader>3 :retab<cr>
 map <leader>4 :Autoformat<CR>
 map <leader>5 :set spell spelllang=en_us<cr>
 
@@ -99,6 +91,7 @@ au BufNewFile,BufRead *.py set textwidth=79
 au BufNewFile,BufRead *.py set expandtab
 au BufNewFile,BufRead *.py set autoindent
 au BufNewFile,BufRead *.py set fileformat=unix
+autocmd BufWritePre *.py :%s/\s\+$//e
 
 " Full stack development
 au BufNewFile,BufRead *.js,*.html,*.css set tabstop=2
