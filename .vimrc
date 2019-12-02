@@ -1,5 +1,5 @@
-"plugins!
-set nocompatible              " be improved, required
+"plugins!  set nocompatible              " be improved, required
+let g:polyglot_disabled = ['latex'] "allow vimtex to work
 filetype off                  " required
 
 " set the run time path to include Bundle and initialize
@@ -22,6 +22,7 @@ Plugin 'gko/vim-coloresque' "css html color highlighting
 Plugin 'SirVer/ultisnips' "Track the engine.
 Plugin 'honza/vim-snippets' " Snippets are separated from the engine
 Plugin 'Chiel92/vim-autoformat' "autoformat
+Plugin 'lervag/vimtex' "To use latex better
 
 call vundle#end()            " required - all plugins must be before this line!
 
@@ -41,14 +42,14 @@ set foldlevel=99
 set encoding=utf-8 "required by YCM
 set noshowmode "make the current mode label disappear - I have airline for this.
 set runtimepath^=~/.vim/bundle/ctrlp.vim "Allows ctrl p to work
+set conceallevel=1
 
 "Key remapping
 let mapleader = ","
 noremap <leader>s :source ~/.vimrc<cr>
-noremap <leader>l :UndotreeToggle<cr>
+noremap <leader>x :UndotreeToggle<cr>
 noremap <leader>q :NERDTreeToggle<CR>
 noremap <leader>w <C-w><C-w>
-noremap <leader>x :x<cr>
 noremap <leader>z [s1z=
 noremap <leader>p "+p
 noremap <leader>P "+P
@@ -61,7 +62,7 @@ map <leader>1 :bn<cr>
 map <leader>2 :bp<cr>
 map <leader>3 :retab<cr>
 map <leader>4 :Autoformat<CR>
-map <leader>5 :set spell spelllang=en_us<cr>
+map <leader>5 :setlocal spell spelllang=en_us<cr>
 
 "Extra
 let g:airline_powerline_fonts = 1
@@ -73,6 +74,13 @@ let g:user_emmet_leader_key='<leader>'
 let g:UltiSnipsExpandTrigger = '<C-j>'
 let g:UltiSnipsJumpForwardTrigger = '<C-j>'
 let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
+
+"vimtex config
+let g:tex_flavor='latex'
+let g:vimtex_view_method='zathura'
+let g:vimtex_quickfix_mode=0
+let g:indentLine_setConceal = 0
+let g:tex_conceal='abdmg'
 
 "Java Support!
 autocmd Filetype java set makeprg=javac\ %
@@ -99,3 +107,6 @@ au BufNewFile,BufRead *.js,*.html,*.css set softtabstop=2
 au BufNewFile,BufRead *.js,*.html,*.css set shiftwidth=2
 au BufNewFile,BufRead *.js,*.html,*.css set expandtab
 au BufNewFile,BufRead *.js,*.html,*.css set autoindent
+
+" skeletons!
+autocmd BufNewFile *.tex r ~/.vim/templates/skeleton.tex
