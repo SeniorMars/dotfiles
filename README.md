@@ -18,3 +18,5 @@ Fonts: Inconsolata 14pt
 Terminal Emulator: konsole
 
 Color scheme: Carl with some modifications. #ffaaff as my foreground color.
+
+skeleton.tex comes from: https://wso.williams.edu/wiki/index.php/LaTeX_MLA_Template
