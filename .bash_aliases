@@ -1,7 +1,8 @@
 alias csj="cd Documents/CS/Java"
-alias v=vim #Not used often
+alias v=nvim #Not used often
 alias pac='sudo pacman -Syu'
 alias vimrc="vim ~/.vimrc"
+alias vrc="nvim ~/.config/nvim/init.vim"
 alias i3conf="vim ~/.config/i3/config"
 alias bashrc="vim ~/.bashrc"
 alias mutt=neomutt
@@ -9,3 +10,4 @@ alias muttrc="vim ~/.config/mutt/muttrc"
 alias rmc="rm *.class"
 alias ytd="youtube-dl -x --audio-format mp3"
 alias ytpd="youtube-dl --yes-playlist -x --audio-format mp3"
+alias rmswp="rm ~/.cache/vim/swap/*;rm ~/.local/share/nvim/swap/*"

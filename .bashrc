@@ -2,6 +2,16 @@
 # ~/.bashrc
 #
 
+set -o vi #vim mode
+# set custom things
+export VISUAL=vim
+export EDITOR="$VISUAL"
+# powerline
+powerline-daemon -q
+POWERLINE_BASH_CONTINUATION=1
+POWERLINE_BASH_SELECT=1
+. /usr/share/powerline/bindings/bash/powerline.sh
+
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
@@ -113,18 +123,6 @@ fi
 
 eval "$(thefuck --alias)" # something to do with fuck
 
-# set custom things
-export VISUAL=vim
-export EDITOR="$VISUAL"
-
-
-#something to do with powerline
-powerline-daemon -q
-POWERLINE_BASH_CONTINUATION=1
-POWERLINE_BASH_SELECT=1
-. /usr/share/powerline/bindings/bash/powerline.sh
-
-#. ~/.fehbg
 
 # If not running interactively, don't do anything
 case $- in
@@ -185,4 +183,14 @@ export SCM_CHECK=true
 # export BASH_IT_RELOAD_LEGACY=1
 
 # Load Bash It
+
 source "$BASH_IT"/bash_it.sh
+
+function _update_ps1() {
+    PS1=$(powerline-shell $?)
+}
+
+if [[ $TERM != linux && ! $PROMPT_COMMAND =~ _update_ps1 ]]; then
+    PROMPT_COMMAND="_update_ps1; $PROMPT_COMMAND"
+fi
+
