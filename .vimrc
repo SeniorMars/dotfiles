@@ -36,6 +36,7 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } "Fuzzy finder
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/goyo.vim' "Distraction free
 Plug 'junegunn/limelight.vim' "color free
+" Plug 'ycm-core/YouCompleteMe', { 'do': './install.py --all' }
 call plug#end()
 
 "Global settings
@@ -59,7 +60,7 @@ set splitbelow splitright
 let mapleader = ","
 noremap <leader>s :source ~/.vimrc<cr>
 noremap <leader>u :UndotreeToggle<cr>
-noremap <leader>t :NERDTreeToggle<CR>
+noremap <leader>t :NERDTreeToggle<cr>
 noremap <leader>e <C-w><C-w>
 noremap <leader>cd :cd %:p:h<cr>:pwd<cr>
 noremap <leader>g :Goyo<cr>
@@ -68,16 +69,16 @@ noremap <leader>z [s1z=
 noremap <leader>p "+p
 noremap <leader>P "+P
 noremap <space> za
-noremap <CR> o<Esc>
+noremap <cr> o<Esc>
 noremap <C-p> :Files<cr>
-au filetype wiki noremap <CR> <Plug>VimwikiFollowLink
+au filetype wiki noremap <cr> <Plug>VimwikiFollowLink
 inoremap jk <Esc>
 inoremap <C-k> <Esc>O<Esc>jA
 vnoremap <leader>y "*y :let @+=@*<cr>
 map <leader>1 :bn<cr>
 map <leader>2 :bp<cr>
 map <leader>3 :retab<cr>
-map <leader>4 :Autoformat<CR>
+map <leader>4 :Autoformat<cr>
 map <leader>5 :setlocal spell spelllang=en_us<cr>
 
 "Extra
@@ -111,13 +112,13 @@ let g:tex_conceal='abdmg'
 "Java Support!
 au Filetype java set makeprg=javac\ %
 set errorformat=%A%f:%l:\ %m,%-Z%p^,%-C%.%#
-au FileType java noremap <buffer> <leader>8 :make<return>:copen<return>
-au FileType java noremap <buffer> <leader>6 :cprevious<Return>
-au FileType java noremap <buffer> <leader>7 :cnext<Return>
-au FileType java noremap <buffer> <leader>9 :!echo %\|awk -F. '{print $1}'\|xargs java<return>
+au FileType java noremap <buffer> <leader>8 :make<cr>:copen<cr>
+au FileType java noremap <buffer> <leader>6 :cprevious<cr>
+au FileType java noremap <buffer> <leader>7 :cnext<cr>
+au FileType java noremap <buffer> <leader>9 :!echo %\|awk -F. '{print $1}'\|xargs java<cr>
 
 "python Support!
-au FileType python noremap <buffer> <leader>9 <Esc>:w<CR>:!clear;python %<CR>
+au FileType python noremap <buffer> <leader>9 <Esc>:w<cr>:!clear;python %<cr>
 au BufNewFile,BufRead *.py set tabstop=4
 au BufNewFile,BufRead *.py set softtabstop=4
 au BufNewFile,BufRead *.py set shiftwidth=4
@@ -140,4 +141,4 @@ au BufNewFile *.tex -r ~/.vim/templates/skeleton.tex
 "Muttrc
 autocmd BufRead,BufNewFile /tmp/neomutt* let g:goyo_width=80
 autocmd BufRead,BufNewFile /tmp/neomutt* :Goyo | set spell spelllang=en_us
-autocmd BufRead,BufNewFile /tmp/neomutt* noremap ZZ :Goyo\|x!<CR>
+autocmd BufRead,BufNewFile /tmp/neomutt* noremap ZZ :Goyo\|x!<cr>
