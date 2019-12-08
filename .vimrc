@@ -1,7 +1,14 @@
 "Disable settings
 let g:polyglot_disabled = ['latex'] "allow vimtex to work
 
-"plugins!  
+"Auto Download
+if empty(glob('~/.vim/autoload/plug.vim'))
+	silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+				\ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+	autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+"plugins!
 call plug#begin('~/.vim/plugged')
 Plug 'tpope/vim-surround' "Allows me to change { to [ and what not
 Plug 'tpope/vim-commentary' "Comment stuff
@@ -25,6 +32,8 @@ Plug 'vimwiki/vimwiki' "To take notes better - testing this with vimtex
 Plug 'mbbill/undotree' "undo tree to see recent changed
 Plug 'scrooloose/nerdtree' "See dirs and files
 Plug 'Xuyuanp/nerdtree-git-plugin' "git and nerd tree
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } "Fuzzy finder
+Plug 'junegunn/fzf.vim'
 call plug#end()
 
 "Global settings
@@ -40,7 +49,6 @@ set foldlevel=99
 set encoding=utf-8 "required by YCM
 set noshowmode "make the current mode label disappear - I have airline for this.
 set conceallevel=1 "Allows me to conceal latex syntax if not on line
-set runtimepath^=~/.vim/plugged/ctrlp.vim "ctr-p fuzzy finder
 set background=dark "Color scheme settings
 set termguicolors "True colors term support
 
@@ -55,6 +63,7 @@ noremap <leader>p "+p
 noremap <leader>P "+P
 noremap <space> za
 noremap <CR> o<Esc>
+noremap <C-p> :Files<cr>
 au filetype wiki noremap <CR> <Plug>VimwikiFollowLink
 inoremap jk <Esc>
 inoremap <C-k> <Esc>O<Esc>jA
@@ -76,7 +85,10 @@ let g:gruvbox_contrast_dark='hard'
 let g:gruvbox_invert_selection='0'
 let g:gruvbox_termcolors='256'
 let g:AutoPairsFlyMode = 1
+let g:fzf_buffers_jump = 1
+let g:fzf_vim_statusline = 0
 colorscheme gruvbox "colorscheme
+so ~/.config/nvim/fzfConfig.vim
 
 "UltiSnips triggering
 let g:UltiSnipsExpandTrigger = '<C-j>'
