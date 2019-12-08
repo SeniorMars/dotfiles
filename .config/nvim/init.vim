@@ -1,6 +1,6 @@
 "Disable settings
 let g:polyglot_disabled = ['latex'] "allow vimtex to work
-" let g:loaded_youcompleteme = 1 "disables ycm for nvim
+let g:loaded_youcompleteme = 1 "disables ycm for nvim
 
 "plugins!  
 call plug#begin('~/.vim/plugged')
@@ -30,10 +30,11 @@ Plug 'junegunn/goyo.vim' "Distraction free
 Plug 'junegunn/limelight.vim' "color free
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } "Fuzzy finder
 Plug 'junegunn/fzf.vim'
+Plug 'mboughaba/i3config.vim' "i3config
 call plug#end()
 
 "Global settings
-filetype plugin indent on    " required
+filetype plugin indent on " required
 syntax on "activates syntax highlighting among other things
 set hidden "work with multiple unsaved buffers.
 set backspace=indent,eol,start "Fixes the backspace
@@ -46,6 +47,7 @@ set noshowmode "make the current mode label disappear - I have airline for this.
 set conceallevel=1 "Allows me to conceal latex syntax if not on line
 set background=dark "Color scheme settings
 set termguicolors "True colors term support
+set splitbelow splitright
 so ~/.config/nvim/cocRC.vim "cocRC rec settings
 so ~/.config/nvim/fzfConfig.vim
 
@@ -53,7 +55,7 @@ so ~/.config/nvim/fzfConfig.vim
 let mapleader = ","
 noremap <leader>s :source ~/.config/nvim/init.vim<cr>
 noremap <leader>u :UndotreeToggle<cr>
-noremap <leader>t :NERDTreeToggle<CR>
+noremap <leader>t :NERDTreeToggle<cr>
 noremap <leader>e <C-w><C-w>
 noremap <leader>cd :cd %:p:h<cr>:pwd<cr>
 noremap <leader>g :Goyo<cr>
@@ -63,35 +65,32 @@ noremap <leader>p "+p
 noremap <leader>P "+P
 noremap <C-p> :Files<cr>
 noremap <space> za
-noremap <CR> o<Esc>
-au filetype wiki noremap <CR> <Plug>VimwikiFollowLink
+noremap <cr> o<Esc>
+au filetype wiki noremap <cr> <Plug>VimwikiFollowLink
 inoremap jk <Esc>
 inoremap <C-k> <Esc>O<Esc>jA
 vnoremap <leader>y "*y :let @+=@*<cr>
 map <leader>1 :bn<cr>
 map <leader>2 :bp<cr>
 map <leader>3 :retab<cr>
-map <leader>4 :Autoformat<CR>
+map <leader>4 :Autoformat<cr>
 map <leader>5 :setlocal spell spelllang=en_us<cr>
 
 "Extra
-let g:airline_powerline_fonts = 1
-let g:powerline_pycmd="py3"
+let g:airline_powerline_fonts = 1 "powerline fonts
+let g:powerline_pycmd="py3" "use py3
 let g:airline#extensions#tabline#enabled = 1 "airline thing
-let g:airline_theme='alduin'
-let g:user_emmet_leader_key='<C-,>'
-let g:gruvbox_italic='1'
-let g:gruvbox_contrast_dark='hard'
-let g:gruvbox_invert_selection='0'
-let g:gruvbox_termcolors='256'
-let g:AutoPairsFlyMode = 1
-let g:fzf_buffers_jump = 1
+let g:airline_theme='alduin' "alduin powerline theme
+let g:gruvbox_italic='1' "enable italics
+let g:gruvbox_contrast_dark='hard' "dark mode
+let g:gruvbox_invert_selection='0' "No highlight
+let g:AutoPairsFlyMode = 1 "Auto pairs correction
 colorscheme gruvbox "colorscheme
-au! User GoyoEnter Limelight
-au! User GoyoLeave Limelight!
+au! User GoyoEnter Limelight "limelight activates when in Goyo mode
+au! User GoyoLeave Limelight! "deactivates
 
 "UltiSnips triggering
-let g:UltiSnipsExpandTrigger = '<C-j>'
+let g:UltiSnipsExpandTrigger = '<C-j>' 
 let g:UltiSnipsJumpForwardTrigger = '<C-j>'
 let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
 
@@ -99,19 +98,19 @@ let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
 let g:tex_flavor='latex'
 let g:vimtex_view_method='zathura'
 let g:vimtex_quickfix_mode=0
-let g:indentLine_setConceal = 0
+let g:indentLine_setConceal=0
 let g:tex_conceal='abdmg'
 
 "Java Support!
 au Filetype java set makeprg=javac\ %
 set errorformat=%A%f:%l:\ %m,%-Z%p^,%-C%.%#
-au FileType java noremap <buffer> <leader>8 :make<return>:copen<return>
-au FileType java noremap <buffer> <leader>6 :cprevious<Return>
-au FileType java noremap <buffer> <leader>7 :cnext<Return>
-au FileType java noremap <buffer> <leader>9 :!echo %\|awk -F. '{print $1}'\|xargs java<return>
+au FileType java noremap <buffer> <leader>8 :make<cr>:copen<cr>
+au FileType java noremap <buffer> <leader>6 :cprevious<cr>
+au FileType java noremap <buffer> <leader>7 :cnext<cr>
+au FileType java noremap <buffer> <leader>9 :!echo %\|awk -F. '{print $1}'\|xargs java<cr>
 
 "python Support!
-au FileType python noremap <buffer> <leader>9 <Esc>:w<CR>:!clear;python %<CR>
+au FileType python noremap <buffer> <leader>9 <Esc>:w<cr>:!clear;python %<cr>
 au BufNewFile,BufRead *.py set tabstop=4
 au BufNewFile,BufRead *.py set softtabstop=4
 au BufNewFile,BufRead *.py set shiftwidth=4
@@ -129,4 +128,15 @@ au BufNewFile,BufRead *.js,*.html,*.css set expandtab
 au BufNewFile,BufRead *.js,*.html,*.css set autoindent
 
 "skeletons!
-au BufNewFile *.tex r ~/.vim/templates/skeleton.tex
+au BufNewFile *.tex -r ~/.vim/templates/skeleton.tex
+
+"Muttrc
+autocmd BufRead,BufNewFile /tmp/neomutt* let g:goyo_width=80
+autocmd BufRead,BufNewFile /tmp/neomutt* :Goyo | set spell spelllang=en_us
+autocmd BufRead,BufNewFile /tmp/neomutt* noremap ZZ :Goyo\|x!<cr>
+
+"i3conf
+aug i3config_ft_detection
+  au!
+  au BufNewFile,BufRead ~/.config/i3/config set filetype=i3config
+aug end
