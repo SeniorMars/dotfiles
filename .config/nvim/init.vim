@@ -1,6 +1,6 @@
 "Disable settings
 let g:polyglot_disabled = ['latex'] "allow vimtex to work
-let g:loaded_youcompleteme = 1 "disables ycm for nvim
+" let g:loaded_youcompleteme = 1 "disables ycm for nvim
 
 "plugins!  
 call plug#begin('~/.vim/plugged')
@@ -26,6 +26,10 @@ Plug 'vimwiki/vimwiki' "To take notes better - testing this with vimtex
 Plug 'mbbill/undotree' "undo tree to see recent changed
 Plug 'scrooloose/nerdtree' "See dirs and files
 Plug 'Xuyuanp/nerdtree-git-plugin' "git and nerd tree
+Plug 'junegunn/goyo.vim' "Distraction free
+Plug 'junegunn/limelight.vim' "color free
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } "Fuzzy finder
+Plug 'junegunn/fzf.vim'
 call plug#end()
 
 "Global settings
@@ -40,10 +44,10 @@ set foldlevel=99
 set encoding=utf-8 "required by YCM
 set noshowmode "make the current mode label disappear - I have airline for this.
 set conceallevel=1 "Allows me to conceal latex syntax if not on line
-set runtimepath^=~/.vim/plugged/ctrlp.vim "ctr-p fuzzy finder
 set background=dark "Color scheme settings
 set termguicolors "True colors term support
 so ~/.config/nvim/cocRC.vim "cocRC rec settings
+so ~/.config/nvim/fzfConfig.vim
 
 "Key remapping
 let mapleader = ","
@@ -51,9 +55,13 @@ noremap <leader>s :source ~/.config/nvim/init.vim<cr>
 noremap <leader>u :UndotreeToggle<cr>
 noremap <leader>t :NERDTreeToggle<CR>
 noremap <leader>e <C-w><C-w>
+noremap <leader>cd :cd %:p:h<cr>:pwd<cr>
+noremap <leader>g :Goyo<cr>
+noremap <leader>G :Goyo!<cr>
 noremap <leader>z [s1z=
 noremap <leader>p "+p
 noremap <leader>P "+P
+noremap <C-p> :Files<cr>
 noremap <space> za
 noremap <CR> o<Esc>
 au filetype wiki noremap <CR> <Plug>VimwikiFollowLink
@@ -77,7 +85,10 @@ let g:gruvbox_contrast_dark='hard'
 let g:gruvbox_invert_selection='0'
 let g:gruvbox_termcolors='256'
 let g:AutoPairsFlyMode = 1
+let g:fzf_buffers_jump = 1
 colorscheme gruvbox "colorscheme
+au! User GoyoEnter Limelight
+au! User GoyoLeave Limelight!
 
 "UltiSnips triggering
 let g:UltiSnipsExpandTrigger = '<C-j>'
