@@ -34,6 +34,8 @@ Plug 'scrooloose/nerdtree' "See dirs and files
 Plug 'Xuyuanp/nerdtree-git-plugin' "git and nerd tree
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } "Fuzzy finder
 Plug 'junegunn/fzf.vim'
+Plug 'junegunn/goyo.vim' "Distraction free
+Plug 'junegunn/limelight.vim' "color free
 call plug#end()
 
 "Global settings
@@ -51,6 +53,7 @@ set noshowmode "make the current mode label disappear - I have airline for this.
 set conceallevel=1 "Allows me to conceal latex syntax if not on line
 set background=dark "Color scheme settings
 set termguicolors "True colors term support
+set splitbelow splitright
 
 "Key remapping
 let mapleader = ","
@@ -58,6 +61,9 @@ noremap <leader>s :source ~/.vimrc<cr>
 noremap <leader>u :UndotreeToggle<cr>
 noremap <leader>t :NERDTreeToggle<CR>
 noremap <leader>e <C-w><C-w>
+noremap <leader>cd :cd %:p:h<cr>:pwd<cr>
+noremap <leader>g :Goyo<cr>
+noremap <leader>G :Goyo!<cr>
 noremap <leader>z [s1z=
 noremap <leader>p "+p
 noremap <leader>P "+P
@@ -129,4 +135,9 @@ au BufNewFile,BufRead *.js,*.html,*.css set expandtab
 au BufNewFile,BufRead *.js,*.html,*.css set autoindent
 
 "skeletons!
-au BufNewFile *.tex r ~/.vim/templates/skeleton.tex
+au BufNewFile *.tex -r ~/.vim/templates/skeleton.tex
+
+"Muttrc
+autocmd BufRead,BufNewFile /tmp/neomutt* let g:goyo_width=80
+autocmd BufRead,BufNewFile /tmp/neomutt* :Goyo | set spell spelllang=en_us
+autocmd BufRead,BufNewFile /tmp/neomutt* noremap ZZ :Goyo\|x!<CR>
