@@ -42,16 +42,16 @@ set splitbelow splitright
 
 "Key remapping
 let mapleader = ","
-noremap <leader>t :NERDTreeToggle<CR>
-noremap <leader>e <C-w><C-w>
+noremap <leader>t :NERDTreeToggle<cr>
+noremap <leader>e <c-w><c-w>
 noremap <leader>cd :cd %:p:h<cr>:pwd<cr>
 noremap <leader>z [s1z=
 noremap <leader>p "+p
 noremap <leader>P "+P
 noremap <space> za
-noremap <CR> o<Esc>
-inoremap jk <Esc>
-inoremap <C-k> <Esc>O<Esc>jA
+noremap <cr> o<esc>
+inoremap jk <esc>
+inoremap <C-k> <esc>O<esc>jA
 vnoremap <leader>y "*y :let @+=@*<cr>
 map <leader>1 :bn<cr>
 map <leader>2 :bp<cr>
@@ -78,13 +78,13 @@ let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
 "Java Support!
 au Filetype java set makeprg=javac\ %
 set errorformat=%A%f:%l:\ %m,%-Z%p^,%-C%.%#
-au FileType java noremap <buffer> <leader>8 :make<return>:copen<return>
-au FileType java noremap <buffer> <leader>6 :cprevious<Return>
-au FileType java noremap <buffer> <leader>7 :cnext<Return>
-au FileType java noremap <buffer> <leader>9 :!echo %\|awk -F. '{print $1}'\|xargs java<return>
+au FileType java noremap <buffer> <leader>8 :make<cr>:copen<cr>
+au FileType java noremap <buffer> <leader>6 :cprevious<cr>
+au FileType java noremap <buffer> <leader>7 :cnext<cr>
+au FileType java noremap <buffer> <leader>9 :!echo %\|awk -F. '{print $1}'\|xargs java<cr>
 
 "python Support!
-au FileType python noremap <buffer> <leader>9 <Esc>:w<CR>:!clear;python %<CR>
+au FileType python noremap <buffer> <leader>9 <esc>:w<cr>:!clear;python %<cr>
 au BufNewFile,BufRead *.py set tabstop=4
 au BufNewFile,BufRead *.py set softtabstop=4
 au BufNewFile,BufRead *.py set shiftwidth=4
