@@ -1,3 +1,6 @@
+" The purpose of this is just the bare minimum for when I need to ssh or other
+" stuff
+
 "Auto Download
 if empty(glob('~/.vim/autoload/plug.vim'))
 	silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
