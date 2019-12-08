@@ -1,42 +1,46 @@
 /* Remember to change your username */
-@import url('file:///home/karl/.cache/wal/colors.css'); 
+@import url('file:///home/karl/.cache/wal/colors.css');
 
 window#main-window {
-    --toolbar-bgcolor: #111111 !important;
-    --lwt-accent-color: #111111 !important;
-    --lwt-toolbar-field-background-color: #111111 !important;
+    --toolbar-bgcolor: #0c0c0c !important;
+    --lwt-accent-color: #0c0c0c !important;
+    --lwt-toolbar-field-background-color: #0c0c0c !important;
     --lwt-toolbar-field-color: #cccccc !important;
     --chrome-content-separator-color: none !important;
     --backbutton-background: none !important;
-    --arrowpanel-background: #111111 !important;
-    --arrowpanel-border-color: #111111 !important;
-    --lwt-sidebar-background-color: #111111 !important;
+    --arrowpanel-background: #0c0c0c !important;
+    --arrowpanel-border-color: #0c0c0c !important;
+    --lwt-sidebar-background-color: #0c0c0c !important;
 }  
+:root:not([uidensity="compact"]):not([chromehidden~="toolbar"]) #nav-bar[brighttext] > #PanelUI-button {
+    border-image-source: linear-gradient(transparent, transparent) !important;
+}
+
+:root[uidensity="touch"] {
+    --tab-min-height: 22px;
+}    
 
 textbox {
-    background-color: #111111 !important;
+    background-color: #0c0c0c !important;
     border: none !important;
 }
 
 vbox[style], hbox[style] {
-  background-color: #111111 !important;
+  background-color: #0c0c0c !important;
   border: none !important;
 }
+
 .sidebar-placesTree {
-    background-color: #111111 !important;
+    background-color: #0c0c0c !important;
     border: none !important;
 }
 :root[lwt-popup-brighttext] {
-    --panel-separator-color: #111111 !important;
+    --panel-separator-color: #0c0c0c !important;
     border: none !important;
 }
 
 #sidebar-header {
     border: none !important;
-}
-
-:root:not([uidensity="compact"]):not([chromehidden~="toolbar"]) #nav-bar[brighttext] > #PanelUI-button {
-    border-image-source: linear-gradient(transparent, transparent) !important;
 }
 
 #urlbar,
@@ -46,8 +50,16 @@ vbox[style], hbox[style] {
 
 #identity-box,
 #tracking-protection-icon-container,
-.urlbar-icon, .tab-icon-image {
+.urlbar-icon {
     display: none !important;
+}
+
+.tab-icon-image
+{
+  background-color: #e0e0e0 !important;
+  min-height: 22px !important;
+  min-width: 22px !important;
+  border-radius: 22px !important;
 }
 
 #toolbar-menubar:not([autohide="true"])+#TabsToolbar .tabbrowser-tab>.tab-stack>.tab-background,
@@ -89,23 +101,21 @@ toolbar,
 tab,
 tree,
 .tree-rows {
-    font-family: 'Input Condensed', monospace !important;
+    font-family: 'Hack', sans-serif !important;
     font-size: 12pt !important;
-    font-weight: bold;
+    font-weight: regular;
     font-style: normal !important;
     -moz-appearance: none !important;
-    color: var(--color7) !important;
-}
-
-menupopup {
-	-moz-appearance: none !important;
-	padding: 8px !important;
-	background-color: #111111 !important;
+    color: #cccccc !important;
 }
 
 #navigator-toolbox {
-    --tabs-border-color: none !important;
+    --tabs-border-color: none !important;;
 
+}
+
+menuitem {
+    padding: 8px !important;
 }
 
 /* This removes the tab separators */
@@ -114,16 +124,16 @@ menupopup {
     display: none !important;
 }
 
-.tab-background[selected=true] {
-  color: #111111 !important;
+.tabbrowser-tab[selected=true] {
+  color: #ffd47c !important;
 }
 
 #sidebar-search-container {
-	background-color: #111111;
+  background-color: #0c0c0c;   
 }
 
 .panel-arrowcontainer, .panel-arrowcontainer, .panel-arrowcontent {
-    border-radius: 13px !important;
+    border-radius: 14px !important;
 }
 
 /* This moves the tabs under the URL bar */
@@ -136,10 +146,14 @@ menupopup {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex: 1 !important;
 }
 
-.tabbrowser-tab[selected="true"], .tab-label-container[selected="true"] {
-  color: #c33dab !important;
+.tabbrowser-tab {
+  color: #fefefa !important;
+  min-width: 12em !important;
+  /* width: 100% !important;
+  max-width: 100% !important; */
   /* background-color: var(--color3) !important; */
   /* background-image: linear-gradient(var(--color3), var(--color3)) !important; */
 }
@@ -153,9 +167,9 @@ menupopup {
 
 .urlbarView:not(.megabar) {
     box-shadow: none !important;
-    background-color: #111111 !important;
-    font-family: 'Input Condensed', monospace !important;
-    font-size: 12pt !important;
+    background-color: #0c0c0c !important;
+    font-family: 'Hack', sans-serif !important;
+    font-size: 11pt !important;
 }
 
 .urlbarView-favicon {
@@ -163,8 +177,8 @@ menupopup {
 }
 
 .urlbarView-row[selected] {
-    background: #c33dab !important;
-    color: #111111 !important;
+    background: #e0e0e0 !important;
+    color: #0c0c0c !important;
     fill-opacity: 1 !important;;
 }
 
@@ -175,9 +189,8 @@ menupopup {
 }   
     
 .customization-target {
-    padding: 18px !important;   
+    padding: 12px !important;   
 }
-
 #statuspanel-label {
     background-color: black !important;
     border: 1px none black !important;

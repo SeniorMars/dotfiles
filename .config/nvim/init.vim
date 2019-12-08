@@ -1,5 +1,6 @@
 "Disable settings
 let g:polyglot_disabled = ['latex'] "allow vimtex to work
+let g:loaded_youcompleteme = 1 "disables ycm for nvim
 
 "plugins!  
 call plug#begin('~/.vim/plugged')
@@ -15,7 +16,6 @@ Plug 'honza/vim-snippets' " Snippets are separated from the engine
 Plug 'morhetz/gruvbox' "Theme
 Plug 'AlessandroYorba/Alduin' "airline
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'mattn/emmet-vim' "emmet for vim.
 Plug 'jiangmiao/auto-pairs' "auto completes [] and ()
 Plug 'wellle/targets.vim' "adds more targets like [ or ,
 Plug 'Yggdroot/indentLine' "indent lines like atom. See python file for ex
@@ -29,7 +29,6 @@ Plug 'Xuyuanp/nerdtree-git-plugin' "git and nerd tree
 call plug#end()
 
 "Global settings
-set nocp "make sure nvim doesn't act like vi
 filetype plugin indent on    " required
 syntax on "activates syntax highlighting among other things
 set hidden "work with multiple unsaved buffers.
@@ -41,9 +40,10 @@ set foldlevel=99
 set encoding=utf-8 "required by YCM
 set noshowmode "make the current mode label disappear - I have airline for this.
 set conceallevel=1 "Allows me to conceal latex syntax if not on line
-set runtimepath^=~/.vim/bundle/ctrlp.vim "ctr-p fuzzy finder
+set runtimepath^=~/.vim/plugged/ctrlp.vim "ctr-p fuzzy finder
 set background=dark "Color scheme settings
 set termguicolors "True colors term support
+so ~/.config/nvim/cocRC.vim "cocRC rec settings
 
 "Key remapping
 let mapleader = ","
@@ -56,7 +56,7 @@ noremap <leader>p "+p
 noremap <leader>P "+P
 noremap <space> za
 noremap <CR> o<Esc>
-noremap \ <Plug>VimwikiFollowLink
+au filetype wiki noremap <CR> <Plug>VimwikiFollowLink
 inoremap jk <Esc>
 inoremap <C-k> <Esc>O<Esc>jA
 vnoremap <leader>y "*y :let @+=@*<cr>
@@ -88,7 +88,7 @@ let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
 let g:tex_flavor='latex'
 let g:vimtex_view_method='zathura'
 let g:vimtex_quickfix_mode=0
-" let g:indentLine_setConceal = 0
+let g:indentLine_setConceal = 0
 let g:tex_conceal='abdmg'
 
 "Java Support!
