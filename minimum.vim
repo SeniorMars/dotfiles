@@ -15,7 +15,7 @@ Plug 'tpope/vim-commentary' "Comment stuff
 Plug 'sheerun/vim-polyglot' "vim syntax for different languages
 Plug 'vim-airline/vim-airline' "airline see bottom of bar
 Plug 'vim-airline/vim-airline-themes' "airline theme theme
-Plug 'powerline/fonts' "powerline fonts
+Plug 'powerline/fonts', {'do': './install.sh'}
 Plug 'SirVer/ultisnips' "Track the engine.
 Plug 'honza/vim-snippets' " Snippets are separated from the engine
 Plug 'morhetz/gruvbox' "Theme

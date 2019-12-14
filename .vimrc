@@ -16,7 +16,7 @@ Plug 'tpope/vim-fugitive' "Git control for vim
 Plug 'sheerun/vim-polyglot' "vim syntax for different languages
 Plug 'vim-airline/vim-airline' "airline see bottom of bar
 Plug 'vim-airline/vim-airline-themes' "airline theme theme
-Plug 'powerline/fonts' "powerline fonts
+Plug 'powerline/fonts', {'do': './install.sh'}
 Plug 'SirVer/ultisnips' "Track the engine.
 Plug 'honza/vim-snippets' " Snippets are separated from the engine
 Plug 'morhetz/gruvbox' "Theme
@@ -71,7 +71,6 @@ noremap <leader>P "+P
 noremap <space> za
 noremap <cr> o<Esc>
 noremap <C-p> :Files<cr>
-au filetype wiki noremap <cr> <Plug>VimwikiFollowLink
 inoremap jk <Esc>
 inoremap <C-k> <Esc>O<Esc>jA
 vnoremap <leader>y "*y :let @+=@*<cr>
@@ -141,4 +140,4 @@ au BufNewFile *.tex -r ~/.vim/templates/skeleton.tex
 "Muttrc
 autocmd BufRead,BufNewFile /tmp/neomutt* let g:goyo_width=80
 autocmd BufRead,BufNewFile /tmp/neomutt* :Goyo | set spell spelllang=en_us
-autocmd BufRead,BufNewFile /tmp/neomutt* noremap ZZ :Goyo\|x!<cr>
+autocmd BufRead,BufNewFile /tmp/neomutt* noremap <leader>x :Goyo\|x!<cr>
