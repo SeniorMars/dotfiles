@@ -1,7 +1,7 @@
 # dotfiles
 My First Rice Setup:
 
-![Picture of my setup](https://i.imgur.com/cBr9unV.png)
+![Picture of my setup](https://i.redd.it/2mewpo1f1s541.png)
 
 Running programs (gotop, pipes.sh, cava, ranger, neofetch)
 
