@@ -1,23 +1,18 @@
-# i2 config file (v4) 
-# Please see http://i3wm.org/docs/userguide.html for a complete reference!
+# i3 config file (v4) 
+# _ _____                  __ _       
+#(_)___ /  ___ ___  _ __  / _(_) __ _ 
+#| | |_ \ / __/ _ \| '_ \| |_| |/ _` |
+#| |___) | (_| (_) | | | |  _| | (_| |
+#|_|____/ \___\___/|_| |_|_| |_|\__, |
+#                               |___/ 
 
 #===[ GENERAL SETTINGS ]====================#
 
 # Mod key is the "Super" key (or Meta, usually has the Windows logo on it)
 set $mod Mod4
-
-# Font for window titles. Will also be used by the bar unless a different font
-# is used in the bar {} block below. ISO 10646 = Unicode
-font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
-# The font above is very space-efficient, that is, it looks good, sharp and
-# clear in small sizes. However, if you need a lot of unicode glyphs or
-# right-to-left text rendering, you should instead use pango for rendering and
-# chose a FreeType font, such as:
 font pango:Droid Sans Mono 8
 
-
 #===[ KEY BINDINGS ]====================#
-
 
 #---( focus )---#
 
@@ -27,13 +22,6 @@ bindsym $mod+j focus down
 bindsym $mod+k focus up
 bindsym $mod+l focus right
 
-# alternatively, you can use the cursor keys:
-bindsym $mod+Left focus left
-bindsym $mod+Down focus down
-bindsym $mod+Up focus up
-bindsym $mod+Right focus right
-
-
 #---( moving / splitting / layout)---#
 
 # move focused window
@@ -41,12 +29,6 @@ bindsym $mod+Shift+h move left
 bindsym $mod+Shift+j move down
 bindsym $mod+Shift+k move up
 bindsym $mod+Shift+l move right
-
-# alternatively, you can use the cursor keys:
-bindsym $mod+Shift+Left move left
-bindsym $mod+Shift+Down move down
-bindsym $mod+Shift+Up move up
-bindsym $mod+Shift+Right move right
 
 # split in horizontal orientation
 bindsym $mod+g split h
@@ -57,35 +39,21 @@ bindsym $mod+v split v
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen
 
-# change container layout (stacked, tabbed, toggle split)
-#bindsym $mod+s layout stacking
-#bindsym $mod+w layout tabbed
-#bindsym $mod+t layout toggle split
+# split
+bindsym $mod+t layout toggle split
 
 # toggle tiling / floating
-bindsym $mod+Shift+space floating toggle
+bindsym $mod+Shift+plus floating toggle
 
 # change focus between tiling / floating windows
 bindsym $mod+space focus mode_toggle
 
-# Make the currently focused window a scratchpad
+# scratchpad
 bindsym $mod+Shift+minus move scratchpad
-
-# Show the first scratchpad window
 bindsym $mod+Tab scratchpad show
-
-# toggle sticky
-bindsym $mod+Shift+s sticky toggle
-
-# focus the parent container
-bindsym $mod+a focus parent
-
-# focus the child container
-#bindsym $mod+d focus child
 
 # kill focused window
 bindsym $mod+q kill
-
 
 #---( workspaces )---#
 
@@ -113,17 +81,11 @@ bindsym $mod+Shift+8 move container to workspace 8
 bindsym $mod+Shift+9 move container to workspace 9
 bindsym $mod+Shift+0 move container to workspace 10
 
-
 #---( resizing windows )---#
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
         # These bindings trigger as soon as you enter the resize mode
-
-        # Pressing left will shrink the window’s width.
-        # Pressing right will grow the window’s width.
-        # Pressing up will shrink the window’s height.
-        # Pressing down will grow the window’s height.
         bindsym h resize shrink width 10 px or 10 ppt
         bindsym j resize grow height 10 px or 10 ppt
         bindsym k resize shrink height 10 px or 10 ppt
@@ -141,7 +103,6 @@ mode "resize" {
 }
 
 bindsym $mod+r mode "resize"
-new_window 1pixel
 
 #---( i2 stuff )---#
 
@@ -153,63 +114,32 @@ bindsym $mod+Shift+r restart
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
 # start application launchers
-bindsym $mod+x exec --no-startup-id i3-dmenu-desktop --dmenu="dmenu -p 'Run: ' -l 10 -i -nb '#fff' -nf '#4c7899' -fn 'Droid Sans Mono-9:bold'"
+bindsym $mod+x exec --no-startup-id rofi -show combi -theme flat-orange -font 'Droid Sans Mono bold 10'
 bindsym $mod+d exec krunner
 
 
 #---( direct launchers )---#
 
 bindsym $mod+Return exec konsole
-bindsym $mod+F1 exec "konsole -e ranger"
+bindsym $mod+F1 exec konsole -e ranger
 bindsym $mod+Shift+F2 exec firefox
 bindsym $mod+Shift+F3 exec discord
-bindsym $mod+Shift+F4 exec "konsole -e neomutt"
-bindsym $mod+Shift+F5 exec systemsettings5
-bindsym $mod+Shift+F6 exec "konsole -e ssh chernandez10@homer.stuy.edu"
+bindsym $mod+Shift+F4 exec systemsettings5
+bindsym $mod+Shift+F5 exec konsole -e neomutt
+bindsym $mod+Shift+F6 exec konsole -e ssh chernandez10@homer.stuy.edu
 bindsym $mod+Shift+F7 exec --no-startup-id "XDG_CURRENT_DESKTOP=kde kcalc"
-bindsym $mod+shift+F1 exec --no-startup-id "konsole -e ranger" exec --no-startup-id "konsole -e gotop" exec --no-startup-id "konsole -e pipes.sh" exec konsole
 bindsym $mod+e exec --no-startup-id "XDG_CURRENT_DESKTOP=kde dolphin"
 bindsym $mod+Shift+c exec --no-startup-id sh Downloads/imgur-screenshot/imgur-screenshot.sh -l true 
 
 #gaps 
-gaps inner 15
-gaps outer 15
+gaps inner 10
+gaps outer 10
 
 bindsym $mod+z		gaps inner current set 0; gaps outer current set 0
-bindsym $mod+Shift+z	gaps inner current set 15; gaps outer current set 15
+bindsym $mod+Shift+z	gaps inner current set 10; gaps outer current set 10
 
 bindsym $mod+w		gaps outer current plus 5
 bindsym $mod+Shift+w	gaps outer current minus 5
-border_radius 12	#rounded borders
-
-#----------[ STATUS BAR ]----------#
-
-bar {
-    # If you want a bar, uncomment one of these: 
-    # status_command $HOME/.local/bin/conky-i3bar.sh
-    # status_command i3status
-    # status_command i3blocks
-		mode invisible
-    colors {
-        background #111111
-        statusline #ffffff
-        separator #cccccc
-
-        #focused_workspace  #555555 #121212 #dddddd
-        #active_workspace   #555555 #555555 #dddddd
-        #inactive_workspace #555555 #555555 #dddddd
-        #urgent_workspace   #555555 #770000 #dddddd
-
-        focused_workspace  #555555 #666666 #dddddd
-        active_workspace   #555555 #555555 #dddddd
-        inactive_workspace #555555 #111111 #dddddd
-        urgent_workspace   #555555 #770000 #dddddd
-    }
-
-    # tray_output eDP1
-    tray_output none
-}
-
 
 #----------[ MISC SETTINGS ]----------#
 
@@ -220,31 +150,25 @@ workspace_auto_back_and_forth yes
 #---( startup items )---#
 
 #exec_always --no-startup-id nitrogen --restore
-exec_always --no-startup-id xmodmap -e "clear lock" #disable caps lock switch
-exec_always --no-startup-id xmodmap -e "keysym Caps_Lock = Escape" #set caps_lock as escape
 exec --no-startup-id 'xset -b'
 exec --no-startup-id 'xcompmgr'
 exec_always --no-startup-id 'xset b off'
+exec --no-startup-id feh --bg-scale ~/Pictures/Wallpapers/77zb6asm5ov31.jpg
+exec --no-startup-id picom
 
 #---( colors table )---#
 
-# class                 border  backgr. text    indicator
-#client.focused          #4c7899 #111111 #00b2b2 #2e9ef4 #990000
-client.focused          #990000 #111111 #00b2b2 #2e9ef4
-client.focused_inactive #333333 #000000 #ffffff #484e50 
-client.unfocused        #333333 #000000 #888888 #292d2e
-client.urgent           #2f343a #900000 #ffffff #900000
-#client.placeholder      #000000 #0c0c0c #ffffff #000000 #990000
-client.background       #000000
-
+# colour of border, background, text, indicator, and child_border
+client.focused          #dfaf87 #1d2021 #dfaf87 #dfaf87 #dfaf87
+client.focused_inactive #1d2021 #1d2021 #dfaf87 #1d2021 #1d2021
+client.unfocused        #1d2021 #1d2021 #dfaf87 #1d2021 #1d2021
+client.urgent           #1d2021 #1d2021 #dfaf87 #1d2021 #1d2021
+client.placeholder      #1d2021 #1d2021 #dfaf87 #1d2021 #1d2021
+client.background       #1d2021
 
 #---( windows rules )---#
 
-# No border windows
-for_window [class="(?i)firefox"] border none
-for_window [class="(?i)gvim"] border none
-for_window [class="(?i)konsole"] border none
-for_window [class="^.*"] border pixel 0
+for_window [class="^.*"] border pixel 3
 
 # Float by name
 for_window [title="Nitrogen"] floating enable
@@ -262,43 +186,21 @@ for_window [window_type="menu"] floating enable
 floating_modifier $mod
 
 #---( focus related )---)
-
 focus_follows_mouse no
 
 no_focus [class="plasmashell"]
 no_focus [window_role="pop-up"]
 no_focus [window_type="notification"]
-
 focus_on_window_activation none
 
 ## Plasma Integration
-# Try to kill the wallpaper set by Plasma (it takes up the entire workspace and hides everythiing)
-
 exec --no-startup-id wmctrl -c Plasma
-
 for_window [title="Desktop — Plasma"] kill; floating enable; border none
-
-
-## Avoid tiling popups, dropdown windows from plasma
-
-# for the first time, manually resize them, i3 will remember the setting for floating windows
-
-for_window [class="plasmashell"] floating enable;
-
-for_window [class="Plasma"] floating enable; border none
-
-for_window [title="plasma-desktop"] floating enable; border none
-
-for_window [title="win7"] floating enable; border none
-
-for_window [class="krunner"] floating enable; border none
-
-for_window [class="Kmix"] floating enable; border none
-
-for_window [class="Klipper"] floating enable; border none
-
-for_window [class="Plasmoidviewer"] floating enable; border none
-
-# Terminal execs
-exec --no-startup-id feh --bg-scale ~/Pictures/tokyo_cityscape-2560x1440.jpg
-exec --no-startup-id compton
+for_window [class="plasmashell"] floating enable
+for_window [class="Plasma"] floating enable
+for_window [title="plasma-desktop"] floating enable
+for_window [title="win7"] floating enable
+for_window [class="krunner"] floating enable
+for_window [class="Kmix"] floating enable
+for_window [class="Klipper"] floating enable
+for_window [class="Plasmoidviewer"] floating enable
