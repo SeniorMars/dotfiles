@@ -11,7 +11,6 @@
 # Mod key is the "Super" key (or Meta, usually has the Windows logo on it)
 set $mod Mod4
 font pango:Droid Sans Mono 8
-
 #===[ KEY BINDINGS ]====================#
 
 #---( focus )---#
@@ -129,7 +128,6 @@ bindsym $mod+Shift+F5 exec konsole -e neomutt
 bindsym $mod+Shift+F6 exec konsole -e ssh chernandez10@homer.stuy.edu
 bindsym $mod+Shift+F7 exec --no-startup-id "XDG_CURRENT_DESKTOP=kde kcalc"
 bindsym $mod+e exec --no-startup-id "XDG_CURRENT_DESKTOP=kde dolphin"
-bindsym $mod+Shift+c exec --no-startup-id sh Downloads/imgur-screenshot/imgur-screenshot.sh -l true 
 
 #gaps 
 gaps inner 10
@@ -146,7 +144,6 @@ bindsym $mod+Shift+w	gaps outer current minus 5
 # Pressing $mod and current workspace number takes you back to the previousle active workspace
 workspace_auto_back_and_forth yes
 
-
 #---( startup items )---#
 
 #exec_always --no-startup-id nitrogen --restore
@@ -155,7 +152,7 @@ exec --no-startup-id 'xcompmgr'
 exec_always --no-startup-id 'xset b off'
 exec --no-startup-id feh --bg-scale ~/Pictures/Wallpapers/77zb6asm5ov31.jpg
 exec --no-startup-id picom
-
+exec --no-startup-id wmctrl -c Plasma
 #---( colors table )---#
 
 # colour of border, background, text, indicator, and child_border
@@ -174,7 +171,6 @@ for_window [class="^.*"] border pixel 3
 for_window [title="Nitrogen"] floating enable
 for_window [title="Install user style"] floating enable
 for_window [title="KCalc"] floating enable
-for_window [class="plasmashell"] floating enable
 
 # Float by type
 for_window [window_role="pop-up"] floating enable
@@ -194,13 +190,13 @@ no_focus [window_type="notification"]
 focus_on_window_activation none
 
 ## Plasma Integration
-exec --no-startup-id wmctrl -c Plasma
 for_window [title="Desktop — Plasma"] kill; floating enable; border none
-for_window [class="plasmashell"] floating enable
-for_window [class="Plasma"] floating enable
-for_window [title="plasma-desktop"] floating enable
-for_window [title="win7"] floating enable
-for_window [class="krunner"] floating enable
-for_window [class="Kmix"] floating enable
-for_window [class="Klipper"] floating enable
-for_window [class="Plasmoidviewer"] floating enable
+for_window [class="plasmashell"] floating enable;
+for_window [class="Plasma"] floating enable; border none
+for_window [title="plasma-desktop"] floating enable; border none
+for_window [title="win7"] floating enable; border none
+for_window [class="krunner"] floating enable; border none
+for_window [class="Kmix"] floating enable; border none
+for_window [class="Klipper"] floating enable; border none
+for_window [class="Plasmoidviewer"] floating enable; border none
+for_window [class="(?i)*nextcloud*"] floating disable
