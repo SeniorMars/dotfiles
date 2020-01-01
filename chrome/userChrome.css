@@ -1,41 +1,30 @@
-/* Remember to change your username */
-@import url('file:///home/karl/Documents/CS/css/colors.css');
-
 window#main-window {
-    --toolbar-bgcolor: #0c0c0c !important;
-    --lwt-accent-color: #0c0c0c !important;
-    --lwt-toolbar-field-background-color: #0c0c0c !important;
-    --lwt-toolbar-field-color: #cccccc !important;
+    --toolbar-bgcolor: #111111 !important;
+    --lwt-accent-color: #111111 !important;
+    --lwt-toolbar-field-background-color: #111111 !important;
+    --lwt-toolbar-field-color: #98cfe5 !important;
     --chrome-content-separator-color: none !important;
     --backbutton-background: none !important;
-    --arrowpanel-background: #0c0c0c !important;
-    --arrowpanel-border-color: #0c0c0c !important;
-    --lwt-sidebar-background-color: #0c0c0c !important;
-}  
-:root:not([uidensity="compact"]):not([chromehidden~="toolbar"]) #nav-bar[brighttext] > #PanelUI-button {
-    border-image-source: linear-gradient(transparent, transparent) !important;
+    --arrowpanel-background: #111111 !important;
+    --arrowpanel-border-color: #111111 !important;
+    --lwt-sidebar-background-color: #111111 !important;
 }
 
-:root[uidensity="touch"] {
-    --tab-min-height: 22px;
-}    
-
 textbox {
-    background-color: #0c0c0c !important;
+    background-color: #111111 !important;
     border: none !important;
 }
 
 vbox[style], hbox[style] {
-  background-color: #0c0c0c !important;
+  background-color: #111111 !important;
   border: none !important;
 }
-
 .sidebar-placesTree {
-    background-color: #0c0c0c !important;
+    background-color: #111111 !important;
     border: none !important;
 }
 :root[lwt-popup-brighttext] {
-    --panel-separator-color: #0c0c0c !important;
+    --panel-separator-color: #111111 !important;
     border: none !important;
 }
 
@@ -43,23 +32,14 @@ vbox[style], hbox[style] {
     border: none !important;
 }
 
-#urlbar,
-#searchbar {
-    border: none !important;
+:root:not([uidensity="compact"]):not([chromehidden~="toolbar"]) #nav-bar[brighttext] > #PanelUI-button {
+    border-image-source: linear-gradient(transparent, transparent) !important;
 }
 
 #identity-box,
 #tracking-protection-icon-container,
-.urlbar-icon {
+.urlbar-icon, .tab-icon-image {
     display: none !important;
-}
-
-.tab-icon-image
-{
-  background-color: #e0e0e0 !important;
-  min-height: 22px !important;
-  min-width: 22px !important;
-  border-radius: 22px !important;
 }
 
 #toolbar-menubar:not([autohide="true"])+#TabsToolbar .tabbrowser-tab>.tab-stack>.tab-background,
@@ -89,6 +69,7 @@ vbox[style], hbox[style] {
 /* Removal of black bottom 1px line */
 #navigator-toolbox::after {
     display: none !important;
+    height: 0;
 }
 
 menubar,
@@ -101,21 +82,23 @@ toolbar,
 tab,
 tree,
 .tree-rows {
-    font-family: 'Hack', sans-serif !important;
+    font-family: 'Input Condensed', monospace !important;
     font-size: 12pt !important;
-    font-weight: regular;
+    font-weight: bold;
     font-style: normal !important;
     -moz-appearance: none !important;
-    color: #cccccc !important;
+    color: #98cfe5 !important;
+}
+
+menupopup {
+  -moz-appearance: none !important;
+  padding: 8px !important;
+  background-color: #111111 !important;
 }
 
 #navigator-toolbox {
-    --tabs-border-color: none !important;;
-
-}
-
-menuitem {
-    padding: 8px !important;
+    --tabs-border-color: none !important;
+    border: none !important;
 }
 
 /* This removes the tab separators */
@@ -124,36 +107,33 @@ menuitem {
     display: none !important;
 }
 
-.tabbrowser-tab[selected=true] {
-  color: #ffd47c !important;
+.tab-background[selected=true] {
+  color: #111111 !important;
 }
 
 #sidebar-search-container {
-  background-color: #0c0c0c;   
+  background-color: #111111;
 }
 
 .panel-arrowcontainer, .panel-arrowcontainer, .panel-arrowcontent {
-    border-radius: 14px !important;
+    border-radius: 13px !important;
 }
 
 /* This moves the tabs under the URL bar */
 #titlebar {
     -moz-box-ordinal-group: 3 !important;
   }
+
 .tabbrowser-tab {
     /* transition: color 0.25s !important; */
     text-align: center !important;
     display: flex;
     justify-content: center;
     align-items: center;
-    flex: 1 !important;
 }
 
-.tabbrowser-tab {
-  color: #fefefa !important;
-  min-width: 12em !important;
-  /* width: 100% !important;
-  max-width: 100% !important; */
+.tabbrowser-tab[selected="true"], .tab-label-container[selected="true"] {
+  color: #c33dab !important;
   /* background-color: var(--color3) !important; */
   /* background-image: linear-gradient(var(--color3), var(--color3)) !important; */
 }
@@ -162,14 +142,14 @@ menuitem {
     border: none !important;
     box-shadow: none !important;
     background-image: none !important;
-    
+
 }
 
 .urlbarView:not(.megabar) {
     box-shadow: none !important;
-    background-color: #0c0c0c !important;
-    font-family: 'Hack', sans-serif !important;
-    font-size: 11pt !important;
+    background-color: #111111 !important;
+    font-family: 'Input Condensed', monospace !important;
+    font-size: 12pt !important;
 }
 
 .urlbarView-favicon {
@@ -177,28 +157,34 @@ menuitem {
 }
 
 .urlbarView-row[selected] {
-    background: #e0e0e0 !important;
-    color: #0c0c0c !important;
+    background: #c33dab !important;
+    color: #111111 !important;
     fill-opacity: 1 !important;;
 }
 
 .sidebar-splitter {
-
     -moz-appearance: none;
     border: none !important;
-}   
-    
-.customization-target {
-    padding: 12px !important;   
 }
+
+.customization-target {
+    padding: 18px !important;
+}
+
 #statuspanel-label {
     background-color: black !important;
     border: 1px none black !important;
     border-top-style: solid !important;
-    color: white !important;
+    color: #98cfe5 !important;
 }
 
 /* Hide minimize, restore, close in full screen */
 
-#minimize-button, #restore-button, #close-button
-{ display: none !important; }
+#minimize-button, #restore-button, #close-button {
+    display: none !important;
+}
+
+#urlbar,
+#searchbar {
+    border: none !important;
+}

@@ -12,7 +12,6 @@
   :root{
     scrollbar-width: none !important;
   }
-  }
   
   @-moz-document url(about:privatebrowsing) { 
   
@@ -20,3 +19,290 @@
     scrollbar-width: none !important;
   }
   }
+
+
+@-moz-document url-prefix(about:) { :root {
+    --primary-background: #282C34!important;
+    --secondary-background: #21252B!important;
+    --primary-font-color: #D4D7DD!important;
+    --highlighted-font-color: #D4D7DD!important;
+    --primary-border: 1px solid #282C34!important;
+    --bright-border: 1px solid #282C34!important;
+    --border-color: #282C34!important;
+    --bright-border-color: #282C34!important;
+    --primary-icon-color: #9DA5B4!important;
+    --faded-bright-border-color: rgba(142, 175, 182, .65)!important;
+    --in-content-border-focus: var(--bright-border-color)!important;
+    --search-box: #393E49!important;
+    --primary-accent-color: #568AF2!important;
+} }
+
+@-moz-document url("about:home") {
+  body {
+    overflow-y: auto!important; 
+  }
+}
+
+@-moz-document url("about:newtab") {
+  body {
+    overflow-y: auto!important;
+  }
+ }
+
+@-moz-document
+    url-prefix(about:addons)
+{
+    .main-content, #main-footer, #dialogueBox {
+      background-color: var(--primary-background)!important;
+      color: var(--primary-font-color)!important;
+    }
+
+    #nav-header, #categories {
+      background-color: (var(--secondary-background))!important;
+      border-right: var(--border-color)!important;
+    }
+
+    .category {
+      color: var(--primary-font-color)!important;
+    }
+
+    .category[selected], .category.selected {
+      background: var(--primary-background)!important;
+      border-left: 3px solid!important;
+    }
+
+    .addon {
+      border-bottom: var(--border-color)!important;
+      color: var(--primary-font-color)!important;
+    }
+
+    description, label {
+      color: var(--primary-font-color)!important;
+    }
+
+    button.button-link:hover {
+      color: var(--primary-background)!important;
+    }
+
+    .detail-row, .detail-row-complex, setting {
+      text-shadow: none!important;
+    }
+
+    :root {
+      --in-content-page-background: #21252B!important;
+      --in-content-text-color: #D4D7DD!important;
+      --in-content-box-border-color: #282C34!important;
+      --in-content-box-background: #21252B!important;
+      --in-content-box-background-hover: #21252B!important;
+    }
+
+    #header-utils-btn:hover{
+      background-color: var(--in-content-box-background-hover)!important;
+    }
+
+    .alert {
+      background-color: var(--in-content-box-background)!important;
+    }
+
+    .addon-target-container {
+      background-color: var(--in-content-box-background)!important;
+      border: var(--in-content-box-border-color)!important;
+    }
+
+    .addon-target-actions {
+      border-top: var(--primary-background)!important;
+    }
+
+    .message-bar {
+        background-color: var(--in-content-box-background)!important;
+        color: var(--in-content-text-color)!important;
+    }
+}
+
+@-moz-document url(about:blank){
+  * { 
+    background-color: var(--primary-background); 
+  }
+ }
+ 
+ @-moz-document url-prefix(about:preferences) {
+   .main-content {
+     background-color: var(--primary-background)!important;
+     color: var(--primary-font-color)!important;
+   }
+
+   .sticky-container {
+     background-color: var(--primary-background)!important;
+   }
+
+   html, h1, #categories {
+     color: var(--primary-font-color)!important;
+   }
+
+   .navigation, #handersView, #engineShown, #engineName, #engineKeyword, .dialogTitleBar {
+     background-color: var(--secondary-background)!important; 
+     color: var(--primary-font-color)!important;
+   }
+
+   #searchInput {
+     background-color: var(--search-box)!important;
+     color: var(--primary-icon-color)!important;
+   }
+
+   #filter {
+    background-color: var(--search-box)!important;
+    color: var(--primary-icon-color)!important;
+  }
+
+  #downloadFolder {
+    background-color: var(--search-box)!important;
+    color: var(--primary-icon-color)!important;
+  }
+
+  #typeColumn {
+    background-color: var(--search-box)!important;
+    color: var(--primary-icon-color)!important;
+  }
+
+  #actionColumn {
+    background-color: var(--search-box)!important;
+    color: var(--primary-icon-color)!important;
+  }
+
+  #handlersView {
+    background-color: var(--secondary-background)!important;
+    color: var(--primary-font-color)!important;
+  }
+
+   #applicationsGroup listheader {
+     background-color: var(--search-box)!important;
+   }
+
+   #contentBlockingOptionStandard, #contentBlockingOptionStrict, #contentBlockingOptionCustom {
+    background-color: var(--secondary-background)!important;
+    color: var(--primary-font-color)!important;
+    border: 0px !important;
+  }
+   
+   description {
+     color: var(--primary-font-color)!important;
+   }
+
+   #engineChildren {
+    background-color: var(--secondary-background)!important;
+    color: var(--primary-font-color)!important;
+  }
+ }
+
+ @-moz-document url(about:performance) {
+  #dispatch-table, thead {
+    background-color: var(--primary-background)!important;
+    border-bottom: var(--primary-background)!important;
+  }
+  
+  thead tr td {
+    background-color: var(--primary-background)!important;
+  }
+  
+  td {
+    color: var(--primary-font-color)!important;
+  }
+}
+
+@-moz-document url(about:about) {
+  body {
+    background-color: var(--primary-background)!important;
+    color: var(--primary-font-color)!important;
+  }
+
+  h1 {
+    color: var(--primary-font-color)!important;
+  }
+
+  #abouts, li a {
+    color: var(--primary-accent-color)!important;
+  }
+}
+
+@-moz-document url(about:buildconfig) {
+  html {
+    background-color: var(--primary-background)!important;
+    color: var(--primary-font-color)!important;
+  }
+
+  p a {
+    color: var(--primary-accent-color)!important;
+  }
+}
+
+@-moz-document url("about:networking") {
+  #warning_message, body {
+    background-color: var(--primary-background)!important;
+    color: var(--primary-font-color)!important;
+  }
+
+  .title {
+    color: var(--primary-font-color)!important;
+  }
+
+  input {
+    background-color: var(--secondary-background)!important;
+    color: var(--primary-font-color);
+  }
+}
+
+ [> Redesigned about:config page: <] 
+
+/*
+@-moz-document url(about:config) {
+  html, #search-container {
+    background-color: var(--primary-background)!important;
+  }
+
+  #about-config-search, #prefs {
+    background-color: var(--secondary-background)!important;
+    color: var(--primary-font-color)!important;
+  }
+
+  #show-all {
+    color: var(--primary-font-color)!important;
+  }
+
+  input[type=text], input[type=number] {
+    background-color: var(--primary-background)!important;
+    color: var(--primary-font-color)!important;
+  }
+
+  #warningTitle, #warningDescription, .toggle-container-with-text label {
+    color: var(--primary-font-color)!important;
+  }
+}
+*/
+
+
+@-moz-document url-prefix("moz-extension://1b1b6944-9945-45c9-acfe-f15459d920b1/") {
+    body { background-color: #222 !important; color: #ccc !important; }
+    a { color: #8ad !important; }
+    h2 { background-color: #444 !important; color: #eee !important; }
+    code { background-color: #555 !important; }
+    #switch .fa { color: #369 !important; }
+    body.off #switch .fa { color: #555 !important; }
+    .tool { color: #999 !important; }
+    .tool.enabled:hover { color: #8ad !important; }
+    .permatoolbar { background-color: #333 !important; }
+    .permatoolbar .button { background-color: #444 !important; }
+    .permatoolbar .button:hover { background-color: #666 !important; }
+    #tooltip { background-color: #ccc !important; border: 1px solid #111 !important; color: #111 !important; }
+    #firewallContainer > div { background-color: #333 !important; }
+    #firewallContainer > div:hover { background-color: #444 !important; }
+    #firewallContainer > div > span { color: #eee !important; border-bottom: 1px solid #111 !important; }
+    #firewallContainer > div > span:first-of-type ~ span { border-left: 1px solid #111 !important; }
+    #extraTools { background-color: #444 !important; }
+    #extraTools > span:hover { color: #8ad !important; }
+    #dashboard-nav-widgets { background-color: #111 !important; border-bottom: 1px solid #666 !important; }
+    .tabButton { background-color: #444 !important; border: 1px solid #666 !important; border-bottom: 1px solid #666 !important; color: #eee !important; }
+    .tabButton.selected { background-color: #222 !important; border-bottom: 1px solid #222 !important; }
+    #diff li { background-color: #555 !important; }
+    #diff li:nth-child(even) { background-color: #666 !important; }
+    #diff textarea { background-color: #333 !important; color: #ccc !important; }
+}
