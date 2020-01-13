@@ -16,8 +16,6 @@ Plug 'sheerun/vim-polyglot' "vim syntax for different languages
 Plug 'vim-airline/vim-airline' "airline see bottom of bar
 Plug 'vim-airline/vim-airline-themes' "airline theme theme
 Plug 'powerline/fonts', {'do': './install.sh'}
-Plug 'SirVer/ultisnips' "Track the engine.
-Plug 'honza/vim-snippets' " Snippets are separated from the engine
 Plug 'morhetz/gruvbox' "Theme
 Plug 'AlessandroYorba/Alduin' "airline
 Plug 'jiangmiao/auto-pairs' "auto completes [] and ()
@@ -54,7 +52,6 @@ noremap <leader>P "+P
 noremap <space> za
 noremap <cr> o<esc>
 inoremap jk <esc>
-inoremap <C-k> <esc>O<esc>jA
 vnoremap <leader>y "*y :let @+=@*<cr>
 map <leader>1 :bn<cr>
 map <leader>2 :bp<cr>
@@ -72,11 +69,6 @@ let g:gruvbox_invert_selection='0'
 let g:gruvbox_termcolors='256'
 let g:AutoPairsFlyMode = 1
 colorscheme gruvbox "colorscheme
-
-"UltiSnips triggering
-let g:UltiSnipsExpandTrigger = '<C-j>'
-let g:UltiSnipsJumpForwardTrigger = '<C-j>'
-let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
 
 "Java Support!
 au Filetype java set makeprg=javac\ %
