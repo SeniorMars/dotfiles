@@ -1,4 +1,4 @@
-window#main-window {
+html#main-window {
     --toolbar-bgcolor: #111111 !important;
     --lwt-accent-color: #111111 !important;
     --lwt-toolbar-field-background-color: #111111 !important;
@@ -101,9 +101,9 @@ menupopup {
     border: none !important;
 }
 
-/* This removes the tab separators */
-.tabbrowser-tab::before,
-.tabbrowser-tab::after {
+/* /1* This removes the tab separators *1/ */
+/* .tabbrowser-tab::before, */
+/* .tabbrowser-tab::after { */
     display: none !important;
 }
 
@@ -145,21 +145,36 @@ menupopup {
 
 }
 
-.urlbarView:not(.megabar) {
-    box-shadow: none !important;
-    background-color: #111111 !important;
-    font-family: 'Input Condensed', monospace !important;
-    font-size: 12pt !important;
+
+.urlbarView {
+	background-color: #111111 !important;
+	box-shadow: none !important;
+	margin: auto !important;
 }
 
 .urlbarView-favicon {
     display: none !important;
 }
 
-.urlbarView-row[selected] {
-    background: #c33dab !important;
-    color: #111111 !important;
-    fill-opacity: 1 !important;;
+.urlbarView:not(.megabar) .urlbarView-row:not([type="tip"])[selected],
+.urlbarView.megabar .urlbarView-row:not([type="tip"])[selected] > .urlbarView-row-inner {
+	background: #c33dab !important;
+	color: #111111 !important;
+	fill-opacity: 1;
+}
+
+#urlbar-background,
+#urlbar-container,
+.urlbar-input-box {
+	background-color: #111111 !important;
+	background-image: none !important;
+}
+
+#urlbar:not(.megabar),
+#urlbar.megabar > #urlbar-background,
+#searchbar {
+	border: none !important;
+	box-shadow: none !important;
 }
 
 .sidebar-splitter {
