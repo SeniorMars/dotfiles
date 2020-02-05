@@ -4,25 +4,32 @@
 #| |_) / ___ \ ___) |  _  |  _ <| |___ 
 #|____/_/   \_\____/|_| |_|_| \_\\____|
 #
-                                      
 
 set -o vi #vim mode
+bind -m vi-insert "\C-l":clear-screen
+stty -ixon #disable ctrl-s and ctrl-q
+
 # set custom things
 export EDITOR="nvim"
 export TERMINAL="konsole"
 export BROWSER="firefox" 
 export READER="zathura"
 export TERMBROWSER="w3m"
+export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -g ""'
+export GREP_COLOR='1;33'
+# export PATH="$HOME/.cargo/bin:$PATH"
+
+#man 
+export LESS_TERMCAP_mb=$'\e[1;32m'
+export LESS_TERMCAP_md=$'\e[1;32m'
+export LESS_TERMCAP_me=$'\e[0m'
+export LESS_TERMCAP_se=$'\e[0m'
+export LESS_TERMCAP_so=$'\e[01;33m'
+export LESS_TERMCAP_ue=$'\e[0m'
+export LESS_TERMCAP_us=$'\e[1;4;31m'
+
+#prompt
 export PS1="\[\e[31m\][\[\e[m\]\[\e[33m\]\u\[\e[m\]\[\e[34m\]@\[\e[m\]\[\e[32m\]\h\[\e[m\] \[\e[35m\]\w\[\e[m\]\[\e[31m\]]\[\e[m\]\\$ "
-
-# fzf
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-stty -ixon #disable ctrl-s and ctrl-q
 
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
@@ -70,19 +77,21 @@ shopt -s checkwinsize #check window size
 shopt -s globstar # match files with **
 
 #Extra Stuff
-eval "$(thefuck --alias)" # enable fuck
+# eval $(thefuck --alias) #enable fuck
 
-# Path to the bash it configuration
-export BASH_IT="/home/karl/Downloads/bash-it"
-export SCM_CHECK=true #check version control status
-export BASH_IT_AUTOMATIC_RELOAD_AFTER_CONFIG_CHANGE=1
-source "$BASH_IT"/bash_it.sh
+# fzf
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+# export NVM_DIR="$HOME/.nvm"
+# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 
-export THEME=.bash/agnoster.bash
+export THEME=$HOME/.bash/agnoster.bash
 if [[ -f $THEME ]]; then
     export DEFAULT_USER=``
     source $THEME
 fi
 
+# source ~/.bash/alias_completion.bash
 # source ~/.bash/gitps1.bash
