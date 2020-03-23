@@ -3,11 +3,12 @@ let g:polyglot_disabled = ['latex', 'javascript'] "allow vimtex to work + vim-js
 
 "plugins!
 call plug#begin('~/.vim/plugged')
+Plug 'sheerun/vim-polyglot' "vim syntax for different languages
 Plug 'tpope/vim-surround' "Allows me to change { to [ and what not
 Plug 'tpope/vim-commentary' "Comment stuff
 Plug 'tpope/vim-fugitive' "Git control for vim
 Plug 'tpope/vim-sleuth' "set tab settings
-Plug 'sheerun/vim-polyglot' "vim syntax for different languages
+Plug 'tpope/vim-repeat' "repeats
 Plug 'vim-airline/vim-airline' "airline see bottom of bar
 Plug 'vim-airline/vim-airline-themes' "airline theme theme
 Plug 'honza/vim-snippets' " Snippets are separated from the engine
@@ -19,18 +20,24 @@ Plug 'wellle/targets.vim' "adds more targets like [ or ,
 Plug 'Yggdroot/indentLine' "indent lines like atom. See python file for ex
 Plug 'lervag/vimtex' "To use latex better
 Plug 'vimwiki/vimwiki' "To take notes better - testing this with vimtex
-Plug 'scrooloose/nerdtree' "See dirs and files
+" Plug 'mbbill/undotree' "undo tree to see recent changed
+Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' } "See dirs and files
 Plug 'Xuyuanp/nerdtree-git-plugin' "git and nerd tree
 Plug 'ryanoasis/vim-devicons' "Icons for plugins
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight' "color for icons
 Plug 'junegunn/goyo.vim' "Distraction free
 Plug 'junegunn/limelight.vim' "color free
+" Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } "Fuzzy finder
+" Plug 'junegunn/fzf.vim'
 Plug 'yuki-ycino/fzf-preview.vim'
 Plug 'ludovicchabant/vim-gutentags' "Tags Generate
-Plug 'ron89/thesaurus_query.vim' "thesaurus
-Plug 'turbio/bracey.vim' "live reloading
+Plug 'ron89/thesaurus_query.vim', {'on': 'ThesaurusQueryReplaceCurrentWord'} "thesaurus
+Plug 'turbio/bracey.vim', {'on': 'Bracy'} "live reloading
 Plug 'yuezk/vim-js' "javascript
 Plug 'uiiaoo/java-syntax.vim'
+Plug 'Chiel92/vim-autoformat'
+" Plug 'edkolev/tmuxline.vim' "for tmux to look nice
+" Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } } "use nvim in firefox
 call plug#end()
 
 "Global settings
@@ -51,13 +58,17 @@ set termguicolors "True colors term support
 set splitbelow splitright "split correction
 set wildmode=list:longest,list:full
 set errorformat=%A%f:%l:\ %m,%-Z%p^,%-C%.%#
+set autoindent
+set lazyredraw
 so ~/.config/nvim/cocRC.vim "cocRC rec settings
+" so ~/.config/nvim/fzfConfig.vim "fzf settings
 so ~/.config/nvim/search.vim "search
 so ~/.config/nvim/extra.vim "Extra
 
 "Key remapping
 let mapleader = ","
 nmap <leader>s :source ~/.config/nvim/init.vim<cr>
+" nmap <leader>u :UndotreeToggle<cr>
 nmap <leader>t :NERDTreeToggle<cr>
 nmap <leader>e <C-w><C-w>
 nmap <leader>cd :cd %:p:h<cr>:pwd<cr>
@@ -69,7 +80,9 @@ nmap <Leader>ll <Plug>VimwikiFollowLink
 nmap <Leader>ln <Plug>VimwikiNextLink
 nmap <Leader>lp <Plug>VimwikiPrevLink
 nmap <cr> o<Esc>
-nmap Y yy
+nmap Y y$
+nmap <expr> j (v:count? 'j' : 'gj')
+nmap <expr> k (v:count? 'k' : 'gk')
 imap jk <Esc>
 imap <down> <Nop>
 imap <right> <Nop>
@@ -98,6 +111,8 @@ let g:python_highlight_all='1' "enable all syntax highlight
 let g:NERDTreeHighlightCursorline = '0'
 let g:indentLine_setColors = '0' "allows indent line to change colors
 let g:fzf_preview_use_dev_icons = '1' "use dev-icons
+let g:airline#extensions#coc#enabled ='0'
+let g:vimwiki_table_mappings=0
 colorscheme gruvbox "colorscheme
 
 "vimtex config
@@ -114,42 +129,3 @@ autocmd! User GoyoLeave Limelight! "deactivates
 
 "skeletons!
 autocmd BufNewFile *.tex 0r ~/.config/nvim/templates/skeleton.tex
-
-"Java Support!
-augroup javaSettings
-	autocmd!
-	autocmd Filetype java set makeprg=javac\ %
-	autocmd FileType java noremap <buffer> <leader>8 <Esc>:w<cr>:make<cr>:copen<cr>
-	autocmd FileType java noremap <buffer> <leader>6 :cprevious<cr>
-	autocmd FileType java noremap <buffer> <leader>7 :cnext<cr>
-	autocmd FileType java noremap <buffer> <leader>9 :!clear;echo;echo %\|awk -F. '{print $1}'\|xargs java<cr>
-augroup end
-
-"python Support!
-augroup pythonSettings
-	autocmd!
-	autocmd FileType python noremap <buffer> <leader>9 <Esc>:w<cr>:!clear;python %<cr>
-	autocmd FileType python set textwidth=79 autoindent fileformat=unix
-	autocmd BufWritePre *.py :FixWhitespace
-augroup end
-
-"Full stack development
-augroup fullStack
-	autocmd!
-	autocmd FileType javascript,html,css set tabstop=2 softtabstop=2 shiftwidth=2 autoindent expandtab
-augroup end
-
-"Muttrc
-augroup mutt
-	autocmd!
-	autocmd BufRead,BufNewFile /tmp/neomutt* let g:goyo_width=80
-	autocmd BufRead,BufNewFile /tmp/neomutt* :Goyo | set spell spelllang=en_us
-	autocmd BufRead,BufNewFile /tmp/neomutt* noremap <leader>x :Goyo\|x!<cr>
-augroup end
-
-" Detect FileType
-augroup autoDetect
-        autocmd!
-	autocmd BufNewFile,BufRead *.gmail             setfiletype muttrc "Gmail
-	autocmd BufNewFile,BufRead ~/.config/i3/config setfiletype i3config "I3conf
-augroup end

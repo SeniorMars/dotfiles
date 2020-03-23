@@ -1,5 +1,4 @@
 function! WebSearch(type, ...)
-
   let sel_save = &selection
   let &selection = "inclusive"
   let reg_save = @@
