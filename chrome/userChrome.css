@@ -102,8 +102,8 @@ menupopup {
 }
 
 /* /1* This removes the tab separators *1/ */
-/* .tabbrowser-tab::before, */
-/* .tabbrowser-tab::after { */
+.tabbrowser-tab::before,
+.tabbrowser-tab::after {
     display: none !important;
 }
 
@@ -146,9 +146,9 @@ menupopup {
 }
 
 .urlbarView {
-	background-color: #111111 !important;
-	box-shadow: none !important;
-	margin: auto !important;
+  background-color: #111111 !important;
+  box-shadow: none !important;
+  margin: auto !important;
 }
 
 .urlbarView-favicon {
@@ -157,23 +157,23 @@ menupopup {
 
 .urlbarView:not(.megabar) .urlbarView-row:not([type="tip"])[selected],
 .urlbarView.megabar .urlbarView-row:not([type="tip"])[selected] > .urlbarView-row-inner {
-	background: #c33dab !important;
-	color: #111111 !important;
-	fill-opacity: 1;
+  background: #c33dab !important;
+  color: #111111 !important;
+  fill-opacity: 1;
 }
 
 #urlbar-background,
 #urlbar-container,
 .urlbar-input-box {
-	background-color: #111111 !important;
-	background-image: none !important;
+  background-color: #111111 !important;
+  background-image: none !important;
 }
 
 #urlbar:not(.megabar),
 #urlbar.megabar > #urlbar-background,
 #searchbar {
-	border: none !important;
-	box-shadow: none !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 .sidebar-splitter {
@@ -186,8 +186,8 @@ menupopup {
 }
 
 #statuspanel-label {
-    background-color: black !important;
-    border: 1px none black !important;
+    background-color: #111111 !important;
+    border: 1px none #111111 !important;
     border-top-style: solid !important;
     color: #98cfe5 !important;
 }
