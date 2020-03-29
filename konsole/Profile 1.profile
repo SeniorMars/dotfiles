@@ -2,7 +2,7 @@
 AntiAliasFonts=true
 BoldIntense=true
 ColorScheme=Gruvbox
-Font=Inconsolata,13.5,-1,5,75,0,0,0,0,0,Bold
+Font=Meslo LG M DZ for Powerline,11,-1,5,75,0,0,0,0,0,Bold
 LineSpacing=0
 UseFontLineChararacters=true
 
