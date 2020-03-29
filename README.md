@@ -1,9 +1,11 @@
 # dotfiles
 My Rice Setup:
 
-![Pictures Of my Setup](https://imgur.com/Y8CwSkT)
-![Number2](https://imgur.com/Y8CwSkT)
-![Number3](https://imgur.com/VgUHRG0)
+[Pictures Of my Setup](https://imgur.com/Y8CwSkT)
+
+[Number2](https://imgur.com/Y8CwSkT)
+
+[Number3](https://imgur.com/VgUHRG0)
 
 Running programs: neovim, zathura, feh, tmux, neofetch, gotop, cmus, pipes.sh, vis, firefox and better Discord
 
