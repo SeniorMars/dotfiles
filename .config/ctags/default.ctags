@@ -1,0 +1,4 @@
+--recurse
+--exclude=.git
+--exclude=node_modules/
+--tag-relative=yes
