@@ -9,3 +9,37 @@ map K zoom in
 map J zoom out
 map i recolor
 map p print
+set selection-clipboard clipboard
+/* color scheme */
+set default-bg                  "#10151a"
+set default-fg                  "#ebdbb2"
+
+set statusbar-fg                "#bdae93"
+set statusbar-bg                "#504945"
+
+set inputbar-bg                 "#10151a"
+set inputbar-fg                 "#fbf1c7"
+
+set notification-bg             "#10151a"
+set notification-fg             "#fbf1c7"
+
+set notification-error-bg       "#1d2021"
+set notification-error-fg       "#fb4934"
+
+set notification-warning-bg     "#1d2021"
+set notification-warning-fg     "#fb4934"
+
+set highlight-color             "#fabd2f"
+set highlight-active-color      "#83a598"
+
+set completion-bg               "#3c3836"
+set completion-fg               "#83a598"
+
+set completion-highlight-fg     "#fbf1c7"
+set completion-highlight-bg     "#83a598"
+
+set recolor-lightcolor          "#10151a"
+set recolor-darkcolor           "#ebdbb2"
+
+set recolor                     "false"
+set recolor-keephue             "false"
