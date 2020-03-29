@@ -1,0 +1,3 @@
+text/html; $BROWSER %s; test=test -n "$DISPLAY"; needsterminal;
+text/html; lynx -assume_charset=%{charset} -display_charset=utf-8 -dump %s; nametemplate=%s.html; copiousoutput
+text/plain; cat %s; copiousoutput

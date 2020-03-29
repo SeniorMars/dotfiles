@@ -1,0 +1,66 @@
+source ~/.config/mutt/colors.muttrc
+color status green default
+#User
+set from = "email@gmail.com"
+set realname = "name"
+
+# My credentials
+set smtp_url = "url"
+set imap_user = "user"
+set imap_pass = "pass"
+
+# My mailboxes
+set folder = "imaps://imap.gmail.com:993/[Gmail]"
+set spoolfile = "+All Mail"
+set postponed = "+Drafts"
+set record = "+Sent Mail"
+set trash = "+Trash"
+
+mailboxes =Important =Drafts ="Sent Mail" =Trash =Spam
+
+#connections
+set ssl_force_tls = yes
+
+# Where to put the stuff
+set header_cache = "~/.config/mutt/cache/headers"
+set message_cachedir = "~/.config/mutt/cache/bodies"
+set certificate_file = "~/.config/mutt/certificates"
+set mailcap_path     = '~/.config/mutt/mailcap'
+
+# Etc
+set move=no
+set mail_check = 30
+set imap_keepalive = 900
+set editor=nvim
+set markers=no
+set pager_index_lines=10
+set send_charset="utf-8"
+set sleep_time = 0
+set pager_context=3
+set pager_stop=yes
+
+# ## GooBook
+# set query_command="goobook query '%s'"
+# macro index,pager a "<pipe-message>goobook add<return>" "add sender to google contacts"
+# bind editor <Tab> complete-query
+
+##Sort by newest conversation first.
+set sort = reverse-threads
+set sort_aux = last-date-received
+
+# open in gui browser: hit "v" then go down to text/html then hit "m" or "Enter"
+bind attach <return> view-mailcap
+auto_view text/html                                      # view html automatically
+alternative_order text/plain text/enriched text/html     # list html for last
+
+#sidebar
+set sidebar_visible
+set sidebar_format = "%B%?F? [%F]?%* %?N?%N/?%S"
+set mail_check_stats
+bind index,pager \CP sidebar-prev
+bind index,pager \CN sidebar-next
+bind index,pager \CO sidebar-open
+
+macro index A \
+    "<tag-pattern>~N<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>" \
+    "mark all new as read"
