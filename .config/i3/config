@@ -103,6 +103,32 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
+# credit to u/vikarjramun
+mode "swap" {
+    # switch to workspace
+    bindsym $mod+1 workspace $ws1
+    bindsym $mod+2 workspace $ws2
+    bindsym $mod+3 workspace $ws3
+    bindsym $mod+4 workspace $ws4
+    bindsym $mod+5 workspace $ws5
+    bindsym $mod+6 workspace $ws6
+    bindsym $mod+7 workspace $ws7
+    bindsym $mod+8 workspace $ws8
+    bindsym $mod+9 workspace $ws9
+    bindsym $mod+0 workspace $ws10
+
+    # change focus (without mod)
+    bindsym h focus left
+    bindsym j focus down
+    bindsym k focus up
+    bindsym l focus right
+
+    bindsym Return swap container with mark "swapee"; unmark "swapee"; mode "default";
+    bindsym Escape unmark "swapee"; mode "default";
+}
+
+bindsym $mod+Shift+s mark --add "swapee"; mode "swap"
+
 #---( i2 stuff )---#
 
 # reload the configuration file
@@ -144,15 +170,18 @@ bindsym $mod+Shift+w	gaps outer current minus 5
 # Pressing $mod and current workspace number takes you back to the previousle active workspace
 workspace_auto_back_and_forth yes
 
+# flameshot
+bindsym $mod+Shift+c exec flameshot gui -p ~/Pictures/Screenshots
+
 #---( startup items )---#
 
-#exec_always --no-startup-id nitrogen --restore
-exec --no-startup-id 'xset -b'
-exec --no-startup-id 'xcompmgr'
 exec_always --no-startup-id 'xset b off'
-exec --no-startup-id feh --bg-scale ~/Pictures/Wallpapers/77zb6asm5ov31.jpg
-exec --no-startup-id picom
+exec --no-startup-id picom -b -c
 exec --no-startup-id wmctrl -c Plasma
+exec --no-startup-id xwallpaper --zoom ~/Pictures/Wallpapers/77zb6asm5ov31.jpg
+exec --no-startup-id 'xcompmgr'
+exec --no-startup-id 'xset -b'
+
 #---( colors table )---#
 
 # colour of border, background, text, indicator, and child_border
@@ -166,6 +195,7 @@ client.background       #1d2021
 #---( windows rules )---#
 
 for_window [class="^.*"] border pixel 3
+for_window [class="jetbrains-.*" title="win0"] floating enable border none
 
 # Float by name
 for_window [title="Nitrogen"] floating enable
@@ -173,6 +203,7 @@ for_window [title="Install user style"] floating enable
 for_window [title="KCalc"] floating enable
 
 # Float by type
+for_window [instance="fontpreview"] floating enable
 for_window [window_role="pop-up"] floating enable
 for_window [window_role="task_dialog"] floating enable
 for_window [window_type="dialog"] floating enable
@@ -190,13 +221,14 @@ no_focus [window_type="notification"]
 focus_on_window_activation none
 
 ## Plasma Integration
-for_window [title="Desktop — Plasma"] kill; floating enable; border none
-for_window [class="plasmashell"] floating enable;
+for_window [class="(?i)*nextcloud*"] floating disable
+for_window [class="Klipper"] floating enable; border none
+for_window [class="Kmix"] floating enable; border none
+for_window [class="krunner"] floating enable; border none
 for_window [class="Plasma"] floating enable; border none
+for_window [class="plasmashell"] floating enable;
+for_window [class="Plasmoidviewer"] floating enable; border none
+for_window [title="Desktop — Plasma"] kill; floating enable; border none
 for_window [title="plasma-desktop"] floating enable; border none
 for_window [title="win7"] floating enable; border none
-for_window [class="krunner"] floating enable; border none
-for_window [class="Kmix"] floating enable; border none
-for_window [class="Klipper"] floating enable; border none
-for_window [class="Plasmoidviewer"] floating enable; border none
-for_window [class="(?i)*nextcloud*"] floating disable
+for_window [window_role="task_dialog"] floating enable
