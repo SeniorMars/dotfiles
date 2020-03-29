@@ -1,19 +1,21 @@
 # dotfiles
-My First Rice Setup:
+My Rice Setup:
 
-![Picture of my setup](https://i.redd.it/2mewpo1f1s541.png)
+![Pictures Of my Setup](https://imgur.com/Y8CwSkT)
+![Number2](https://imgur.com/Y8CwSkT)
+![Number3](https://imgur.com/VgUHRG0)
 
-Running programs (gotop, cli-vis, nvim, neofetch)
+Running programs: neovim, zathura, feh, tmux, neofetch, gotop, cmus, pipes.sh, vis, firefox and better Discord
 
-This rice is on Arch linux with Plasma as my Desktop Environment, i3-gaps as the Window Manager and picom as the compositor.
+My rice for arch linux. Running KDE Plasma as my Desktop Environment, i3-gaps as my window manager and picom as the compositor.
 
-This includes all the files for my setup - in the future I will be adding more to this repo.
+Currently all this rep has all my files for my config, but I am working to improve it more.
 
-I have imgur-screenshot as my screenshot tool, cmus as my music manager and feh as my wallpaper manager.
+Screenshot tool: flameshot
 
-mail client: neomutt
+Mail client: neomutt
 
-Fonts: Inconsolata 14pt
+Font: Meslo LG M DZ for Powerline
 
 Terminal Emulator: konsole
 
