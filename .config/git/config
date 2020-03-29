@@ -1,0 +1,12 @@
+[user]
+	email = email@outlook.com
+	name = name
+	username = KarlWithK
+[core]
+	editor = vim
+	askpass = /usr/bin/ksshaskpass
+	excludesfile = /home/karl/.config/git/gitignore_global
+[credential]
+	helper = cache --timeout=3600
+[diff]
+	tool = vimdiff
