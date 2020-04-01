@@ -1,12 +1,15 @@
+"__     _____ __  __ ____   ____
+"\ \   / /_ _|  \/  |  _ \ / ___|
+" \ \ / / | || |\/| | |_) | |
+"  \ V /  | || |  | |  _ <| |___
+"   \_/  |___|_|  |_|_| \_\\____|
+"
 "Disable settings
 let g:polyglot_disabled = ['latex', 'javascript'] "allow vimtex to work + vim-js
 
 "plugins!
 call plug#begin('~/.vim/plugged')
 Plug 'AlessandroYorba/Alduin' "airline theme
-" Plug 'Chiel92/vim-autoformat'
-" Plug 'edkolev/tmuxline.vim' "for tmux to look nice
-" Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } } "use nvim in firefox
 Plug 'honza/vim-snippets' " Snippets are separated from the engine
 Plug 'jackguo380/vim-lsp-cxx-highlight'
 Plug 'jiangmiao/auto-pairs' "auto completes [] and ()
