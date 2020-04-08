@@ -1,17 +1,18 @@
-# i3 config file (v4) 
-# _ _____                  __ _       
-#(_)___ /  ___ ___  _ __  / _(_) __ _ 
+# i3 config file (v4)
+# _ _____                  __ _
+#(_)___ /  ___ ___  _ __  / _(_) __ _
 #| | |_ \ / __/ _ \| '_ \| |_| |/ _` |
 #| |___) | (_| (_) | | | |  _| | (_| |
 #|_|____/ \___\___/|_| |_|_| |_|\__, |
-#                               |___/ 
+#                               |___/
 
 #===[ GENERAL SETTINGS ]====================#
 
 # Mod key is the "Super" key (or Meta, usually has the Windows logo on it)
 set $mod Mod4
-font pango:Droid Sans Mono 8
+font pango:Droid Sans Mono 10
 #===[ KEY BINDINGS ]====================#
+
 
 #---( focus )---#
 
@@ -36,6 +37,7 @@ bindsym $mod+g split h
 bindsym $mod+v split v
 
 # enter fullscreen mode for the focused container
+
 bindsym $mod+f fullscreen
 
 # split
@@ -145,25 +147,27 @@ bindsym $mod+d exec krunner
 
 #---( direct launchers )---#
 
-bindsym $mod+Return exec konsole
-bindsym $mod+F1 exec konsole -e ranger
+set $term alacritty
+
+bindsym $mod+Return exec $term
+bindsym $mod+F1 exec $term -e ranger
 bindsym $mod+Shift+F2 exec firefox
 bindsym $mod+Shift+F3 exec discord
 bindsym $mod+Shift+F4 exec systemsettings5
-bindsym $mod+Shift+F5 exec konsole -e neomutt
-bindsym $mod+Shift+F6 exec konsole -e ssh chernandez10@homer.stuy.edu
+bindsym $mod+Shift+F5 exec $term -e neomutt
+bindsym $mod+Shift+F6 exec $term -e ssh chernandez10@homer.stuy.edu
 bindsym $mod+Shift+F7 exec --no-startup-id "XDG_CURRENT_DESKTOP=kde kcalc"
 bindsym $mod+e exec --no-startup-id "XDG_CURRENT_DESKTOP=kde dolphin"
 
-#gaps 
+#gaps
 gaps inner 10
 gaps outer 10
 
-bindsym $mod+z		gaps inner current set 0; gaps outer current set 0
-bindsym $mod+Shift+z	gaps inner current set 10; gaps outer current set 10
+bindsym $mod+z          gaps inner current set 0; gaps outer current set 0
+bindsym $mod+Shift+z    gaps inner current set 10; gaps outer current set 10
 
-bindsym $mod+w		gaps outer current plus 5
-bindsym $mod+Shift+w	gaps outer current minus 5
+bindsym $mod+w          gaps outer current plus 5
+bindsym $mod+Shift+w    gaps outer current minus 5
 
 #----------[ MISC SETTINGS ]----------#
 
@@ -171,26 +175,47 @@ bindsym $mod+Shift+w	gaps outer current minus 5
 workspace_auto_back_and_forth yes
 
 # flameshot
-bindsym $mod+Shift+c exec flameshot gui -p ~/Pictures/Screenshots
+bindsym Control+Shift+c exec flameshot gui -p ~/Pictures/Screenshots
+
+# demnuunicode - emojis
+bindsym $mod+Shift+period exec dmenuunicode
+
+# audio
+bindsym XF86AudioMute        exec --no-startup-id pactl set-sink-mute 0 toggle
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl -- set-sink-volume 0 -5%
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl -- set-sink-volume 0 +5%
+
+# media keys
+# bindsym XF86AudioStop exec --no-startup-id mpc clear && /home/reed/scripts/killm.sh ncmpcpp
+bindsym XF86AudioNext exec --no-startup-id mpc next
+bindsym XF86AudioPlay exec --no-startup-id mpc toggle
+bindsym XF86AudioPrev exec --no-startup-id mpc prev
 
 #---( startup items )---#
 
+# exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+# exec_always --no-startup-id /usr/lib/geoclue-2.0/demos/agent
+# exec_always --no-startup-id redshift
+exec_always --no-startup-id picom -b -c
+exec_always --no-startup-id wmctrl -c Plasma
+exec_always --no-startup-id 'xset -b'
 exec_always --no-startup-id 'xset b off'
-exec --no-startup-id picom -b -c
-exec --no-startup-id wmctrl -c Plasma
-exec --no-startup-id xwallpaper --zoom ~/Pictures/Wallpapers/77zb6asm5ov31.jpg
-exec --no-startup-id 'xcompmgr'
-exec --no-startup-id 'xset -b'
+exec_always --no-startup-id xwallpaper --zoom ~/Pictures/Wallpapers/77zb6asm5ov31.jpg
+# exec_always --no-startup-id $HOME/.local/share/enableWifi.sh
 
 #---( colors table )---#
 
+# cOne is color one and cTwo is colorTwo
+set $cOne #dfaf87
+set $cTwo #1d2021
+
 # colour of border, background, text, indicator, and child_border
-client.focused          #dfaf87 #1d2021 #dfaf87 #dfaf87 #dfaf87
-client.focused_inactive #1d2021 #1d2021 #dfaf87 #1d2021 #1d2021
-client.unfocused        #1d2021 #1d2021 #dfaf87 #1d2021 #1d2021
-client.urgent           #1d2021 #1d2021 #dfaf87 #1d2021 #1d2021
-client.placeholder      #1d2021 #1d2021 #dfaf87 #1d2021 #1d2021
-client.background       #1d2021
+client.focused          $cOne $cTwo $cOne $cOne $cOne
+client.focused_inactive $cTwo $cTwo $cOne $cTwo $cTwo
+client.unfocused        $cTwo $cTwo $cOne $cTwo $cTwo
+client.urgent           $cTwo $cTwo $cOne $cTwo $cTwo
+client.placeholder      $cTwo $cTwo $cOne $cTwo $cTwo
+client.background       $cTwo
 
 #---( windows rules )---#
 
