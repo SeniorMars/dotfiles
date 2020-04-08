@@ -1,0 +1,53 @@
+# Colors (My edition of Gruvbox dark)
+colors:
+  primary:
+    background: '#10151a'
+    foreground: '#ebdbb2'
+
+  normal:
+    black:   '#282828'
+    red:     '#cc241d'
+    green:   '#98971a'
+    yellow:  '#d79921'
+    blue:    '#458588'
+    magenta: '#b16286'
+    cyan:    '#689d6a'
+    white:   '#dfaf87'
+
+
+  bright:
+    black:   '#928374'
+    red:     '#fb4934'
+    green:   '#b8bb26'
+    yellow:  '#fabd2f'
+    blue:    '#83a598'
+    magenta: '#d3869b'
+    cyan:    '#8ec07c'
+    white:   '#ebdbb2'
+
+
+font:
+  size: 11.5
+  # The normal (roman) font face to use.
+  normal:
+    family: Meslo LG M DZ for Powerline
+    # Style can be specified to pick a specific face.
+    style: Bold
+
+  # The bold font face
+  bold:
+    family: Meslo LG M DZ for Powerline
+    # Style can be specified to pick a specific face.
+    style: Bold
+
+  # The italic font face
+  italic:
+    family: Meslo LG M DZ for Powerline
+    # Style can be specified to pick a specific face.
+    style: Bold Italic
+
+
+key_bindings:
+  - { key: Y,     mods: Alt, action: Copy            }
+  - { key: P,     mods: Alt, action: Paste            }
+  - { key: Return,   mods: Control|Shift, action: SpawnNewInstance }
