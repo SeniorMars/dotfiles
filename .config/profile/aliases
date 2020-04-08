@@ -1,0 +1,60 @@
+# vim:ft=zsh
+alias ali="$EDITOR ~/.config/profile/aliases"
+alias alr="$EDITOR ~/.config/alacritty/alacritty.yml"
+alias bashrc="$EDITOR ~/.config/zsh/.zshrc"
+alias cat='ccat'
+alias c='clear'
+alias csj="cd ~/Documents/CS/Java"
+alias Gr="cd ~/Work/docs/graphics/"
+alias grep='grep --color=auto'
+alias i3conf="$EDITOR ~/.config/i3/config"
+alias kr="$EDITOR ~/.config/kitty/kitty.conf"
+alias ls='ls --color=auto'
+alias ms="mutt -F ~/.config/mutt/account1.gmail"
+alias mutt='neomutt'
+alias muttrc="cd ~/.config/mutt/;$EDITOR ~/.config/mutt/account1.gmail"
+alias mw="mutt -F ~/.config/mutt/account2.gmail"
+alias nani="echo 'Omae Wa Mou Shindeiru'"
+alias pac='sudo pacman -Syu'
+alias pc='sudo pacman'
+alias q='exit'
+alias rmc="rm *.class"
+alias rmswp="rm ~/.cache/vim/swap/*;rm ~/.local/share/nvim/swap/*"
+alias scan="cd ~/Pictures/Scans;hp-scan -d 'hpaio:/net/ENVY_7640_series?ip=192.168.1.11'"
+alias se="fzf | xargs -r $EDITOR"
+alias sv="sudoedit"
+alias tmux='TERM=tmux-256color tmux -f $XDG_CONFIG_HOME/tmux/tmux.conf'
+alias trc='$EDITOR $XDG_CONFIG_HOME/tmux/tmux.conf'
+alias vim="$EDITOR"
+alias vimrc="$EDITOR ~/.config/nvim/init.vim"
+alias virc="vi ~/.vim/vimrc"
+alias vi="/usr/bin/vim -u ~/.vim/vimrc"
+alias wd="cd ~/Work/docs/"
+alias ytd="youtube-dl -f bestaudio"
+alias -- -='cd -'        # Go back
+alias -g zrc="$EDITOR ~/.config/zsh/.zshrc"
+
+# pacman
+alias plist="pacman -Slq | fzf -m --preview 'pacman -Si {1}' | xargs -ro sudo pacman -S"
+alias ylist="yay -Slq | fzf -m --preview 'yay -Si {1}'| xargs -ro yay -S"
+alias ylrem="yay -Qeq | fzf -m --preview 'yay -Qi {1}' | xargs -ro yay -Rs"
+
+# Directory
+alias md='mkdir -p'
+alias rd='rmdir'
+
+# List directory contents
+alias sl=ls
+alias -g la='ls -AF'       # Compact view, show hidden
+alias ll='ls -al'
+alias l='ls -a'
+alias l1='ls -1'
+
+case $OSTYPE in
+  linux*)
+    XCLIP=$(command -v xclip)
+    [[ $XCLIP ]] && \
+    alias pbcopy="$XCLIP -selection clipboard" && \
+    alias pbpaste="$XCLIP -selection clipboard -o"
+    ;;   
+esac
