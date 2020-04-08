@@ -8,6 +8,8 @@ Currently all this rep has all my files for my config, but I am working to impro
 
 Screenshot tool: flameshot
 
+Shell: Zsh
+
 Mail client: neomutt
 
 Font: Meslo LG M DZ for Powerline
