@@ -23,6 +23,7 @@ ggreen = #98971a
 gmagenta = #b16286
 gblue = #458588
 gor = #df5f00
+i3border = #dfaf87
 
 [settings]
 screenchange-reload = true
@@ -34,16 +35,16 @@ margin-bottom = 0
 [bar/main]
 width = 100%
 height = 35
-fixed-center = false
+fixed-center = true
 
 background = ${colors.background}
 foreground = ${colors.foreground}
 
 border-size = 0
-border-color = #00000000
+line-size = 3
 
 padding-left = 0
-padding-right = 2
+padding-right = 1
 
 module-margin-left = 1
 module-margin-right = 1
@@ -55,13 +56,15 @@ font-3 = siji:pixelsize=10;0
 font-4 = fontawesome:size=10;1
 font-5 = materialicons:size=12;1
 font-6 = Bitstream Vera Sans:style=Roman:size=10;3
+font-7 = iosevka nerd font
 
 modules-left = i3 pulseaudio memory filesystem
-modules-center = date powermenu
-modules-right =  cpu wlan battery
+modules-center = reddit date connect
+modules-right = cpu wlan arch battery
 tray-position = right
-tray-padding = 1
-;
+tray-padding = 0
+
+enable-ipc = true
 wm-restack = i3
 cursor-click = pointer
 cursor-scroll = ns-resize
@@ -75,11 +78,31 @@ fixed-values = false
 
 format-mounted = <label-mounted>
 format-mounted-foreground = ${colors.primary}
-; format-mounted-background = ${colors.background}
-; format-mounted-underline = ${colors.foreground-alt}
 label-mounted =   %{F#ebdbb2}%percentage_free%%%{F-}
+; label-mounted = %{F#ffb52a}%mountpoint%%{F-}: %percentage_used%%
 label-unmounted = %mountpoint% not mounted
 label-unmounted-foreground = ${colors.foreground-alt}
+; 
+
+[module/arch]
+type = custom/script
+exec = ~/.config/polybar/scripts/updates-arch-combined.sh
+label-foreground = ${colors.primary}
+click-left = alacritty -e yay
+interval = 300
+
+[module/reddit]
+type = custom/script
+exec = ~/.config/polybar/scripts/notification-reddit.sh
+label-foreground = ${colors.secondary}
+click-left = firefox https://www.reddit.com/user/deat64x/ &
+interval = 60
+
+[module/connect]
+type = custom/script
+exec = "~/.config/polybar/scripts/polybar-kdeconnect.sh -d"
+label-foreground = ${colors.gor}
+tail = true
 
 [module/i3]
 type = internal/i3
@@ -126,7 +149,7 @@ ws-icon-default =
 
 [module/cpu]
 type = internal/cpu
-interval = 0.05
+interval = 0.08
 format = <ramp-coreload>
 ramp-coreload-spacing = 1
 ramp-coreload-0 = ▁
@@ -163,7 +186,6 @@ label = %gb_used%
 type = internal/network
 interface = wlo1
 interval = 3.0
-
 label-connected = %essid%
 
 format-connected = <label-connected>
@@ -188,7 +210,7 @@ format-disconnected-underline =${colors.alert}
 [module/date]
 type = internal/date
 interval = 5
-date = " %a, %b %d"
+date = "  %a, %b %d"
 time = "%I:%M %p"
 format-prefix-foreground = ${colors.gmagenta}
 format-foreground = ${colors.primary}
@@ -203,8 +225,8 @@ label-volume-foreground = ${colors.primary}
 label-muted =  Muted
 label-muted-foreground = #666
 
-bar-volume-width = 10 
-bar-volume-foreground-0 = #55aa55 
+bar-volume-width = 10
+bar-volume-foreground-0 = #55aa55
 bar-volume-foreground-1 = #55aa55
 bar-volume-foreground-2 = #55aa55
 bar-volume-foreground-3 = #55aa55
@@ -224,7 +246,7 @@ bar-volume-empty-foreground = ${colors.foreground-alt}
 type = internal/battery
 battery = BAT0
 adapter = ADP1
-full-at = 98
+full-at = 99
 
 format-charging = <animation-charging> <label-charging>
 label-charging =  %percentage%%
@@ -248,15 +270,17 @@ format-background = ${colors.background}
 ramp-capacity-0 = " "
 ramp-capacity-1 = " "
 ramp-capacity-2 = " "
-ramp-capacity-3 = " " 
+ramp-capacity-3 = " "
 ramp-capacity-4 = " "
 ramp-capacity-foreground = ${colors.gor}
+ramp-capacity-0-foreground = ${colors.gred}
+ramp-capacity-1-foreground = ${colors.secondary}
 
 animation-charging-0 = " "
 animation-charging-1 = " "
 animation-charging-2 = " "
 animation-charging-3 = " "
-animation-charging-4 = " " 
+animation-charging-4 = " "
 animation-charging-foreground = ${colors.primary}
 animation-charging-framerate = 750
 
@@ -304,7 +328,7 @@ menu-0-1-exec = menu-open-2
 menu-1-0 = cancel
 menu-1-0-exec = menu-open-0
 menu-1-1 = reboot
-menu-1-1-exec = sudo reboot
+menu-1-1-exec = reboot
 
 menu-2-0 = power off
 menu-2-0-exec = poweroff
