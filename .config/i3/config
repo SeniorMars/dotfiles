@@ -1,4 +1,4 @@
-# i3 config file (v4)
+# vim:ft=i3config
 # _ _____                  __ _
 #(_)___ /  ___ ___  _ __  / _(_) __ _
 #| | |_ \ / __/ _ \| '_ \| |_| |/ _` |
@@ -10,7 +10,9 @@
 
 # Mod key is the "Super" key (or Meta, usually has the Windows logo on it)
 set $mod Mod4
-font pango:Droid Sans Mono 10
+set $term alacritty
+font pango:DejaVu Sans Mono 10
+
 #===[ KEY BINDINGS ]====================#
 
 
@@ -30,14 +32,13 @@ bindsym $mod+Shift+j move down
 bindsym $mod+Shift+k move up
 bindsym $mod+Shift+l move right
 
-# split in horizontal orientation
+# split in horizontal orientation g because h is used - vimkeys are needed
 bindsym $mod+g split h
 
 # split in vertical orientation
 bindsym $mod+v split v
 
 # enter fullscreen mode for the focused container
-
 bindsym $mod+f fullscreen
 
 # split
@@ -82,25 +83,19 @@ bindsym $mod+Shift+8 move container to workspace 8
 bindsym $mod+Shift+9 move container to workspace 9
 bindsym $mod+Shift+0 move container to workspace 10
 
-#---( resizing windows )---#
+#---( modes )---#
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
-        # These bindings trigger as soon as you enter the resize mode
-        bindsym h resize shrink width 10 px or 10 ppt
-        bindsym j resize grow height 10 px or 10 ppt
-        bindsym k resize shrink height 10 px or 10 ppt
-        bindsym l resize grow width 10 px or 10 ppt
+    # These bindings trigger as soon as you enter the resize mode
+    bindsym h resize shrink width 10 px or 10 ppt
+    bindsym j resize grow height 10 px or 10 ppt
+    bindsym k resize shrink height 10 px or 10 ppt
+    bindsym l resize grow width 10 px or 10 ppt
 
-        # same bindings, but for the arrow keys
-        bindsym Left resize shrink width 10 px or 10 ppt
-        bindsym Down resize grow height 10 px or 10 ppt
-        bindsym Up resize shrink height 10 px or 10 ppt
-        bindsym Right resize grow width 10 px or 10 ppt
-
-        # back to normal: Enter or Escape
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
+    # back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
 }
 
 bindsym $mod+r mode "resize"
@@ -131,35 +126,59 @@ mode "swap" {
 
 bindsym $mod+Shift+s mark --add "swapee"; mode "swap"
 
+
+set $Locker betterlockscreen -l dim && sleep 1
+set $mode_system System (l) lock, (e) logout, (s) suspend, (r) reboot, (Shift+s) shutdown
+
+mode "$mode_system" {
+    bindsym l exec --no-startup-id $Locker, mode "default"
+    bindsym e exec --no-startup-id i3-msg exit, mode "default"
+    bindsym s exec --no-startup-id systemctl suspend, mode "default"
+    bindsym r exec --no-startup-id systemctl reboot, mode "default"
+    bindsym Shift+s exec --no-startup-id systemctl poweroff -i, mode "default"
+
+    # back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+bindsym $mod+grave mode "$mode_system"
+
 #---( i2 stuff )---#
 
 # reload the configuration file
 bindsym $mod+Shift+i reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
-# exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
-
-# start application launchers
-bindsym $mod+x exec --no-startup-id rofi -show combi -theme flat-orange -font 'Droid Sans Mono bold 10'
-bindsym $mod+d exec krunner
-
 
 #---( direct launchers )---#
 
-set $term alacritty
 
 bindsym $mod+Return exec $term
 bindsym $mod+F1 exec $term -e ranger
 bindsym $mod+Shift+F2 exec firefox
 bindsym $mod+Shift+F3 exec discord
-bindsym $mod+Shift+F4 exec systemsettings5
 bindsym $mod+Shift+F5 exec $term -e neomutt
-bindsym $mod+Shift+F6 exec $term -e ssh chernandez10@homer.stuy.edu
-bindsym $mod+Shift+F7 exec --no-startup-id "XDG_CURRENT_DESKTOP=kde kcalc"
-bindsym $mod+e exec --no-startup-id "XDG_CURRENT_DESKTOP=kde dolphin"
+bindsym $mod+e exec pcmanfm
 
-#gaps
+# start application launchers
+bindsym $mod+d exec --no-startup-id rofi -show combi -theme flat-orange -show-icons -icon-theme "Papirus"
+
+# flameshot
+bindsym Control+Shift+c exec flameshot gui -p ~/Pictures/Screenshots
+
+# polybar
+bindsym $mod+period exec --no-startup-id polybar-msg cmd toggle
+
+# demnuunicode - emojis
+bindsym $mod+Shift+period exec dmenuunicode
+
+# lock system
+bindsym $mod+semicolon exec betterlockscreen -l dim
+
+#---( gaps )---#
+
+# basic settings
 gaps inner 10
 gaps outer 10
 
@@ -169,39 +188,43 @@ bindsym $mod+Shift+z    gaps inner current set 10; gaps outer current set 10
 bindsym $mod+w          gaps outer current plus 5
 bindsym $mod+Shift+w    gaps outer current minus 5
 
+bindsym $mod+o          gaps inner current plus 5
+bindsym $mod+Shift+o    gaps inner current minus 5
+
 #----------[ MISC SETTINGS ]----------#
 
 # Pressing $mod and current workspace number takes you back to the previousle active workspace
 workspace_auto_back_and_forth yes
-
-# flameshot
-bindsym Control+Shift+c exec flameshot gui -p ~/Pictures/Screenshots
-
-# demnuunicode - emojis
-bindsym $mod+Shift+period exec dmenuunicode
 
 # audio
 bindsym XF86AudioMute        exec --no-startup-id pactl set-sink-mute 0 toggle
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl -- set-sink-volume 0 -5%
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl -- set-sink-volume 0 +5%
 
+# brightness
+bindsym XF86MonBrightnessUp exec brightnessctl set +10%
+bindsym XF86MonBrightnessDown exec brightnessctl set 10%-
+
 # media keys
-# bindsym XF86AudioStop exec --no-startup-id mpc clear && /home/reed/scripts/killm.sh ncmpcpp
 bindsym XF86AudioNext exec --no-startup-id mpc next
 bindsym XF86AudioPlay exec --no-startup-id mpc toggle
 bindsym XF86AudioPrev exec --no-startup-id mpc prev
 
 #---( startup items )---#
 
-# exec_always --no-startup-id $HOME/.config/polybar/launch.sh
-# exec_always --no-startup-id /usr/lib/geoclue-2.0/demos/agent
-# exec_always --no-startup-id redshift
+exec_always --no-startup-id setxkbmap -option caps:escape
+exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 exec_always --no-startup-id picom -b -c
-exec_always --no-startup-id wmctrl -c Plasma
-exec_always --no-startup-id 'xset -b'
-exec_always --no-startup-id 'xset b off'
-exec_always --no-startup-id xwallpaper --zoom ~/Pictures/Wallpapers/77zb6asm5ov31.jpg
-# exec_always --no-startup-id $HOME/.local/share/enableWifi.sh
+exec_always --no-startup-id xwallpaper --zoom ~/Pictures/Wallpapers/alena-aenami-sundown.jpg
+
+# only exec once at startup
+exec --no-startup-id /usr/lib/kdeconnectd
+exec --no-startup-id /usr/lib/geoclue-2.0/demos/agent
+exec --no-startup-id redshift-gtk
+exec --no-startup-id firefox
+exec --no-startup-id ibus-daemon -drx
+exec --no-startup-id flameshot &
+exec --no-startup-id xautolock -time 6 -locker 'betterlockscreen -l dim'
 
 #---( colors table )---#
 
@@ -223,9 +246,7 @@ for_window [class="^.*"] border pixel 3
 for_window [class="jetbrains-.*" title="win0"] floating enable border none
 
 # Float by name
-for_window [title="Nitrogen"] floating enable
 for_window [title="Install user style"] floating enable
-for_window [title="KCalc"] floating enable
 
 # Float by type
 for_window [instance="fontpreview"] floating enable
@@ -233,6 +254,7 @@ for_window [window_role="pop-up"] floating enable
 for_window [window_role="task_dialog"] floating enable
 for_window [window_type="dialog"] floating enable
 for_window [window_type="menu"] floating enable
+for_window [window_role="task_dialog"] floating enable
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -240,20 +262,6 @@ floating_modifier $mod
 #---( focus related )---)
 focus_follows_mouse no
 
-no_focus [class="plasmashell"]
 no_focus [window_role="pop-up"]
 no_focus [window_type="notification"]
 focus_on_window_activation none
-
-## Plasma Integration
-for_window [class="(?i)*nextcloud*"] floating disable
-for_window [class="Klipper"] floating enable; border none
-for_window [class="Kmix"] floating enable; border none
-for_window [class="krunner"] floating enable; border none
-for_window [class="Plasma"] floating enable; border none
-for_window [class="plasmashell"] floating enable;
-for_window [class="Plasmoidviewer"] floating enable; border none
-for_window [title="Desktop — Plasma"] kill; floating enable; border none
-for_window [title="plasma-desktop"] floating enable; border none
-for_window [title="win7"] floating enable; border none
-for_window [window_role="task_dialog"] floating enable
