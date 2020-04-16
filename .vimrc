@@ -1,5 +1,5 @@
-" The purpose of this is just the bare minimum for when I need to ssh or other
-" stuff
+" I Moved to neovim, this is for the sake if I ever need vim again. See
+" ~/.config/nvim for more
 
 "Auto Download
 if empty(glob('~/.vim/autoload/plug.vim'))
