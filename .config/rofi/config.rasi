@@ -1,0 +1,22 @@
+configuration {
+	modi: "window,drun,ssh";
+	terminal: "alacritty";
+	ssh-command: "{terminal} -e {ssh-client} {host} [-p {port}]";
+	run-shell-command: "{terminal} -e {cmd}";
+	combi-modi: "window,drun,ssh";
+	theme: "flat-orange";
+	combi-hide-mode-prefix: true;
+	kb-primary-paste: "Alt+p";
+	kb-clear-line: "Alt+d";
+	kb-move-front: "Alt+w";
+	kb-move-end: "Alt+e";
+	kb-move-char-back: "Left";
+	kb-move-char-forward: "Right";
+	kb-mode-next: "Alt+l,Control+Tab";
+	kb-mode-previous: "Alt+h,Control+Shift+Tab";
+	kb-row-up: "Up,Control+p,ISO_Left_Tab,Alt+k";
+	kb-row-down: "Down,Control+n,Alt+j";
+	kb-page-prev: "control-b";
+	kb-page-next: "Control-f";
+	kb-row-last: "Alt+G";
+}
