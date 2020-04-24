@@ -58,9 +58,10 @@ font-5 = materialicons:size=12;1
 font-6 = Bitstream Vera Sans:style=Roman:size=10;3
 font-7 = iosevka nerd font
 
-modules-left = i3 pulseaudio memory filesystem
-modules-center = reddit date connect
-modules-right = cpu wlan arch battery
+; modules-left = i3 pulseaudio arch memory filesystem
+modules-left = i3 pulseaudio arch memory
+modules-center = gmail reddit date connect
+modules-right = cpu wlan battery
 tray-position = right
 tray-padding = 0
 
@@ -83,7 +84,7 @@ label-mounted =   %{F#ebdbb2}%percentage_free%%%{F-}
 label-unmounted = %mountpoint% not mounted
 label-unmounted-foreground = ${colors.foreground-alt}
 ; 
-
+; 
 [module/arch]
 type = custom/script
 exec = ~/.config/polybar/scripts/updates-arch-combined.sh
@@ -103,6 +104,13 @@ type = custom/script
 exec = "~/.config/polybar/scripts/polybar-kdeconnect.sh -d"
 label-foreground = ${colors.gor}
 tail = true
+
+[module/gmail]
+type = custom/script
+exec = ~/.config/polybar/gmail/launch.py --color '#cc241d' -ns
+tail = true
+click-left = xdg-open https://mail.google.com/mail/u/1/
+click-right = xdg-open https://classroom.google.com/u/1/
 
 [module/i3]
 type = internal/i3
@@ -149,7 +157,7 @@ ws-icon-default =
 
 [module/cpu]
 type = internal/cpu
-interval = 0.08
+interval = 0.8
 format = <ramp-coreload>
 ramp-coreload-spacing = 1
 ramp-coreload-0 = ▁
@@ -176,7 +184,7 @@ format-padding = 1
 
 [module/memory]
 type = internal/memory
-interval = 3
+interval = 0.5
 format = <label>
 format-prefix = "  "
 format-prefix-foreground = ${colors.primary}
@@ -210,7 +218,7 @@ format-disconnected-underline =${colors.alert}
 [module/date]
 type = internal/date
 interval = 5
-date = "  %a, %b %d"
+date = "%a, %b %d"
 time = "%I:%M %p"
 format-prefix-foreground = ${colors.gmagenta}
 format-foreground = ${colors.primary}
@@ -312,6 +320,7 @@ animation-charging-framerate = 750
 type = custom/menu
 expand-right = true
 format-spacing = 1
+label = 
 
 label-open = 
 label-open-foreground = ${colors.secondary}
