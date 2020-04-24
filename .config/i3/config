@@ -15,7 +15,6 @@ font pango:DejaVu Sans Mono 10
 
 #===[ KEY BINDINGS ]====================#
 
-
 #---( focus )---#
 
 # change focus
@@ -159,10 +158,11 @@ bindsym $mod+F1 exec $term -e ranger
 bindsym $mod+Shift+F2 exec firefox
 bindsym $mod+Shift+F3 exec discord
 bindsym $mod+Shift+F5 exec $term -e neomutt
+bindsym $mod+Shift+F6 exec $term -e Stuy.py
 bindsym $mod+e exec pcmanfm
 
 # start application launchers
-bindsym $mod+d exec --no-startup-id rofi -show combi -theme flat-orange -show-icons -icon-theme "Papirus"
+bindsym $mod+x exec --no-startup-id rofi -show combi -theme flat-orange -show-icons -icon-theme "Papirus"
 
 # flameshot
 bindsym Control+Shift+c exec flameshot gui -p ~/Pictures/Screenshots
@@ -202,8 +202,9 @@ bindsym XF86AudioLowerVolume exec --no-startup-id pactl -- set-sink-volume 0 -5%
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl -- set-sink-volume 0 +5%
 
 # brightness
-bindsym XF86MonBrightnessUp exec brightnessctl set +10%
-bindsym XF86MonBrightnessDown exec brightnessctl set 10%-
+set $brightnessmsg notify-send -t 1000 -h string:x-canonical-private-synchronous:anything 'Brightness ' "Brightness: $(brightnessctl get) out of $(brightnessctl max)"
+bindsym XF86MonBrightnessUp exec brightnessctl set +5%;exec $brightnessmsg
+bindsym XF86MonBrightnessDown exec brightnessctl set 5%-;exec $brightnessmsg
 
 # media keys
 bindsym XF86AudioNext exec --no-startup-id mpc next
@@ -213,7 +214,7 @@ bindsym XF86AudioPrev exec --no-startup-id mpc prev
 #---( startup items )---#
 
 exec_always --no-startup-id setxkbmap -option caps:escape
-exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+exec_always --no-startup-id $XDG_CONFIG_HOME/polybar/launch.sh
 exec_always --no-startup-id picom -b -c
 exec_always --no-startup-id xwallpaper --zoom ~/Pictures/Wallpapers/alena-aenami-sundown.jpg
 
@@ -224,7 +225,7 @@ exec --no-startup-id redshift-gtk
 exec --no-startup-id firefox
 exec --no-startup-id ibus-daemon -drx
 exec --no-startup-id flameshot &
-exec --no-startup-id xautolock -time 6 -locker 'betterlockscreen -l dim'
+exec --no-startup-id xautolock -time 6 -locker 'betterlockscreen -l dim' -detectsleep
 
 #---( colors table )---#
 
@@ -244,6 +245,7 @@ client.background       $cTwo
 
 for_window [class="^.*"] border pixel 3
 for_window [class="jetbrains-.*" title="win0"] floating enable border none
+for_window [class="java-lang-Thread" title="win0"] floating enable border none
 
 # Float by name
 for_window [title="Install user style"] floating enable
