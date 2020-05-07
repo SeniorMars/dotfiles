@@ -14,7 +14,7 @@ Mail client: neomutt
 
 Font: Meslo LG M DZ for Powerline
 
-Terminal Emulator: konsole
+Terminal Emulator: Alacritty
 
 Overall theme is from Gruvbox.
 
