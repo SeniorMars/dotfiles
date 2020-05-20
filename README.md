@@ -2,9 +2,9 @@
 My Rice Setup:
 
 
-My rice for arch linux. Running KDE Plasma as my Desktop Environment, i3-gaps as my window manager and picom as the compositor.
+Rice for arch linux. i3-gaps as my window manager and picom as the compositor.
 
-Currently all this rep has all my files for my config, but I am working to improve it more.
+Currently all this repo has all my files for my config, but I am working to improve it more.
 
 Screenshot tool: flameshot
 
