@@ -1,7 +1,7 @@
 # dotfiles
 My Rice Setup:
 
-This is outdated and when I have time, I will update everything.
+This is outdated and when I have time, I will update everything. I have learn so much about vim these weeks.
 
 Rice for arch linux. i3-gaps as my window manager and picom as the compositor.
 
@@ -23,8 +23,10 @@ skeleton.tex comes from: https://wso.williams.edu/wiki/index.php/LaTeX_MLA_Templ
 
 ![Pictures Of my Setup](https://imgur.com/Y8CwSkT.png)
 
+
 ![Number2](https://imgur.com/Y8CwSkT.png)
 
 ![Number3](https://imgur.com/VgUHRG0.png)
 
 Running programs: neovim, zathura, feh, tmux, neofetch, gotop, cmus, pipes.sh, vis, firefox and better Discord
+
