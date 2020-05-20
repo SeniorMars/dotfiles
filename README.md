@@ -1,6 +1,7 @@
 # dotfiles
 My Rice Setup:
 
+This is outdated and when I have time, I will update everything.
 
 Rice for arch linux. i3-gaps as my window manager and picom as the compositor.
 
