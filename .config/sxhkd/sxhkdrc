@@ -1,0 +1,61 @@
+# binds
+super + Return
+	$TERMINAL
+super + e
+	pcmanfm
+super + x
+	rofi -show combi -theme flat-orange -show-icons -icon-theme "Papirus"
+super + shift + x
+	SUDO_ASKPASS=~/.local/bin/askpass-rofi rofi -show drun -run-command "sudo -A {cmd}" -show-icons -icon-theme "Papirus"
+super + d
+	clipmenu
+super + shift + d
+	nmcli_rofi
+control + shift + c
+	flameshot gui -p ~/Pictures/Screenshots
+super + period
+	polybar-msg cmd toggle
+super + shift + period
+	dmenuunicode
+super + shift + Return
+	killall screenkey || screenkey
+super + semicolon
+	betterlockscreen -l dim
+
+# F1 keys
+super + F1
+	$TERMINAL -e ranger
+super + shift + F2
+	firefox
+super + shift + F3
+	discord
+super + shift + F4
+	$TERMINAL -e ssh homer	
+super + shift + F5
+	$TERMINAL -e neomutt
+
+# extra stuff
+super + shift + grave
+	notify-send -t 1000 'Battery Life' "$(upower -i `upower -e | grep BAT` | grep 'time to empty' | xargs echo)"
+super + b
+	rofi -show calc -modi calc -no-show-match -no-sort
+super + shift + b
+	grep '^bindsym' ~/.config/i3/config | sed 's/bindsym //' | rofi -i -dmenu
+
+# firefox
+super + p
+	firefox https://classroom.google.com/u/1/
+super + shift + p
+	firefox https://drive.google.com/drive/u/1/
+super + shift + e
+	firefox https://mail.google.com/mail/u/1/
+
+# media keys
+XF86AudioMute        
+	pactl set-sink-mute 0 toggle
+XF86Audio{Raise,Lower}Volume 
+	pactl -- set-sink-volume 0 {+5,-5}%
+XF86MonBrightness{Up,Down} 
+	brightnessctl set {+5%,5%-};notify-send -t 1000 -h string:x-canonical-private-synchronous:anything 'Brightness ' "Brightness: $(brightnessctl get) out of $(brightnessctl max)"
+XF86Audio{Play,Next,Prev}
+	playerctl {play-pause,next,previous}
