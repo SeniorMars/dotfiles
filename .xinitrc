@@ -1,4 +1,3 @@
-/usr/lib/notification-daemon-1.0/notification-daemon &
+sxhkd &
 dunst &
-xss-lock betterlockscreen -l &
 exec i3
