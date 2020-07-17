@@ -30,7 +30,7 @@ super + shift + F2
 super + shift + F3
 	discord
 super + shift + F4
-	$TERMINAL -e ssh homer	
+	$TERMINAL -e ssh homer
 super + shift + F5
 	$TERMINAL -e neomutt
 
@@ -51,11 +51,11 @@ super + shift + e
 	firefox https://mail.google.com/mail/u/1/
 
 # media keys
-XF86AudioMute        
+XF86AudioMute
 	pactl set-sink-mute 0 toggle
-XF86Audio{Raise,Lower}Volume 
+XF86Audio{Raise,Lower}Volume
 	pactl -- set-sink-volume 0 {+5,-5}%
-XF86MonBrightness{Up,Down} 
+XF86MonBrightness{Up,Down}
 	brightnessctl set {+5%,5%-};notify-send -t 1000 -h string:x-canonical-private-synchronous:anything 'Brightness ' "Brightness: $(brightnessctl get) out of $(brightnessctl max)"
 XF86Audio{Play,Next,Prev}
 	playerctl {play-pause,next,previous}

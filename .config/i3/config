@@ -8,7 +8,6 @@
 
 #===[ GENERAL SETTINGS ]====================#
 
-# Mod key is the "Super" key (or Meta, usually has the Windows logo on it)
 set $mod Mod4
 set $term alacritty
 font pango:DejaVu Sans Mono 10
@@ -16,7 +15,6 @@ font pango:DejaVu Sans Mono 10
 #===[ KEY BINDINGS ]====================#
 
 #---( focus )---#
-
 # change focus
 bindsym $mod+h focus left
 bindsym $mod+j focus down
@@ -40,8 +38,11 @@ bindsym $mod+v split v
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen
 
-# split
+# spilt
 bindsym $mod+t layout toggle split
+
+# tabbed
+bindsym $mod+Shift+t layout tabbed
 
 # toggle tiling / floating
 bindsym $mod+Shift+plus floating toggle
@@ -68,7 +69,6 @@ bindsym $mod+6 workspace 6
 bindsym $mod+7 workspace 7
 bindsym $mod+8 workspace 8
 bindsym $mod+9 workspace 9
-bindsym $mod+0 workspace 10
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace 1
@@ -80,7 +80,6 @@ bindsym $mod+Shift+6 move container to workspace 6
 bindsym $mod+Shift+7 move container to workspace 7
 bindsym $mod+Shift+8 move container to workspace 8
 bindsym $mod+Shift+9 move container to workspace 9
-bindsym $mod+Shift+0 move container to workspace 10
 
 #---( modes )---#
 
@@ -111,7 +110,6 @@ mode "swap" {
     bindsym $mod+7 workspace $ws7
     bindsym $mod+8 workspace $ws8
     bindsym $mod+9 workspace $ws9
-    bindsym $mod+0 workspace $ws10
 
     # change focus (without mod)
     bindsym h focus left
@@ -125,10 +123,8 @@ mode "swap" {
 
 bindsym $mod+Shift+s mark --add "swapee"; mode "swap"
 
-
-set $Locker betterlockscreen -l dim && sleep 1
+set $Locker betterlockscreen -l dim
 set $mode_system System (l) lock, (e) logout, (s) suspend, (r) reboot, (Shift+s) shutdown
-
 mode "$mode_system" {
     bindsym l exec --no-startup-id $Locker, mode "default"
     bindsym e exec --no-startup-id i3-msg exit, mode "default"
@@ -143,41 +139,16 @@ mode "$mode_system" {
 
 bindsym $mod+grave mode "$mode_system"
 
-#---( i2 stuff )---#
-
-# reload the configuration file
-bindsym $mod+Shift+i reload
-# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+#---( i3 stuff )---#
 bindsym $mod+Shift+r restart
 
-#---( direct launchers )---#
+# Pressing $mod and current workspace number takes you back to the previousle active workspace
+workspace_auto_back_and_forth yes
 
-
-bindsym $mod+Return exec $term
-bindsym $mod+F1 exec $term -e ranger
-bindsym $mod+Shift+F2 exec firefox
-bindsym $mod+Shift+F3 exec discord
-bindsym $mod+Shift+F5 exec $term -e neomutt
-bindsym $mod+Shift+F6 exec $term -e Stuy.py
-bindsym $mod+e exec pcmanfm
-
-# start application launchers
-bindsym $mod+x exec --no-startup-id rofi -show combi -theme flat-orange -show-icons -icon-theme "Papirus"
-
-# flameshot
-bindsym Control+Shift+c exec flameshot gui -p ~/Pictures/Screenshots
-
-# polybar
-bindsym $mod+period exec --no-startup-id polybar-msg cmd toggle
-
-# demnuunicode - emojis
-bindsym $mod+Shift+period exec dmenuunicode
-
-# lock system
-bindsym $mod+semicolon exec betterlockscreen -l dim
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
 
 #---( gaps )---#
-
 # basic settings
 gaps inner 10
 gaps outer 10
@@ -191,41 +162,19 @@ bindsym $mod+Shift+w    gaps outer current minus 5
 bindsym $mod+o          gaps inner current plus 5
 bindsym $mod+Shift+o    gaps inner current minus 5
 
-#----------[ MISC SETTINGS ]----------#
-
-# Pressing $mod and current workspace number takes you back to the previousle active workspace
-workspace_auto_back_and_forth yes
-
-# audio
-bindsym XF86AudioMute        exec --no-startup-id pactl set-sink-mute 0 toggle
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl -- set-sink-volume 0 -5%
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl -- set-sink-volume 0 +5%
-
-# brightness
-set $brightnessmsg notify-send -t 1000 -h string:x-canonical-private-synchronous:anything 'Brightness ' "Brightness: $(brightnessctl get) out of $(brightnessctl max)"
-bindsym XF86MonBrightnessUp exec brightnessctl set +5%;exec $brightnessmsg
-bindsym XF86MonBrightnessDown exec brightnessctl set 5%-;exec $brightnessmsg
-
-# media keys
-bindsym XF86AudioNext exec --no-startup-id mpc next
-bindsym XF86AudioPlay exec --no-startup-id mpc toggle
-bindsym XF86AudioPrev exec --no-startup-id mpc prev
-
 #---( startup items )---#
 
-exec_always --no-startup-id setxkbmap -option caps:escape
 exec_always --no-startup-id $XDG_CONFIG_HOME/polybar/launch.sh
 exec_always --no-startup-id picom -b -c
 exec_always --no-startup-id xwallpaper --zoom ~/Pictures/Wallpapers/alena-aenami-sundown.jpg
 
 # only exec once at startup
-exec --no-startup-id /usr/lib/kdeconnectd
-exec --no-startup-id /usr/lib/geoclue-2.0/demos/agent
 exec --no-startup-id redshift-gtk
 exec --no-startup-id firefox
 exec --no-startup-id ibus-daemon -drx
 exec --no-startup-id flameshot &
-exec --no-startup-id xautolock -time 6 -locker 'betterlockscreen -l dim' -detectsleep
+exec --no-startup-id xidlehook --timer 300 "brightnessctl set 600" "brightnessctl set 1500"
+exec --no-startup-id xidlehook --not-when-audio --timer 360 "betterlockscreen -l dim" ''
 
 #---( colors table )---#
 
@@ -257,9 +206,6 @@ for_window [window_role="task_dialog"] floating enable
 for_window [window_type="dialog"] floating enable
 for_window [window_type="menu"] floating enable
 for_window [window_role="task_dialog"] floating enable
-
-# Use Mouse+$mod to drag floating windows to their wanted position
-floating_modifier $mod
 
 #---( focus related )---)
 focus_follows_mouse no
