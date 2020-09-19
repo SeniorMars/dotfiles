@@ -49,7 +49,7 @@ def schedule():
             if minutes_left > 60: #edge cases
                 hour_left = minutes_left // 60
                 minutes_left = minutes_left % 60
-                print("You have {} hour(s) and {} minute(s) left of this period.".format(hours_left, minutes_left))
+                print("You have {} hour(s) and {} minute(s) left of this period.".format(hour_left, minutes_left))
             else:
                 print("You have {} minute(s) left of this period.".format(minutes_left))
 
