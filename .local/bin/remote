@@ -1,0 +1,90 @@
+#!/usr/bin/env python
+# the purpose of this script was to just get the amount of minutes left in the
+# period. Since it's remote, I always had a clock on my computer...
+# kinda makes current time not worth it...
+
+from datetime import datetime
+from math import floor
+
+# period = ["Class Name", seconds class starts, and seconds class ends]
+
+periods = [["Before school", 0, 33000],
+           ["Period 1 & 6", 33000, 36300],
+           ["Period 2 & 7", 36900, 40200],
+           ["Period 3 & 8", 40800, 44100],
+           ["Period 4 & 9", 44700, 48000],
+           ["Period 5 & 10", 48600, 51900],
+           ["Teachers' Office Hours", 52200, 53400],
+           ["After school", 53400, 86400]]
+
+
+# get the time in seconds
+current_time = datetime.now()
+seconds = current_time.second
+minutes = current_time.minute
+hour = current_time.hour
+
+total_seconds = seconds + minutes * 60 + hour * 3600
+
+
+def schedule():
+    for i in range(len(periods)):
+        period_start = periods[i][1]
+        period_end = periods[i][2]
+
+        if total_seconds >= period_start and total_seconds <= period_end:
+            period_name = periods[i][0]
+            if period_name == "Before school":
+                print("School hasn't started!")
+            elif period_name == "Teachers' Office Hours":
+                print("Office hours!")
+            elif period_name == "After school":
+                print("School has ended")
+            else:
+                print(period_name + " is in session!")
+
+            minutes_in = floor((total_seconds - period_start) / 60)
+            minutes_left = floor((period_end - period_start) / 60) - minutes_in
+
+            if minutes_left > 60: #edge cases
+                hour_left = minutes_left // 60
+                minutes_left = minutes_left % 60
+                print("You have {} hour(s) and {} minute(s) left of this period.".format(hours_left, minutes_left))
+            else:
+                print("You have {} minute(s) left of this period.".format(minutes_left))
+
+            if minutes_in > 60:
+                hours_in = minutes_in // 60
+                minutes_in = minutes_in % 60
+                # I just realize that you will probably be in after school if
+                # this prints out. Kinda useless tbh. But edge cases.
+                print("You are {} hour(s) and {} minute(s) into this period.".format(hours_in, minutes_in))
+            else:
+                print("You are {} minute(s) into this period.".format(minutes_in))
+
+
+        elif i > 0:
+            if total_seconds > periods[i-1][2] and total_seconds < period_start:
+                print("Transition Period")
+                minutes_in = floor((total_seconds - periods[i-1][2]) / 60)
+                minutes_left = floor((period_start - periods[i-1][2]) / 60) - minutes_in
+                print("You are {} minute(s) in and have {} minute(s) left.".format(minutes_in, minutes_left))
+
+
+if __name__ == "__main__":
+    schedule()
+
+
+# old schedule
+# Periods = [['Before School', 0, 28800],
+#            ['First Period', 28800, 31260],
+#            ['Second Period', 31500, 33960],
+#            ['Third Period', 34260, 36900],
+#            ['Fourth Period', 37200, 39660],
+#            ['Fifth Period', 39960, 42420],
+#            ['Sixth Period', 42720, 45180],
+#            ['Seventh Period', 45480, 47940],
+#            ['Eigth Period', 48240, 50700],
+#            ['Ninth Period', 50940, 53400],
+#            ['Tenth Period', 53640, 56100],
+#            ['After School', 56100, 86400]]

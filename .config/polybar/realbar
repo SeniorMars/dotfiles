@@ -109,8 +109,8 @@ tail = true
 type = custom/script
 exec = ~/.config/polybar/gmail/launch.py --color '#cc241d' -ns
 tail = true
-click-left = xdg-open https://mail.google.com/mail/u/1/
-click-right = xdg-open https://classroom.google.com/u/1/
+click-left = firefox https://mail.google.com/mail/u/1/
+click-right = firefox https://classroom.google.com/u/1/
 
 [module/i3]
 type = internal/i3
