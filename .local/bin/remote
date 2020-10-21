@@ -9,11 +9,11 @@ from math import floor
 # period = ["Class Name", seconds class starts, and seconds class ends]
 
 periods = [["Before school", 0, 33000],
-           ["Period 1 & 6", 33000, 36300],
-           ["Period 2 & 7", 36900, 40200],
-           ["Period 3 & 8", 40800, 44100],
-           ["Period 4 & 9", 44700, 48000],
-           ["Period 5 & 10", 48600, 51900],
+           ["Period 1 (6)", 33000, 36300],
+           ["Period 2 (7)", 36900, 40200],
+           ["Period 3 (8)", 40800, 44100],
+           ["Period 4 (9)", 44700, 48000],
+           ["Period 5 (10)", 48600, 51900],
            ["Teachers' Office Hours", 52200, 53400],
            ["After school", 53400, 86400]]
 
@@ -76,7 +76,7 @@ if __name__ == "__main__":
 
 
 # old schedule
-# Periods = [['Before School', 0, 28800],
+# periods = [['Before School', 0, 28800],
 #            ['First Period', 28800, 31260],
 #            ['Second Period', 31500, 33960],
 #            ['Third Period', 34260, 36900],
