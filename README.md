@@ -1,7 +1,7 @@
 # dotfiles
-My Rice Setup:
+My Rice Setup. No I don't actually use my setup like this.
 
-This is outdated and when I have time, I will update everything. I have learn so much about vim these weeks.
+This is outdated but when I have time I will update everything. I have learned so much about vim these weeks.
 
 Rice for arch linux. i3-gaps as my window manager and picom as the compositor.
 
