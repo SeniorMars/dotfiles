@@ -10,28 +10,22 @@ endif
 
 "plugins!
 call plug#begin('~/.vim/plugged')
-Plug 'AlessandroYorba/Alduin' "airline
 Plug 'jiangmiao/auto-pairs' "auto completes [] and ()
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } "Fuzzy finder
 Plug 'junegunn/fzf.vim'
-Plug 'morhetz/gruvbox' "Theme
-Plug 'powerline/fonts', {'do': './install.sh'}
-Plug 'scrooloose/nerdtree' "See dirs and files
+Plug 'KarlWithK/gruvbox' "Theme fork
 Plug 'sheerun/vim-polyglot' "vim syntax for different languages
 Plug 'tpope/vim-commentary' "Comment stuff
 Plug 'tpope/vim-surround' "Allows me to change { to [ and what not
-Plug 'vim-airline/vim-airline' "airline see bottom of bar
-Plug 'vim-airline/vim-airline-themes' "airline theme theme
+Plug 'tpope/vim-fugitive' "Git control for vim
 Plug 'wellle/targets.vim' "adds more targets like [ or ,
 Plug 'Yggdroot/indentLine' "indent lines like atom. See python file for ex
 call plug#end()
 
 "Global settings
-set nocp "make sure nvim doesn't act like vi
-filetype plugin indent on    " required
+filetype plugin indent on
 syntax on "activates syntax highlighting among other things
-set autoindent
-set background=dark "Color scheme settings
+set background=dark "set hg group to dark
 set backspace=indent,eol,start "Fixes the backspace
 set conceallevel=1 "Allows me to conceal latex syntax if not on line
 set encoding=utf-8 "required by YCM
@@ -40,23 +34,39 @@ set foldlevel=99
 set foldmethod=indent "fold your code.
 set hidden "work with multiple unsaved buffers.
 set incsearch "highlights as you search
-set noshowmode "make the current mode label disappear - I have airline for this.
+set ignorecase
+set smartcase
 set rnu nu "sets line numbers
 set splitbelow splitright
 set termguicolors "True colors term support
-so ~/.config/nvim/fzfConfig.vim
+set viminfo+=n~/.vim/viminfo
+set omnifunc=syntaxcomplete#Complete
+set undodir="~/.vim/undo/"
+set undofile
+set laststatus=2
+set showcmd
+set guifont=MesloLGMDZ\ Nerd\ Font\ Bold\ 16
+source ~/.config/nvim/fzfConfig.vim
 
 "Key remapping
 let mapleader = ","
-noremap <leader>t :NERDTreeToggle<cr>
-noremap <leader>e <c-w><c-w>
-noremap <leader>cd :cd %:p:h<cr>:pwd<cr>
+noremap <leader>s :source ~/.vim/vimrc<cr>
+noremap <leader>e <C-w><C-w>
 noremap <leader>z [s1z=
 noremap <leader>p "+p
 noremap <leader>P "+P
-noremap <C-p> :Files<cr>
-noremap <cr> o<esc>
-inoremap jk <esc>
+noremap <leader>f :Files<cr>
+noremap <leader>c :cd %:p:h<cr>:pwd<cr>
+noremap <leader><cr> o<Esc>
+noremap <space>h <C-w>h
+noremap <space>j <C-w>j
+noremap <space>k <C-w>k
+noremap <space>l <C-w>l
+noremap <down> :resize +2<Cr>
+noremap <up> :resize -2<cr>
+noremap <right> :vertical resize +2<CR>
+noremap <left> :vertical resize -2<CR>
+inoremap jk <Esc>
 vnoremap <leader>y "*y :let @+=@*<cr>
 map <leader>1 :bn<cr>
 map <leader>2 :bp<cr>
@@ -64,19 +74,17 @@ map <leader>3 :retab<cr>
 map <leader>5 :setlocal spell spelllang=en_us<cr>
 
 "Extra
-let g:airline_powerline_fonts = 1
-let g:powerline_pycmd="py3"
-let g:airline#extensions#tabline#enabled = 1 "airline thing
-let g:airline_theme='alduin'
 let g:gruvbox_italic='1'
 let g:gruvbox_contrast_dark='hard'
 let g:gruvbox_invert_selection='0'
 let g:gruvbox_termcolors='256'
-let g:AutoPairsFlyMode = 1
-let g:fzf_buffers_jump = 1
-let g:fzf_vim_statusline = 0
+let g:AutoPairsFlyMode=0
 colorscheme gruvbox "colorscheme
 
+if executable('rg')
+        set grepprg=rg\ --vimgrep
+        set grepformat^=%f:%l:%c:%m
+endif
 "Java Support!
 augroup javaSu
 	autocmd!
@@ -101,3 +109,23 @@ augroup full
 	autocmd!
 	au FileType javascript,html,css set tabstop=2 softtabstop=2 shiftwidth=2
 augroup end
+
+
+" statusline
+set noshowmode
+let g:currentmode={
+       \ 'n'  : 'NORMAL ',
+       \ 'v'  : 'VISUAL ',
+       \ 'V'  : 'V·Line ',
+       \ '' : 'V·Block ',
+       \ 'i'  : 'INSERT ',
+       \ 'R'  : 'Replace ',
+       \ 'r'  : 'Replace ',
+       \ 'Rv' : 'V·Replace ',
+       \ 'c'  : 'Command ',
+       \ 't'  : 'Terminal ',
+       \ 's'  : 'Select ',
+       \ '!'  : 'Shell '
+       \}
+
+set statusline=%{toupper(g:currentmode[mode()])}%{toupper(&spelllang)}\ %{toupper(fugitive#head())}\ %<%F%h%m%r%=%-5.(%l,%c%V%)\ %y
