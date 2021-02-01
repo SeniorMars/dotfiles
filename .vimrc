@@ -10,10 +10,10 @@ endif
 
 "plugins!
 call plug#begin('~/.vim/plugged')
+Plug 'KarlWithK/gruvbox' "Theme fork
 Plug 'jiangmiao/auto-pairs' "auto completes [] and ()
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } "Fuzzy finder
 Plug 'junegunn/fzf.vim'
-Plug 'KarlWithK/gruvbox' "Theme fork
 Plug 'sheerun/vim-polyglot' "vim syntax for different languages
 Plug 'tpope/vim-commentary' "Comment stuff
 Plug 'tpope/vim-surround' "Allows me to change { to [ and what not
