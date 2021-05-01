@@ -8,14 +8,16 @@ from math import floor
 
 # period = ["Class Name", seconds class starts, and seconds class ends]
 
-periods = [["Before school", 0, 33000],
-           ["Period 1 (6)", 33000, 36300],
-           ["Period 2 (7)", 36900, 40200],
-           ["Period 3 (8)", 40800, 44100],
-           ["Period 4 (9)", 44700, 48000],
-           ["Period 5 (10)", 48600, 51900],
-           ["Teachers' Office Hours", 52200, 53400],
-           ["After school", 53400, 86400]]
+periods = [
+    ["Before school", 0, 33000],
+    ["Period 1 (6)", 33000, 36300],
+    ["Period 2 (7)", 36900, 40200],
+    ["Period 3 (8)", 40800, 44100],
+    ["Period 4 (9)", 44700, 48000],
+    ["Period 5 (10)", 48600, 51900],
+    ["Teachers' Office Hours", 52200, 53400],
+    ["After school", 53400, 86400],
+]
 
 
 # get the time in seconds
@@ -46,10 +48,14 @@ def schedule():
             minutes_in = floor((total_seconds - period_start) / 60)
             minutes_left = floor((period_end - period_start) / 60) - minutes_in
 
-            if minutes_left > 60: #edge cases
+            if minutes_left > 60:  # edge cases
                 hour_left = minutes_left // 60
                 minutes_left = minutes_left % 60
-                print("You have {} hour(s) and {} minute(s) left of this period.".format(hour_left, minutes_left))
+                print(
+                    "You have {} hour(s) and {} minute(s) left of this period.".format(
+                        hour_left, minutes_left
+                    )
+                )
             else:
                 print("You have {} minute(s) left of this period.".format(minutes_left))
 
@@ -58,17 +64,26 @@ def schedule():
                 minutes_in = minutes_in % 60
                 # I just realize that you will probably be in after school if
                 # this prints out. Kinda useless tbh. But edge cases.
-                print("You are {} hour(s) and {} minute(s) into this period.".format(hours_in, minutes_in))
+                print(
+                    "You are {} hour(s) and {} minute(s) into this period.".format(
+                        hours_in, minutes_in
+                    )
+                )
             else:
                 print("You are {} minute(s) into this period.".format(minutes_in))
 
-
         elif i > 0:
-            if total_seconds > periods[i-1][2] and total_seconds < period_start:
+            if total_seconds > periods[i - 1][2] and total_seconds < period_start:
                 print("Transition Period")
-                minutes_in = floor((total_seconds - periods[i-1][2]) / 60)
-                minutes_left = floor((period_start - periods[i-1][2]) / 60) - minutes_in
-                print("You are {} minute(s) in and have {} minute(s) left.".format(minutes_in, minutes_left))
+                minutes_in = floor((total_seconds - periods[i - 1][2]) / 60)
+                minutes_left = (
+                    floor((period_start - periods[i - 1][2]) / 60) - minutes_in
+                )
+                print(
+                    "You are {} minute(s) in and have {} minute(s) left.".format(
+                        minutes_in, minutes_left
+                    )
+                )
 
 
 if __name__ == "__main__":

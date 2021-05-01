@@ -1,0 +1,93 @@
+#!/usr/bin/env bash
+#
+# Script name: rscrot
+# Description: Choose type of screenshot to take with maim.
+# Dependencies: dmenu, maim, tee, xdotool, xclip, xrandr
+# GitLab: https://www.gitlab.com/dwt1/dmscripts
+# License: https://www.gitlab.com/dwt1/dmscripts/LICENSE
+# Contributors: Derek Taylor
+#               Simon Ingelsson
+#               Steven Hall
+
+# Set with the flags "-e", "-u","-o pipefail" cause the script to fail
+# if certain things happen, which is a good thing.  Otherwise, we can
+# get hidden bugs that are hard to discover.
+set -euo pipefail
+
+# Specifying a directory to save our screenshots.
+: "${SCROTDIR:=${HOME}/Pictures/Screenshots}"
+
+# Makes sure the directory exists.
+mkdir -p "${SCROTDIR}"
+
+getStamp() {
+  date '+%Y%m%d-%H%M%S'
+}
+
+MAIM_ARGS=""
+FILE_TYPE=""
+
+# Get monitors and their settings for maim
+DISPLAYS=$(xrandr --listactivemonitors | grep '+' | awk '{print $4, $3}' | awk -F'[x/+* ]' '{print $1,$2"x"$4"+"$6"+"$7}')
+
+# What modes do we have
+declare -a modes=(
+"Fullscreen"
+"Active window"
+"Selected region"
+)
+
+# Add monitor data
+IFS=$'\n'
+declare -A DISPLAY_MODE
+for i in ${DISPLAYS}; do
+  name=$(echo "${i}" | awk '{print $1}')
+  rest="$(echo "${i}" | awk '{print $2}')"
+  modes[${#modes[@]}]="${name}"
+  DISPLAY_MODE[${name}]="${rest}"
+done
+unset IFS
+
+target=$(printf '%s\n' "${modes[@]}" | rofi -dmenu -i -l 20 -p 'Take screenshot of:' "$@") || exit 1
+case "$target" in
+  'Fullscreen')
+    MAIM_ARGS="--delay 1"
+    FILE_TYPE="full"
+  ;;
+  'Active window')
+    active_window=$(xdotool getactivewindow)
+    MAIM_ARGS="-i ${active_window}"
+    FILE_TYPE="window"
+  ;;
+  'Selected region')
+    MAIM_ARGS="-s"
+    FILE_TYPE="region"
+  ;;
+  *)
+    MAIM_ARGS="--delay 1 -g ${DISPLAY_MODE[${target}]}"
+    FILE_TYPE="${target}"
+  ;;
+esac
+
+maim ${MAIM_ARGS} | tee "${SCROTDIR}/scrot-${FILE_TYPE}-$(getStamp).png" | xclip -selection clipboard -t image/png
+# declare -a destination=( "File" "Clipboard" "Both" )
+# dest=$(printf '%s\n' "${destination[@]}" | rofi -dmenu -i -l 20 -p 'Destination:' "$@" ) || exit 1
+# case "$dest" in
+#   'File')
+#     # shellcheck disable=SC2086
+#     maim ${MAIM_ARGS} "${SCROTDIR}/scrot-${FILE_TYPE}-$(getStamp).png"
+#   ;;
+#   'Clipboard')
+#     # shellcheck disable=SC2086
+#     maim ${MAIM_ARGS} | xclip -selection clipboard -t image/png
+#   ;;
+#   'Both')
+#     # shellcheck disable=SC2086
+#     maim ${MAIM_ARGS} | tee "${SCROTDIR}/scrot-${FILE_TYPE}-$(getStamp).png" | xclip -selection clipboard -t image/png
+#   ;;
+#   *)
+#     exit 1
+#   ;;
+# esac
+
+exit 0
