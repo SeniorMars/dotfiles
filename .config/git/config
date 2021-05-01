@@ -1,12 +1,42 @@
 [user]
-	email = email@outlook.com
-	name = name
+	email = jocelinc60@outlook.com
+	name = KarlWithK
 	username = KarlWithK
+	signingkey = 7C668A6D13D5729989FB126B183357B41320BB2B
 [core]
-	editor = vim
-	askpass = /usr/bin/ksshaskpass
-	excludesfile = /home/karl/.config/git/gitignore_global
+	pager = delta
+	editor = nvim
+	excludesfile = $XDG_CONFIG_HOME/git/gitignore_global
 [credential]
-	helper = cache --timeout=3600
+	helper = cache
 [diff]
-	tool = vimdiff
+	tool = nvimdiff
+[difftool "nvimdiff"]
+	cmd = nvim -d $LOCAL $REMOTE
+[merge]
+	tool = nfugitive
+[mergetool "nvimdiff4"]
+	cmd = nvim -d $LOCAL $BASE $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
+[mergetool "nfugitive"]
+	cmd = nvim -f -c "Gdiff" "$MERGED"
+[commit]
+	verbose = true
+	gpgSign = true
+[pull]
+	rebase = false
+[gpg]
+	program = /usr/bin/gpg
+[tag]
+	gpgSign = true
+[interactive]
+	diffFilter = delta --color-only
+[delta]
+	features = side-by-side line-numbers decorations
+	navigate = true
+	whitespace-error-style = 22 reverse
+[delta "decorations"]
+	commit-decoration-style = bold yellow box ul
+	file-style = bold yellow ul
+	file-decoration-style = none
+[interactive]
+	diffFilter = delta --color-only
