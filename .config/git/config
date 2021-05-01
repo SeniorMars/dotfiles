@@ -6,7 +6,7 @@
 [core]
 	pager = delta
 	editor = nvim
-	excludesfile = $XDG_CONFIG_HOME/git/gitignore_global
+	excludesfile = /home/karl/.config/git/gitignore_global
 [credential]
 	helper = cache
 [diff]
@@ -40,3 +40,5 @@
 	file-decoration-style = none
 [interactive]
 	diffFilter = delta --color-only
+[mergetool]
+	keepBackup = false
