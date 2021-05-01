@@ -4,10 +4,14 @@
   "python.linting.enabled": true,
   "python.linting.pylintArgs": ["--generate-members"],
   "python.analysis.useLibraryCodeForTypes": false,
+  "python.pythonPath": "python",
+  "python.venvPath": "/home/karl/Work/softdev/p3crabs/.venv/",
   "rust-analyzer.server.path": "/usr/bin/rust-analyzer",
   "rust-analyzer.inlayHints.typeHintsSeparator": "‣ ",
   "rust-analyzer.inlayHints.chainingHintsSeparator": "‣ ",
-  "rust-analyzer.updates.channel": "stable",
+  "rust-analyzer.hoverActions.enable": true,
+  "rust-analyzer.inlayHints.chainingHints": true,
+  "rust-analyzer.checkOnSave.command": "clippy",
   "rpc.workspaceElapsedTime": true,
   "rpc.detailsEditing": "Workspace: {workspace}",
   "rpc.lowerDetailsNotFound": "🦀",
@@ -18,8 +22,9 @@
   "java.completion.guessMethodArguments": true,
   "java.referencesCodeLens.enabled": true,
   "java.signatureHelp.enabled": true,
-  "coc.source.word.filetypes": ["vimwiki", "text", "tex", "md", "mail"],
+  "coc.source.word.filetypes": ["vimwiki", "text", "tex", "markdown", "mail"],
   "coc.source.emoji.filetypes": ["markdown", "mail", "vimwiki"],
+  "coc.preferences.formatOnSaveFiletypes": ["rust"],
   "suggest.completionItemKindLabels": {
     "keyword": "\uf1de",
     "variable": "\ue79b",
@@ -46,5 +51,9 @@
     "snippet": "\ue60b",
     "typeParameter": "\uf728",
     "default": "\uf29c"
-  }
+  },
+  "diagnostic.hintSign": "✹",
+  "diagnostic.errorSign": "✘",
+  "diagnostic.warningSign": "",
+  "diagnostic.infoSign": ""
 }

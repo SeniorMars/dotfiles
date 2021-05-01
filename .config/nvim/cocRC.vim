@@ -13,12 +13,7 @@ set shortmess+=c
 
 " Always show the signcolumn, otherwise it would shift the text each time
 " diagnostics appear/become resolved.
-if has("patch-8.1.1564")
-  " Recently vim can merge signcolumn and number column into one
-  set signcolumn=number
-else
-  set signcolumn=yes
-endif
+set signcolumn=number
 "
 " Use <C-j> for both expand and jump (make expand higher priority.)
 imap <C-j> <Plug>(coc-snippets-expand-jump)
@@ -77,10 +72,6 @@ endfunction
 " " Remap for rename current word
 nmap <c-k> <Plug>(coc-rename)
 
-" Remap for format selected region
-xmap <leader>a  <Plug>(coc-format-selected)
-nmap <leader>a  <Plug>(coc-format-selected)
-
 augroup mygroup
   autocmd!
   " Setup formatexpr specified filetype(s).
@@ -89,29 +80,14 @@ augroup mygroup
   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup end
 
-" " Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
-" xmap <leader>a  <Plug>(coc-codeaction-selected)
-" nmap <leader>a  <Plug>(coc-codeaction-selected)
-
+" Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
+" xmap <leader>aa  <Plug>(coc-codeaction-selected)
+" nmap <leader>aa  <Plug>(coc-codeaction-selected)
 " " Remap for do codeAction of current line
 " nmap <leader>ac  <Plug>(coc-codeaction)
+
 " Fix autofix problem of current line
 nmap <space>f  <Plug>(coc-fix-current)
-
-" Create mappings for function text object, requires document symbols feature of languageserver.
-xmap if <Plug>(coc-funcobj-i)
-omap if <Plug>(coc-funcobj-i)
-xmap af <Plug>(coc-funcobj-a)
-omap af <Plug>(coc-funcobj-a)
-xmap ic <Plug>(coc-classobj-i)
-omap ic <Plug>(coc-classobj-i)
-xmap ac <Plug>(coc-classobj-a)
-omap ac <Plug>(coc-classobj-a)
-
-
-" Use <C-d> for select selections ranges, needs server support, like: coc-tsserver, coc-python
-" nmap <silent> <C-d> <Plug>(coc-range-select)
-" xmap <silent> <C-d> <Plug>(coc-range-select)
 
 " Use `:Format` to format current buffer
 command! -nargs=0 Format :call CocAction('format')
@@ -133,25 +109,14 @@ if has('nvim-0.4.0') || has('patch-8.2.0750')
   vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
 endif
 
-
-" Remap for do codeAction of selected region
-function! s:cocActionsOpenFromSelected(type) abort
-  execute 'CocCommand actions.open ' . a:type
-endfunction
-xmap <silent> <space>v :<C-u>execute 'CocCommand actions.open ' . visualmode()<CR>
-nmap <silent> <space>, :<C-u>set operatorfunc=<SID>cocActionsOpenFromSelected<CR>g@
-
-" Using CocList
-" Show all diagnostics
-nnoremap <silent><nowait> <space>a  :<C-u>CocAction<cr>
-" Manage extensions
+nmap <silent><nowait> <space>a  <Plug>(coc-codeaction-cursor)
+nnoremap <silent><nowait> <space>s  :<C-u>CocAction<cr>
+nnoremap <silent><nowait> <space>d  :<C-u>CocList diagnostics<cr>
 nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
 " Show commands
 nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
 " Find symbol of current document
 nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
-" Search workspace symbols
-nnoremap <silent><nowait> <space>s  :<C-u>CocList -I symbols<cr>
 " Do default action for next item.
 nnoremap <silent><nowait> <space>n  :<C-u>CocNext<CR>
 " Do default action for previous item.
@@ -159,4 +124,4 @@ nnoremap <silent><nowait> <space>p  :<C-u>CocPrev<CR>
 " Resume latest coc list
 nnoremap <silent><nowait> <space>r  :<C-u>CocListResume<CR>
 " list
-nnoremap <silent><nowait> <leader><leader> :<C-u>CocList<cr>
+nnoremap <silent><nowait> <space>q :<C-u>CocList<Cr>
