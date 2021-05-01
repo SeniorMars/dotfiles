@@ -8,21 +8,16 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 	autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-"plugins!
 call plug#begin('~/.vim/plugged')
-Plug 'KarlWithK/gruvbox' "Theme fork
-Plug 'jiangmiao/auto-pairs' "auto completes [] and ()
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } "Fuzzy finder
-Plug 'junegunn/fzf.vim'
-Plug 'sheerun/vim-polyglot' "vim syntax for different languages
+Plug 'gruvbox-community/gruvbox'
+Plug 'jiangmiao/auto-pairs' "auto completes [] and () and makes life a bit easier
 Plug 'tpope/vim-commentary' "Comment stuff
 Plug 'tpope/vim-surround' "Allows me to change { to [ and what not
-Plug 'tpope/vim-fugitive' "Git control for vim
-Plug 'wellle/targets.vim' "adds more targets like [ or ,
-Plug 'Yggdroot/indentLine' "indent lines like atom. See python file for ex
+Plug 'wellle/targets.vim' "adds more targets like [ or , - lazy but useful 
+Plug 'junegunn/fzf.vim'
 call plug#end()
 
-"Global settings
+"Global options
 filetype plugin indent on
 syntax on "activates syntax highlighting among other things
 set background=dark "set hg group to dark
@@ -46,7 +41,6 @@ set undofile
 set laststatus=2
 set showcmd
 set guifont=MesloLGMDZ\ Nerd\ Font\ Bold\ 16
-source ~/.config/nvim/fzfConfig.vim
 
 "Key remapping
 let mapleader = ","
@@ -68,10 +62,10 @@ noremap <right> :vertical resize +2<CR>
 noremap <left> :vertical resize -2<CR>
 inoremap jk <Esc>
 vnoremap <leader>y "*y :let @+=@*<cr>
-map <leader>1 :bn<cr>
-map <leader>2 :bp<cr>
-map <leader>3 :retab<cr>
-map <leader>5 :setlocal spell spelllang=en_us<cr>
+nmap <leader>1 :bn<cr>
+nmap <leader>2 :bp<cr>
+nmap <leader>3 :retab<cr>
+nmap <leader>5 :call SpellToggle()<cr>
 
 "Extra
 let g:gruvbox_italic='1'
@@ -79,36 +73,14 @@ let g:gruvbox_contrast_dark='hard'
 let g:gruvbox_invert_selection='0'
 let g:gruvbox_termcolors='256'
 let g:AutoPairsFlyMode=0
+source ~/.config/nvim/fzfConfig.vim
+source ~/.config/nvim/myhighlights.vim
 colorscheme gruvbox "colorscheme
 
 if executable('rg')
         set grepprg=rg\ --vimgrep
         set grepformat^=%f:%l:%c:%m
 endif
-"Java Support!
-augroup javaSu
-	autocmd!
-	au Filetype java set makeprg=javac\ %
-	set errorformat=%A%f:%l:\ %m,%-Z%p^,%-C%.%#
-	au FileType java noremap <buffer> <leader>8 :make<cr>:copen<cr>
-	au FileType java noremap <buffer> <leader>6 :cprevious<cr>
-	au FileType java noremap <buffer> <leader>7 :cnext<cr>
-	au FileType java noremap <buffer> <leader>9 :!echo %\|awk -F. '{print $1}'\|xargs java<cr>
-augroup end
-
-"python Support!
-augroup pythonSupport "shuould go in after ftde but i'm lazy rn
-	autocmd!
-	au FileType python noremap <buffer> <leader>9 <esc>:w<cr>:!clear;python %<cr>
-	au FileType python set tabstop=4 softtabstop=4 shiftwidth=4 fileformat=unix textwidth=79
-	au BufWritePre *.py :%s/\s\+$//e
-augroup end
-
-"Full stack development should go in after
-augroup full
-	autocmd!
-	au FileType javascript,html,css set tabstop=2 softtabstop=2 shiftwidth=2
-augroup end
 
 
 " statusline
@@ -128,4 +100,32 @@ let g:currentmode={
        \ '!'  : 'Shell '
        \}
 
-set statusline=%{toupper(g:currentmode[mode()])}%{toupper(&spelllang)}\ %{toupper(fugitive#head())}\ %<%F%h%m%r%=%-5.(%l,%c%V%)\ %y
+set statusline=%{toupper(g:currentmode[mode()])}%{toupper(&spelllang)}\ %{b:gitbranch}%<%F%h%m%r%=%-5.(%l,%c%V%)\ %y
+
+function! StatuslineGitBranch()
+  let b:gitbranch=""
+  if &modifiable
+    try
+      let l:dir=expand('%:p:h')
+      let l:gitrevparse = system("git -C ".l:dir." rev-parse --abbrev-ref HEAD")
+      if !v:shell_error
+        let b:gitbranch="(".substitute(l:gitrevparse, '\n', '', 'g').") "
+      endif
+    catch
+    endtry
+  endif
+endfunction
+
+augroup GetGitBranch
+  autocmd!
+  autocmd VimEnter,WinEnter,BufEnter * call StatuslineGitBranch()
+augroup END
+
+
+function! SpellToggle()
+    if &spell
+      setlocal spell! spelllang&
+    else
+      setlocal spell spelllang=en_us
+    endif
+endfunction

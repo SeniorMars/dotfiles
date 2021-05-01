@@ -85,39 +85,39 @@ bindsym $mod+Shift+9 move container to workspace 9
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
-    # These bindings trigger as soon as you enter the resize mode
-    bindsym h resize shrink width 10 px or 10 ppt
-    bindsym j resize grow height 10 px or 10 ppt
-    bindsym k resize shrink height 10 px or 10 ppt
-    bindsym l resize grow width 10 px or 10 ppt
+# These bindings trigger as soon as you enter the resize mode
+        bindsym h resize shrink width 10 px or 10 ppt
+        bindsym j resize grow height 10 px or 10 ppt
+        bindsym k resize shrink height 10 px or 10 ppt
+        bindsym l resize grow width 10 px or 10 ppt
 
-    # back to normal: Enter or Escape
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
+# back to normal: Enter or Escape
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
 }
 
 bindsym $mod+r mode "resize"
 
 # credit to u/vikarjramun
 mode "swap" {
-    # switch to workspace
+# switch to workspace
     bindsym $mod+1 workspace $ws1
-    bindsym $mod+2 workspace $ws2
-    bindsym $mod+3 workspace $ws3
-    bindsym $mod+4 workspace $ws4
-    bindsym $mod+5 workspace $ws5
-    bindsym $mod+6 workspace $ws6
-    bindsym $mod+7 workspace $ws7
-    bindsym $mod+8 workspace $ws8
-    bindsym $mod+9 workspace $ws9
+        bindsym $mod+2 workspace $ws2
+        bindsym $mod+3 workspace $ws3
+        bindsym $mod+4 workspace $ws4
+        bindsym $mod+5 workspace $ws5
+        bindsym $mod+6 workspace $ws6
+        bindsym $mod+7 workspace $ws7
+        bindsym $mod+8 workspace $ws8
+        bindsym $mod+9 workspace $ws9
 
-    # change focus (without mod)
-    bindsym h focus left
-    bindsym j focus down
-    bindsym k focus up
-    bindsym l focus right
+# change focus (without mod)
+        bindsym h focus left
+        bindsym j focus down
+        bindsym k focus up
+        bindsym l focus right
 
-    bindsym Return swap container with mark "swapee"; unmark "swapee"; mode "default";
+        bindsym Return swap container with mark "swapee"; unmark "swapee"; mode "default";
     bindsym Escape unmark "swapee"; mode "default";
 }
 
@@ -126,22 +126,22 @@ bindsym $mod+Shift+s mark --add "swapee"; mode "swap"
 set $Locker betterlockscreen -l dim
 set $mode_system System (l) lock, (e) logout, (s) suspend, (r) reboot, (Shift+s) shutdown
 mode "$mode_system" {
-    bindsym l exec --no-startup-id $Locker, mode "default"
-    bindsym e exec --no-startup-id i3-msg exit, mode "default"
-    bindsym s exec --no-startup-id systemctl suspend, mode "default"
-    bindsym r exec --no-startup-id systemctl reboot, mode "default"
-    bindsym Shift+s exec --no-startup-id systemctl poweroff -i, mode "default"
+        bindsym l exec --no-startup-id $Locker, mode "default"
+        bindsym e exec --no-startup-id i3-msg exit, mode "default"
+        bindsym s exec --no-startup-id systemctl suspend, mode "default"
+        bindsym r exec --no-startup-id systemctl reboot, mode "default"
+        bindsym Shift+s exec --no-startup-id systemctl poweroff -i, mode "default"
 
-    # back to normal: Enter or Escape
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
+# back to normal: Enter or Escape
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
 }
 
 bindsym $mod+grave mode "$mode_system"
 
 #---( i3 stuff )---#
 bindsym $mod+Shift+r restart
-
+bindsym $mod+Shift+x exec --no-startup-id SUDO_ASKPASS=~/.local/bin/askpass-rofi rofi -show drun -run-command "sudo -A {cmd}" -show-icons -icon-theme "Papirus"
 # Pressing $mod and current workspace number takes you back to the previousle active workspace
 workspace_auto_back_and_forth yes
 
@@ -150,31 +150,89 @@ floating_modifier $mod
 
 #---( gaps )---#
 # basic settings
-gaps inner 10
-gaps outer 10
+gaps inner 0
+gaps outer 0
 
 bindsym $mod+z          gaps inner current set 0; gaps outer current set 0
 bindsym $mod+Shift+z    gaps inner current set 10; gaps outer current set 10
 
-bindsym $mod+w          gaps outer current plus 5
-bindsym $mod+Shift+w    gaps outer current minus 5
+# Press $mod+Shift+g to enter the gap mode. Choose o or i for modifying outer/inner gaps. Press one of + / - (in-/decrement for current workspace) or 0 (remove gaps for current workspace). If you also press Shift with these keys, the change will be global for all workspaces.
 
-bindsym $mod+o          gaps inner current plus 5
-bindsym $mod+Shift+o    gaps inner current minus 5
+set $mode_gaps Gaps: (o) outer, (i) inner
+set $mode_gaps_outer Outer Gaps: +|-|0 (local), Shift + +|-|0 (global)
+set $mode_gaps_inner Inner Gaps: +|-|0 (local), Shift + +|-|0 (global)
+bindsym $mod+Shift+g mode "$mode_gaps"
+
+mode "$mode_gaps" {
+        bindsym o      mode "$mode_gaps_outer"
+        bindsym i      mode "$mode_gaps_inner"
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+mode "$mode_gaps_inner" {
+        bindsym plus  gaps inner current plus 5
+        bindsym minus gaps inner current minus 5
+        bindsym 0     gaps inner current set 0
+
+        bindsym Shift+plus  gaps inner all plus 5
+        bindsym Shift+minus gaps inner all minus 5
+        bindsym Shift+0     gaps inner all set 0
+
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
+mode "$mode_gaps_outer" {
+        bindsym plus  gaps outer current plus 5
+        bindsym minus gaps outer current minus 5
+        bindsym 0     gaps outer current set 0
+
+        bindsym Shift+plus  gaps outer all plus 5
+        bindsym Shift+minus gaps outer all minus 5
+        bindsym Shift+0     gaps outer all set 0
+
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
 
 #---( startup items )---#
 
 exec_always --no-startup-id $XDG_CONFIG_HOME/polybar/launch.sh
-exec_always --no-startup-id picom -b -c
-exec_always --no-startup-id xwallpaper --zoom ~/Pictures/Wallpapers/alena-aenami-sundown.jpg
+exec_always --no-startup-id picom -b -o 0
+exec_always --no-startup-id xwallpaper --zoom ~/Pictures/Wallpapers/favorite.jpg
 
 # only exec once at startup
 exec --no-startup-id redshift-gtk
-exec --no-startup-id firefox
+# exec --no-startup-id firefox
 exec --no-startup-id ibus-daemon -drx
 exec --no-startup-id flameshot &
+exec --no-startup-id xset r rate 400 60 &
 exec --no-startup-id xidlehook --timer 300 "brightnessctl set 600" "brightnessctl set 1500"
 exec --no-startup-id xidlehook --not-when-audio --timer 360 "betterlockscreen -l dim" ''
+exec --no-startup-id $HOME/.config/i3/i3-master-stack/i3_master
+# exec --no-startup-id python3 $HOME/.config/i3/i3-swallow.py
+bindsym $mod+m nop swap master 
+# go to master node
+bindsym $mod+shift+m nop go master 
+# enable/disable master layout in current workspace
+bindsym $mod+alt+m nop master toggle 
+
+set $browser firefox
+set $class_zoom English (e), Softdev (s), Math (m), AI (a), Biology (b), Econ (w)
+mode "$class_zoom" {
+       bindsym e exec $browser "https://zoom.us/j/97597542471?pwd=SUV1UE9GbytpV0IwK2syS0pNMGphdz09" &, mode "default"
+       bindsym s exec $browser "https://us02web.zoom.us/j/82194029197?pwd=MnRjbmJGa1luUEx3ck5RNmJ1Q3FPUT09" &, mode "default"
+       bindsym m exec $browser "https://us02web.zoom.us/j/81552693280?pwd=dkVmQWNwTEJ6QWNyVm45MGFSa04xQT09" &, mode "default"
+       bindsym a exec $browser "https://us02web.zoom.us/w/83145238059?tk=aoTWxzkFeqrBGc4Rp6AdVClYqg_9yYAjE-XWyDwKOLk.DQIAAAATW9emKxZoUGxYNjBnT1RsaUtLc2VGQ0tfcl9BAAAAAAAAAAAAAAAAAAAAAAAAAAAA&pwd=dmxSWG92SExTQU5QaDNEd2xCeXNCZz09" &, mode "default"
+       bindsym b exec $browser "https://classroom.google.com/u/1/c/MTYzNTk2ODA0OTEw" &, mode "default"
+       bindsym w exec $browser "https://classroom.google.com/u/1/c/MjUyODk1MjIyODgw" &, mode "default"
+
+      bindsym Return mode "default"
+      bindsym Escape mode "default"
+}
+
+bindsym $mod+s mode "$class_zoom"
+
 
 #---( colors table )---#
 
@@ -198,6 +256,9 @@ for_window [class="java-lang-Thread" title="win0"] floating enable border none
 
 # Float by name
 for_window [title="Install user style"] floating enable
+for_window [title="^zoom$"] floating enable
+for_window [class="display"] floating enable
+for_window [class="Display"] floating enable
 
 # Float by type
 for_window [instance="fontpreview"] floating enable

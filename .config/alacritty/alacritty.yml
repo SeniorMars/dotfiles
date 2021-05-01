@@ -1,53 +1,82 @@
-# Colors (My edition of Gruvbox dark)
 colors:
   primary:
-    background: '#10151a'
-    foreground: '#ebdbb2'
+    background: "#0E1018"
+    foreground: "#ebdbb2"
 
   normal:
-    black:   '#282828'
-    red:     '#cc241d'
-    green:   '#98971a'
-    yellow:  '#d79921'
-    blue:    '#458588'
-    magenta: '#b16286'
-    cyan:    '#689d6a'
-    white:   '#dfaf87'
-
+    black: "#282828"
+    red: "#cc241d"
+    green: "#98971a"
+    yellow: "#d79921"
+    blue: "#458588"
+    magenta: "#b16286"
+    cyan: "#689d6a"
+    white: "#dfaf87"
 
   bright:
-    black:   '#928374'
-    red:     '#fb4934'
-    green:   '#b8bb26'
-    yellow:  '#fabd2f'
-    blue:    '#83a598'
-    magenta: '#d3869b'
-    cyan:    '#8ec07c'
-    white:   '#ebdbb2'
+    black: "#928374"
+    red: "#fb4934"
+    green: "#b8bb26"
+    yellow: "#fabd2f"
+    blue: "#83a598"
+    magenta: "#d3869b"
+    cyan: "#8ec07c"
+    white: "#ebdbb2"
 
+# draw_bold_text_with_bright_colors: true
+# Some other nice colors
+# let s:gui00 = "#304357" " ANSI Black
+# let s:gui01 = "#af8787" " ANSI Red
+# let s:gui02 = "#dfaf87" " ANSI Green
+# let s:gui03 = "#878787" " ANSI Yellow
+# let s:gui04 = "#af5f5f" " ANSI Blue
+# let s:gui05 = "#875f5f" " ANSI Magenta
+# let s:gui06 = "#87afaf" " ANSI Cyan
+# let s:gui07 = "#ffdf87" " ANSI White
+# let s:gui08 = "#10151a"
+# let s:gui09 = "#af1600"
+# let s:gui0A = "#af875f"
+# let s:gui0B = "#878787"
+# let s:gui0C = "#af5f00"
+# let s:gui0D = "#5f5f87"
+# let s:gui0E = "#afd7d7"
+# let s:gui0F = "#dfdfaf"
 
 font:
-  size: 11.5
+  size: 8.75
+  # size: 10
   # The normal (roman) font face to use.
   normal:
-    family: Meslo LG M DZ for Powerline
+    family: MesloLGMDZ Nerd Font
     # Style can be specified to pick a specific face.
     style: Bold
 
   # The bold font face
   bold:
-    family: Meslo LG M DZ for Powerline
+    family: MesloLGMDZ Nerd Font
     # Style can be specified to pick a specific face.
     style: Bold
 
   # The italic font face
   italic:
-    family: Meslo LG M DZ for Powerline
+    family: MesloLGMDZ Nerd Font
     # Style can be specified to pick a specific face.
     style: Bold Italic
 
+# background_opacity: 0.5
+scrolling:
+  # Maximum number of lines in the scrollback buffer.
+  # Specifying '0' will disable scrolling.
+  history: 10000
+
+  # Number of lines the viewport will move for every line scrolled when
+  # scrollback is enabled (history > 0).
+  multiplier: 3
+
+env:
+  TERM: xterm-256color
 
 key_bindings:
-  - { key: Y,     mods: Alt, action: Copy            }
-  - { key: P,     mods: Alt, action: Paste            }
-  - { key: Return,   mods: Control|Shift, action: SpawnNewInstance }
+  - { key: Y, mods: Alt, action: Copy }
+  - { key: P, mods: Alt, action: Paste }
+  - { key: Return, mods: Control|Shift, action: SpawnNewInstance }
