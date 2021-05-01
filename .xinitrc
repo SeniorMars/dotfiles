@@ -1,4 +1,5 @@
-/usr/lib/notification-daemon-1.0/notification-daemon &
+systemctl --user import-environment DISPLAY
+sxhkd &
 dunst &
-xss-lock betterlockscreen -l &
+unclutter &
 exec i3

@@ -1,21 +1,29 @@
-# personal variables
+# personal variables school
 export BROWSER="firefox" 
 export COLORTERM="truecolor"
+export TERM="xterm-256color"
 export EDITOR="nvim"
 export VISUAL="nvim"
-export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -g ""'
+export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+export FZF_ALT_C_COMMAND="$FZF_CTRL_T_COMMAND"
+export FZF_CTRL_T_COMMAND="fd -t d --hidden --follow --exclude \".git\" . $HOME"
 export READER="zathura"
 export TERMBROWSER="lynx"
 export TERMINAL="alacritty"
-export TERM="xterm-256color"
 
 # enviroment variables
+export GPG_TTY=$(tty)
+export WINEPREFIX=~/.local/share/wine
+export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 export GREP_COLOR='1;33'
 export LESSHISTFILE="-"
+export CM_LAUNCHER=rofi
 export WGETRC="$HOME/.config/wget/wgetrc"
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_DATA_HOME="$HOME/.local/share"
+export ZSH_TMUX_CONFIG="$XDG_CONFIG_HOME"/tmux/tmux.conf
+export ZSH=$XDG_CONFIG_HOME/zsh
 export GTK_IM_MODULE=ibus
 export XMODIFIERS=@im=ibus
 export QT_IM_MODULE=ibus
@@ -35,22 +43,24 @@ export IPYTHONDIR="$XDG_CONFIG_HOME"/ipython
 export PLTUSERHOME="$XDG_DATA_HOME"/racket
 export ZDOTDIR="$XDG_CONFIG_HOME"/zsh
 export INPUTRC="$XDG_CONFIG_HOME"/readline/inputrc
+export NPM_HOME="$XDG_DATA_HOME/npm"
+export NVM_DIR="$XDG_DATA_HOME/nvm"
+export PASSWORD_STORE_DIR="$XDG_DATA_HOME"/password-store
 
 # man
 export LESS_TERMCAP_mb="$(printf '%b' '[1;31m')"
-export LESS_TERMCAP_md="$(printf '%b' '[1;36m')"
+export LESS_TERMCAP_md="$(printf '%b' '[01;38;5;9m')"
 export LESS_TERMCAP_me="$(printf '%b' '[0m')"
-export LESS_TERMCAP_so="$(printf '%b' '[01;44;33m')"
 export LESS_TERMCAP_se="$(printf '%b' '[0m')"
-export LESS_TERMCAP_us="$(printf '%b' '[1;32m')"
+export LESS_TERMCAP_so="$(printf '%b' '[38;5;7m')"
+export LESS_TERMCAP_se="$(printf '%b' '[0m')"
+export LESS_TERMCAP_us="$(printf '%b' '[04;38;5;10m')"
 export LESS_TERMCAP_ue="$(printf '%b' '[0m')"
 
 # path
-export PATH="$PATH:$HOME/.local/bin:$GOPATH/bin:$GEM_HOME/ruby/2.7.0/bin:$GEM_HOME/bin:$CARGO_HOME/bin"
+export PATH="$PATH:$HOME/.local/bin:$GOPATH/bin:$GEM_HOME/ruby/2.7.0/bin:$GEM_HOME/bin:$CARGO_HOME/bin:$NPM_HOME/bin:" 
 
 # startx
 if systemctl -q is-active graphical.target && [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
-  exec startx
+  ssh-agent startx 
 fi
-
-[ -f ~/.config/zsh/.zshrc ] && source ~/.config/zsh/.zshrc

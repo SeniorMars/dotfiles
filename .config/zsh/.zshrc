@@ -1,40 +1,51 @@
-[[ $- != *i* ]] && return
-
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.config/zsh/.zshrc.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+[[ $- != *i* ]] && return
+
 # exports
-export ZSH="/home/karl/.config/zsh/"
+export ZSH=$XDG_CONFIG_HOME/zsh
 export UPDATE_ZSH_DAYS=30
-export ZLE_RPROMPT_INDENT=0
-export KEYTIMEOUT=1
+export ZSH_AUTOSUGGEST_USE_ASYNC=0
+ZVM_READKEY_ENGINE=$ZVM_READKEY_ENGINE_ZLE
+ZVM_VI_INSERT_ESCAPE_BINDKEY=jk
+ZVM_CURSOR_STYLE_ENABLED=false
+ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Plugins
-plugins=(git archlinux common-aliases sudo vi-mode zsh-syntax-highlighting you-should-use) 
+plugins=(git zsh-vi-mode tmux rust rustup systemadmin common-aliases you-should-use)
 source $ZSH/oh-my-zsh.sh
+
+# load fzf binds
+zvm_after_init_commands+=('[ -f $ZSH/fzf.zsh ] && source $ZSH/fzf.zsh')
+
+# zoxide
+eval "$(zoxide init zsh)"
+
+# auto-suggestion
+source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+# syntax highlighting
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# To customize prompt, run `p10k configure` or edit ~/.config/zsh/.p10k.zsh.
+[[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh
 
 # User configuration
 [ -f ~/.config/profile/aliases ] && source $HOME/.config/profile/aliases
-# source $HOME/.config/zsh/custom/agnosterBetter.zsh # another theme I had
-[ -f ~/.config/zsh/custom/fzf.zsh ] && source ~/.config/zsh/custom/fzf.zsh
-
-# p10k 
-source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
-[[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh
+# source $HOME/.config/profile/agnosterBetter.zsh # another theme I had
 
 # Other settings
-HISTFILE=~/.local/share/history
+HISTFILE=$XDG_DATA_HOME/history
 HISTSIZE=1000
 SAVEHIST=1000
-setopt autocd extendedglob GLOB_COMPLETE
-unsetopt beep
+setopt AUTOCD EXTENDEDGLOB GLOB_COMPLETE COMPLETE_ALIASES HIST_IGNORE_ALL_DUPS
+unsetopt beep 
 autoload -U compinit
-zstyle ':completion:*' menu select
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
-_comp_options+=(globdots)	
 compinit
+_comp_options+=(globdots)
 
 # vi keys when tab complete
 bindkey -M menuselect 'h' vi-backward-char
@@ -42,3 +53,32 @@ bindkey -M menuselect 'k' vi-up-line-or-history
 bindkey -M menuselect 'l' vi-forward-char
 bindkey -M menuselect 'j' vi-down-line-or-history
 bindkey -v '^?' backward-delete-char
+
+# ranger
+function ranger-cd {
+    tempfile="$(mktemp -t tmp.XXXXXX)"
+    /usr/bin/ranger --choosedir="$tempfile" "${@:-$(pwd)}"
+    test -f "$tempfile" &&
+    if [ "$(cat -- "$tempfile")" != "$(echo -n `pwd`)" ]; then
+        cd -- "$(cat "$tempfile")"
+    fi
+    rm -f -- "$tempfile"
+}
+
+function source-asdf {
+    if [ -f /opt/asdf-vm/asdf.sh ]; then
+      export ASDF_DIR=/opt/asdf-vm
+      export ASDF_CONFIG_FILE="$XDG_CONFIG_HOME"/asdf/asdfrc
+      export ASDF_DATA_DIR="$XDG_DATA_HOME"/asdf
+      export ASDF_COMPLETIONS=/usr/share/zsh/site-functions/_asdf
+      source $ASDF_DIR/asdf.sh
+    fi
+}
+
+bindkey -s '^O' 'ranger-cd\n'
+bindkey -s '^z' 'fg\n'
+bindkey -s '^q' 'source-asdf\n'
+bindkey '^ ' forward-char
+bindkey -M vicmd 'L' edit-command-line
+setxkbmap -option caps:escape
+# source /home/karl/.config/broot/launcher/bash/br
