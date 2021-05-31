@@ -1,57 +1,84 @@
 " firenvim
-if exists('g:started_by_firenvim')
-  runtime fnvim.vim
+" if exists('g:started_by_firenvim')
+"   runtime fnvim.vim
+"   finish
+" endif
+
+" neovim
+if exists('g:vscode')
+  let g:coc_start_at_startup=0
   finish
 endif
 
 " Disable settings
-let g:polyglot_disabled = ['javascript', 'dart', 'css', 'java', 'c', 'typescript', 'python', 'cpp', 'rs', 'bash', 'zsh', 'html', 'lua', 'ruby', 'ocaml', 'haskell', 'go', 'yaml', 'json'] "treesitter
+let g:polyglot_disabled = ['javascript', 'css', 'java', 'c', 'typescript', 'python', 'cpp', 'rs', 'bash', 'zsh', 'html', 'lua', 'ruby', 'ocaml', 'haskell', 'go', 'yaml', 'json', 'rust'] "treesitter
 
-" plugins!
-call plug#begin('~/.vim/plugged') "I use vim too so it's better to keep them in one place
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
-Plug 'nvim-treesitter/nvim-treesitter-textobjects'
-Plug 'nvim-treesitter/playground'
-Plug 'JoosepAlviste/nvim-ts-context-commentstring'
-Plug 'neoclide/coc.nvim', {'branch': 'release', 'do': ':CocUpdate'}
-Plug 'gruvbox-community/gruvbox'
-Plug 'junegunn/fzf.vim'
-Plug 'kevinhwang91/nvim-bqf'
-Plug 'mbbill/undotree', {'on': 'UndotreeToggle'} "undo tree to see recent changed
-Plug 'honza/vim-snippets' " Snippets are separated from the engine
-Plug 'tpope/vim-commentary' "Comment stuff
-Plug 'tpope/vim-fugitive' "Git control for vim
-Plug 'tpope/vim-repeat' "repeats
-Plug 'tpope/vim-surround' "Allows me to change { to [ and what not
-Plug 'tpope/vim-vinegar'
-Plug 'tpope/vim-rhubarb'
-Plug 'mhinz/vim-grepper', { 'on': ['Grepper', '<plug>(GrepperOperator)'] }
-Plug 'sheerun/vim-polyglot' "vim syntax for different languages
-Plug 'ludovicchabant/vim-gutentags' "Tags Generate
+lua <<EOF
+-- Install packer
+local execute = vim.api.nvim_command
 
-Plug 'norcalli/nvim-colorizer.lua'
-Plug 'lukas-reineke/indent-blankline.nvim', {'branch': 'lua'}
-Plug 'jiangmiao/auto-pairs'
-Plug 'wellle/targets.vim' "adds more targets like [ or ,
-Plug 'Valloric/MatchTagAlways', {'for':  ['html']}
-Plug 'editorconfig/editorconfig-vim'
+local install_path = vim.fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
 
-Plug 'lervag/vimtex', {'for': ['tex']}
-Plug 'vimwiki/vimwiki' "To take notes better - testing this with vimtex
-Plug 'junegunn/goyo.vim' "Distraction free
-Plug 'junegunn/limelight.vim' "color free
-Plug 'mattn/webapi-vim'
-Plug 'dpelle/vim-LanguageTool'
-Plug 'turbio/bracey.vim', {'for': ['html', 'javascript', 'css']} "live reloading
-Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
-Plug 'kristijanhusak/vim-carbon-now-sh'
+if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
+  execute('!git clone https://github.com/wbthomason/packer.nvim '.. install_path)
+end
 
-" Plug 'puremourning/vimspector' " , { 'do': 'python3 install_gadget.py --all'}
-" Plug 'TimUntersberger/neogit'
-" Plug 'uiiaoo/java-syntax.vim', {'for': ['java']} "better java syntax
-" Plug 'yuezk/vim-js', {'for': ['javascript']} "javascript
-" Plug 'tweekmonster/startuptime.vim'
-call plug#end()
+vim.api.nvim_exec([[
+  augroup Packer
+    autocmd!
+    autocmd BufWritePost init.vim PackerCompile
+  augroup end
+]], false)
+
+local use = require('packer').use
+require('packer').startup(function()
+  use 'wbthomason/packer.nvim' -- Package manager
+  use { 'neoclide/coc.nvim', branch = 'release', run = ':CocUpdate' }
+  -- use { 'glacambre/firenvim', run = function() vim.fn['firenvim#install'](0) end }
+  use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
+  use {'nvim-treesitter/playground', cmd="TSPlaygroundToggle"}
+  use 'nvim-treesitter/nvim-treesitter-textobjects'
+  use 'JoosepAlviste/nvim-ts-context-commentstring'
+  use 'gruvbox-community/gruvbox'
+  use 'junegunn/fzf.vim'
+  use 'kevinhwang91/nvim-bqf'
+  use {'mbbill/undotree', opt = true, cmd = 'UndotreeToggle'}
+  use 'honza/vim-snippets' -- Snippets are separated from the engine
+  use 'tpope/vim-commentary' -- Comment stuff
+  use 'tpope/vim-fugitive' -- Git control for vim
+  use 'tpope/vim-repeat' -- repeats
+  use 'tpope/vim-surround' -- Allows me to change { to [ and what not
+  use 'tpope/vim-vinegar'
+  use 'tpope/vim-rhubarb'
+  -- use 'tpope/vim-obsession'
+  use 'mhinz/vim-grepper'
+  use 'sheerun/vim-polyglot' -- vim syntax for different languages
+  use 'ludovicchabant/vim-gutentags' -- Tags Generate
+  use 'skywind3000/asyncrun.vim'
+
+  use { 'lukas-reineke/indent-blankline.nvim', branch = 'lua' }
+  use {'norcalli/nvim-colorizer.lua', config = function() require'colorizer'.setup() end}
+  use 'cohama/lexima.vim'
+  use 'wellle/targets.vim' -- adds more targets like [ or ,
+  use {'Valloric/MatchTagAlways', ft =  { 'html' }}
+  use 'editorconfig/editorconfig-vim'
+  use {'puremourning/vimspector',  run = 'python3 install_gadget.py --all'}
+
+  use 'mattn/webapi-vim'
+  use {'lervag/vimtex', ft = { 'tex' }}
+  use {'vimwiki/vimwiki', cmd = 'VimwikiIndex'} -- To take notes better - testing this with vimtex
+  use {'junegunn/goyo.vim', cmd="Goyo"} -- Distraction free
+  use {'junegunn/limelight.vim', cmd="Limelight"} -- color free
+  use 'vigoux/LanguageTool.nvim'
+  use {'turbio/bracey.vim', ft = { 'html', 'javascript', 'css' }, run = "npm install --prefix server"} -- live reloading
+
+  -- use 'TimUntersberger/neogit'
+  -- use {'uiiaoo/java-syntax.vim', ft = { 'java' }} -- better java syntax
+  -- use {'yuezk/vim-js', ft = { 'javascript' }} -- javascript
+  -- use 'kristijanhusak/vim-carbon-now-sh'
+  -- use 'tweekmonster/startuptime.vim'
+end)
+EOF
 
 "Global options
 set conceallevel=2 "Allows me to conceal latex syntax if not on line
@@ -76,12 +103,13 @@ set colorcolumn=99999
 set dictionary=~/.config/nvim/10k.txt
 set complete+=k
 set diffopt+=internal,algorithm:patience
+set guifont=MesloLGMDZ\ Nerd\ Font\ Bold\ 16
+set breakindent
+set mouse=a
 
 runtime cocRC.vim "cocRC rec settings
 runtime fzfConfig.vim "fzf settings
 runtime myhighlights.vim
-" runtime telescope.vim
-" runtime extra.vim
 
 if executable('rg')
   set grepprg=rg\ --vimgrep
@@ -92,7 +120,9 @@ endif
 let mapleader = ","
 
 " General
+nmap <a-x> <nop>
 nmap gx yiW:!xdg-open "<C-r>"" & <CR>
+nmap <Leader>ww :VimwikiIndex<cr>
 nmap <Leader>ll <Plug>VimwikiFollowLink
 nmap <Leader>ln <Plug>VimwikiNextLink
 nmap <Leader>lp <Plug>VimwikiPrevLink
@@ -102,7 +132,7 @@ nmap <leader>cn :cnext<cr>
 nmap <leader>cp :cprevious<cr>
 nmap <leader>P "+gP
 nmap <leader>p "+gp
-nmap <leader>r :!ctags .<cr>
+nmap <leader>r :AsyncRun ctags .<cr>
 nmap <leader>sv :source $MYVIMRC<cr>
 nmap <leader>sr :%s/\<<C-r><C-w>\>//g<Left><Left>
 nmap <leader>u :UndotreeToggle<cr>
@@ -146,8 +176,8 @@ nmap <leader>fl :BLines<space>
 nmap <leader>fS :Rg<space>
 nnoremap <leader>fs :Grepper -tool rg<cr>
 nnoremap <leader>* :Grepper -tool rg -cword -noprompt<cr>
-nmap gs <plug>(GrepperOperator)
-xmap gs <plug>(GrepperOperator)
+nmap gs  <plug>(GrepperOperator)
+xmap gs  <plug>(GrepperOperator)
 
 " fugitive
 nmap <silent><leader>gg :Git<cr>
@@ -157,17 +187,16 @@ nmap <silent><leader>ge :Gedit<cr>
 nmap <silent><leader>gr :Gread<cr>
 nmap <silent><leader>gw :Gwrite<cr><cr>
 nmap <silent><leader>gb :GBrowse<cr><cr>
+nmap <silent><leader>gp :AsyncRun git push<cr>
 nmap <silent><leader>go :Git checkout<space>
 nmap <silent><leader>gf :Commits<cr>
 
 "Extra
-let g:AutoPairsFlyMode='0' "Auto pairs correction
 let g:gruvbox_contrast_dark='hard' "dark mode
 let g:gruvbox_italic=1
 let g:gruvbox_invert_selection='0' "No highlight
 let g:indent_blankline_char = '¦'
-" let g:indent_blankline_use_treesitter = v:true
-" let g:indent_blankline_char_highlight = 'GruvboxBlue'
+let g:indent_blankline_buftype_exclude = ['terminal', 'nofile']
 colorscheme gruvbox "colorscheme
 
 " Vimtex config
@@ -197,6 +226,9 @@ let g:gutentags_generate_on_missing = '1'
 let g:gutentags_generate_on_write = '1'
 
 " Other settings
+let g:lexima_enable_basic_rules=1
+let g:lexima_enable_newline_rules=1
+let g:lexima_enable_endwise_rules=1
 " let g:vimwiki_global_ext=0 - markdown is sometimes rendered as .wiki
 " let g:vimwiki_table_mappings=0 "so I can tab complete
 let g:vimwiki_list = [{'path': '~/Work/vimwiki'}]
@@ -209,11 +241,12 @@ let g:netrw_browse_split = 4
 let g:netrw_liststyle = 3
 let g:netrw_winsize = -28
 let g:netrw_browsex_viewer= "xdg-open"
-let g:languagetool_cmd='/usr/bin/languagetool'
-let g:languagetool_lang='en-US'
+let g:languagetool_server_command='/usr/bin/languagetool'
+let g:languagetool_server_jar='/usr/share/java/languagetool/languagetool.jar'
 let g:termdebug_popup = 0
 let g:termdebug_wide = 163
 let g:mta_use_matchparen_group = 1
+let g:languagetool_lang='en-US'
 " let g:grammarous#languagetool_cmd = 'languagetool'
 
 "Commands
@@ -342,18 +375,18 @@ set statusline+=\ %{toupper(Fugitive())} " branch name
 set statusline+=%<%{FilePath()} " full path filename
 set statusline+=%h%m%r%w " help flag, modified, readonly, and preview
 set statusline+=%= " right align remainder
+set statusline+=\[%{BufTotal()}\] " current buffer number
 set statusline+=\[%-3.(%l,%c%V%)\] " line number, column number
 set statusline+=\[%{WordCount()}\] " word count
-set statusline+=\[%{BufTotal()}\] " current buffer number / total buffers
 set statusline+=\[%{strlen(&ft)?&ft[0].&ft[1:]:'None'}\] " file type
 
 " Tree-sitter simple setup
 lua <<EOF
-require'colorizer'.setup()
 require'nvim-treesitter.configs'.setup {
   ensure_installed = "maintained",
   highlight = {
     enable = true,
+    -- additional_vim_regex_highlighting = true, -- <= THIS LINE is the magic!
     disable = {"latex"},
   },
   playground = {
@@ -373,10 +406,13 @@ require'nvim-treesitter.configs'.setup {
   },
   indent = {
       enable = true,
-      disable = {'html', 'python'},
+      disable = {'python'},
   },
   context_commentstring = {
-    enable = true
+    enable = true,
+    config = {
+      lua = '-- %s'
+    }
   },
   textobjects = {
     move = {
