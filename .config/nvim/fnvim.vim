@@ -1,11 +1,29 @@
-call plug#begin('~/.vim/plugged') "I use vim too so it's better to keep them in one place
-Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'KarlWithK/gruvbox' "Theme
-Plug 'tpope/vim-surround' "Allows me to change { to [ and what not
-Plug 'jiangmiao/auto-pairs'
-Plug 'dpelle/vim-LanguageTool'
-call plug#end()
+lua <<EOF
+-- Install packer
+local execute = vim.api.nvim_command
+
+local install_path = vim.fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
+
+if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
+  execute('!git clone https://github.com/wbthomason/packer.nvim '.. install_path)
+end
+
+vim.api.nvim_exec([[
+  augroup Packer
+    autocmd!
+    autocmd BufWritePost fnvim.vim PackerCompile
+  augroup end
+]], false)
+
+local use = require('packer').use
+require('packer').startup(function()
+  use 'wbthomason/packer.nvim' -- Package manager
+  use { 'glacambre/firenvim', run = function() vim.fn['firenvim#install'](0) end }
+  use { 'neoclide/coc.nvim', branch = 'release', run = ':CocUpdate' }
+  use 'gruvbox-community/gruvbox'
+  use 'wellle/targets.vim' -- adds more targets like [ or ,
+end)
+EOF
 
 set laststatus=0
 set noshowmode "make the current mode label disappear - airline has this

@@ -67,7 +67,7 @@ function! s:show_documentation()
 endfunction
 
 " Highlight symbol under cursor on CursorHold
-" autocmd CursorHold * silent call CocActionAsync('highlight')
+autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " " Remap for rename current word
 nmap <c-k> <Plug>(coc-rename)
@@ -110,6 +110,7 @@ if has('nvim-0.4.0') || has('patch-8.2.0750')
 endif
 
 nmap <silent><nowait> <space>a  <Plug>(coc-codeaction-cursor)
+nmap <silent><nowait> <space>g <Plug>(coc-codelens-action)
 nnoremap <silent><nowait> <space>s  :<C-u>CocAction<cr>
 nnoremap <silent><nowait> <space>d  :<C-u>CocList diagnostics<cr>
 nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
