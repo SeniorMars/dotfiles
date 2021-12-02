@@ -20,8 +20,8 @@ vim.api.nvim_exec([[
 
 local use = require('packer').use
 require('packer').startup(function()
-  use 'nathom/filetype.nvim'
   use 'lewis6991/impatient.nvim'
+  use 'nathom/filetype.nvim'
   use 'wbthomason/packer.nvim' -- Package manager
   use {
     'nvim-telescope/telescope.nvim',
@@ -29,12 +29,13 @@ require('packer').startup(function()
   }
   use { 'neoclide/coc.nvim', branch = 'release', run = ':CocUpdate' }
   use { 'glacambre/firenvim', run = function() vim.fn['firenvim#install'](0) end }
-  use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
+  use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'}
   use {'nvim-treesitter/playground', cmd="TSPlaygroundToggle"}
   use 'nvim-treesitter/nvim-treesitter-textobjects'
-  use 'numToStr/Comment.nvim'
   use 'JoosepAlviste/nvim-ts-context-commentstring'
+  use 'p00f/nvim-ts-rainbow'
   use 'windwp/nvim-ts-autotag'
+  use 'numToStr/Comment.nvim'
   use 'rafcamlet/coc-nvim-lua'
   use 'gruvbox-community/gruvbox'
   use 'kevinhwang91/nvim-bqf'
@@ -44,49 +45,42 @@ require('packer').startup(function()
   use 'tpope/vim-fugitive' -- Git control for vim
   use 'tpope/vim-repeat' -- repeats
   use 'tpope/vim-surround' -- Allows me to change { to [ and what not
-  use 'tpope/vim-vinegar'
   use 'tpope/vim-rhubarb'
   use 'mhinz/vim-grepper'
   use 'sheerun/vim-polyglot' -- vim syntax for different languages
   use 'mboughaba/i3config.vim'
-  use 'ludovicchabant/vim-gutentags' -- Tags Generate
   use 'skywind3000/asyncrun.vim'
   use {'gelguy/wilder.nvim',  run=':UpdateRemotePlugins'}
 
   use 'lukas-reineke/indent-blankline.nvim'
+  use 'windwp/nvim-autopairs'
   use {'norcalli/nvim-colorizer.lua', config = function() require'colorizer'.setup() end}
-  use 'cohama/lexima.vim'
   use 'wellle/targets.vim' -- adds more targets like [ or ,
   use {'Valloric/MatchTagAlways', ft =  { 'html' }}
   use 'editorconfig/editorconfig-vim'
   use {'puremourning/vimspector',  run = 'python3 install_gadget.py --all'}
+  use 'p00f/godbolt.nvim'
 
   use {'vimwiki/vimwiki'} -- To take notes better - testing this with vimtex
   use 'lervag/vimtex'
   use 'vigoux/LanguageTool.nvim'
   use {'turbio/bracey.vim', ft = { 'html', 'javascript', 'css' }, run = "npm install --prefix server"} -- live reloading
+  -- use 'tweekmonster/startuptime.vim'
   use {
   'chipsenkbeil/distant.nvim',
   config = function()
     require('distant').setup {
-      ['*'] = require('distant.settings').chip_default()
+        ['*'] = vim.tbl_deep_extend('force', require('distant.settings').chip_default(), {
+            mode = 'ssh',
+        })
     }
     end
   }
-
-  -- use 'mattn/webapi-vim'
-  -- use 'TimUntersberger/neogit'
-  -- use 'tweekmonster/startuptime.vim'
-  -- use 'kristijanhusak/vim-carbon-now-sh'
-  -- use { "folke/twilight.nvim", config = function() require("twilight").setup() end}
-  -- use 'Pocco81/TrueZen.nvim'
-  -- use 'tpope/vim-obsession'
 end)
 EOF
 
 "Global options
 set conceallevel=2 "Allows me to conceal latex syntax if not on line
-set hidden "work with multiple unsaved buffers.
 set ignorecase "search case
 set smartcase "searching matters if Capital
 set inccommand=split "for incsearch while sub
@@ -105,7 +99,6 @@ set foldexpr=nvim_treesitter#foldexpr()
 set scrolloff=8
 set colorcolumn=99999
 set dictionary=~/.config/nvim/10k.txt
-set complete+=k
 set diffopt+=internal,algorithm:patience
 set guifont=MesloLGMDZ\ Nerd\ Font\ Bold\ 16
 set breakindent
@@ -115,15 +108,8 @@ set breakindent
 set breakindentopt=shift:2
 set showbreak=↳
 
-runtime cocRC.vim "cocRC rec settings
+runtime cocRC.vim " cocRC rec settings
 runtime myhighlights.vim
-
-set grepformat=%f:%l:%c:%m,%f:%l:%m
-if executable('vimgrep')
-  set grepprg=vimgrep
-elseif executable('rg')
-  set grepprg=rg\ --vimgrep\ --hidden\ --follow\ --max-columns=1000\ --case-sensitive
-endif
 
 " Key remapping
 let mapleader = ","
@@ -144,7 +130,6 @@ nmap <leader>cn :cnext<cr>
 nmap <leader>cp :cprevious<cr>
 nmap <leader>P "+gP
 nmap <leader>p "+gp
-nmap <leader>r :!tectonic % && zathura <C-r>=expand('%:r')<cr>.pdf &<cr>
 nmap <leader>sv :source $MYVIMRC<cr>
 nmap <leader>sr :%s/\<<C-r><C-w>\>//g<Left><Left>
 nmap <leader>u :UndotreeToggle<cr>
@@ -171,7 +156,7 @@ nnoremap <space>k <C-w>k
 nnoremap <space>l <C-w>l
 nmap <silent> <space><space> :sp <bar> :term<cr>
 nmap <silent> <space>t :vsp <bar> :term<cr>
-nmap <leader>t :Lexplore<cr>
+" nmap <leader>t :Lexplore<cr>
 nmap <Leader>wh <C-w>t<C-w>H
 nmap <Leader>wk <C-w>t<C-w>K
 nmap <down> :resize +2<Cr>
@@ -180,7 +165,6 @@ nmap <right> :vertical resize +2<CR>
 nmap <left> :vertical resize -2<CR>
 nmap <expr> j (v:count? 'j' : 'gj')
 nmap <expr> k (v:count? 'k' : 'gk')
-nmap Y y$
 imap jk <Esc>
 
 " Fzf + grepper
@@ -193,7 +177,7 @@ nmap <leader>ft :Telescope treesitter<cr>
 nmap <leader>fk :Telescope keymaps<cr>
 nmap <leader>fh :Telescope help_tags<cr>
 nmap <leader>fd :Telescope file_browser<cr>
-nmap <leader>fi :Telescope media_files theme=get_ivy<cr>
+nmap <leader>fi :Telescope media_files<cr>
 nnoremap <leader>fs :GrepperRg "" .<Left><Left><Left>
 nnoremap <leader>fS :Rg<space>
 nnoremap <leader>* :Grepper -tool rg -cword -noprompt<cr>
@@ -228,11 +212,9 @@ let g:firenvim_config = {
     \ }
 \ }
 
-let g:gruvbox_contrast_dark='hard' "dark mode
 let g:gruvbox_italic=1
-let g:gruvbox_invert_selection='0' "No highlight
-let g:indent_blankline_char = '¦'
-let g:indent_blankline_buftype_exclude = ['terminal', 'nofile']
+let g:gruvbox_invert_selection=0 "No highlight
+let g:gruvbox_contrast_dark='hard' "dark mode
 colorscheme gruvbox "colorscheme
 
 " Vimtex config
@@ -243,36 +225,12 @@ let g:vimtex_quickfix_mode='0'
 let g:indentLine_setConceal='0'
 let g:tex_conceal='abdmg'
 
-
-" Gutentags
-let g:gutentags_file_list_command = 'fd'
-let g:gutentags_add_default_project_roots = '0'
-let g:gutentags_generate_on_empty_buffer = '0'
-let g:gutentags_ctags_extra_args = ['-n', '-u', '--recurse', '--tag-relative=yes', '--fields=+ailmnS']
-let g:gutentags_ctags_exclude = ['.git', '.svg', '.hg', '.vscode', '/tests/',
-      \ 'build', 'dist', 'sites//files/', 'bin', 'node_modules', 'bower_components',
-      \ 'cache', 'compiled', 'docs', 'example', 'bundle', 'vendor', '.md',
-      \ '-lock.json', '.lock', 'bundle.js', 'build.js', '.rc', '.json', '.min.',
-      \ '.map', '.bak', '.zip', '.pyc', '.class', '.sln', '.Master', '.csproj',
-      \ '.tmp', '.csproj.user', '.cache', '.pdb', 'tags', 'cscope.', '.css', '.less',
-      \ '.scss', '.exe', '.dll', '.mp3', '.ogg', '.flac', '.swp', '.swo', '.bmp',
-      \ '.gif', '.ico', '.jpg', '.png', '.rar', '.zip', '.tar', '.tar.gz', '.tar.xz']
-let g:gutentags_project_root = ['package.json', '.git', 'Cargo.toml']
-let g:gutentags_cache_dir = expand('~/.cache/vim/ctags/')
-let g:gutentags_generate_on_new = '1'
-let g:gutentags_generate_on_missing = '1'
-let g:gutentags_generate_on_write = '1'
-
 " Other settings
-let g:lexima_enable_basic_rules=1
-let g:lexima_enable_newline_rules=1
-let g:lexima_enable_endwise_rules=1
 " let g:vimwiki_global_ext=0 - markdown is sometimes rendered as .wiki
 " let g:vimwiki_table_mappings=0 "so I can tab complete
+" let g:rustfmt_autosave = 1
 let g:vimwiki_list = [{'path': '~/Work/vimwiki'}]
 let g:python3_host_prog = '/usr/bin/python3.9'
-" let g:ruby_host_prog = '~/.local/share/gem/bin/neovim-ruby-host' "I moved ruby
-" let g:rustfmt_autosave = 1
 let g:rust_clip_command = 'xclip -selection clipboard'
 let g:netrw_banner = 0
 let g:netrw_browse_split = 4
@@ -301,7 +259,6 @@ call wilder#set_option('renderer', wilder#wildmenu_renderer({
 
 "Commands
 command! FixWhitespace :%s/\s\+$//e
-command! Vimrc :sp $MYVIMRC
 command! -range=% IX <line1>,<line2>w !curl -F 'f:1=<-' http://ix.io | tr -d '\n' | xclip -i -selection clipboard
 
 " autocmds
@@ -342,7 +299,6 @@ let g:coc_global_extensions = [
   \ 'coc-java',
   \ 'coc-rust-analyzer',
   \ 'coc-html',
-  \ 'coc-discord-rpc',
   \ 'coc-css',
   \ 'coc-vimlsp',
   \ 'coc-tsserver',
@@ -462,21 +418,19 @@ require('filetype').setup({
         },
         literal = {
             MyBackupFile = 'lua',
+            known_hosts = "sshknownhosts",
+            sxhkdrc = "sxhkdrc",
+
         },
         complex = {
             [".*git/config"] = "gitconfig",  -- Included in the plugin
             [".*i3/config"] = "i3config",
             [".gitignore"] = "gitignore",
+            ["tmux.conf"] = "tmux",
             ["/tmp/neomutt*"] = "mail"
         },
     }
 })
-
-require('distant').setup {
-    ['*'] = vim.tbl_deep_extend('force', require('distant.settings').chip_default(), {
-        mode = 'ssh',
-    })
-}
 
 require('Comment').setup {
     pre_hook = function()
@@ -486,16 +440,57 @@ require('Comment').setup {
 
 -- https://github-wiki-see.page/m/nvim-telescope/telescope.nvim/wiki/Configuration-Recipes
 local actions = require('telescope.actions')
+local previewers = require('telescope.previewers')
+local Job = require('plenary.job')
+local _bad = { '.*%.csv', '.*%.lua' } -- Put all filetypes that slow you down in this array
+local bad_files = function(filepath)
+  for _, v in ipairs(_bad) do
+    if filepath:match(v) then
+      return false
+    end
+  end
+
+  return true
+end
+
+local new_maker = function(filepath, bufnr, opts)
+  opts = opts or {}
+  if opts.use_ft_detect == nil then opts.use_ft_detect = true end
+  opts.use_ft_detect = opts.use_ft_detect == false and false or bad_files(filepath)
+  filepath = vim.fn.expand(filepath)
+  Job:new({
+    command = 'file',
+    args = { '--mime-type', '-b', filepath },
+    on_exit = function(j)
+      local mime_type = vim.split(j:result()[1], '/')[1]
+      if mime_type == "text" then
+        previewers.buffer_previewer_maker(filepath, bufnr, opts)
+      else
+        -- maybe we want to write something to the buffer here
+        vim.schedule(function()
+          vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, { 'BINARY' })
+        end)
+      end
+    end
+  }):sync()
+end
+
+require('nvim-autopairs').setup({
+  disable_filetype = { "TelescopePrompt"},
+  map_cr = false,
+})
+
 require('telescope').load_extension('media_files')
 require("telescope").setup({
   defaults = {
     file_sorter = require("telescope.sorters").get_fzy_sorter,
+    buffer_previewer_maker = new_maker,
     layout_config = {
       prompt_position = "bottom",
     },
     mappings = {
       i = {
-        ["<C-o>"] = actions.close,
+        ["<Esc>"] = actions.close,
         ["<C-q>"] = actions.send_to_qflist,
         ["<C-k>"] = actions.move_selection_previous,
         ["<C-j>"] = actions.move_selection_next,
@@ -505,6 +500,7 @@ require("telescope").setup({
   pickers = {
     find_files = {
       theme = "ivy",
+      -- hidden = true,
       layout_config = {
         height = 0.4,
       },
@@ -522,6 +518,7 @@ require("telescope").setup({
       },
     },
     man_pages = {
+      sections = {"ALL"},
       theme = "ivy",
       layout_config = {
         height = 0.4,
@@ -555,17 +552,41 @@ require("telescope").setup({
   extensions = {
     media_files = {
       filetypes = {"png", "webp", "jpg", "jpeg", "ppm"},
-      find_cmd = "rg --no-ignore",
     }
   },
 })
 
+require("godbolt").setup({
+    c = { compiler = "cg112", options = {} },
+    cpp = { compiler = "g112", options = {} },
+    rust = { compiler = "r1560", options = {} }
+})
+
+require("indent_blankline").setup {
+  char = '¦',
+  filetype_exclude = {
+    "help",
+    "terminal",
+    "dashboard",
+    "packer",
+    "lspinfo",
+    "TelescopePrompt",
+    "TelescopeResults",
+    "qf",
+    },
+  buftype_exclude = {"terminal", 'nofile', 'quickfix'},
+  show_current_context = false,
+  show_current_context_start = false,
+  } 
+
+local parsers = require("nvim-treesitter.parsers")
+local enabled_list = {"clojure", "fennel", "commonlisp", "query"}
 require('nvim-treesitter.configs').setup {
   ensure_installed = "maintained",
   highlight = {
     enable = true,
-    -- additional_vim_regex_highlighting = true, -- <= THIS LINE is the magic!
-    disable = {"latex", "vim"},
+    additional_vim_regex_highlighting = {"vim", "latex"},
+    -- disable = {"vim", "latex"},
     custom_captures = {
       ["function.macro"] = "GruvboxPurple",
     },
@@ -577,8 +598,8 @@ require('nvim-treesitter.configs').setup {
     persist_queries = false, -- Whether the query persists across vim sessions
   },
   indent = {
-      enable = true,
-      disable = {'python'},
+    enable = true,
+    disable = {'python'},
   },
   context_commentstring = {
     enable = true,
@@ -624,6 +645,20 @@ require('nvim-treesitter.configs').setup {
         ["ic"] = "@class.inner",
       },
     },
+  },
+  rainbow = {
+    enable = true,
+    -- Enable only for lisp like languages
+    disable = vim.tbl_filter(
+      function(p)
+        local disable = true
+        for _, lang in pairs(enabled_list) do
+          if p==lang then disable = false end
+        end
+        return disable
+      end,
+      parsers.available_parsers()
+    )
   },
   autotag = { enable = true, },
 }
