@@ -18,8 +18,8 @@ vim.api.nvim_exec([[
 
 local use = require('packer').use
 require('packer').startup(function()
+  use {'lewis6991/impatient.nvim', config = function() require('impatient') end}
   use 'nathom/filetype.nvim'
-  -- use 'lewis6991/impatient.nvim'
 
   use 'github/copilot.vim'
   use 'wbthomason/packer.nvim' -- Package manager
@@ -33,7 +33,7 @@ require('packer').startup(function()
   use { 'glacambre/firenvim', run = function() vim.fn['firenvim#install'](0) end }
   use 'rafcamlet/coc-nvim-lua'
   use 'ellisonleao/gruvbox.nvim'
- 
+
   use 'kevinhwang91/nvim-bqf'
   use {'mbbill/undotree', opt = true, cmd = 'UndotreeToggle'}
 
@@ -77,9 +77,7 @@ require('packer').startup(function()
 
   use 'tpope/vim-fugitive' -- Git control for vim
   use 'tpope/vim-repeat' -- repeats
-  use 'tpope/vim-surround' -- Allows me to change { to [ and what not
   use { "kylechui/nvim-surround", config = function() require("nvim-surround").setup({}) end }
-  use 'tpope/vim-rhubarb'
   use 'mhinz/vim-grepper'
   use 'skywind3000/asyncrun.vim'
   use {'gelguy/wilder.nvim',  run=':UpdateRemotePlugins'}
@@ -101,16 +99,18 @@ require('packer').startup(function()
   use {'vimwiki/vimwiki'} -- To take notes better - testing this with vimtex
   use 'lervag/vimtex'
   use {"akinsho/toggleterm.nvim", tag = 'v2.*'}
-  use {
-    'chipsenkbeil/distant.nvim',
-    config = function()
-    require('distant').setup {
-      ['*'] = vim.tbl_deep_extend('force', require('distant.settings').chip_default(), {
-        mode = 'ssh',
-        })
-      }
-    end
-  }
+
+
+  -- use {
+  --   'chipsenkbeil/distant.nvim',
+  --   config = function()
+  --   require('distant').setup {
+  --     ['*'] = vim.tbl_deep_extend('force', require('distant.settings').chip_default(), {
+  --       mode = 'ssh',
+  --       })
+  --     }
+  --   end
+  -- }
   -- use 'alec-gibson/nvim-tetris'
   -- use 'tpope/vim-sleuth'
   -- use {'ludovicchabant/vim-gutentags', ft={'java'}} -- Tags Generate
@@ -124,7 +124,7 @@ end)
 
 -- global options
 -- TODO: switch to own file
-vim.opt.writebackup = false 
+vim.opt.writebackup = false
 vim.opt.conceallevel = 2
 vim.opt.ignorecase = true -- search case
 vim.opt.smartcase = true  -- search matters if capital letter
@@ -157,37 +157,38 @@ vim.o.sessionoptions="blank,buffers,curdir,folds,help,tabpages,winsize,winpos,te
 
 require("gruvbox").setup({
     overrides = {
-        Normal = {bg = "#0E1018"},
-        VertSplit = { bg = '#0E1018' },
-        SignColumn = {bg = "#ff9900"},
-        Define = { link = "GruvboxPurple" },
-        Macro = { link = "GruvboxPurple" },
-        TSNote = { link = "GruvboxYellow" },
-        TSConstBuiltin = {link = "GruvboxPurple"},
-        CocCodeLens = {fg = "#878787"},
-        Comment = {fg="#fe8019", italic=true},
-        Folded = {italic=true, fg="#fe8019", bg="#3c3836"},
-        FoldColumn = {fg="#fe8019", bg="#0E1018"},
-        CocRustTypeHint = {fg="#87afaf", bg="#0E1018"},
-        CocRustChainingHint =  { fg="#87afaf", bg="#0E1018" },
-        DiffAdd      = {bold=true,  reverse= false, fg=""          ,bg="#2a4333"},
-        DiffChange   = {bold=true,  reverse= false, fg=""          ,bg="#333841"},
-        DiffDelete   = {bold=true,  reverse= false, fg="#442d30"   ,bg="#442d30"},
-        DiffText     = {bold=true,  reverse= false, fg=""          ,bg="#213352"},
-        SignColumn   = { fg="#0E1018",  bg="#0E1018"},
-        StatusLine   = { bg="#ffffff",  fg="#0E1018"},
-        StatusLineNC = { bg="#3c3836",  fg="#0E1018"},
-        CursorLineNr = { fg="#fabd2f", bg="#0E1018" },
-        CocWarningFloat = { fg="#dfaf87" },
-        GruvboxOrangeSign = {fg="#dfaf87", bg="#0E1018"},
-        GruvboxAquaSign = {fg="#8EC07C", bg="#0E1018"},
-        GruvboxGreenSign = {fg="#b8bb26", bg="#0E1018"},
-        GruvboxRedSign = {fg="#fb4934", bg="#0E1018"},
-        GruvboxBlueSign = {fg="#83a598", bg="#0E1018"}
+      Normal = {bg = "#0E1018"},
+      VertSplit = { bg = '#0E1018' },
+      SignColumn = {bg = "#ff9900"},
+      Define = { link = "GruvboxPurple" },
+      Macro = { link = "GruvboxPurple" },
+      TSNote = { link = "GruvboxYellow" },
+      TSConstBuiltin = {link = "GruvboxPurple"},
+      CocCodeLens = {fg = "#878787"},
+      Comment = {fg="#fe8019", italic=true},
+      Folded = {italic=true, fg="#fe8019", bg="#3c3836"},
+      FoldColumn = {fg="#fe8019", bg="#0E1018"},
+      CocRustTypeHint = {fg="#87afaf", bg="#0E1018"},
+      CocRustChainingHint =  { fg="#87afaf", bg="#0E1018" },
+      DiffAdd      = {bold=true,  reverse= false, fg=""          ,bg="#2a4333"},
+      DiffChange   = {bold=true,  reverse= false, fg=""          ,bg="#333841"},
+      DiffDelete   = {bold=true,  reverse= false, fg="#442d30"   ,bg="#442d30"},
+      DiffText     = {bold=true,  reverse= false, fg=""          ,bg="#213352"},
+      SignColumn   = { fg="#0E1018",  bg="#0E1018"},
+      StatusLine   = { bg="#ffffff",  fg="#0E1018"},
+      StatusLineNC = { bg="#3c3836",  fg="#0E1018"},
+      CursorLineNr = { fg="#fabd2f", bg="#0E1018" },
+      CocWarningFloat = { fg="#dfaf87" },
+      GruvboxOrangeSign = {fg="#dfaf87", bg="#0E1018"},
+      GruvboxAquaSign = {fg="#8EC07C", bg="#0E1018"},
+      GruvboxGreenSign = {fg="#b8bb26", bg="#0E1018"},
+      GruvboxRedSign = {fg="#fb4934", bg="#0E1018"},
+      GruvboxBlueSign = {fg="#83a598", bg="#0E1018"}
     }
 })
 
 vim.cmd([[
+colorscheme gruvbox "colorscheme
 runtime cocRC.vim " cocRC rec settings
 ]])
 EOF
@@ -338,8 +339,6 @@ let g:firenvim_config = {
     \ }
 \ }
 
-colorscheme gruvbox "colorscheme
-
 " Vimtex config
 let g:tex_flavor='latex'
 let g:vimtex_view_method='skim'
@@ -467,7 +466,6 @@ let g:currentmode={
   \ '!'  : 'Shell ',
   \ 't'  : 'Terminal '}
 
-
 function! SpellToggle()
     if &spell
       setlocal spell! spelllang&
@@ -550,9 +548,9 @@ lua << EOF
 local opts = { noremap = true, silent = true }
 vim.api.nvim_set_keymap("n", "<leader>t", ":lua require('neogen').generate()<CR>", opts)
 
-require("toggleterm").setup { 
-	shade_terminals = false,
-	open_mapping = [[<space>,]]
+require("toggleterm").setup {
+  shade_terminals = false,
+  open_mapping = [[<space>,]]
 }
 
 local Terminal  = require('toggleterm.terminal').Terminal
@@ -578,7 +576,6 @@ end
 
 vim.api.nvim_set_keymap("n", "<leader>lg", "<cmd>lua _lazygit_toggle()<CR>", {noremap = true, silent = true})
 
-
 require('filetype').setup({
     overrides = {
         extensions = {
@@ -587,16 +584,12 @@ require('filetype').setup({
             wiki = "vimwiki"
         },
         literal = {
-            MyBackupFile = "lua",
-            known_hosts = "sshknownhosts",
-            sxhkdrc = "sxhkdrc",
+            known_hosts = "sshknownhosts"
         },
         complex = {
-            [".*i3/config"] = "i3config",
             [".gitignore"] = "gitignore",
             ["tmux.conf"] = "tmux",
-            ["/tmp/neomutt*"] = "mail",
-            ["*.s"] = "asm",
+            ["/tmp/neomutt*"] = "mail"
         },
     }
 })
@@ -746,7 +739,7 @@ require("indent_blankline").setup {
   buftype_exclude = {"terminal", 'nofile', 'quickfix'},
   show_current_context = false,
   show_current_context_start = false,
-} 
+}
 
 local parsers = require("nvim-treesitter.parsers")
 local enabled_list = {"clojure", "fennel", "commonlisp", "query"}
