@@ -1,8 +1,6 @@
-" Disable settings
-let g:polyglot_disabled = ['javascript', 'css', 'java', 'c', 'typescript', 'python', 'cpp', 'rs', 'bash', 'zsh', 'html', 'lua', 'ruby', 'ocaml', 'haskell', 'go', 'yaml', 'json'] "treesitter
-
-lua <<EOF
--- Install packer
+" https://buildyourfuture.withgoogle.com/programs/step
+" https://careers.microsoft.com/students/us/en/usuniversityinternship
+lua << EOF
 local execute = vim.api.nvim_command
 
 local install_path = vim.fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
@@ -20,96 +18,179 @@ vim.api.nvim_exec([[
 
 local use = require('packer').use
 require('packer').startup(function()
-  use 'lewis6991/impatient.nvim'
   use 'nathom/filetype.nvim'
+  -- use 'lewis6991/impatient.nvim'
+
+  use 'github/copilot.vim'
   use 'wbthomason/packer.nvim' -- Package manager
   use {
     'nvim-telescope/telescope.nvim',
     requires = { 'nvim-lua/plenary.nvim', 'nvim-lua/popup.nvim', 'nvim-telescope/telescope-media-files.nvim' }
   }
+
   use { 'neoclide/coc.nvim', branch = 'release', run = ':CocUpdate' }
+  use 'honza/vim-snippets' -- Snippets are separated from the engine
   use { 'glacambre/firenvim', run = function() vim.fn['firenvim#install'](0) end }
-  use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'}
-  use {'nvim-treesitter/playground', cmd="TSPlaygroundToggle"}
-  use 'nvim-treesitter/nvim-treesitter-textobjects'
-  use 'JoosepAlviste/nvim-ts-context-commentstring'
-  use 'p00f/nvim-ts-rainbow'
-  use 'windwp/nvim-ts-autotag'
-  use 'numToStr/Comment.nvim'
   use 'rafcamlet/coc-nvim-lua'
-  use 'gruvbox-community/gruvbox'
+  use 'ellisonleao/gruvbox.nvim'
+ 
   use 'kevinhwang91/nvim-bqf'
   use {'mbbill/undotree', opt = true, cmd = 'UndotreeToggle'}
 
-  use 'honza/vim-snippets' -- Snippets are separated from the engine
+  use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'}
+  use 'nvim-treesitter/nvim-treesitter-textobjects'
+  use 'numToStr/Comment.nvim'
+  use 'JoosepAlviste/nvim-ts-context-commentstring'
+  use 'windwp/nvim-ts-autotag'
+  use {'nvim-treesitter/playground'}
+  -- use 'p00f/nvim-ts-rainbow'
+  use 'nvim-treesitter/nvim-treesitter-refactor'
+  use {
+      "danymat/neogen",
+      config = function()
+          require('neogen').setup {}
+      end
+  }
+
+  use {
+    'rmagatti/auto-session',
+    config = function()
+      require('auto-session').setup {
+        log_level = 'info',
+        auto_session_suppress_dirs = {'~/', '~/Downloads', '~/Documents'},
+        auto_session_use_git_branch = true,
+        auto_save_enabled = true
+      }
+    end
+  }
+
+  use { 'nmac427/guess-indent.nvim', config = function() require('guess-indent').setup {} end, }
+
+
+  use {
+    'lewis6991/spellsitter.nvim',
+    config = function()
+      require('spellsitter').setup()
+    end
+  }
+
+
   use 'tpope/vim-fugitive' -- Git control for vim
   use 'tpope/vim-repeat' -- repeats
   use 'tpope/vim-surround' -- Allows me to change { to [ and what not
+  use { "kylechui/nvim-surround", config = function() require("nvim-surround").setup({}) end }
   use 'tpope/vim-rhubarb'
   use 'mhinz/vim-grepper'
-  use 'sheerun/vim-polyglot' -- vim syntax for different languages
-  use 'mboughaba/i3config.vim'
   use 'skywind3000/asyncrun.vim'
   use {'gelguy/wilder.nvim',  run=':UpdateRemotePlugins'}
+
+  use {
+    'lewis6991/gitsigns.nvim',
+    config = function()
+      require('gitsigns').setup()
+    end
+  }
 
   use 'lukas-reineke/indent-blankline.nvim'
   use 'windwp/nvim-autopairs'
   use {'norcalli/nvim-colorizer.lua', config = function() require'colorizer'.setup() end}
   use 'wellle/targets.vim' -- adds more targets like [ or ,
-  use {'Valloric/MatchTagAlways', ft =  { 'html' }}
   use 'editorconfig/editorconfig-vim'
   use {'puremourning/vimspector',  run = 'python3 install_gadget.py --all'}
-  use 'p00f/godbolt.nvim'
 
   use {'vimwiki/vimwiki'} -- To take notes better - testing this with vimtex
   use 'lervag/vimtex'
-  use 'vigoux/LanguageTool.nvim'
-  use {'turbio/bracey.vim', ft = { 'html', 'javascript', 'css' }, run = "npm install --prefix server"} -- live reloading
-  -- use 'tweekmonster/startuptime.vim'
+  use {"akinsho/toggleterm.nvim", tag = 'v2.*'}
   use {
-  'chipsenkbeil/distant.nvim',
-  config = function()
+    'chipsenkbeil/distant.nvim',
+    config = function()
     require('distant').setup {
-        ['*'] = vim.tbl_deep_extend('force', require('distant.settings').chip_default(), {
-            mode = 'ssh',
+      ['*'] = vim.tbl_deep_extend('force', require('distant.settings').chip_default(), {
+        mode = 'ssh',
         })
-    }
+      }
     end
   }
+  -- use 'alec-gibson/nvim-tetris'
+  -- use 'tpope/vim-sleuth'
+  -- use {'ludovicchabant/vim-gutentags', ft={'java'}} -- Tags Generate
+  -- use 'sheerun/vim-polyglot' -- vim syntax for different languages
+  -- use 'p00f/godbolt.nvim'
+  -- use {'Valloric/MatchTagAlways', ft =  { 'html' }}
+  -- use {'jalvesaq/Nvim-R', branch = 'stable'}
+  -- use 'vigoux/LanguageTool.nvim'
+  -- use {'turbio/bracey.vim', ft = { 'html', 'javascript', 'css' }, run = "npm install --prefix server"} -- live reloading
 end)
-EOF
 
-"Global options
-set conceallevel=2 "Allows me to conceal latex syntax if not on line
-set ignorecase "search case
-set smartcase "searching matters if Capital
-set inccommand=split "for incsearch while sub
-set lazyredraw "redraw off for macros
-set relativenumber number "sets line numbers
-set splitbelow splitright "split correction
-set termguicolors "True colors term support
-set undofile "undo even when it closes
-set noswapfile
-set wildmode=list:longest,list:full
-set omnifunc=syntaxcomplete#Complete
-set suffixesadd+=.java,.rs
-set wildignore=*.javac,*.pyc
-set foldmethod=expr
-set foldexpr=nvim_treesitter#foldexpr()
-set scrolloff=8
-set colorcolumn=99999
-set dictionary=~/.config/nvim/10k.txt
-set diffopt+=internal,algorithm:patience
-set guifont=MesloLGMDZ\ Nerd\ Font\ Bold\ 16
-set breakindent
-set mouse=a
-set cursorline cursorlineopt=number
-set breakindent
-set breakindentopt=shift:2
-set showbreak=↳
+-- global options
+-- TODO: switch to own file
+vim.opt.writebackup = false 
+vim.opt.conceallevel = 2
+vim.opt.ignorecase = true -- search case
+vim.opt.smartcase = true  -- search matters if capital letter
+vim.opt.inccommand = "split" -- "for incsearch while sub
+vim.opt.lazyredraw = true -- redraw for macros
+vim.opt.number = true -- line number on
+vim.opt.relativenumber = true -- relative line number on
+vim.opt.termguicolors = true -- true colors term support
+vim.opt.undofile = true -- undo even when it closes
+vim.opt.foldmethod = "expr" -- treesiter time
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()" -- treesiter
+vim.opt.scrolloff = 8 -- number of lines to always go down
+vim.opt.colorcolumn = "99999" -- fix columns
+vim.opt.mouse = "a" -- set mouse to be on
+vim.opt.cmdheight = 0 -- status line smaller
+vim.opt.breakindent = true -- break indentation for long lines
+vim.opt.breakindentopt = {shift = 2}
+vim.opt.showbreak = "↳" -- character for line break
+vim.opt.splitbelow = true -- split windows below
+vim.opt.splitright = true -- split windows right
+vim.opt.wildmode="list:longest,list:full" -- for : stuff
+-- vim.opt.omnifunc="syntaxcomplete#Complete" -- for syntax completetion
+vim.opt.wildignore:append({".javac", "node_modules", "*.pyc"})
+vim.opt.suffixesadd:append({".java", ".rs"}) -- search for suffexes using gf
+vim.opt.diffopt:append{"internal,algorithm:patience"}
+vim.opt.cursorline = true
+vim.opt.cursorlineopt = "number"
+vim.o.sessionoptions="blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal"
+-- vim.opt.guifont = "MesloLGMDZ Nerd Font Bold 16"
 
+require("gruvbox").setup({
+    overrides = {
+        Normal = {bg = "#0E1018"},
+        VertSplit = { bg = '#0E1018' },
+        SignColumn = {bg = "#ff9900"},
+        Define = { link = "GruvboxPurple" },
+        Macro = { link = "GruvboxPurple" },
+        TSNote = { link = "GruvboxYellow" },
+        TSConstBuiltin = {link = "GruvboxPurple"},
+        CocCodeLens = {fg = "#878787"},
+        Comment = {fg="#fe8019", italic=true},
+        Folded = {italic=true, fg="#fe8019", bg="#3c3836"},
+        FoldColumn = {fg="#fe8019", bg="#0E1018"},
+        CocRustTypeHint = {fg="#87afaf", bg="#0E1018"},
+        CocRustChainingHint =  { fg="#87afaf", bg="#0E1018" },
+        DiffAdd      = {bold=true,  reverse= false, fg=""          ,bg="#2a4333"},
+        DiffChange   = {bold=true,  reverse= false, fg=""          ,bg="#333841"},
+        DiffDelete   = {bold=true,  reverse= false, fg="#442d30"   ,bg="#442d30"},
+        DiffText     = {bold=true,  reverse= false, fg=""          ,bg="#213352"},
+        SignColumn   = { fg="#0E1018",  bg="#0E1018"},
+        StatusLine   = { bg="#ffffff",  fg="#0E1018"},
+        StatusLineNC = { bg="#3c3836",  fg="#0E1018"},
+        CursorLineNr = { fg="#fabd2f", bg="#0E1018" },
+        CocWarningFloat = { fg="#dfaf87" },
+        GruvboxOrangeSign = {fg="#dfaf87", bg="#0E1018"},
+        GruvboxAquaSign = {fg="#8EC07C", bg="#0E1018"},
+        GruvboxGreenSign = {fg="#b8bb26", bg="#0E1018"},
+        GruvboxRedSign = {fg="#fb4934", bg="#0E1018"},
+        GruvboxBlueSign = {fg="#83a598", bg="#0E1018"}
+    }
+})
+
+vim.cmd([[
 runtime cocRC.vim " cocRC rec settings
-runtime myhighlights.vim
+]])
+EOF
 
 " Key remapping
 let mapleader = ","
@@ -118,12 +199,14 @@ let mapleader = ","
 nnoremap <Backspace> <C-^>
 xnoremap . :norm.<CR>
 nnoremap cp yap<S-}>p
+" noremap gx yiW:!open "<C-r>"" & <CR>
 nmap <a-x> <nop>
-nmap gx yiW:!xdg-open "<C-r>"" & <CR>
 nmap <Leader>ww :VimwikiIndex<cr>
+nmap <Leader>wd :VimwikiMakeDiaryNote<cr>
 nmap <Leader>ll <Plug>VimwikiFollowLink
 nmap <Leader>ln <Plug>VimwikiNextLink
 nmap <Leader>lp <Plug>VimwikiPrevLink
+" nmap <Leader>lg :LazyGit<cr>
 nmap <leader>e :Prettier<cr>
 nmap <leader>cd :cd %:p:h<cr>:pwd<cr>
 nmap <leader>cn :cnext<cr>
@@ -132,7 +215,6 @@ nmap <leader>P "+gP
 nmap <leader>p "+gp
 nmap <leader>sv :source $MYVIMRC<cr>
 nmap <leader>sr :%s/\<<C-r><C-w>\>//g<Left><Left>
-nmap <leader>u :UndotreeToggle<cr>
 nmap <leader>z [s1z=``
 xmap <leader>y "*y :let @+=@*<cr>
 nmap <leader>1 :bp<cr>
@@ -140,7 +222,39 @@ nmap <leader>2 :bn<cr>
 nmap <leader>3 :retab<cr>:FixWhitespace<cr>
 nmap <leader>4 :Format<cr>
 nmap <leader>5 :call SpellToggle()<cr>
-nmap <leader>0 :silent !firefox %<cr>
+nnoremap <leader>u :UndotreeToggle<cr>
+inoremap , ,<C-g>U
+inoremap . .<C-g>U
+inoremap ! !<C-g>U
+inoremap ? ?<C-g>U
+
+" General
+nnoremap <Backspace> <C-^>
+xnoremap . :norm.<CR>
+nnoremap cp yap<S-}>p
+" noremap gx yiW:!open "<C-r>"" & <CR>
+nmap <Leader>ww :VimwikiIndex<cr>
+nmap <Leader>wd :VimwikiMakeDiaryNote<cr>
+nmap <Leader>ll <Plug>VimwikiFollowLink
+nmap <Leader>ln <Plug>VimwikiNextLink
+nmap <Leader>lp <Plug>VimwikiPrevLink
+nmap <Leader>lg :LazyGit<cr>
+nmap <leader>e :Prettier<cr>
+nmap <leader>cd :cd %:p:h<cr>:pwd<cr>
+nmap <leader>cn :cnext<cr>
+nmap <leader>cp :cprevious<cr>
+nmap <leader>P "+gP
+nmap <leader>p "+gp
+nmap <leader>sv :source $MYVIMRC<cr>
+nmap <leader>sr :%s/\<<C-r><C-w>\>//g<Left><Left>
+nmap <leader>z [s1z=``
+xmap <leader>y "*y :let @+=@*<cr>
+nmap <leader>1 :bp<cr>
+nmap <leader>2 :bn<cr>
+nmap <leader>3 :retab<cr>:FixWhitespace<cr>
+nmap <leader>4 :Format<cr>
+nmap <leader>5 :call SpellToggle()<cr>
+nnoremap <leader>u :UndotreeToggle<cr>
 inoremap , ,<C-g>U
 inoremap . .<C-g>U
 inoremap ! !<C-g>U
@@ -154,12 +268,12 @@ nnoremap <space>h <C-w>h
 nnoremap <space>j <C-w>j
 nnoremap <space>k <C-w>k
 nnoremap <space>l <C-w>l
-nmap <silent> <space><space> :sp <bar> :term<cr>
-nmap <silent> <space>t :vsp <bar> :term<cr>
+nmap <silent> <space><space> :ToggleTerm<cr>
+nmap <silent> <space>t :ToggleTerm size=60 direction=vertical<cr>
 " nmap <leader>t :Lexplore<cr>
 nmap <Leader>wh <C-w>t<C-w>H
 nmap <Leader>wk <C-w>t<C-w>K
-nmap <down> :resize +2<Cr>
+nmap <down> :resize +2<cr>
 nmap <up> :resize -2<cr>
 nmap <right> :vertical resize +2<CR>
 nmap <left> :vertical resize -2<CR>
@@ -196,6 +310,18 @@ nmap <silent><leader>gp :AsyncRun git push<cr>
 nmap <silent><leader>go :Git checkout<space>
 nmap <silent><leader>gf :Commits<cr>
 
+if has('nvim') && executable('nvr')
+  let $GIT_EDITOR = "nvr -cc split --remote-wait +'set bufhidden=wipe'"
+endif
+
+if has('mac')
+  nmap <leader>0 :silent !open %<cr>
+elseif has('linux')
+  nmap <leader>0 :silent !firefox %<cr>
+else
+  nmap <leader>0 :silent !firefox %<cr>
+endif
+
 "Extra
 let g:firenvim_config = {
     \ 'globalSettings': {
@@ -212,49 +338,56 @@ let g:firenvim_config = {
     \ }
 \ }
 
-let g:gruvbox_italic=1
-let g:gruvbox_invert_selection=0 "No highlight
-let g:gruvbox_contrast_dark='hard' "dark mode
 colorscheme gruvbox "colorscheme
 
 " Vimtex config
-let g:vimtex_enable=1
 let g:tex_flavor='latex'
-let g:vimtex_view_method='zathura'
+let g:vimtex_view_method='skim'
 let g:vimtex_quickfix_mode='0'
 let g:indentLine_setConceal='0'
 let g:tex_conceal='abdmg'
 
 " Other settings
-" let g:vimwiki_global_ext=0 - markdown is sometimes rendered as .wiki
-" let g:vimwiki_table_mappings=0 "so I can tab complete
-" let g:rustfmt_autosave = 1
+let g:polyglot_disabled = ['javascript', 'css', 'java', 'c', 'typescript', 'python', 'cpp', 'rs', 'bash', 'zsh', 'html', 'lua', 'ruby', 'ocaml', 'haskell', 'go', 'yaml', 'json'] "treesitter
 let g:vimwiki_list = [{'path': '~/Work/vimwiki'}]
-let g:python3_host_prog = '/usr/bin/python3.9'
+let g:python3_host_prog = '/opt/homebrew/bin/python3'
 let g:rust_clip_command = 'xclip -selection clipboard'
 let g:netrw_banner = 0
 let g:netrw_browse_split = 4
 let g:netrw_liststyle = 3
 let g:netrw_winsize = -28
 let g:netrw_browsex_viewer= "xdg-open"
+let g:python3_host_prog="/usr/bin/python3"
 let g:languagetool_server_command = '/usr/bin/languagetool --http'
 let g:languagetool_server_jar='/usr/share/java/languagetool/languagetool.jar'
 let g:languagetool_lang='en-US'
 let g:termdebug_popup = 0
 let g:termdebug_wide = 163
-let g:mta_use_matchparen_group = 1
 
+" wilder
 call wilder#setup({'modes': [':', '/', '?']})
-
 call wilder#set_option('pipeline', [
       \   wilder#branch(
-      \     wilder#cmdline_pipeline(),
-      \     wilder#search_pipeline(),
+      \     wilder#cmdline_pipeline({
+      \       'language': 'python',
+      \       'fuzzy': 1,
+      \     }),
+      \     wilder#python_search_pipeline({
+      \       'pattern': wilder#python_fuzzy_pattern(),
+      \       'sorter': wilder#python_difflib_sorter(),
+      \       'engine': 're',
+      \     }),
       \   ),
       \ ])
 
-call wilder#set_option('renderer', wilder#wildmenu_renderer({
+call wilder#set_option('renderer', wilder#popupmenu_renderer({
       \ 'highlighter': wilder#basic_highlighter(),
+      \ 'left': [' '],
+      \ 'right': [' ', wilder#popupmenu_scrollbar({'thumb_char': ' ', 'thumb_hl': 'PmenuThumb'})],
+      \ 'highlights': {
+      \   'default': wilder#make_hl('WilderMenu', 'Pmenu', [{}, {}, {'foreground': '#fff', 'background': '#0E1018'}]),
+      \   'accent': wilder#make_hl('WilderAccent', 'Pmenu', [{}, {}, {'foreground': '#f4468f', 'background': '#0E1018'}]),
+      \ },
       \ }))
 
 "Commands
@@ -264,12 +397,14 @@ command! -range=% IX <line1>,<line2>w !curl -F 'f:1=<-' http://ix.io | tr -d '\n
 " autocmds
 augroup Random
   autocmd!
-  autocmd BufNewFile *.tex 0r ~/.config/nvim/templates/skeleton.tex
+  " autocmd BufNewFile *.tex 0r ~/.config/nvim/templates/skeleton.tex
   autocmd VimLeavePre * :call coc#rpc#kill()
   autocmd VimLeave * if get(g:, 'coc_process_pid', 0) | call system('kill -9 -'.g:coc_process_pid) | endif
   autocmd TermOpen * setlocal nonumber norelativenumber signcolumn=no
   autocmd BufEnter github.com_*.txt set filetype=markdown
   autocmd VimResized * wincmd =
+  autocmd InsertEnter * set timeoutlen=100
+  autocmd InsertLeave * set timeoutlen=1000
 augroup END
 
 let g:dont_write = v:false
@@ -288,10 +423,11 @@ endfunction
 
 if exists('g:started_by_firenvim')
   set laststatus=0
+  let g:auto_session_enabled = v:false
   autocmd TextChanged * ++nested call Delay_My_Write()
   autocmd TextChangedI * ++nested call Delay_My_Write()
 else
-  set laststatus=2
+  set laststatus=3
 endif
 
 " coc
@@ -316,7 +452,7 @@ let g:currentmode={
   \ 'no' : 'N·Operator ',
   \ 'v'  : 'Visual ',
   \ 'V'  : 'V·Line ',
-  \ '' : 'V·Block ',
+  \ '' : 'V·Block ',
   \ 'i'  : 'Insert ',
   \ 's'  : 'Select ',
   \ 'S'  : 'Select',
@@ -349,7 +485,7 @@ function! FilePath() abort
       return '[No Name]'
     endif
     let l:path = expand('%:p:h')
-    let l:home = '/home/' . $USER . '/'
+    let l:home = '/Users/' . $USER . '/'
     if stridx(l:path, l:home) !=# -1
       let l:path = substitute(l:path, l:home, '~/', "")
     endif
@@ -361,7 +497,7 @@ endfunction
 
 function! Fugitive() abort
     if exists('g:loaded_fugitive')
-        let l:branch = fugitive#head()
+        let l:branch = FugitiveHead()
         return l:branch !=# '' ? l:branch . " ": ""
     endif
     return ''
@@ -410,26 +546,64 @@ set statusline+=\[%{WordCount()}\] " word count
 set statusline+=\[%{strlen(&ft)?&ft[0].&ft[1:]:'None'}\] " file type
 
 " Tree-sitter simple setup
-lua <<EOF
+lua << EOF
+local opts = { noremap = true, silent = true }
+vim.api.nvim_set_keymap("n", "<leader>t", ":lua require('neogen').generate()<CR>", opts)
+
+require("toggleterm").setup { 
+	shade_terminals = false,
+	open_mapping = [[<space>,]]
+}
+
+local Terminal  = require('toggleterm.terminal').Terminal
+
+local lazygit = Terminal:new({
+  cmd = "lazygit",
+  dir = "git_dir",
+  direction = "float",
+  float_opts = {
+    border = "double",
+  },
+
+  -- function to run on opening the terminal
+  on_open = function(term)
+    vim.cmd("startinsert!")
+    vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>", {noremap = true, silent = true})
+  end,
+})
+
+function _lazygit_toggle()
+  lazygit:toggle()
+end
+
+vim.api.nvim_set_keymap("n", "<leader>lg", "<cmd>lua _lazygit_toggle()<CR>", {noremap = true, silent = true})
+
+
 require('filetype').setup({
     overrides = {
         extensions = {
-            emojic = 'markdown'
+            emojic = "markdown",
+            s = "asm",
+            wiki = "vimwiki"
         },
         literal = {
-            MyBackupFile = 'lua',
+            MyBackupFile = "lua",
             known_hosts = "sshknownhosts",
             sxhkdrc = "sxhkdrc",
-
         },
         complex = {
-            [".*git/config"] = "gitconfig",  -- Included in the plugin
             [".*i3/config"] = "i3config",
             [".gitignore"] = "gitignore",
             ["tmux.conf"] = "tmux",
-            ["/tmp/neomutt*"] = "mail"
+            ["/tmp/neomutt*"] = "mail",
+            ["*.s"] = "asm",
         },
     }
+})
+
+require('nvim-autopairs').setup({
+  disable_filetype = { "TelescopePrompt"},
+  map_cr = false,
 })
 
 require('Comment').setup {
@@ -474,11 +648,6 @@ local new_maker = function(filepath, bufnr, opts)
     end
   }):sync()
 end
-
-require('nvim-autopairs').setup({
-  disable_filetype = { "TelescopePrompt"},
-  map_cr = false,
-})
 
 require('telescope').load_extension('media_files')
 require("telescope").setup({
@@ -542,10 +711,10 @@ require("telescope").setup({
         height = 0.4,
       },
     },
-    helptags = {
+    help_tags = {
       theme = "ivy",
       layout_config = {
-        height = 0.4,
+        height = 0.5,
       },
     },
   },
@@ -556,11 +725,11 @@ require("telescope").setup({
   },
 })
 
-require("godbolt").setup({
-    c = { compiler = "cg112", options = {} },
-    cpp = { compiler = "g112", options = {} },
-    rust = { compiler = "r1560", options = {} }
-})
+-- require("godbolt").setup({
+--     c = { compiler = "cg112", options = {} },
+--     cpp = { compiler = "g112", options = {} },
+--     rust = { compiler = "r1560", options = {} }
+-- })
 
 require("indent_blankline").setup {
   char = '¦',
@@ -577,23 +746,21 @@ require("indent_blankline").setup {
   buftype_exclude = {"terminal", 'nofile', 'quickfix'},
   show_current_context = false,
   show_current_context_start = false,
-  } 
+} 
 
 local parsers = require("nvim-treesitter.parsers")
 local enabled_list = {"clojure", "fennel", "commonlisp", "query"}
 require('nvim-treesitter.configs').setup {
-  ensure_installed = "maintained",
+  -- ensure_installed = "maintained",
   highlight = {
     enable = true,
     additional_vim_regex_highlighting = {"vim", "latex"},
-    -- disable = {"vim", "latex"},
     custom_captures = {
-      ["function.macro"] = "GruvboxPurple",
+      ["@function.macro"] = "GruvboxPurple",
     },
   },
   playground = {
     enable = true,
-    disable = {},
     updatetime = 25, -- Debounced time for highlighting nodes in the playground from source code
     persist_queries = false, -- Whether the query persists across vim sessions
   },
@@ -643,6 +810,23 @@ require('nvim-treesitter.configs').setup {
         ["if"] = "@function.inner",
         ["ac"] = "@class.outer",
         ["ic"] = "@class.inner",
+      },
+    },
+  },
+  incremental_selection = {
+      enable = true,
+      keymaps = {
+          init_selection = '<space>i',
+          scope_incremental = '<space>i',
+          node_incremental = '<space>n',
+          node_decremental = '<space>p',
+      },
+  },
+  refactor = {
+    smart_rename = {
+      enable = true,
+      keymaps = {
+        smart_rename = "grr",
       },
     },
   },
