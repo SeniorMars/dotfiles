@@ -29,13 +29,14 @@ require('packer').startup(function()
   }
 
   use { 'neoclide/coc.nvim', branch = 'release', run = ':CocUpdate' }
+  use 'rafcamlet/coc-nvim-lua'
   use 'honza/vim-snippets' -- Snippets are separated from the engine
   use { 'glacambre/firenvim', run = function() vim.fn['firenvim#install'](0) end }
-  use 'rafcamlet/coc-nvim-lua'
   use 'ellisonleao/gruvbox.nvim'
 
   use 'kevinhwang91/nvim-bqf'
   use {'mbbill/undotree', opt = true, cmd = 'UndotreeToggle'}
+  use 'monaqa/dial.nvim'
 
   use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'}
   use 'nvim-treesitter/nvim-treesitter-textobjects'
@@ -43,6 +44,7 @@ require('packer').startup(function()
   use 'JoosepAlviste/nvim-ts-context-commentstring'
   use 'windwp/nvim-ts-autotag'
   use {'nvim-treesitter/playground'}
+  use {'haringsrob/nvim_context_vt', config = function() require('nvim_context_vt').setup({ disable_virtual_lines = true, min_rows = 5,}) end }
   -- use 'p00f/nvim-ts-rainbow'
   use 'nvim-treesitter/nvim-treesitter-refactor'
   use {
@@ -163,6 +165,7 @@ require("gruvbox").setup({
       TSNote = { link = "GruvboxYellow" },
       TSConstBuiltin = {link = "GruvboxPurple"},
       CocCodeLens = {fg = "#878787"},
+      ContextVt = {fg = "#878787"},
       Comment = {fg="#fe8019", italic=true},
       Folded = {italic=true, fg="#fe8019", bg="#3c3836"},
       FoldColumn = {fg="#fe8019", bg="#0E1018"},
@@ -181,7 +184,7 @@ require("gruvbox").setup({
       GruvboxAquaSign = {fg="#8EC07C", bg="#0E1018"},
       GruvboxGreenSign = {fg="#b8bb26", bg="#0E1018"},
       GruvboxRedSign = {fg="#fb4934", bg="#0E1018"},
-      GruvboxBlueSign = {fg="#83a598", bg="#0E1018"}
+      GruvboxBlueSign = {fg="#83a598", bg="#0E1018"},
     }
 })
 
@@ -189,6 +192,14 @@ vim.cmd([[
 colorscheme gruvbox "colorscheme
 runtime cocRC.vim " cocRC rec settings
 ]])
+
+-- TODO change all these keymaps to lua
+vim.api.nvim_set_keymap("n", "<C-a>", require("dial.map").inc_normal(), {noremap = true})
+vim.api.nvim_set_keymap("n", "<C-x>", require("dial.map").dec_normal(), {noremap = true})
+vim.api.nvim_set_keymap("v", "<C-a>", require("dial.map").inc_visual(), {noremap = true})
+vim.api.nvim_set_keymap("v", "<C-x>", require("dial.map").dec_visual(), {noremap = true})
+vim.api.nvim_set_keymap("v", "g<C-a>", require("dial.map").inc_gvisual(), {noremap = true})
+vim.api.nvim_set_keymap("v", "g<C-x>", require("dial.map").dec_gvisual(), {noremap = true})
 EOF
 
 " Key remapping
