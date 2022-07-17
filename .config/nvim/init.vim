@@ -1,5 +1,3 @@
-" https://buildyourfuture.withgoogle.com/programs/step
-" https://careers.microsoft.com/students/us/en/usuniversityinternship
 lua << EOF
 local execute = vim.api.nvim_command
 
