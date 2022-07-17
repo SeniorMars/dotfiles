@@ -1,3 +1,5 @@
+" https://buildyourfuture.withgoogle.com/programs/step
+" https://careers.microsoft.com/students/us/en/usuniversityinternship
 lua << EOF
 local execute = vim.api.nvim_command
 
@@ -225,38 +227,6 @@ inoremap . .<C-g>U
 inoremap ! !<C-g>U
 inoremap ? ?<C-g>U
 
-" General
-nnoremap <Backspace> <C-^>
-xnoremap . :norm.<CR>
-nnoremap cp yap<S-}>p
-" noremap gx yiW:!open "<C-r>"" & <CR>
-nmap <Leader>ww :VimwikiIndex<cr>
-nmap <Leader>wd :VimwikiMakeDiaryNote<cr>
-nmap <Leader>ll <Plug>VimwikiFollowLink
-nmap <Leader>ln <Plug>VimwikiNextLink
-nmap <Leader>lp <Plug>VimwikiPrevLink
-nmap <Leader>lg :LazyGit<cr>
-nmap <leader>e :Prettier<cr>
-nmap <leader>cd :cd %:p:h<cr>:pwd<cr>
-nmap <leader>cn :cnext<cr>
-nmap <leader>cp :cprevious<cr>
-nmap <leader>P "+gP
-nmap <leader>p "+gp
-nmap <leader>sv :source $MYVIMRC<cr>
-nmap <leader>sr :%s/\<<C-r><C-w>\>//g<Left><Left>
-nmap <leader>z [s1z=``
-xmap <leader>y "*y :let @+=@*<cr>
-nmap <leader>1 :bp<cr>
-nmap <leader>2 :bn<cr>
-nmap <leader>3 :retab<cr>:FixWhitespace<cr>
-nmap <leader>4 :Format<cr>
-nmap <leader>5 :call SpellToggle()<cr>
-nnoremap <leader>u :UndotreeToggle<cr>
-inoremap , ,<C-g>U
-inoremap . .<C-g>U
-inoremap ! !<C-g>U
-inoremap ? ?<C-g>U
-
 " Movement
 vnoremap J :m '>+1<cr>gv=gv
 vnoremap K :m '<-2<cr>gv=gv
@@ -351,8 +321,7 @@ let g:netrw_banner = 0
 let g:netrw_browse_split = 4
 let g:netrw_liststyle = 3
 let g:netrw_winsize = -28
-let g:netrw_browsex_viewer= "xdg-open"
-let g:python3_host_prog="/usr/bin/python3"
+let g:netrw_browsex_viewer= "open"
 let g:languagetool_server_command = '/usr/bin/languagetool --http'
 let g:languagetool_server_jar='/usr/share/java/languagetool/languagetool.jar'
 let g:languagetool_lang='en-US'
@@ -740,7 +709,7 @@ require("indent_blankline").setup {
 local parsers = require("nvim-treesitter.parsers")
 local enabled_list = {"clojure", "fennel", "commonlisp", "query"}
 require('nvim-treesitter.configs').setup {
-  ensure_installed = "maintained",
+  -- ensure_installed = "maintained",
   highlight = {
     enable = true,
     additional_vim_regex_highlighting = {"vim", "latex"},
