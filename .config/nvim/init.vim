@@ -110,8 +110,6 @@ require('packer').startup(function()
   --   end
   -- }
   -- use 'alec-gibson/nvim-tetris'
-  -- use 'tpope/vim-sleuth'
-  -- use {'ludovicchabant/vim-gutentags', ft={'java'}} -- Tags Generate
   -- use 'sheerun/vim-polyglot' -- vim syntax for different languages
   -- use 'p00f/godbolt.nvim'
   -- use {'Valloric/MatchTagAlways', ft =  { 'html' }}
@@ -742,7 +740,7 @@ require("indent_blankline").setup {
 local parsers = require("nvim-treesitter.parsers")
 local enabled_list = {"clojure", "fennel", "commonlisp", "query"}
 require('nvim-treesitter.configs').setup {
-  -- ensure_installed = "maintained",
+  ensure_installed = "maintained",
   highlight = {
     enable = true,
     additional_vim_regex_highlighting = {"vim", "latex"},
