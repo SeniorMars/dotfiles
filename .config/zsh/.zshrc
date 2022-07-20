@@ -14,7 +14,7 @@ ZVM_CURSOR_STYLE_ENABLED=false
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Plugins
-plugins=(git zsh-vi-mode tmux rust rustup systemadmin common-aliases you-should-use)
+plugins=(git zsh-vi-mode tmux rust systemadmin common-aliases you-should-use)
 source $ZSH/oh-my-zsh.sh
 
 # load fzf binds
@@ -24,10 +24,10 @@ zvm_after_init_commands+=('[ -f $ZSH/fzf.zsh ] && source $ZSH/fzf.zsh')
 eval "$(zoxide init zsh)"
 
 # auto-suggestion
-source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /opt/homebrew/opt/zsh-autosuggestions/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # syntax highlighting
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /opt/homebrew/opt/zsh-syntax-highlighting/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # To customize prompt, run `p10k configure` or edit ~/.config/zsh/.p10k.zsh.
 [[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh
@@ -35,6 +35,9 @@ source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zs
 # User configuration
 [ -f ~/.config/profile/aliases ] && source $HOME/.config/profile/aliases
 # source $HOME/.config/profile/agnosterBetter.zsh # another theme I had
+
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # Other settings
 HISTFILE=$XDG_DATA_HOME/history
@@ -57,7 +60,7 @@ bindkey -v '^?' backward-delete-char
 # ranger
 function ranger-cd {
     tempfile="$(mktemp -t tmp.XXXXXX)"
-    /usr/bin/ranger --choosedir="$tempfile" "${@:-$(pwd)}"
+    /opt/homebrew/bin/ranger --choosedir="$tempfile" "${@:-$(pwd)}"
     test -f "$tempfile" &&
     if [ "$(cat -- "$tempfile")" != "$(echo -n `pwd`)" ]; then
         cd -- "$(cat "$tempfile")"
@@ -80,5 +83,4 @@ bindkey -s '^z' 'fg\n'
 bindkey -s '^q' 'source-asdf\n'
 bindkey '^ ' forward-char
 bindkey -M vicmd 'L' edit-command-line
-setxkbmap -option caps:escape
-# source /home/karl/.config/broot/launcher/bash/br
+alias rm="rm"
