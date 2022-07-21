@@ -1,5 +1,17 @@
-
 source ~/.config/profile/aliases
+abbr -a yr 'cal -y'
+abbr -a c cargo
+abbr -a e nvim
+abbr -a m make
+abbr -a o open
+abbr -a g git
+abbr -a gc 'git checkout'
+abbr -a ga 'git add -p'
+abbr -a vimdiff 'nvim -d'
+abbr -a ct 'cargo t'
+abbr -a gah 'git stash; and git pull --rebase; and git stash pop'
+abbr -a pr 'gh pr create -t (git show -s --format=%s HEAD) -b (git show -s --format=%B HEAD | tail -n+3)'
+set FISH_CLIPBOARD_CMD "cat"
 
 # Man stuff
 setenv LESS_TERMCAP_mb \e'[01;31m'       # begin blinking
@@ -23,5 +35,4 @@ if status is-interactive
 		exec tmux
 	end
 end
-
 zoxide init fish | source

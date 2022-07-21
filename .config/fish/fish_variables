@@ -6,11 +6,11 @@ SETUVAR --export COLORTERM:truecolor
 SETUVAR --export EDITOR:nvim
 SETUVAR --export FZF_ALT_C_COMMAND:fd\x20\x2dt\x20d\x20\x2d\x2dhidden\x20\x2d\x2dfollow\x20\x2d\x2dexclude\x20\x22\x2egit\x22\x20\x2e\x20/Users/karl
 SETUVAR --export FZF_CTRL_T_COMMAND:fd\x20\x2dt\x20d\x20\x2d\x2dhidden\x20\x2d\x2dfollow\x20\x2d\x2dexclude\x20\x22\x2egit\x22\x20\x2e\x20/Users/karl
-SETUVAR --export FZF_DEFAULT_COMMAND:fd\x20\x2d\x2dtype\x20f\x20\x2d\x2dhidden\x20\x2d\x2dfollow\x20\x2d\x2dexclude\x20\x2egit
+SETUVAR --export FZF_DEFAULT_COMMAND:fd\x20\x2d\x2dtype\x20file\x20\x2d\x2dfollow
+SETUVAR FZF_DEFAULT_OPTS:\x2d\x2dheight\x2020\x25
 SETUVAR --export GEM_HOME:/Users/karl/\x2elocal/share/gem
 SETUVAR --export --path GEM_PATH:/Users/karl/\x2elocal/share/gem
 SETUVAR --export GEM_SPEC_CACHE:/Users/karl/\x2ecache/gem
-SETUVAR --export GITHUB_TOKEN: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
 SETUVAR --export --path GOPATH:/Users/karl/\x2elocal/share/go
 SETUVAR --export GRADLE_USER_HOME:/Users/karl/\x2elocal/share/gradle
 SETUVAR --export INPUTRC:/Users/karl/\x2econfig/readline/inputrc
@@ -36,17 +36,33 @@ SETUVAR --export XDG_DATA_HOME:/Users/karl/\x2elocal/share
 SETUVAR --export ZDOTDIR:/Users/karl/\x2econfig/zsh
 SETUVAR --export ZSH:/Users/karl/\x2econfig/zsh
 SETUVAR __fish_initialized:3400
+SETUVAR _fish_abbr_c:cargo
+SETUVAR _fish_abbr_ct:cargo\x20t
+SETUVAR _fish_abbr_e:nvim
+SETUVAR _fish_abbr_g:git
+SETUVAR _fish_abbr_ga:git\x20add\x20\x2dp
+SETUVAR _fish_abbr_gah:git\x20stash\x3b\x20and\x20git\x20pull\x20\x2d\x2drebase\x3b\x20and\x20git\x20stash\x20pop
+SETUVAR _fish_abbr_gc:git\x20checkout
+SETUVAR _fish_abbr_m:make
+SETUVAR _fish_abbr_o:open
+SETUVAR _fish_abbr_pr:gh\x20pr\x20create\x20\x2dt\x20\x28git\x20show\x20\x2ds\x20\x2d\x2dformat\x3d\x25s\x20HEAD\x29\x20\x2db\x20\x28git\x20show\x20\x2ds\x20\x2d\x2dformat\x3d\x25B\x20HEAD\x20\x7c\x20tail\x20\x2dn\x2b3\x29
+SETUVAR _fish_abbr_vimdiff:nvim\x20\x2dd
+SETUVAR _fish_abbr_yr:cal\x20\x2dy
 SETUVAR _fisher_acomagu_2F_fish_2D_async_2D_prompt_files:\x7e/\x2econfig/fish/conf\x2ed/__async_prompt\x2efish
 SETUVAR _fisher_ilancosman_2F_tide_40_v5_files:\x7e/\x2econfig/fish/functions/_tide_1_line_prompt\x2efish\x1e\x7e/\x2econfig/fish/functions/_tide_2_line_prompt\x2efish\x1e\x7e/\x2econfig/fish/functions/_tide_cache_variables\x2efish\x1e\x7e/\x2econfig/fish/functions/_tide_detect_os\x2efish\x1e\x7e/\x2econfig/fish/functions/_tide_find_and_remove\x2efish\x1e\x7e/\x2econfig/fish/functions/_tide_item_aws\x2efish\x1e\x7e/\x2econfig/fish/functions/_tide_item_character\x2efish\x1e\x7e/\x2econfig/fish/functions/_tide_item_chruby\x2efish\x1e\x7e/\x2econfig/fish/functions/_tide_item_cmd_duration\x2efish\x1e\x7e/\x2econfig/fish/functions/_tide_item_context\x2efish\x1e\x7e/\x2econfig/fish/functions/_tide_item_docker\x2efish\x1e\x7e/\x2econfig/fish/functions/_tide_item_git\x2efish\x1e\x7e/\x2econfig/fish/functions/_tide_item_go\x2efish\x1e\x7e/\x2econfig/fish/functions/_tide_item_java\x2efish\x1e\x7e/\x2econfig/fish/functions/_tide_item_jobs\x2efish\x1e\x7e/\x2econfig/fish/functions/_tide_item_kubectl\x2efish\x1e\x7e/\x2econfig/fish/functions/_tide_item_node\x2efish\x1e\x7e/\x2econfig/fish/functions/_tide_item_os\x2efish\x1e\x7e/\x2econfig/fish/functions/_tide_item_php\x2efish\x1e\x7e/\x2econfig/fish/functions/_tide_item_private_mode\x2efish\x1e\x7e/\x2econfig/fish/functions/_tide_item_rustc\x2efish\x1e\x7e/\x2econfig/fish/functions/_tide_item_shlvl\x2efish\x1e\x7e/\x2econfig/fish/functions/_tide_item_status\x2efish\x1e\x7e/\x2econfig/fish/functions/_tide_item_terraform\x2efish\x1e\x7e/\x2econfig/fish/functions/_tide_item_time\x2efish\x1e\x7e/\x2econfig/fish/functions/_tide_item_toolbox\x2efish\x1e\x7e/\x2econfig/fish/functions/_tide_item_vi_mode\x2efish\x1e\x7e/\x2econfig/fish/functions/_tide_item_virtual_env\x2efish\x1e\x7e/\x2econfig/fish/functions/_tide_print_item\x2efish\x1e\x7e/\x2econfig/fish/functions/_tide_pwd\x2efish\x1e\x7e/\x2econfig/fish/functions/_tide_remove_unusable_items\x2efish\x1e\x7e/\x2econfig/fish/functions/_tide_sub_bug\x2dreport\x2efish\x1e\x7e/\x2econfig/fish/functions/_tide_sub_configure\x2efish\x1e\x7e/\x2econfig/fish/functions/fish_mode_prompt\x2efish\x1e\x7e/\x2econfig/fish/functions/fish_prompt\x2efish\x1e\x7e/\x2econfig/fish/functions/tide\x1e\x7e/\x2econfig/fish/functions/tide\x2efish\x1e\x7e/\x2econfig/fish/conf\x2ed/_tide_init\x2efish\x1e\x7e/\x2econfig/fish/completions/tide\x2efish
 SETUVAR _fisher_jorgebucaran_2F_fisher_files:\x7e/\x2econfig/fish/functions/fisher\x2efish\x1e\x7e/\x2econfig/fish/completions/fisher\x2efish
-SETUVAR _fisher_plugins:jorgebucaran/fisher\x1epure\x2dfish/pure\x1eilancosman/tide\x40v5\x1eacomagu/fish\x2dasync\x2dprompt
+SETUVAR _fisher_plugins:jorgebucaran/fisher\x1epure\x2dfish/pure\x1eilancosman/tide\x40v5\x1eacomagu/fish\x2dasync\x2dprompt\x1ewfxr/forgit
 SETUVAR _fisher_pure_2D_fish_2F_pure_files:\x7e/\x2econfig/fish/functions/_pure_check_for_new_release\x2efish\x1e\x7e/\x2econfig/fish/functions/_pure_format_time\x2efish\x1e\x7e/\x2econfig/fish/functions/_pure_get_prompt_symbol\x2efish\x1e\x7e/\x2econfig/fish/functions/_pure_is_inside_container\x2efish\x1e\x7e/\x2econfig/fish/functions/_pure_is_single_line_prompt\x2efish\x1e\x7e/\x2econfig/fish/functions/_pure_parse_directory\x2efish\x1e\x7e/\x2econfig/fish/functions/_pure_parse_git_branch\x2efish\x1e\x7e/\x2econfig/fish/functions/_pure_place_iterm2_prompt_mark\x2efish\x1e\x7e/\x2econfig/fish/functions/_pure_prefix_root_prompt\x2efish\x1e\x7e/\x2econfig/fish/functions/_pure_print_prompt\x2efish\x1e\x7e/\x2econfig/fish/functions/_pure_print_prompt_rows\x2efish\x1e\x7e/\x2econfig/fish/functions/_pure_prompt\x2efish\x1e\x7e/\x2econfig/fish/functions/_pure_prompt_beginning\x2efish\x1e\x7e/\x2econfig/fish/functions/_pure_prompt_command_duration\x2efish\x1e\x7e/\x2econfig/fish/functions/_pure_prompt_container\x2efish\x1e\x7e/\x2econfig/fish/functions/_pure_prompt_current_folder\x2efish\x1e\x7e/\x2econfig/fish/functions/_pure_prompt_ending\x2efish\x1e\x7e/\x2econfig/fish/functions/_pure_prompt_first_line\x2efish\x1e\x7e/\x2econfig/fish/functions/_pure_prompt_git\x2efish\x1e\x7e/\x2econfig/fish/functions/_pure_prompt_git_branch\x2efish\x1e\x7e/\x2econfig/fish/functions/_pure_prompt_git_dirty\x2efish\x1e\x7e/\x2econfig/fish/functions/_pure_prompt_git_pending_commits\x2efish\x1e\x7e/\x2econfig/fish/functions/_pure_prompt_git_stash\x2efish\x1e\x7e/\x2econfig/fish/functions/_pure_prompt_jobs\x2efish\x1e\x7e/\x2econfig/fish/functions/_pure_prompt_new_line\x2efish\x1e\x7e/\x2econfig/fish/functions/_pure_prompt_ssh\x2efish\x1e\x7e/\x2econfig/fish/functions/_pure_prompt_symbol\x2efish\x1e\x7e/\x2econfig/fish/functions/_pure_prompt_system_time\x2efish\x1e\x7e/\x2econfig/fish/functions/_pure_prompt_vimode\x2efish\x1e\x7e/\x2econfig/fish/functions/_pure_prompt_virtualenv\x2efish\x1e\x7e/\x2econfig/fish/functions/_pure_set_color\x2efish\x1e\x7e/\x2econfig/fish/functions/_pure_set_default\x2efish\x1e\x7e/\x2econfig/fish/functions/_pure_string_width\x2efish\x1e\x7e/\x2econfig/fish/functions/_pure_user_at_host\x2efish\x1e\x7e/\x2econfig/fish/functions/fish_greeting\x2efish\x1e\x7e/\x2econfig/fish/functions/fish_mode_prompt\x2efish\x1e\x7e/\x2econfig/fish/functions/fish_prompt\x2efish\x1e\x7e/\x2econfig/fish/functions/fish_title\x2efish\x1e\x7e/\x2econfig/fish/conf\x2ed/_pure_init\x2efish\x1e\x7e/\x2econfig/fish/conf\x2ed/pure\x2efish
 SETUVAR _fisher_upgraded_to_4_4:\x1d
+SETUVAR _fisher_wfxr_2F_forgit_files:\x7e/\x2econfig/fish/conf\x2ed/forgit\x2eplugin\x2efish
 SETUVAR _tide_left_items:status\x1epwd\x1egit\x1ecmd_duration\x1echaracter
-SETUVAR _tide_prompt_11103:\x1b\x28B\x1b\x5bm\x1b\x28B\x1b\x5bm\x1b\x28B\x1b\x5bm\x1b\x28B\x1b\x5bm\x1b\x28B\x1b\x5bm\x40PWD\x40\x1b\x5b38\x3b2\x3b148\x3b148\x3b148m\x20\x1b\x28B\x1b\x5bm\x1b\x28B\x1b\x5bm\x1b\x5b90m\x1b\x28B\x1b\x5bmon\x20\x1b\x5b37m\x1b\x5b90mmaster\x1b\x5b38\x3b2\x3b255\x3b0\x3b0m\x1b\x5b32m\x1b\x5b38\x3b2\x3b95\x3b215\x3b0m\x1b\x5b38\x3b2\x3b253\x3b38\x3b1m\x1b\x5b92m\x1b\x5b38\x3b2\x3b255\x3b135\x3b0m\x1b\x5b93m\x20\x3f11\x1b\x5b38\x3b2\x3b255\x3b106\x3b193m\x20\u276f\u276f\x1b\x28B\x1b\x5bm\x1b\x28B\x1b\x5bm\x1b\x28B\x1b\x5bm\x1e\x1b\x28B\x1b\x5bm\x1b\x28B\x1b\x5bm\x1b\x28B\x1b\x5bm
+SETUVAR _tide_prompt_25713:\x1b\x28B\x1b\x5bm\x1b\x28B\x1b\x5bm\x1b\x28B\x1b\x5bm\x1b\x28B\x1b\x5bm\x1b\x28B\x1b\x5bm\x40PWD\x40\x1b\x5b38\x3b2\x3b255\x3b106\x3b193m\x20\u276f\u276f\x1b\x28B\x1b\x5bm\x1b\x28B\x1b\x5bm\x1b\x28B\x1b\x5bm\x1e\x1b\x28B\x1b\x5bm\x1b\x28B\x1b\x5bm\x1b\x28B\x1b\x5bm
+SETUVAR _tide_prompt_666:\x1b\x28B\x1b\x5bm\x1b\x28B\x1b\x5bm\x1b\x28B\x1b\x5bm\x1b\x28B\x1b\x5bm\x1b\x28B\x1b\x5bm\x40PWD\x40\x1b\x5b38\x3b2\x3b255\x3b106\x3b193m\x20\u276f\u276f\x1b\x28B\x1b\x5bm\x1b\x28B\x1b\x5bm\x1b\x28B\x1b\x5bm\x1e\x1b\x28B\x1b\x5bm\x1b\x28B\x1b\x5bm\x1b\x28B\x1b\x5bm
+SETUVAR _tide_prompt_79343:\x1b\x28B\x1b\x5bm\x1b\x28B\x1b\x5bm\x1b\x28B\x1b\x5bm\x1b\x28B\x1b\x5bm\x1b\x28B\x1b\x5bm\x40PWD\x40\x1b\x5b38\x3b2\x3b255\x3b106\x3b193m\x20\u276f\u276f\x1b\x28B\x1b\x5bm\x1b\x28B\x1b\x5bm\x1b\x28B\x1b\x5bm\x1e\x1b\x28B\x1b\x5bm\x1b\x28B\x1b\x5bm\x1b\x28B\x1b\x5bm
+SETUVAR _tide_prompt_97596:\x1b\x28B\x1b\x5bm\x1b\x28B\x1b\x5bm\x1b\x28B\x1b\x5bm\x1b\x28B\x1b\x5bm\x1b\x28B\x1b\x5bm\x40PWD\x40\x1b\x5b38\x3b2\x3b255\x3b106\x3b193m\x20\u276f\u276f\x1b\x28B\x1b\x5bm\x1b\x28B\x1b\x5bm\x1b\x28B\x1b\x5bm\x1e\x1b\x28B\x1b\x5bm\x1b\x28B\x1b\x5bm\x1b\x28B\x1b\x5bm
 SETUVAR _tide_right_items:\x1d
-SETUVAR fish_color_autosuggestion:555
-SETUVAR fish_color_cancel:\x2d\x2dreverse
+SETUVAR fish_color_autosuggestion:555\x1ebrblack
+SETUVAR fish_color_cancel:\x2dr
 SETUVAR fish_color_command:005fd7
 SETUVAR fish_color_comment:990000
 SETUVAR fish_color_cwd:green
@@ -56,11 +72,10 @@ SETUVAR fish_color_error:ff0000
 SETUVAR fish_color_escape:00a6b2
 SETUVAR fish_color_history_current:\x2d\x2dbold
 SETUVAR fish_color_host:normal
-SETUVAR fish_color_host_remote:\x1d
-SETUVAR fish_color_keyword:\x1d
+SETUVAR fish_color_host_remote:yellow
+SETUVAR fish_color_match:\x2d\x2dbackground\x3dbrblue
 SETUVAR fish_color_normal:normal
 SETUVAR fish_color_operator:00a6b2
-SETUVAR fish_color_option:\x1d
 SETUVAR fish_color_param:00afff
 SETUVAR fish_color_quote:999900
 SETUVAR fish_color_redirection:00afff
@@ -71,8 +86,8 @@ SETUVAR fish_color_user:brgreen
 SETUVAR fish_color_valid_path:\x2d\x2dunderline
 SETUVAR fish_key_bindings:fish_vi_key_bindings
 SETUVAR fish_pager_color_background:\x1d
-SETUVAR fish_pager_color_completion:\x1d
-SETUVAR fish_pager_color_description:B3A06D
+SETUVAR fish_pager_color_completion:normal
+SETUVAR fish_pager_color_description:B3A06D\x1e\x2d\x2ditalics
 SETUVAR fish_pager_color_prefix:normal\x1e\x2d\x2dbold\x1e\x2d\x2dunderline
 SETUVAR fish_pager_color_progress:brwhite\x1e\x2d\x2dbackground\x3dcyan
 SETUVAR fish_pager_color_secondary_background:\x1d
@@ -83,7 +98,7 @@ SETUVAR fish_pager_color_selected_background:\x2d\x2dreverse
 SETUVAR fish_pager_color_selected_completion:\x1d
 SETUVAR fish_pager_color_selected_description:\x1d
 SETUVAR fish_pager_color_selected_prefix:\x1d
-SETUVAR fish_user_paths:/opt/local/share/man\x1e/opt/local/bin\x1e/opt/homebrew/bin\x1e/opt/local/sbin\x1e/Users/karl/\x2elocal/bin\x1e/Users/karl/\x2elocal/share/cargo/bin\x1e/usr/local/bin\x1e/usr/sbin\x1e/opt/homebrew/opt/fzf/bin
+SETUVAR fish_user_paths:/Users/karl/\x2eemacs\x2ed/bin\x1e/opt/homebrew/lib/python3\x2e9/site\x2dpackages\x1e/opt/local/share/man\x1e/opt/local/bin\x1e/opt/homebrew/bin\x1e/opt/local/sbin\x1e/Users/karl/\x2elocal/bin\x1e/Users/karl/\x2elocal/share/cargo/bin\x1e/usr/local/bin\x1e/usr/sbin\x1e/opt/homebrew/opt/fzf/bin
 SETUVAR pure_begin_prompt_with_current_directory:true
 SETUVAR pure_check_for_new_release:false
 SETUVAR pure_color_at_sign:pure_color_mute
@@ -202,7 +217,7 @@ SETUVAR tide_prompt_add_newline_before:false
 SETUVAR tide_prompt_color_frame_and_connection:6C6C6C
 SETUVAR tide_prompt_color_separator_same_color:949494
 SETUVAR tide_prompt_icon_connection:\x20
-SETUVAR tide_prompt_min_cols:100
+SETUVAR tide_prompt_min_cols:500
 SETUVAR tide_prompt_pad_items:false
 SETUVAR tide_pwd_bg_color:normal
 SETUVAR tide_pwd_color_anchors:00AFFF

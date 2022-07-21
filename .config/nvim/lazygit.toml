@@ -1,0 +1,38 @@
+os:
+  editCommand: 'nvim --server $NVIM_SERVER'
+  editCommandTemplate: "{{editor}} --remote-send '<C-\\><C-n>:5ToggleTerm<CR>:lua _edit({{filename}}, {{line}})<CR>'"
+git:
+  branchLogCmd: "git log --graph --color=always --abbrev-commit --decorate --date=relative --pretty=medium --oneline {{branchName}} --"
+  commitPrefixes:
+    my_project: # This is repository folder name
+      pattern: "^\\w+\\/(\\w+-\\w+).*"
+      replace: '[$1] '
+  paging:
+    colorArg: always
+    pager: delta --dark --paging=never
+    # useConfig: use
+  commit:
+    signOff: false
+  merging:
+    # only applicable to unix users
+    manualCommit: false
+    # extra args passed to `git merge`, e.g. --no-ff
+    args: ''
+  log:
+    # one of date-order, author-date-order, topo-order.
+    # topo-order makes it easier to read the git log graph, but commits may not
+    # appear chronologically. See https://git-scm.com/docs/git-log#_commit_ordering
+    order: 'topo-order'
+    # one of always, never, when-maximised
+    # this determines whether the git graph is rendered in the commits panel
+    showGraph: 'when-maximised'
+    # displays the whole git graph by default in the commits panel (equivalent to passing the `--all` argument to `git log`)
+    showWholeGraph: false
+  skipHookPrefix: WIP
+  autoFetch: true
+  autoRefresh: true
+  allBranchesLogCmd: 'git log --graph --all --color=always --abbrev-commit --decorate --date=relative  --pretty=medium'
+  overrideGpg: false # prevents lazygit from spawning a separate process when using GPG
+  disableForcePushing: false
+  parseEmoji: false
+  diffContextSize: 3 # how many lines of context are shown around a change in diffs

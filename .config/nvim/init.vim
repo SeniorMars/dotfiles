@@ -1,10 +1,14 @@
 lua << EOF
-local execute = vim.api.nvim_command
 
+local execute = vim.api.nvim_command
 local install_path = vim.fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
 
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
   execute('!git clone https://github.com/wbthomason/packer.nvim '.. install_path)
+end
+
+if vim.fn.executable('nvr') == 0 then
+  execute('!pip install --user neovim-remote')
 end
 
 vim.api.nvim_exec([[
@@ -186,117 +190,108 @@ require("gruvbox").setup({
     }
 })
 
+local keyset = vim.keymap.set
 vim.cmd([[
 colorscheme gruvbox "colorscheme
 runtime cocRC.vim " cocRC rec settings
 ]])
 
--- TODO change all these keymaps to lua
-vim.api.nvim_set_keymap("n", "<C-a>", require("dial.map").inc_normal(), {noremap = true})
-vim.api.nvim_set_keymap("n", "<C-x>", require("dial.map").dec_normal(), {noremap = true})
-vim.api.nvim_set_keymap("v", "<C-a>", require("dial.map").inc_visual(), {noremap = true})
-vim.api.nvim_set_keymap("v", "<C-x>", require("dial.map").dec_visual(), {noremap = true})
-vim.api.nvim_set_keymap("v", "g<C-a>", require("dial.map").inc_gvisual(), {noremap = true})
-vim.api.nvim_set_keymap("v", "g<C-x>", require("dial.map").dec_gvisual(), {noremap = true})
-EOF
 
-" Key remapping
-let mapleader = ","
+-- Key remapping
+vim.g.mapleader = ","
+keyset("i", "jk", "<esc>")
 
-" General
-nnoremap <Backspace> <C-^>
-xnoremap . :norm.<CR>
-nnoremap cp yap<S-}>p
-" noremap gx yiW:!open "<C-r>"" & <CR>
-nmap <a-x> <nop>
-nmap <Leader>ww :VimwikiIndex<cr>
-nmap <Leader>wd :VimwikiMakeDiaryNote<cr>
-nmap <Leader>ll <Plug>VimwikiFollowLink
-nmap <Leader>ln <Plug>VimwikiNextLink
-nmap <Leader>lp <Plug>VimwikiPrevLink
-" nmap <Leader>lg :LazyGit<cr>
-nmap <leader>e :Prettier<cr>
-nmap <leader>cd :cd %:p:h<cr>:pwd<cr>
-nmap <leader>cn :cnext<cr>
-nmap <leader>cp :cprevious<cr>
-nmap <leader>P "+gP
-nmap <leader>p "+gp
-nmap <leader>sv :source $MYVIMRC<cr>
-nmap <leader>sr :%s/\<<C-r><C-w>\>//g<Left><Left>
-nmap <leader>z [s1z=``
-xmap <leader>y "*y :let @+=@*<cr>
-nmap <leader>1 :bp<cr>
-nmap <leader>2 :bn<cr>
-nmap <leader>3 :retab<cr>:FixWhitespace<cr>
-nmap <leader>4 :Format<cr>
-nmap <leader>5 :call SpellToggle()<cr>
-nnoremap <leader>u :UndotreeToggle<cr>
-inoremap , ,<C-g>U
-inoremap . .<C-g>U
-inoremap ! !<C-g>U
-inoremap ? ?<C-g>U
+-- dial
+keyset("n", "<C-a>", require("dial.map").inc_normal())
+keyset("n", "<C-x>", require("dial.map").dec_normal())
+keyset("v", "<C-a>", require("dial.map").inc_visual())
+keyset("v", "<C-x>", require("dial.map").dec_visual())
+keyset("v", "g<C-a>", require("dial.map").inc_gvisual())
+keyset("v", "g<C-x>", require("dial.map").dec_gvisual())
 
-" Movement
-vnoremap J :m '>+1<cr>gv=gv
-vnoremap K :m '<-2<cr>gv=gv
+-- remap to include undo and more things
+keyset("i", "," ,",<C-g>U")
+keyset("i", "." ,".<C-g>U")
+keyset("i", "!" ,"!<C-g>U")
+keyset("i", "?" ,"?<C-g>U")
+keyset("x", ".", ":norm.<cr>")
+keyset("x", "<leader>y", '"*y :let @+=@*<cr>')
+keyset("n", "<a-x>", "<nop>")
+keyset("n", "<backspace>", "<C-^")
+keyset("n", "cp", "yap<S-}p")
 
-nnoremap <space>h <C-w>h
-nnoremap <space>j <C-w>j
-nnoremap <space>k <C-w>k
-nnoremap <space>l <C-w>l
-nmap <silent> <space><space> :ToggleTerm<cr>
-nmap <silent> <space>t :ToggleTerm size=60 direction=vertical<cr>
-" nmap <leader>t :Lexplore<cr>
-nmap <Leader>wh <C-w>t<C-w>H
-nmap <Leader>wk <C-w>t<C-w>K
-nmap <down> :resize +2<cr>
-nmap <up> :resize -2<cr>
-nmap <right> :vertical resize +2<CR>
-nmap <left> :vertical resize -2<CR>
-nmap <expr> j (v:count? 'j' : 'gj')
-nmap <expr> k (v:count? 'k' : 'gk')
-imap jk <Esc>
+-- general
+keyset("n", "<space><space>", ":ToggleTerm size=15<cr>", {silent = true})
+keyset("n", "<space>t", ":ToggleTerm size=60 direction=vertical", {silent = true})
+keyset("n", "<leader>u", ":UndotreeToggle<cr>")
+keyset("n", "<Leader>ww", ":VimwikiIndex<cr>")
+keyset("n", "<Leader>wd", ":VimwikiMakeDiaryNote<cr>")
+keyset('n', '<Leader>ll', '<Plug>VimwikiFollowLink')
+keyset('n', '<Leader>ln', '<Plug>VimwikiNextLink')
+keyset('n', '<Leader>lp', '<Plug>VimwikiPrevLink')
+keyset("n", "<leader>e", ":Prettier<cr>")
+keyset("n", "<leader>cd", ":cd %:p:h<cr>:pwd<cr>")
+keyset("n", "<leader>cn", ":cnext<cr>")
+keyset("n", "<leader>cp", ":cprevious<cr>")
+keyset("n", "<leader>P", '"+gP')
+keyset("n", "<leader>p", '"+gp')
+keyset("n", "<leader>sv", ":source $MYVIMRC<cr>")
+keyset("n", "<leader>z",  "[s1z=``")
+keyset("n", "<leader>1",  ":bp<cr>")
+keyset("n", "<leader>2",  ":bn<cr>")
+keyset("n", "<leader>3",  ":retab<cr>:FixWhitespace<cr>")
+keyset("n", "<leader>4",  ":Format<cr>")
+keyset("n", "<leader>5",  ":call SpellToggle()<cr>")
+keyset("n", "<leader>sr", ':%s/<<C-r><C-w>>//g<Left><Left>')
 
-" Fzf + grepper
-nmap <leader><leader>f :Telescope git_files<cr>
-nmap <leader>fl :Telescope git_status<cr>
-nmap <leader>ff :Telescope find_files<cr>
-nmap <leader>fb :Telescope buffers<cr>
-nmap <leader>fm :Telescope man_pages<cr>
-nmap <leader>ft :Telescope treesitter<cr>
-nmap <leader>fk :Telescope keymaps<cr>
-nmap <leader>fh :Telescope help_tags<cr>
-nmap <leader>fd :Telescope file_browser<cr>
-nmap <leader>fi :Telescope media_files<cr>
-nnoremap <leader>fs :GrepperRg "" .<Left><Left><Left>
-nnoremap <leader>fS :Rg<space>
-nnoremap <leader>* :Grepper -tool rg -cword -noprompt<cr>
-nmap gs  <plug>(GrepperOperator)
-xmap gs  <plug>(GrepperOperator)
+-- Movement
+keyset("v", "J", ":m '>+1<cr>gv=gv")
+keyset("v", "K", ":m '<-2<cr>gv=gv")
+keyset("n", "<space>h", "<c-w>h")
+keyset("n", "<space>j", "<c-w>j")
+keyset("n", "<space>k", "<c-w>k")
+keyset("n", "<space>l", "<c-w>l")
+keyset("n", "<leader>wh", "<c-w>t<c-h>H")
+keyset("n", "<leader>wk", "<c-w>t<c-h>K")
+keyset("n", "<down>", ":resize +2<cr>")
+keyset("n", "<up>", ":resize -2<cr>")
+keyset("n", "<right>", ":vertical resize +2<cr>")
+keyset("n", "<left>", ":vertical resize -2<cr>")
+keyset("n", "j", "(v:count ? 'j' : 'gj')", {expr = true})
+keyset("n", "k", "(v:count ? 'k' : 'gk')", {expr = true})
 
-" fugitive
-nmap <silent><leader>gg :Git<cr>
-nmap <silent><leader>ga :Git add %:p<cr><cr>
-nmap <silent><leader>gd :Gdiff<cr>
-nmap <silent><leader>ge :Gedit<cr>
-nmap <silent><leader>gr :Gread<cr>
-nmap <silent><leader>gw :Gwrite<cr><cr>
-nmap <silent><leader>gb :GBrowse<cr><cr>
-nmap <silent><leader>gp :AsyncRun git push<cr>
-nmap <silent><leader>go :Git checkout<space>
-nmap <silent><leader>gf :Commits<cr>
+-- Telescope + grepper
+keyset("n", "<leader><leader>f", ":Telescope git_files<cr>")
+keyset("n", "<leader>fl", ":Telescope git_status<cr>")
+keyset("n", "<leader>ff", ":Telescope find_files<cr>")
+keyset("n", "<leader>fb", ":Telescope buffers<cr>")
+keyset("n", "<leader>fm", ":Telescope man_pages<cr>")
+keyset("n", "<leader>ft", ":Telescope treesitter<cr>")
+keyset("n", "<leader>fk", ":Telescope keymaps<cr>")
+keyset("n", "<leader>fh", ":Telescope help_tags<cr>")
+keyset("n", "<leader>fd", ":Telescope file_browser<cr>")
+keyset("n", "<leader>fi", ":Telescope media_files<cr>")
+keyset("n", "<leader>fs", ':GrepperRg "" .<Left><Left><Left>')
+keyset("n", "<leader>fS", ":Rg<space>")
+keyset("n", "<leader>*", ":Grepper -tool rg -cword -noprompt<cr>")
+keyset("n", "gs", "<Plug>(GrepperOperator)")
+keyset("x", "gs", "<Plug>(GrepperOperator)")
 
-if has('nvim') && executable('nvr')
-  let $GIT_EDITOR = "nvr -cc split --remote-wait +'set bufhidden=wipe'"
-endif
+-- fugitive
+keyset("n", "<leader>gg", ":Git<cr>", {silent = true})
+keyset("n", "<leader>ga", ":Git add %:p<cr><cr>", {silent = true})
+keyset("n", "<leader>gd", ":Gdiff<cr>", {silent = true})
+keyset("n", "<leader>ge", ":Gedit<cr>", {silent = true})
+keyset("n", "<leader>gw", ":Gwrite<cr>", {silent = true})
+keyset("n", "<leader>gf", ":Commits<cr>", {silent = true})
+vim.cmd([[let $GIT_EDITOR = "nvr -cc split --remote-wait +'set bufhidden=wipe'"]])
 
-if has('mac')
-  nmap <leader>0 :silent !open %<cr>
-elseif has('linux')
-  nmap <leader>0 :silent !firefox %<cr>
+if vim.fn.has('mac') == 1 then
+  keyset("n", "<leader>0", ":silent !open %<cr>")
 else
-  nmap <leader>0 :silent !firefox %<cr>
-endif
+  keyset("n", "<leader>0", ":silent !xdg-open %<cr>")
+end
+EOF
 
 "Extra
 let g:firenvim_config = {
@@ -314,6 +309,15 @@ let g:firenvim_config = {
     \ }
 \ }
 
+if exists('g:started_by_firenvim')
+  set laststatus=0
+  let g:auto_session_enabled = v:false
+  autocmd TextChanged * ++nested call Delay_My_Write()
+  autocmd TextChangedI * ++nested call Delay_My_Write()
+else
+  set laststatus=3
+endif
+
 " Vimtex config
 let g:tex_flavor='latex'
 let g:vimtex_view_method='skim'
@@ -325,15 +329,11 @@ let g:tex_conceal='abdmg'
 let g:polyglot_disabled = ['javascript', 'css', 'java', 'c', 'typescript', 'python', 'cpp', 'rs', 'bash', 'zsh', 'html', 'lua', 'ruby', 'ocaml', 'haskell', 'go', 'yaml', 'json'] "treesitter
 let g:vimwiki_list = [{'path': '~/Work/vimwiki'}]
 let g:python3_host_prog = '/opt/homebrew/bin/python3'
-let g:rust_clip_command = 'xclip -selection clipboard'
 let g:netrw_banner = 0
 let g:netrw_browse_split = 4
 let g:netrw_liststyle = 3
 let g:netrw_winsize = -28
 let g:netrw_browsex_viewer= "open"
-let g:languagetool_server_command = '/usr/bin/languagetool --http'
-let g:languagetool_server_jar='/usr/share/java/languagetool/languagetool.jar'
-let g:languagetool_lang='en-US'
 let g:termdebug_popup = 0
 let g:termdebug_wide = 163
 
@@ -393,15 +393,6 @@ function! Delay_My_Write() abort
   let g:dont_write = v:true
   call timer_start(10000, 'My_Write')
 endfunction
-
-if exists('g:started_by_firenvim')
-  set laststatus=0
-  let g:auto_session_enabled = v:false
-  autocmd TextChanged * ++nested call Delay_My_Write()
-  autocmd TextChangedI * ++nested call Delay_My_Write()
-else
-  set laststatus=3
-endif
 
 " coc
 let g:coc_global_extensions = [
@@ -523,18 +514,25 @@ local opts = { noremap = true, silent = true }
 vim.api.nvim_set_keymap("n", "<leader>t", ":lua require('neogen').generate()<CR>", opts)
 
 require("toggleterm").setup {
-  shade_terminals = false,
-  open_mapping = [[<space>,]]
+  shade_terminals = false
 }
 
 local Terminal  = require('toggleterm.terminal').Terminal
 
+local lg_cmd = "lazygit $(pwd)"
+if vim.v.servername ~= nil then
+    lg_cmd = string.format("NVIM_SERVER=%s lazygit -ucf ~/.config/nvim/lazygit.toml $(pwd)", vim.v.servername)
+end
+
 local lazygit = Terminal:new({
-  cmd = "lazygit",
-  dir = "git_dir",
+  cmd = lg_cmd,
+  count = 5,
+  -- dir = "git_dir",
   direction = "float",
   float_opts = {
     border = "double",
+    width = vim.o.columns,
+    height = vim.o.lines
   },
 
   -- function to run on opening the terminal
@@ -543,6 +541,14 @@ local lazygit = Terminal:new({
     vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>", {noremap = true, silent = true})
   end,
 })
+
+function _edit(fn, line_number)
+    local edit_cmd = string.format(":e %s", fn)
+    if line_number ~= nil then
+        edit_cmd = string.format(":e +%d %s", line_number, fn)
+    end
+    vim.cmd(edit_cmd)
+end
 
 function _lazygit_toggle()
   lazygit:toggle()
