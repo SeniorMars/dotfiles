@@ -8,7 +8,7 @@ map(0, 'n', '<leader>o9', '<Plug>VimspectorStepOut', {})
 map(0, 'n', '<leader>o0', '<Plug>VimspectorStop', {})
 map(0, 'n', '<leader>oo', '<Plug>VimspectorToggleBreakpoint', {})
 
-options = { noremap = true}
+local options = { noremap = true}
 map(0, 'n', '<leader>7', ':term java %<cr>', options)
 map(0, 'n', '<leader>8', ':w<cr>:make<cr>:cwindow<cr>', options)
 map(0, 'n', '<leader>9', ":!echo <C-r>=expand('%:r')<cr> <bar> xargs java<cr>", options)

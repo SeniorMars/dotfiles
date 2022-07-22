@@ -1,6 +1,6 @@
 vim.cmd([[let termdubgger="rust-gdb"]])
 local map = vim.api.nvim_buf_set_keymap
-options = { silent = true}
+local options = { silent = true}
 
 map(0, 'n', '<leader>=', "<Esc>:w<cr>:term rustc <c-r>=expand('%')<cr> && ./<c-r>=expand('%:r')<cr><cr>", {noremap = true})
 map(0, 'n', '<leader>9', ':<C-u>CocCommand rust-analyzer.run<CR>', {noremap = true})
