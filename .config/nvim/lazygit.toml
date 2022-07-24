@@ -1,6 +1,6 @@
 os:
   editCommand: 'nvim --server $NVIM_SERVER'
-  editCommandTemplate: "{{editor}} --remote-send '<C-\\><C-n>:5ToggleTerm<CR>:lua _edit({{filename}}, {{line}})<CR>'"
+  editCommandTemplate: "{{editor}} --remote-send '<C-\\><C-n>:5ToggleTerm<CR>:lua Edit({{filename}}, {{line}})<CR>'"
 git:
   branchLogCmd: "git log --graph --color=always --abbrev-commit --decorate --date=relative --pretty=medium --oneline {{branchName}} --"
   commitPrefixes:

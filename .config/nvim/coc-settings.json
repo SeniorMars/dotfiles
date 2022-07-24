@@ -24,7 +24,7 @@
   ],
   "python.analysis.useLibraryCodeForTypes": false,
   "python.pythonPath": "python",
-  "python.venvPath": "/home/karl/Work/softdev/p3crabs/.venv/",
+  "python.venvPath": "/home/karl/Random/flask",
   "rust-analyzer.server.path": "/opt/homebrew/bin/rust-analyzer",
   "rust-analyzer.inlayHints.typeHintsSeparator": "‣ ",
   "rust-analyzer.inlayHints.chainingHintsSeparator": "‣ ",
