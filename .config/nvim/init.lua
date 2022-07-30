@@ -6,7 +6,7 @@ if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
 end
 
 if vim.fn.executable('nvr') == 0 then
-    execute('!pip install --user neovim-remote')
+    execute('!pip3 install --user neovim-remote')
 end
 
 vim.api.nvim_create_augroup("Packer", {})
@@ -132,8 +132,8 @@ require('packer').startup(function()
 end)
 
 -- global options
--- TODO: switch to own file
 vim.opt.writebackup = false
+vim.opt.termguicolors = true
 vim.opt.conceallevel = 2
 vim.opt.ignorecase = true -- search case
 vim.opt.smartcase = true -- search matters if capital letter
@@ -156,13 +156,11 @@ vim.opt.showbreak = "↳" -- character for line break
 vim.opt.splitbelow = true -- split windows below
 vim.opt.splitright = true -- split windows right
 vim.opt.wildmode = "list:longest,list:full" -- for : stuff
--- vim.opt.omnifunc="syntaxcomplete#Complete" -- for syntax completetion
 vim.opt.wildignore:append({".javac", "node_modules", "*.pyc"})
 vim.opt.suffixesadd:append({".java", ".rs"}) -- search for suffexes using gf
 vim.opt.diffopt:append{"internal,algorithm:patience"}
 vim.opt.cursorline = true
 vim.opt.cursorlineopt = "number"
-vim.opt.guifont = "MesloLGMDZ Nerd Font Bold 16"
 vim.opt.showmode = false
 vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal"
 
@@ -208,6 +206,7 @@ require("gruvbox").setup({
 
 vim.cmd.colorscheme("gruvbox")
 vim.api.nvim_create_user_command("FixWhitespace", [[%s/\s\+$//e]], {})
+
 function SpellToggle()
     if vim.opt.spell:get() then
         vim.opt_local.spell = false
@@ -222,9 +221,9 @@ end
 local git_branch = function()
     if vim.g.loaded_fugitive then
         local branch = vim.fn.FugitiveHead()
-        if branch ~= '' then return string.upper(" " .. branch .. " ") end
+        if branch ~= '' then return string.upper(" " .. branch) end
     end
-    return ' '
+    return ''
 end
 
 local file_path = function()
@@ -234,9 +233,9 @@ local file_path = function()
     local is_term = false
     local file_dir = ""
 
-    if buf_name:find("term", 0, true) ~= nil then
-        is_term = true
+    if buf_name:sub(1, 5):find("term") ~= nil then
         file_dir = vim.env.PWD
+        is_term = true
     else
         file_dir = vim.fn.expand("%:p:h")
     end
@@ -252,7 +251,7 @@ local file_path = function()
     if is_term then
         return file_dir
     else
-        return file_dir .. '/' .. vim.fn.expand('%:t')
+        return string.format("%s/%s", file_dir, vim.fn.expand("%:t"))
     end
 end
 
@@ -307,7 +306,7 @@ function status_line()
         get_current_mode(), -- get current mode
         "%{toupper(&spelllang)}", -- display language and if spell is on
         git_branch(), -- branch name
-        "%<", -- spacing
+        " %<", -- spacing
         file_path(), -- smart full path filename
         "%h%m%r%w", -- help flag, modified, readonly, and preview
         "%=", -- right align
@@ -355,6 +354,7 @@ keyset('n', '<Leader>ll', '<Plug>VimwikiFollowLink')
 keyset('n', '<Leader>ln', '<Plug>VimwikiNextLink')
 keyset('n', '<Leader>lp', '<Plug>VimwikiPrevLink')
 keyset("n", "<leader>e", ":Neoformat<cr>")
+keyset("n", "<leader>q", ":!zathura <C-r>=expand('%:r')<cr>.pdf &<cr>")
 keyset("n", "<leader>cd", ":cd %:p:h<cr>:pwd<cr>")
 keyset("n", "<leader>cn", ":cnext<cr>")
 keyset("n", "<leader>cp", ":cprevious<cr>")
@@ -387,7 +387,7 @@ keyset("n", "k", "(v:count ? 'k' : 'gk')", {expr = true})
 
 -- Telescope + grepper
 keyset("n", "<leader><leader>f", ":Telescope git_files<cr>")
-keyset("n", "<leader>fl", ":Telescope git_status<cr>")
+keyset("n", "<leader>fl", ":Telescope live_grep<cr>")
 keyset("n", "<leader>ff", ":Telescope find_files<cr>")
 keyset("n", "<leader>fb", ":Telescope buffers<cr>")
 keyset("n", "<leader>fm", ":Telescope man_pages<cr>")
@@ -410,7 +410,7 @@ keyset("n", "<leader>gw", ":Gwrite<cr>", {silent = true})
 keyset("n", "<leader>gf", ":Commits<cr>", {silent = true})
 
 if vim.fn.has('mac') then
-    keyset("n", "<leader>0", ":silent !open -a firefox %<cr>")
+    keyset("n", "<leader>0", ":silent !open -a Firefox %<cr>")
 else
     keyset("n", "<leader>0", ":silent !xdg-open %<cr>")
 end
@@ -426,9 +426,9 @@ vim.g.coc_global_extensions = {
     'coc-tsserver', 'coc-snippets', 'coc-emmet', 'coc-json', 'coc-texlab'
 }
 -- auto complete
+keyset("i", "<TAB>", "pumvisible() ? '<C-n>' : '<TAB>'", {silent = true, expr = true})
 keyset("i", "<c-j>", "<Plug>(coc-snippets-expand-jump)")
 keyset("i", "<c-space>", "coc#refresh()", {silent = true, expr = true})
-keyset("i", "<TAB>", "pumvisible() ? '<C-n>' : '<TAB>'", {silent = true, expr = true})
 keyset("i", "<S-TAB>", "pumvisible() ? '<C-p>' : '<C-h>'", {expr = true})
 keyset("i", "<CR>", "pumvisible() ? coc#_select_confirm() : '<C-g>u<CR><c-r>=coc#on_enter()<CR>'", {silent = true, expr = true})
 
@@ -482,10 +482,10 @@ vim.api.nvim_create_autocmd("CursorHold", {
 
 -- Vimtex config
 vim.g.tex_flavor = 'latex'
-vim.g.vimtex_view_method = 'skim'
-vim.g.vimtex_quickfix_mode = 0
-vim.g.indentLine_setConceal = 0
+vim.g.vimtex_view_method = 'zathura'
+vim.g.vimtex_quickfix_mode = 2
 vim.g.tex_conceal = 'abdmg'
+vim.g.indentLine_setConceal = 0
 
 -- Other settings
 -- vim.g.polyglot_disabled = { 'javascript', 'css', 'java', 'c', 'typescript', 'python', 'cpp', 'rs', 'bash', 'zsh', 'html', 'lua', 'ruby', 'ocaml', 'haskell', 'go', 'yaml', 'json' } -- "treesitter
@@ -524,33 +524,57 @@ wilder.set_option('renderer', wilder.popupmenu_renderer({
 }))
 
 -- firenvim
-vim.cmd 'let g:firenvim_config = { "globalSettings": { "alt": "all", }, "localSettings": { ".*": { "cmdline": "neovim", "content": "text", "priority": 0, "selector": "textarea", "takeover": "never", }, } }'
+vim.g.firenvim_config = {
+    globalSettings = {alt = "all"},
+    localSettings = {
+        [".*"] = {
+            cmdline = "neovim",
+            content = "text",
+            priority = 0,
+            selector = "textarea",
+            takeover = "never"
+        }
+    }
+}
+
 
 if vim.g.started_by_firenvim then
-  vim.opt.laststatus = 0
-  vim.g.auto_session_enabled = false
-  vim.cmd([[
+    vim.opt.laststatus = 0
+    vim.g.auto_session_enabled = false
+    vim.cmd([[
   let g:dont_write = v:false
 
   function! My_Write(timer) abort
-    let g:dont_write = v:false
-    write
+  let g:dont_write = v:false
+  write
   endfunction
 
   function! Delay_My_Write() abort
-    if g:dont_write
-      return
-    end
-    let g:dont_write = v:true
-    call timer_start(10000, 'My_Write')
+  if g:dont_write
+  return
+  end
+  let g:dont_write = v:true
+  call timer_start(10000, 'My_Write')
   endfunction
 
-  autocmd TextChanged * ++nested call Delay_My_Write()
-  autocmd TextChangedI * ++nested call Delay_My_Write()
+    autocmd TextChanged * ++nested call Delay_My_Write()
+    autocmd TextChangedI * ++nested call Delay_My_Write()
   ]])
-  vim.api.nvim_create_autocmd("BufEnter", {pattern = "github.com_*.txt", command = "set filename=markdown"})
+
+    -- vim.api.nvim_create_autocmd("TextChanged", {
+    --     command = "++nested call g:Delay_My_Write"
+    -- })
+    --
+    -- vim.api.nvim_create_autocmd("TextChangedI", {
+    --     command = "++nested call g:Delay_My_Write"
+    -- })
+
+    vim.api.nvim_create_autocmd("BufEnter", {
+        pattern = "github.com_*.txt",
+        command = "set filename=markdown"
+    })
 else
-  vim.opt.laststatus = 3
+    vim.opt.laststatus = 3
 end
 
 -- autocmds
@@ -560,6 +584,7 @@ vim.api.nvim_create_autocmd('VimResized', {
   desc = 'Keep windows equally resized',
   command = 'tabdo wincmd =',
 })
+-- vim.api.nvim_create_autocmd("")
 vim.api.nvim_create_autocmd("TermOpen", {group = "Random", command="setlocal nonumber norelativenumber signcolumn=no"})
 vim.api.nvim_create_autocmd("InsertEnter", {group = "Random", command = "set timeoutlen=100"})
 vim.api.nvim_create_autocmd("InsertLeave", {group = "Random", command = "set timeoutlen=1000"})
@@ -620,7 +645,7 @@ require('filetype').setup({
         complex = {
             [".gitignore"] = "gitignore",
             ["tmux.conf"] = "tmux",
-            ["/tmp/neomutt*"] = "mail"
+            ["neomutt*"] = "mail",
         }
     }
 })
@@ -689,7 +714,6 @@ require("telescope").setup({
     pickers = {
         find_files = {
             theme = "ivy",
-            -- hidden = true,
             layout_config = {height = 0.4}
         },
         git_files = {theme = "ivy", layout_config = {height = 0.4}},
@@ -744,7 +768,7 @@ require('nvim-treesitter.configs').setup {
     -- ensure_installed = "maintained",
     highlight = {
         enable = true,
-        additional_vim_regex_highlighting = {"vim", "latex"},
+        additional_vim_regex_highlighting = {"latex"},
         custom_captures = {["@function.macro"] = "GruvboxPurple"}
     },
     playground = {

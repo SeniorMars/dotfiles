@@ -1,5 +1,6 @@
 source ~/.config/profile/aliases
 abbr -a yr 'cal -y'
+abbr -a mr 'neomutt'
 abbr -a c cargo
 abbr -a e nvim
 abbr -a m make
@@ -11,6 +12,7 @@ abbr -a vimdiff 'nvim -d'
 abbr -a ct 'cargo t'
 abbr -a gah 'git stash; and git pull --rebase; and git stash pop'
 abbr -a pr 'gh pr create -t (git show -s --format=%s HEAD) -b (git show -s --format=%B HEAD | tail -n+3)'
+abbr -a backup 'restic --repo /Volumes/backup/tetra_backup/ backup ~ --exclude-file=/Users/karl/.config/rclone/exclude_backup'
 set FISH_CLIPBOARD_CMD "cat"
 
 # Man stuff
@@ -35,4 +37,7 @@ if status is-interactive
 		exec tmux
 	end
 end
+
 zoxide init fish | source
+source /opt/homebrew/opt/asdf/libexec/asdf.fish
+test -e ~/.config/iterm2/iterm2_shell_integration.fish ; and source ~/.config/iterm2/iterm2_shell_integration.fish

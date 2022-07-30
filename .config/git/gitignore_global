@@ -5,3 +5,5 @@ tags
 .idea/
 .vscode/
 *.sw*
+
+.DS_Store

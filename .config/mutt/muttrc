@@ -2,21 +2,23 @@ source ~/.config/mutt/colors.muttrc
 color status green default
 
 #User
-set from = "email"
-set realname = "name"
+set from = "cjh16@rice.edu"
+set realname = "Karl Hernandez"
 
 # Ensure TLS is enforced
 set ssl_starttls = yes
 set ssl_force_tls = yes
 
 # My credentials
-set imap_user = "email"
-set smtp_url = "smtps://user@rice.edu@smtp.gmail.com:465/"
+set imap_user = "cjh16@rice.edu"
+set smtp_url = "smtps://cjh16@rice.edu@smtp.gmail.com:465/"
+set smtp_authenticators = 'gssapi:login'
 source "gpg -dq ~/.config/mutt/rice.gpg |"
 
 # Use GPGME/PGP
 # Use my key for signing and encrypting
 set pgp_sign_as = 7C668A6D13D5729989FB126B183357B41320BB2B
+set pgp_default_key = 7C668A6D13D5729989FB126B183357B41320BB2B
 
 set crypt_use_gpgme = yes
 
@@ -35,7 +37,9 @@ set crypt_replysignencrypted = yes
 # Attempt to verify signatures automatically
 set crypt_verify_sig = yes
 
-set signature = "~/.config/mutt/signatures/rice"
+set signature = "~/.config/mutt/rice"
+
+set crypt_opportunistic_encrypt = yes
 
 # My mailboxes
 set folder = "imaps://imap.gmail.com:993/[Gmail]"
@@ -99,7 +103,7 @@ set quote_regexp = "^( {0,4}[>|:#%]| {0,4}[a-z0-9]+[>|]+)+"
 set send_charset = "utf-8:iso-8859-1:us-ascii"
 
 # open in gui browser: hit "v" then go down to text/html then hit "m" or "Enter"
-set mailcap_path = /usr/share/mutt-wizard/mailcap
+set mailcap_path = "~/.config/mutt/mailcap"
 bind attach <return> view-mailcap
 auto_view text/html		# automatically show html (mailcap uses lynx)
 auto_view application/pgp-encrypted
@@ -117,10 +121,10 @@ bind index,pager \CK sidebar-next
 bind index,pager \CO sidebar-open
 
 
-## goobook
-set query_command="goobook query '%s'"
-macro index,pager a "<pipe-message>goobook add<return>" "add sender to google contacts"
-bind editor <tab> complete-query
+## lbdb
+set query_command="/opt/homebrew/bin/lbdbq '%s'"
+
+bind editor        <Tab> complete-query
 
 macro index A \
     "<tag-pattern>~N<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>" \

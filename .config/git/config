@@ -1,15 +1,17 @@
 [user]
-	email = jocelinc60@outlook.com
+	email = cjh16@rice.edu
 	name = KarlWithK
 	username = KarlWithK
 	signingkey = 7C668A6D13D5729989FB126B183357B41320BB2B
 [core]
 	pager = delta
 	editor = nvim
-	excludesfile = /home/karl/.config/git/gitignore_global
+	excludesfile = /Users/karl/.config/git/gitignore_global
 [credential]
 	helper = cache
 [diff]
+	algorithm = patience
+	compactionHeuristic = true
 	tool = nvimdiff
 [difftool "nvimdiff"]
 	cmd = nvim -d $LOCAL $REMOTE
@@ -20,12 +22,13 @@
 [mergetool "nfugitive"]
 	cmd = nvim -f -c "Gdiff" "$MERGED"
 [commit]
+	template = /Users/karl/.config/git/commit_template
 	verbose = true
 	gpgSign = true
 [pull]
 	rebase = false
 [gpg]
-	program = /usr/bin/gpg
+	program = /opt/homebrew/bin/gpg
 [tag]
 	gpgSign = true
 [interactive]
@@ -42,3 +45,5 @@
 	diffFilter = delta --color-only
 [mergetool]
 	keepBackup = false
+[push]
+	autoSetupRemote = true
