@@ -1,0 +1,718 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PACKAGE IMPORTS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\usepackage[tmargin=2cm,rmargin=1in,lmargin=1in,margin=0.85in,bmargin=2cm,footskip=.2in]{geometry}
+\usepackage{amsmath,amsfonts,amsthm,amssymb,mathtools}
+\usepackage[varbb]{newpxmath}
+\usepackage{xfrac}
+\usepackage[makeroom]{cancel}
+\usepackage{mathtools}
+\usepackage{bookmark}
+\usepackage{enumitem}
+\usepackage{hyperref,theoremref}
+\hypersetup{
+	pdftitle={Assignment},
+	colorlinks=true, linkcolor=doc!90,
+	bookmarksnumbered=true,
+	bookmarksopen=true
+}
+\usepackage[most,many,breakable]{tcolorbox}
+\usepackage{xcolor}
+\usepackage{varwidth}
+\usepackage{varwidth}
+\usepackage{etoolbox}
+%\usepackage{authblk}
+\usepackage{nameref}
+\usepackage{multicol,array}
+\usepackage{tikz-cd}
+\usepackage[ruled,vlined,linesnumbered]{algorithm2e}
+\usepackage{comment} % enables the use of multi-line comments (\ifx \fi) 
+
+\usepackage{tikzsymbols}
+\renewcommand\qedsymbol{$\Laughey$}
+
+
+%\usepackage{import}
+%\usepackage{xifthen}
+%\usepackage{pdfpages}
+%\usepackage{transparent}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% SELF MADE COLORS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\definecolor{myg}{RGB}{56, 140, 70}
+\definecolor{myb}{RGB}{45, 111, 177}
+\definecolor{myr}{RGB}{199, 68, 64}
+\definecolor{mytheorembg}{HTML}{F2F2F9}
+\definecolor{mytheoremfr}{HTML}{00007B}
+\definecolor{mylenmabg}{HTML}{FFFAF8}
+\definecolor{mylenmafr}{HTML}{983b0f}
+\definecolor{mypropbg}{HTML}{f2fbfc}
+\definecolor{mypropfr}{HTML}{191971}
+\definecolor{myexamplebg}{HTML}{F2FBF8}
+\definecolor{myexamplefr}{HTML}{88D6D1}
+\definecolor{myexampleti}{HTML}{2A7F7F}
+\definecolor{mydefinitbg}{HTML}{E5E5FF}
+\definecolor{mydefinitfr}{HTML}{3F3FA3}
+\definecolor{notesgreen}{RGB}{0,162,0}
+\definecolor{myp}{RGB}{197, 92, 212}
+\definecolor{mygr}{HTML}{2C3338}
+\definecolor{myred}{RGB}{127,0,0}
+\definecolor{myyellow}{RGB}{169,121,69}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% TCOLORBOX SETUPS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\setlength{\parindent}{1cm}
+%================================
+% THEOREM BOX
+%================================
+
+\tcbuselibrary{theorems,skins,hooks}
+\newtcbtheorem[number within=section]{Theorem}{Theorem}
+{%
+	enhanced,
+	breakable,
+	colback = mytheorembg,
+	frame hidden,
+	boxrule = 0sp,
+	borderline west = {2pt}{0pt}{mytheoremfr},
+	sharp corners,
+	detach title,
+	before upper = \tcbtitle\par\smallskip,
+	coltitle = mytheoremfr,
+	fonttitle = \bfseries\sffamily,
+	description font = \mdseries,
+	separator sign none,
+	segmentation style={solid, mytheoremfr},
+}
+{th}
+
+\tcbuselibrary{theorems,skins,hooks}
+\newtcbtheorem[number within=chapter]{theorem}{Theorem}
+{%
+	enhanced,
+	breakable,
+	colback = mytheorembg,
+	frame hidden,
+	boxrule = 0sp,
+	borderline west = {2pt}{0pt}{mytheoremfr},
+	sharp corners,
+	detach title,
+	before upper = \tcbtitle\par\smallskip,
+	coltitle = mytheoremfr,
+	fonttitle = \bfseries\sffamily,
+	description font = \mdseries,
+	separator sign none,
+	segmentation style={solid, mytheoremfr},
+}
+{th}
+
+
+\tcbuselibrary{theorems,skins,hooks}
+\newtcolorbox{Theoremcon}
+{%
+	enhanced
+	,breakable
+	,colback = mytheorembg
+	,frame hidden
+	,boxrule = 0sp
+	,borderline west = {2pt}{0pt}{mytheoremfr}
+	,sharp corners
+	,description font = \mdseries
+	,separator sign none
+}
+
+%================================
+% Corollery
+%================================
+\tcbuselibrary{theorems,skins,hooks}
+\newtcbtheorem[number within=section]{Corollary}{Corollary}
+{%
+	enhanced
+	,breakable
+	,colback = myp!10
+	,frame hidden
+	,boxrule = 0sp
+	,borderline west = {2pt}{0pt}{myp!85!black}
+	,sharp corners
+	,detach title
+	,before upper = \tcbtitle\par\smallskip
+	,coltitle = myp!85!black
+	,fonttitle = \bfseries\sffamily
+	,description font = \mdseries
+	,separator sign none
+	,segmentation style={solid, myp!85!black}
+}
+{th}
+\tcbuselibrary{theorems,skins,hooks}
+\newtcbtheorem[number within=chapter]{corollary}{Corollary}
+{%
+	enhanced
+	,breakable
+	,colback = myp!10
+	,frame hidden
+	,boxrule = 0sp
+	,borderline west = {2pt}{0pt}{myp!85!black}
+	,sharp corners
+	,detach title
+	,before upper = \tcbtitle\par\smallskip
+	,coltitle = myp!85!black
+	,fonttitle = \bfseries\sffamily
+	,description font = \mdseries
+	,separator sign none
+	,segmentation style={solid, myp!85!black}
+}
+{th}
+
+
+%================================
+% LENMA
+%================================
+
+\tcbuselibrary{theorems,skins,hooks}
+\newtcbtheorem[number within=section]{Lenma}{Lenma}
+{%
+	enhanced,
+	breakable,
+	colback = mylenmabg,
+	frame hidden,
+	boxrule = 0sp,
+	borderline west = {2pt}{0pt}{mylenmafr},
+	sharp corners,
+	detach title,
+	before upper = \tcbtitle\par\smallskip,
+	coltitle = mylenmafr,
+	fonttitle = \bfseries\sffamily,
+	description font = \mdseries,
+	separator sign none,
+	segmentation style={solid, mylenmafr},
+}
+{th}
+
+\tcbuselibrary{theorems,skins,hooks}
+\newtcbtheorem[number within=chapter]{lenma}{Lenma}
+{%
+	enhanced,
+	breakable,
+	colback = mylenmabg,
+	frame hidden,
+	boxrule = 0sp,
+	borderline west = {2pt}{0pt}{mylenmafr},
+	sharp corners,
+	detach title,
+	before upper = \tcbtitle\par\smallskip,
+	coltitle = mylenmafr,
+	fonttitle = \bfseries\sffamily,
+	description font = \mdseries,
+	separator sign none,
+	segmentation style={solid, mylenmafr},
+}
+{th}
+
+
+%================================
+% PROPOSITION
+%================================
+
+\tcbuselibrary{theorems,skins,hooks}
+\newtcbtheorem[number within=section]{Prop}{Proposition}
+{%
+	enhanced,
+	breakable,
+	colback = mypropbg,
+	frame hidden,
+	boxrule = 0sp,
+	borderline west = {2pt}{0pt}{mypropfr},
+	sharp corners,
+	detach title,
+	before upper = \tcbtitle\par\smallskip,
+	coltitle = mypropfr,
+	fonttitle = \bfseries\sffamily,
+	description font = \mdseries,
+	separator sign none,
+	segmentation style={solid, mypropfr},
+}
+{th}
+
+\tcbuselibrary{theorems,skins,hooks}
+\newtcbtheorem[number within=chapter]{prop}{Proposition}
+{%
+	enhanced,
+	breakable,
+	colback = mypropbg,
+	frame hidden,
+	boxrule = 0sp,
+	borderline west = {2pt}{0pt}{mypropfr},
+	sharp corners,
+	detach title,
+	before upper = \tcbtitle\par\smallskip,
+	coltitle = mypropfr,
+	fonttitle = \bfseries\sffamily,
+	description font = \mdseries,
+	separator sign none,
+	segmentation style={solid, mypropfr},
+}
+{th}
+
+
+%================================
+% CLAIM
+%================================
+
+\tcbuselibrary{theorems,skins,hooks}
+\newtcbtheorem[number within=section]{claim}{Claim}
+{%
+	enhanced
+	,breakable
+	,colback = myg!10
+	,frame hidden
+	,boxrule = 0sp
+	,borderline west = {2pt}{0pt}{myg}
+	,sharp corners
+	,detach title
+	,before upper = \tcbtitle\par\smallskip
+	,coltitle = myg!85!black
+	,fonttitle = \bfseries\sffamily
+	,description font = \mdseries
+	,separator sign none
+	,segmentation style={solid, myg!85!black}
+}
+{th}
+
+
+
+
+%================================
+% EXAMPLE BOX
+%================================
+
+\newtcbtheorem[number within=section]{Example}{Example}
+{%
+	colback = myexamplebg
+	,breakable
+	,colframe = myexamplefr
+	,coltitle = myexampleti
+	,boxrule = 1pt
+	,sharp corners
+	,detach title
+	,before upper=\tcbtitle\par\smallskip
+	,fonttitle = \bfseries
+	,description font = \mdseries
+	,separator sign none
+	,description delimiters parenthesis
+}
+{ex}
+
+\newtcbtheorem[number within=chapter]{example}{Example}
+{%
+	colback = myexamplebg
+	,breakable
+	,colframe = myexamplefr
+	,coltitle = myexampleti
+	,boxrule = 1pt
+	,sharp corners
+	,detach title
+	,before upper=\tcbtitle\par\smallskip
+	,fonttitle = \bfseries
+	,description font = \mdseries
+	,separator sign none
+	,description delimiters parenthesis
+}
+{ex}
+
+%================================
+% DEFINITION BOX
+%================================
+
+\newtcbtheorem[number within=section]{Definition}{Definition}{enhanced,
+	before skip=2mm,after skip=2mm, colback=red!5,colframe=red!80!black,boxrule=0.5mm,
+	attach boxed title to top left={xshift=1cm,yshift*=1mm-\tcboxedtitleheight}, varwidth boxed title*=-3cm,
+	boxed title style={frame code={
+					\path[fill=tcbcolback]
+					([yshift=-1mm,xshift=-1mm]frame.north west)
+					arc[start angle=0,end angle=180,radius=1mm]
+					([yshift=-1mm,xshift=1mm]frame.north east)
+					arc[start angle=180,end angle=0,radius=1mm];
+					\path[left color=tcbcolback!60!black,right color=tcbcolback!60!black,
+						middle color=tcbcolback!80!black]
+					([xshift=-2mm]frame.north west) -- ([xshift=2mm]frame.north east)
+					[rounded corners=1mm]-- ([xshift=1mm,yshift=-1mm]frame.north east)
+					-- (frame.south east) -- (frame.south west)
+					-- ([xshift=-1mm,yshift=-1mm]frame.north west)
+					[sharp corners]-- cycle;
+				},interior engine=empty,
+		},
+	fonttitle=\bfseries,
+	title={#2},#1}{def}
+\newtcbtheorem[number within=chapter]{definition}{Definition}{enhanced,
+	before skip=2mm,after skip=2mm, colback=red!5,colframe=red!80!black,boxrule=0.5mm,
+	attach boxed title to top left={xshift=1cm,yshift*=1mm-\tcboxedtitleheight}, varwidth boxed title*=-3cm,
+	boxed title style={frame code={
+					\path[fill=tcbcolback]
+					([yshift=-1mm,xshift=-1mm]frame.north west)
+					arc[start angle=0,end angle=180,radius=1mm]
+					([yshift=-1mm,xshift=1mm]frame.north east)
+					arc[start angle=180,end angle=0,radius=1mm];
+					\path[left color=tcbcolback!60!black,right color=tcbcolback!60!black,
+						middle color=tcbcolback!80!black]
+					([xshift=-2mm]frame.north west) -- ([xshift=2mm]frame.north east)
+					[rounded corners=1mm]-- ([xshift=1mm,yshift=-1mm]frame.north east)
+					-- (frame.south east) -- (frame.south west)
+					-- ([xshift=-1mm,yshift=-1mm]frame.north west)
+					[sharp corners]-- cycle;
+				},interior engine=empty,
+		},
+	fonttitle=\bfseries,
+	title={#2},#1}{def}
+
+
+
+%================================
+% EXERCISE BOX
+%================================
+
+\makeatletter
+\newtcbtheorem{question}{Question}{enhanced,
+	breakable,
+	colback=white,
+	colframe=myb!80!black,
+	attach boxed title to top left={yshift*=-\tcboxedtitleheight},
+	fonttitle=\bfseries,
+	title={#2},
+	boxed title size=title,
+	boxed title style={%
+			sharp corners,
+			rounded corners=northwest,
+			colback=tcbcolframe,
+			boxrule=0pt,
+		},
+	underlay boxed title={%
+			\path[fill=tcbcolframe] (title.south west)--(title.south east)
+			to[out=0, in=180] ([xshift=5mm]title.east)--
+			(title.center-|frame.east)
+			[rounded corners=\kvtcb@arc] |-
+			(frame.north) -| cycle;
+		},
+	#1
+}{def}
+\makeatother
+
+%================================
+% SOLUTION BOX
+%================================
+
+\makeatletter
+\newtcolorbox{solution}{enhanced,
+	breakable,
+	colback=white,
+	colframe=myg!80!black,
+	attach boxed title to top left={yshift*=-\tcboxedtitleheight},
+	title=Solution,
+	boxed title size=title,
+	boxed title style={%
+			sharp corners,
+			rounded corners=northwest,
+			colback=tcbcolframe,
+			boxrule=0pt,
+		},
+	underlay boxed title={%
+			\path[fill=tcbcolframe] (title.south west)--(title.south east)
+			to[out=0, in=180] ([xshift=5mm]title.east)--
+			(title.center-|frame.east)
+			[rounded corners=\kvtcb@arc] |-
+			(frame.north) -| cycle;
+		},
+}
+\makeatother
+
+%================================
+% Question BOX
+%================================
+
+\makeatletter
+\newtcbtheorem{qstion}{Question}{enhanced,
+	breakable,
+	colback=white,
+	colframe=mygr,
+	attach boxed title to top left={yshift*=-\tcboxedtitleheight},
+	fonttitle=\bfseries,
+	title={#2},
+	boxed title size=title,
+	boxed title style={%
+			sharp corners,
+			rounded corners=northwest,
+			colback=tcbcolframe,
+			boxrule=0pt,
+		},
+	underlay boxed title={%
+			\path[fill=tcbcolframe] (title.south west)--(title.south east)
+			to[out=0, in=180] ([xshift=5mm]title.east)--
+			(title.center-|frame.east)
+			[rounded corners=\kvtcb@arc] |-
+			(frame.north) -| cycle;
+		},
+	#1
+}{def}
+\makeatother
+
+\newtcbtheorem[number within=chapter]{wconc}{Wrong Concept}{
+	breakable,
+	enhanced,
+	colback=white,
+	colframe=myr,
+	arc=0pt,
+	outer arc=0pt,
+	fonttitle=\bfseries\sffamily\large,
+	colbacktitle=myr,
+	attach boxed title to top left={},
+	boxed title style={
+			enhanced,
+			skin=enhancedfirst jigsaw,
+			arc=3pt,
+			bottom=0pt,
+			interior style={fill=myr}
+		},
+	#1
+}{def}
+
+
+
+%================================
+% NOTE BOX
+%================================
+
+\usetikzlibrary{arrows,calc,shadows.blur}
+\tcbuselibrary{skins}
+\newtcolorbox{note}[1][]{%
+	enhanced jigsaw,
+	colback=gray!20!white,%
+	colframe=gray!80!black,
+	size=small,
+	boxrule=1pt,
+	title=\textbf{Note:-},
+	halign title=flush center,
+	coltitle=black,
+	breakable,
+	drop shadow=black!50!white,
+	attach boxed title to top left={xshift=1cm,yshift=-\tcboxedtitleheight/2,yshifttext=-\tcboxedtitleheight/2},
+	minipage boxed title=1.5cm,
+	boxed title style={%
+			colback=white,
+			size=fbox,
+			boxrule=1pt,
+			boxsep=2pt,
+			underlay={%
+					\coordinate (dotA) at ($(interior.west) + (-0.5pt,0)$);
+					\coordinate (dotB) at ($(interior.east) + (0.5pt,0)$);
+					\begin{scope}
+						\clip (interior.north west) rectangle ([xshift=3ex]interior.east);
+						\filldraw [white, blur shadow={shadow opacity=60, shadow yshift=-.75ex}, rounded corners=2pt] (interior.north west) rectangle (interior.south east);
+					\end{scope}
+					\begin{scope}[gray!80!black]
+						\fill (dotA) circle (2pt);
+						\fill (dotB) circle (2pt);
+					\end{scope}
+				},
+		},
+	#1,
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% SELF MADE COMMANDS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\newcommand{\thm}[2]{\begin{Theorem}{#1}{}#2\end{Theorem}}
+\newcommand{\cor}[2]{\begin{Corollary}{#1}{}#2\end{Corollary}}
+\newcommand{\mlenma}[2]{\begin{Lenma}{#1}{}#2\end{Lenma}}
+\newcommand{\mprop}[2]{\begin{Prop}{#1}{}#2\end{Prop}}
+\newcommand{\clm}[3]{\begin{claim}{#1}{#2}#3\end{claim}}
+\newcommand{\wc}[2]{\begin{wconc}{#1}{}\setlength{\parindent}{1cm}#2\end{wconc}}
+\newcommand{\thmcon}[1]{\begin{Theoremcon}{#1}\end{Theoremcon}}
+\newcommand{\ex}[2]{\begin{Example}{#1}{}#2\end{Example}}
+\newcommand{\dfn}[2]{\begin{Definition}[colbacktitle=red!75!black]{#1}{}#2\end{Definition}}
+\newcommand{\dfnc}[2]{\begin{definition}[colbacktitle=red!75!black]{#1}{}#2\end{definition}}
+\newcommand{\qs}[2]{\begin{question}{#1}{}#2\end{question}}
+\newcommand{\pf}[2]{\begin{myproof}[#1]#2\end{myproof}}
+\newcommand{\nt}[1]{\begin{note}#1\end{note}}
+
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+		\node[shape=circle,draw,inner sep=1pt] (char) {#1};}}
+\newcommand\getcurrentref[1]{%
+	\ifnumequal{\value{#1}}{0}
+	{??}
+	{\the\value{#1}}%
+}
+\newcommand{\getCurrentSectionNumber}{\getcurrentref{section}}
+\newenvironment{myproof}[1][\proofname]{%
+	\proof[\bfseries #1: ]%
+}{\endproof}
+\newcounter{mylabelcounter}
+
+\makeatletter
+\newcommand{\setword}[2]{%
+	\phantomsection
+	#1\def\@currentlabel{\unexpanded{#1}}\label{#2}%
+}
+\makeatother
+
+
+
+
+\tikzset{
+	symbol/.style={
+			draw=none,
+			every to/.append style={
+					edge node={node [sloped, allow upside down, auto=false]{$#1$}}}
+		}
+}
+
+
+% deliminators
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\round}{\lfloor}{\rceil}
+
+\newsavebox\diffdbox
+\newcommand{\slantedromand}{{\mathpalette\makesl{d}}}
+\newcommand{\makesl}[2]{%
+\begingroup
+\sbox{\diffdbox}{$\mathsurround=0pt#1\mathrm{#2}$}%
+\pdfsave
+\pdfsetmatrix{1 0 0.2 1}%
+\rlap{\usebox{\diffdbox}}%
+\pdfrestore
+\hskip\wd\diffdbox
+\endgroup
+}
+\newcommand{\dd}[1][]{\ensuremath{\mathop{}\!\ifstrempty{#1}{%
+\slantedromand\@ifnextchar^{\hspace{0.2ex}}{\hspace{0.1ex}}}%
+{\slantedromand\hspace{0.2ex}^{#1}}}}
+\ProvideDocumentCommand\dv{o m g}{%
+  \ensuremath{%
+    \IfValueTF{#3}{%
+      \IfNoValueTF{#1}{%
+        \frac{\dd #2}{\dd #3}%
+      }{%
+        \frac{\dd^{#1} #2}{\dd #3^{#1}}%
+      }%
+    }{%
+      \IfNoValueTF{#1}{%
+        \frac{\dd}{\dd #2}%
+      }{%
+        \frac{\dd^{#1}}{\dd #2^{#1}}%
+      }%
+    }%
+  }%
+}
+\providecommand*{\pdv}[3][]{\frac{\partial^{#1}#2}{\partial#3^{#1}}}
+%  - others
+\DeclareMathOperator{\Lap}{\mathcal{L}}
+\DeclareMathOperator{\Var}{Var} % varience
+\DeclareMathOperator{\Cov}{Cov} % covarience
+\DeclareMathOperator{\E}{E} % expected
+
+% Since the amsthm package isn't loaded
+
+% I prefer the slanted \leq
+\let\oldleq\leq % save them in case they're every wanted
+\let\oldgeq\geq
+\renewcommand{\leq}{\leqslant}
+\renewcommand{\geq}{\geqslant}
+
+% % redefine matrix env to allow for alignment, use r as default
+% \renewcommand*\env@matrix[1][r]{\hskip -\arraycolsep
+%     \let\@ifnextchar\new@ifnextchar
+%     \array{*\c@MaxMatrixCols #1}}
+
+
+%\usepackage{framed}
+%\usepackage{titletoc}
+%\usepackage{etoolbox}
+%\usepackage{lmodern}
+
+
+%\patchcmd{\tableofcontents}{\contentsname}{\sffamily\contentsname}{}{}
+
+%\renewenvironment{leftbar}
+%{\def\FrameCommand{\hspace{6em}%
+%		{\color{myyellow}\vrule width 2pt depth 6pt}\hspace{1em}}%
+%	\MakeFramed{\parshape 1 0cm \dimexpr\textwidth-6em\relax\FrameRestore}\vskip2pt%
+%}
+%{\endMakeFramed}
+
+%\titlecontents{chapter}
+%[0em]{\vspace*{2\baselineskip}}
+%{\parbox{4.5em}{%
+%		\hfill\Huge\sffamily\bfseries\color{myred}\thecontentspage}%
+%	\vspace*{-2.3\baselineskip}\leftbar\textsc{\small\chaptername~\thecontentslabel}\\\sffamily}
+%{}{\endleftbar}
+%\titlecontents{section}
+%[8.4em]
+%{\sffamily\contentslabel{3em}}{}{}
+%{\hspace{0.5em}\nobreak\itshape\color{myred}\contentspage}
+%\titlecontents{subsection}
+%[8.4em]
+%{\sffamily\contentslabel{3em}}{}{}  
+%{\hspace{0.5em}\nobreak\itshape\color{myred}\contentspage}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% TABLE OF CONTENTS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{tikz}
+\definecolor{doc}{RGB}{0,60,110}
+\usepackage{titletoc}
+\contentsmargin{0cm}
+\titlecontents{chapter}[3.7pc]
+{\addvspace{30pt}%
+	\begin{tikzpicture}[remember picture, overlay]%
+		\draw[fill=doc!60,draw=doc!60] (-7,-.1) rectangle (-0.9,.5);%
+		\pgftext[left,x=-3.5cm,y=0.2cm]{\color{white}\Large\sc\bfseries Chapter\ \thecontentslabel};%
+	\end{tikzpicture}\color{doc!60}\large\sc\bfseries}%
+{}
+{}
+{\;\titlerule\;\large\sc\bfseries Page \thecontentspage
+	\begin{tikzpicture}[remember picture, overlay]
+		\draw[fill=doc!60,draw=doc!60] (2pt,0) rectangle (4,0.1pt);
+	\end{tikzpicture}}%
+\titlecontents{section}[3.7pc]
+{\addvspace{2pt}}
+{\contentslabel[\thecontentslabel]{2pc}}
+{}
+{\hfill\small \thecontentspage}
+[]
+\titlecontents*{subsection}[3.7pc]
+{\addvspace{-1pt}\small}
+{}
+{}
+{\ --- \small\thecontentspage}
+[ \textbullet\ ][]
+
+\makeatletter
+\renewcommand{\tableofcontents}{%
+	\chapter*{%
+	  \vspace*{-20\p@}%
+	  \begin{tikzpicture}[remember picture, overlay]%
+		  \pgftext[right,x=15cm,y=0.2cm]{\color{doc!60}\Huge\sc\bfseries \contentsname};%
+		  \draw[fill=doc!60,draw=doc!60] (13,-.75) rectangle (20,1);%
+		  \clip (13,-.75) rectangle (20,1);
+		  \pgftext[right,x=15cm,y=0.2cm]{\color{white}\Huge\sc\bfseries \contentsname};%
+	  \end{tikzpicture}}%
+	\@starttoc{toc}}
+\makeatother
+
