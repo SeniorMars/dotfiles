@@ -56,6 +56,7 @@ require('packer').startup(function()
         config = function()
             require('nvim_context_vt').setup({
                 disable_virtual_lines = true,
+                -- disabe_virtual_lines_on_windows 
                 min_rows = 8
             })
         end
@@ -179,8 +180,6 @@ require("gruvbox").setup({
         Comment = {fg = "#fe8019", italic = true},
         Folded = {italic = true, fg = "#fe8019", bg = "#3c3836"},
         FoldColumn = {fg = "#fe8019", bg = "#0E1018"},
-        CocRustTypeHint = {fg = "#87afaf", bg = "#0E1018"},
-        CocRustChainingHint = {fg = "#87afaf", bg = "#0E1018"},
         DiffAdd = {bold = true, reverse = false, fg = "", bg = "#2a4333"},
         DiffChange = {bold = true, reverse = false, fg = "", bg = "#333841"},
         DiffDelete = {
@@ -194,6 +193,10 @@ require("gruvbox").setup({
         StatusLineNC = {bg = "#3c3836", fg = "#0E1018"},
         CursorLineNr = {fg = "#fabd2f", bg = "#0E1018"},
         CocWarningFloat = {fg = "#dfaf87"},
+        CocInlayHint = {fg = "#87afaf"},
+        -- DiagnosticVirtualTextInfo = {link = "GruvboxAqua"},
+        -- DiagnosticVirtualTextHint = {fg = "#87afaf", bg = "#0E1018"},
+        DiagnosticVirtualTextWarn = {fg = "#dfaf87"},
         GruvboxOrangeSign = {fg = "#dfaf87", bg = "#0E1018"},
         GruvboxAquaSign = {fg = "#8EC07C", bg = "#0E1018"},
         GruvboxGreenSign = {fg = "#b8bb26", bg = "#0E1018"},
@@ -213,7 +216,7 @@ function SpellToggle()
         vim.opt_local.spelllang = "en"
     else
         vim.opt_local.spell = true
-        vim.opt_local.spelllang = "en_us"
+        vim.opt_local.spelllang = {"en_us", "de"}
     end
 end
 
@@ -323,6 +326,8 @@ vim.opt.statusline = "%!luaeval('status_line()')"
 vim.g.mapleader = ","
 local keyset = vim.keymap.set
 keyset("i", "jk", "<esc>")
+-- vim.g.copilot_no_tab_map  = true
+-- keyset("i", "<c-k>", [[copilot#Accept("\<c-k>")]], {expr = true, silent = true, script = true})
 
 -- dial
 keyset("n", "<C-a>", require("dial.map").inc_normal())
@@ -425,12 +430,29 @@ vim.g.coc_global_extensions = {
     'coc-java', 'coc-rust-analyzer', 'coc-html', 'coc-css', 'coc-vimlsp',
     'coc-tsserver', 'coc-snippets', 'coc-emmet', 'coc-json', 'coc-texlab'
 }
+
 -- auto complete
-keyset("i", "<TAB>", "pumvisible() ? '<C-n>' : '<TAB>'", {silent = true, expr = true})
 keyset("i", "<c-j>", "<Plug>(coc-snippets-expand-jump)")
 keyset("i", "<c-space>", "coc#refresh()", {silent = true, expr = true})
-keyset("i", "<S-TAB>", "pumvisible() ? '<C-p>' : '<C-h>'", {expr = true})
-keyset("i", "<CR>", "pumvisible() ? coc#_select_confirm() : '<C-g>u<CR><c-r>=coc#on_enter()<CR>'", {silent = true, expr = true})
+vim.cmd([[
+
+function! CheckBackspace() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+inoremap <silent><expr> <TAB>
+      \ coc#pum#visible() ? coc#pum#next(1):
+      \ CheckBackspace() ? "\<Tab>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+
+
+" Make <CR> to accept selected completion item or notify coc.nvim to format
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+]])
 
 -- scroll through documentation
 keyset("n", "<C-f>", 'coc#float#has_scroll() ? coc#float#scroll(1) : "<C-f>"', {silent = true, expr = true, nowait = true})
@@ -503,7 +525,8 @@ vim.g.termdebug_wide = 163
 local wilder = require('wilder')
 wilder.setup({modes = {':', '/', '?'}})
 wilder.set_option('pipeline', {
-    wilder.branch(wilder.python_file_finder_pipeline({
+  wilder.branch(
+    wilder.python_file_finder_pipeline({
         file_command = function(_, arg)
             if string.find(arg, '.') ~= nil then
                 return {'fd', '-tf', '-H'}
@@ -513,7 +536,10 @@ wilder.set_option('pipeline', {
         end,
         dir_command = {'fd', '-td'},
         filters = {'fuzzy_filter', 'difflib_sorter'}
-    }), wilder.cmdline_pipeline(), wilder.python_search_pipeline())
+    }),
+    wilder.cmdline_pipeline(),
+    wilder.python_search_pipeline()
+  ),
 })
 
 wilder.set_option('renderer', wilder.popupmenu_renderer({

@@ -1,4 +1,12 @@
 # dotfiles
+This is a collection of dotfiles for my personal use. I do not update the documentation, but I do update the code.
+
+
+Charlie
+
+
+
+========================
 My Rice Setup. No I don't actually use my setup like this.
 
 This is outdated but when I have time I will update everything. I have learned so much about vim these weeks.
