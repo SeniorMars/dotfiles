@@ -20,3 +20,9 @@ To use:
 !!!! note
 
     I expect you to be able to install common LaTeX packages like amsmath, amsfonts, and amssymb.
+    
+
+Pictures:
+
+![Me using my template with zathura and vim in dark mode](./dark_mode.png)
+![Me using my template with zathura and vim in light mode](./light_mode.png)
