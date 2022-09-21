@@ -437,11 +437,7 @@ vim.g.coc_global_extensions = {
 
 function _G.check_back_space()
     local col = vim.fn.col('.') - 1
-    if col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') then
-        return true
-    else
-        return false
-    end
+    return col == 0 or vim.fn.getline('.'):sub(col, col):match('%s')
 end
 
 function _G.show_docs()
@@ -457,12 +453,9 @@ end
 
 -- auto complete
 local opts = {silent = true, noremap = true, expr = true}
-vim.api.nvim_set_keymap("i", "<TAB>",
-                        'coc#pum#visible() ? coc#pum#next(1) : v:lua.check_back_space() ? "<TAB>" : coc#refresh()', opts)
-vim.api.nvim_set_keymap("i", "<S-TAB>",
-                        [[coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"]], opts)
-vim.api.nvim_set_keymap("i", "<cr>",
-                        [[coc#pum#visible() ? coc#pum#confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"]], opts)
+vim.api.nvim_set_keymap("i", "<TAB>", 'coc#pum#visible() ? coc#pum#next(1) : v:lua.check_back_space() ? "<TAB>" : coc#refresh()', opts)
+vim.api.nvim_set_keymap("i", "<S-TAB>", [[coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"]], opts)
+vim.api.nvim_set_keymap("i", "<cr>", [[coc#pum#visible() ? coc#pum#confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"]], opts)
 keyset("i", "<c-j>", "<Plug>(coc-snippets-expand-jump)")
 keyset("i", "<c-space>", "coc#refresh()", {silent = true, expr = true})
 
