@@ -26,9 +26,9 @@
   "python.linting.pylintArgs": [
     "--generate-members"
   ],
-  "python.analysis.useLibraryCodeForTypes": false,
+  "python.analysis.useLibraryCodeForTypes": true,
   "python.pythonPath": "python",
-  "python.venvPath": "/home/karl/Random/flask",
+  "python.venvPath": "/home/charlie/Random/flask",
   "rust-analyzer.server.path": "/opt/homebrew/bin/rust-analyzer",
   "rust-analyzer.inlayHints.renderColons": false,
   "rust-analyzer.disableProgressNotifications": true,
@@ -47,8 +47,8 @@
   "snippets.ultisnips.enable": true,
   "snippets.ultisnips.directories": [
     "UltiSnips",
-    "/home/karl/.local/share/nvim/site/pack/packer/start/vim-snippets/snippets",
-    "/home/karl/.local/share/nvim/site/pack/packer/start/vim-snippets/UltiSnips"
+    "/Users/charlie/.local/share/nvim/site/pack/packer/start/vim-snippets/snippets",
+    "/Users/charlie/.local/share/nvim/site/pack/packer/start/vim-snippets/UltiSnips"
   ],
   "java.errors.incompleteClasspath.severity": "ignore",
   "java.codeGeneration.generateComments": true,
@@ -64,11 +64,6 @@
     "tex",
     "markdown",
     "mail"
-  ],
-  "coc.source.emoji.filetypes": [
-    "markdown",
-    "mail",
-    "vimwiki"
   ],
   "coc.preferences.formatOnSaveFiletypes": [
     "rust"

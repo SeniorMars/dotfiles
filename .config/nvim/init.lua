@@ -1,8 +1,10 @@
 local execute = vim.api.nvim_command
-local install_path = vim.fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
+local install_path = vim.fn.stdpath('data') ..
+                         '/site/pack/packer/start/packer.nvim'
 
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
-    execute('!git clone https://github.com/wbthomason/packer.nvim ' .. install_path)
+    execute('!git clone https://github.com/wbthomason/packer.nvim ' ..
+                install_path)
 end
 
 if vim.fn.executable('nvr') == 0 then
@@ -56,7 +58,7 @@ require('packer').startup(function()
         config = function()
             require('nvim_context_vt').setup({
                 disable_virtual_lines = true,
-                -- disabe_virtual_lines_on_windows 
+                -- disabe_virtual_lines_on_windows
                 min_rows = 8
             })
         end
@@ -83,11 +85,6 @@ require('packer').startup(function()
         config = function() require('guess-indent').setup {} end
     }
 
-    use {
-        'lewis6991/spellsitter.nvim',
-        config = function() require('spellsitter').setup() end
-    }
-
     use 'tpope/vim-fugitive' -- Git control for vim
     use 'tpope/vim-repeat' -- repeats
     use {
@@ -101,10 +98,7 @@ require('packer').startup(function()
 
     use 'lukas-reineke/indent-blankline.nvim'
     use 'windwp/nvim-autopairs'
-    use {
-        'norcalli/nvim-colorizer.lua',
-        config = function() require'colorizer'.setup() end
-    }
+    use({"uga-rosa/ccc.nvim", branch = "0.7.2"})
     use 'wellle/targets.vim' -- adds more targets like [ or ,
     use 'editorconfig/editorconfig-vim'
     use {'puremourning/vimspector', run = 'python3 install_gadget.py --all'}
@@ -112,9 +106,9 @@ require('packer').startup(function()
     use {'vimwiki/vimwiki'} -- To take notes better - testing this with vimtex
     use 'lervag/vimtex'
     use {"akinsho/toggleterm.nvim", tag = 'v2.*'}
+
     -- use 'sheerun/vim-polyglot' -- vim syntax for different languages
     -- use 'tweekmonster/startuptime.vim'
-
     -- use {
     --   'chipsenkbeil/distant.nvim',
     --   config = function()
@@ -125,7 +119,6 @@ require('packer').startup(function()
     --     }
     --   end
     -- }
-    -- use 'alec-gibson/nvim-tetris'
     -- use {'Valloric/MatchTagAlways', ft =  { 'html' }}
     -- use {'jalvesaq/Nvim-R', branch = 'stable'}
     -- use 'vigoux/LanguageTool.nvim'
@@ -150,7 +143,7 @@ vim.opt.scrolloff = 8 -- number of lines to always go down
 vim.opt.signcolumn = "number"
 vim.opt.colorcolumn = "99999" -- fix columns
 vim.opt.mouse = "a" -- set mouse to be on
-vim.opt.cmdheight = 0 -- status line smaller
+-- vim.opt.cmdheight = 0 -- status line smaller
 vim.opt.breakindent = true -- break indentation for long lines
 vim.opt.breakindentopt = {shift = 2}
 vim.opt.showbreak = "↳" -- character for line break
@@ -163,7 +156,8 @@ vim.opt.diffopt:append{"internal,algorithm:patience"}
 vim.opt.cursorline = true
 vim.opt.cursorlineopt = "number"
 vim.opt.showmode = false
-vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal"
+vim.o.sessionoptions =
+    "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal"
 
 -- colorscheme
 require("gruvbox").setup({
@@ -313,10 +307,9 @@ function status_line()
         file_path(), -- smart full path filename
         "%h%m%r%w", -- help flag, modified, readonly, and preview
         "%=", -- right align
-        "%{get(b:,'gitsigns_status','')}[",
-        word_count(), -- word count
+        "%{get(b:,'gitsigns_status','')}[", word_count(), -- word count
         "][%-3.(%l|%c]", -- line number, column number
-        "[%{strlen(&ft)?&ft[0].&ft[1:]:'None'}]", -- file type
+        "[%{strlen(&ft)?&ft[0].&ft[1:]:'None'}]" -- file type
     }
 end
 
@@ -327,7 +320,7 @@ vim.g.mapleader = ","
 local keyset = vim.keymap.set
 keyset("i", "jk", "<esc>")
 -- vim.g.copilot_no_tab_map  = true
--- keyset("i", "<c-k>", [[copilot#Accept("\<c-k>")]], {expr = true, silent = true, script = true})
+-- keyset("i", "<c-v>", [[copilot#Accept("\<c-v>")]], {expr = true, silent = true, script = true})
 
 -- dial
 keyset("n", "<C-a>", require("dial.map").inc_normal())
@@ -338,10 +331,10 @@ keyset("v", "g<C-a>", require("dial.map").inc_gvisual())
 keyset("v", "g<C-x>", require("dial.map").dec_gvisual())
 
 -- remap to include undo and more things
-keyset("i", "," ,",<C-g>U")
-keyset("i", "." ,".<C-g>U")
-keyset("i", "!" ,"!<C-g>U")
-keyset("i", "?" ,"?<C-g>U")
+keyset("i", ",", ",<C-g>U")
+keyset("i", ".", ".<C-g>U")
+keyset("i", "!", "!<C-g>U")
+keyset("i", "?", "?<C-g>U")
 keyset("x", ".", ":norm.<cr>")
 keyset("x", "<leader>y", '"*y :let @+=@*<cr>')
 keyset("n", "<a-x>", "<nop>")
@@ -350,8 +343,10 @@ keyset("n", "cp", "yap<S-}p")
 
 -- general
 keyset("n", "<space><space>", ":ToggleTerm size=15<cr>", {silent = true})
-keyset("n", "<space>t", ":ToggleTerm size=60 direction=vertical<cr>", {silent = true})
-keyset("n", "<leader>t", ":lua require('neogen').generate()<CR>", {silent = true})
+keyset("n", "<space>t", ":ToggleTerm size=60 direction=vertical<cr>",
+       {silent = true})
+keyset("n", "<leader>t", ":lua require('neogen').generate()<CR>",
+       {silent = true})
 keyset("n", "<leader>u", ":UndotreeToggle<cr>")
 keyset("n", "<Leader>ww", ":VimwikiIndex<cr>")
 keyset("n", "<Leader>wd", ":VimwikiMakeDiaryNote<cr>")
@@ -366,12 +361,12 @@ keyset("n", "<leader>cp", ":cprevious<cr>")
 keyset("n", "<leader>P", '"+gP')
 keyset("n", "<leader>p", '"+gp')
 keyset("n", "<leader>sv", ":source $MYVIMRC<cr>")
-keyset("n", "<leader>z",  "[s1z=``")
-keyset("n", "<leader>1",  ":bp<cr>")
-keyset("n", "<leader>2",  ":bn<cr>")
-keyset("n", "<leader>3",  ":retab<cr>:FixWhitespace<cr>")
-keyset("n", "<leader>4",  ":Format<cr>")
-keyset("n", "<leader>5",  ":lua SpellToggle()<cr>")
+keyset("n", "<leader>z", "[s1z=``")
+keyset("n", "<leader>1", ":bp<cr>")
+keyset("n", "<leader>2", ":bn<cr>")
+keyset("n", "<leader>3", ":retab<cr>:FixWhitespace<cr>")
+keyset("n", "<leader>4", ":Format<cr>")
+keyset("n", "<leader>5", ":lua SpellToggle()<cr>")
 keyset("n", "<leader>sr", ':%s/<<C-r><C-w>>//g<Left><Left>')
 
 -- Movement
@@ -421,6 +416,15 @@ else
 end
 
 -- coc settings
+local ccc = require("ccc")
+ccc.setup({
+    highlighter = {auto_enable = true},
+    pickers = {
+        ccc.picker.hex, ccc.picker.css_rgb, ccc.picker.css_hsl,
+        ccc.picker.css_name
+    }
+})
+
 vim.opt.backup = false
 vim.opt.writebackup = false
 vim.opt.updatetime = 300
@@ -431,39 +435,51 @@ vim.g.coc_global_extensions = {
     'coc-tsserver', 'coc-snippets', 'coc-emmet', 'coc-json', 'coc-texlab'
 }
 
+function _G.check_back_space()
+    local col = vim.fn.col('.') - 1
+    if col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') then
+        return true
+    else
+        return false
+    end
+end
+
+function _G.show_docs()
+    local cw = vim.fn.expand('<cword>')
+    if vim.fn.index({'vim', 'help'}, vim.bo.filetype) >= 0 then
+        vim.api.nvim_command('h ' .. cw)
+    elseif vim.api.nvim_eval('coc#rpc#ready()') then
+        vim.fn.CocActionAsync('doHover')
+    else
+        vim.api.nvim_command('!' .. vim.o.keywordprg .. ' ' .. cw)
+    end
+end
+
 -- auto complete
+local opts = {silent = true, noremap = true, expr = true}
+vim.api.nvim_set_keymap("i", "<TAB>",
+                        'coc#pum#visible() ? coc#pum#next(1) : v:lua.check_back_space() ? "<TAB>" : coc#refresh()', opts)
+vim.api.nvim_set_keymap("i", "<S-TAB>",
+                        [[coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"]], opts)
+vim.api.nvim_set_keymap("i", "<cr>",
+                        [[coc#pum#visible() ? coc#pum#confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"]], opts)
 keyset("i", "<c-j>", "<Plug>(coc-snippets-expand-jump)")
 keyset("i", "<c-space>", "coc#refresh()", {silent = true, expr = true})
-vim.cmd([[
-
-function! CheckBackspace() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-inoremap <silent><expr> <TAB>
-      \ coc#pum#visible() ? coc#pum#next(1):
-      \ CheckBackspace() ? "\<Tab>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
-
-
-" Make <CR> to accept selected completion item or notify coc.nvim to format
-inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
-                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-
-]])
 
 -- scroll through documentation
-keyset("n", "<C-f>", 'coc#float#has_scroll() ? coc#float#scroll(1) : "<C-f>"', {silent = true, expr = true, nowait = true})
-keyset("n", "<C-b>", 'coc#float#has_scroll() ? coc#float#scroll(0) : "<C-b>"', {silent = true, expr = true, nowait = true})
-keyset("i", "<C-f>", 'coc#float#has_scroll() ? "<c-r>=coc#float#scroll(1)<cr>" : "<Right>"', {silent = true, expr = true, nowait = true})
-keyset("i", "<C-b>", 'coc#float#has_scroll() ? "<c-r>=coc#float#scroll(0)<cr>" : "<Left>"', {silent = true, expr = true, nowait = true})
-keyset("v", "<C-f>", 'coc#float#has_scroll() ? coc#float#scroll(1) : "<C-f>"', {silent = true, expr = true, nowait = true})
-keyset("v", "<C-b>", 'coc#float#has_scroll() ? coc#float#scroll(0) : "<C-b>"', {silent = true, expr = true, nowait = true})
+---@diagnostic disable-next-line: redefined-local
+local opts = {silent = true, nowait = true, expr = true}
+keyset("n", "<C-f>", 'coc#float#has_scroll() ? coc#float#scroll(1) : "<C-f>"', opts)
+keyset("n", "<C-b>", 'coc#float#has_scroll() ? coc#float#scroll(0) : "<C-b>"', opts)
+keyset("i", "<C-f>",
+       'coc#float#has_scroll() ? "<c-r>=coc#float#scroll(1)<cr>" : "<Right>"', opts)
+keyset("i", "<C-b>",
+       'coc#float#has_scroll() ? "<c-r>=coc#float#scroll(0)<cr>" : "<Left>"', opts)
+keyset("v", "<C-f>", 'coc#float#has_scroll() ? coc#float#scroll(1) : "<C-f>"', opts)
+keyset("v", "<C-b>", 'coc#float#has_scroll() ? coc#float#scroll(0) : "<C-b>"', opts)
 
 -- go to definition and other things
-keyset("n", "K", ":call CocActionAsync('doHover')<CR>", {silent = true})
+keyset("n", "K", '<CMD>lua _G.show_docs()<CR>', {silent = true})
 keyset("n", "<c-k>", "<Plug>(coc-rename)", {silent = true})
 keyset("n", "[g", "<Plug>(coc-diagnostic-prev)", {silent = true})
 keyset("n", "]g", "<Plug>(coc-diagnostic-next)", {silent = true})
@@ -473,15 +489,17 @@ keyset("n", "gi", "<Plug>(coc-implementation)", {silent = true})
 keyset("n", "gr", "<Plug>(coc-references)", {silent = true})
 
 -- code actions and coc stuff
-keyset("n", "<space>a", "<Plug>(coc-codeaction-cursor)", {silent = true, nowait = true})
-keyset("x", "<space>a", "<Plug>(coc-codeaction-selected)", {silent = true, nowait = true})
-keyset("n", "<space>g", "<Plug>(coc-codelens-action)", {silent = true, nowait = true})
-keyset("n", "<space>f", "<Plug>(coc-fix-current)", {silent = true, nowait = true})
-keyset("n", "<space>d", ":<C-u>CocList diagnostics<cr>", {silent = true, nowait = true})
-keyset("n", "<space>e", ":<C-u>CocList extensions<cr>", {silent = true, nowait = true})
-keyset("n", "<space>c", ":<C-u>CocList commands<cr>", {silent = true, nowait = true})
-keyset("n", "<space>o", ":<C-u>CocList outline<cr>", {silent = true, nowait = true})
-keyset("n", "<space>q", ":<C-u>CocList<cr>", {silent = true, nowait = true})
+---@diagnostic disable-next-line: redefined-local
+local opts = {silent = true, nowait = true}
+keyset("n", "<space>a", "<Plug>(coc-codeaction-cursor)", opts)
+keyset("x", "<space>a", "<Plug>(coc-codeaction-selected)", opts)
+keyset("n", "<space>g", "<Plug>(coc-codelens-action)", opts)
+keyset("n", "<space>f", "<Plug>(coc-fix-current)", opts)
+keyset("n", "<space>d", ":<C-u>CocList diagnostics<cr>", opts)
+keyset("n", "<space>e", ":<C-u>CocList extensions<cr>", opts)
+keyset("n", "<space>c", ":<C-u>CocList commands<cr>", opts)
+keyset("n", "<space>o", ":<C-u>CocList outline<cr>", opts)
+keyset("n", "<space>q", ":<C-u>CocList<cr>", opts)
 
 vim.api.nvim_create_augroup("CocGroup", {})
 vim.api.nvim_create_autocmd("FileType", {
@@ -505,7 +523,7 @@ vim.api.nvim_create_autocmd("CursorHold", {
 -- Vimtex config
 vim.g.tex_flavor = 'latex'
 vim.g.vimtex_view_method = 'zathura'
-vim.g.vimtex_quickfix_mode = 2
+vim.g.vimtex_quickfix_mode = 0
 vim.g.tex_conceal = 'abdmg'
 vim.g.indentLine_setConceal = 0
 
@@ -525,8 +543,7 @@ vim.g.termdebug_wide = 163
 local wilder = require('wilder')
 wilder.setup({modes = {':', '/', '?'}})
 wilder.set_option('pipeline', {
-  wilder.branch(
-    wilder.python_file_finder_pipeline({
+    wilder.branch(wilder.python_file_finder_pipeline({
         file_command = function(_, arg)
             if string.find(arg, '.') ~= nil then
                 return {'fd', '-tf', '-H'}
@@ -536,10 +553,7 @@ wilder.set_option('pipeline', {
         end,
         dir_command = {'fd', '-td'},
         filters = {'fuzzy_filter', 'difflib_sorter'}
-    }),
-    wilder.cmdline_pipeline(),
-    wilder.python_search_pipeline()
-  ),
+    }), wilder.cmdline_pipeline(), wilder.python_search_pipeline())
 })
 
 wilder.set_option('renderer', wilder.popupmenu_renderer({
@@ -563,29 +577,28 @@ vim.g.firenvim_config = {
     }
 }
 
-
 if vim.g.started_by_firenvim then
     vim.opt.laststatus = 0
     vim.g.auto_session_enabled = false
     vim.cmd([[
-  let g:dont_write = v:false
+      let g:dont_write = v:false
 
-  function! My_Write(timer) abort
-  let g:dont_write = v:false
-  write
-  endfunction
+      function! My_Write(timer) abort
+      let g:dont_write = v:false
+      write
+      endfunction
 
-  function! Delay_My_Write() abort
-  if g:dont_write
-  return
-  end
-  let g:dont_write = v:true
-  call timer_start(10000, 'My_Write')
-  endfunction
+      function! Delay_My_Write() abort
+      if g:dont_write
+      return
+      end
+      let g:dont_write = v:true
+      call timer_start(10000, 'My_Write')
+      endfunction
 
-    autocmd TextChanged * ++nested call Delay_My_Write()
-    autocmd TextChangedI * ++nested call Delay_My_Write()
-  ]])
+      autocmd TextChanged * ++nested call Delay_My_Write()
+      autocmd TextChangedI * ++nested call Delay_My_Write()
+      ]])
 
     -- vim.api.nvim_create_autocmd("TextChanged", {
     --     command = "++nested call g:Delay_My_Write"
@@ -606,21 +619,26 @@ end
 -- autocmds
 vim.api.nvim_create_augroup("Random", {})
 vim.api.nvim_create_autocmd('VimResized', {
-  group = "Random",
-  desc = 'Keep windows equally resized',
-  command = 'tabdo wincmd =',
+    group = "Random",
+    desc = 'Keep windows equally resized',
+    command = 'tabdo wincmd ='
 })
 -- vim.api.nvim_create_autocmd("")
-vim.api.nvim_create_autocmd("TermOpen", {group = "Random", command="setlocal nonumber norelativenumber signcolumn=no"})
-vim.api.nvim_create_autocmd("InsertEnter", {group = "Random", command = "set timeoutlen=100"})
-vim.api.nvim_create_autocmd("InsertLeave", {group = "Random", command = "set timeoutlen=1000"})
+vim.api.nvim_create_autocmd("TermOpen", {
+    group = "Random",
+    command = "setlocal nonumber norelativenumber signcolumn=no"
+})
+vim.api.nvim_create_autocmd("InsertEnter",
+                            {group = "Random", command = "set timeoutlen=100"})
+vim.api.nvim_create_autocmd("InsertLeave",
+                            {group = "Random", command = "set timeoutlen=1000"})
 
 -- toggleterm
 require("toggleterm").setup {
     shade_terminals = false,
     highlights = {
         StatusLine = {guifg = "#ffffff", guibg = "#0E1018"},
-        StatusLineNC = {guifg = "#ffffff", guibg = "#0E1018"},
+        StatusLineNC = {guifg = "#ffffff", guibg = "#0E1018"}
     }
 }
 
@@ -628,10 +646,13 @@ local Terminal = require('toggleterm.terminal').Terminal
 
 local lg_cmd = "lazygit -w (pwd)"
 if vim.v.servername ~= nil then
-    lg_cmd = string.format("NVIM_SERVER=%s lazygit -ucf ~/.config/nvim/lazygit.toml -w (pwd)", vim.v.servername)
+    lg_cmd = string.format(
+                 "NVIM_SERVER=%s lazygit -ucf ~/.config/nvim/lazygit.toml -w (pwd)",
+                 vim.v.servername)
 end
 
-vim.cmd([[let $GIT_EDITOR = "nvr -cc split --remote-wait +'set bufhidden=wipe'"]])
+vim.cmd(
+    [[let $GIT_EDITOR = "nvr -cc split --remote-wait +'set bufhidden=wipe'"]])
 
 local lazygit = Terminal:new({
     cmd = lg_cmd,
@@ -647,7 +668,8 @@ local lazygit = Terminal:new({
     -- function to run on opening the terminal
     on_open = function(term)
         vim.cmd("startinsert!")
-        vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>", {noremap = true, silent = true})
+        vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>",
+                                    {noremap = true, silent = true})
     end
 })
 
@@ -671,7 +693,7 @@ require('filetype').setup({
         complex = {
             [".gitignore"] = "gitignore",
             ["tmux.conf"] = "tmux",
-            ["neomutt*"] = "mail",
+            ["neomutt*"] = "mail"
         }
     }
 })
@@ -680,7 +702,7 @@ require('nvim-autopairs').setup({
     disable_filetype = {"TelescopePrompt"},
     map_cr = false,
     disable_in_macro = false,
-    disable_in_visualblock = false,
+    disable_in_visualblock = false
 })
 
 require('Comment').setup {
@@ -704,7 +726,8 @@ end
 local new_maker = function(filepath, bufnr, opts)
     opts = opts or {}
     if opts.use_ft_detect == nil then opts.use_ft_detect = true end
-    opts.use_ft_detect = opts.use_ft_detect == false and false or bad_files(filepath)
+    opts.use_ft_detect = opts.use_ft_detect == false and false or
+                             bad_files(filepath)
     filepath = vim.fn.expand(filepath)
     Job:new({
         command = 'file',
@@ -738,10 +761,7 @@ require("telescope").setup({
         }
     },
     pickers = {
-        find_files = {
-            theme = "ivy",
-            layout_config = {height = 0.4}
-        },
+        find_files = {theme = "ivy", layout_config = {height = 0.4}},
         git_files = {theme = "ivy", layout_config = {height = 0.4}},
         buffers = {theme = "ivy", layout_config = {height = 0.4}},
         man_pages = {
@@ -760,7 +780,7 @@ require("indent_blankline").setup {
     char = '¦',
     filetype_exclude = {
         "help", "terminal", "dashboard", "packer", "lspinfo", "TelescopePrompt",
-        "TelescopeResults", "qf"
+        "TelescopeResults", "qf", "tex"
     },
     buftype_exclude = {"terminal", 'nofile', 'quickfix'},
     show_current_context = false,
