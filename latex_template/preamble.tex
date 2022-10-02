@@ -76,6 +76,8 @@
 \definecolor{mygr}{HTML}{2C3338}
 \definecolor{myred}{RGB}{127,0,0}
 \definecolor{myyellow}{RGB}{169,121,69}
+\definecolor{myexercisebg}{HTML}{F2FBF8}
+\definecolor{myexercisefg}{HTML}{88D6D1}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -301,6 +303,49 @@
 
 
 
+%================================
+% Exercise
+%================================
+
+\tcbuselibrary{theorems,skins,hooks}
+\newtcbtheorem[number within=section]{Exercise}{Exercise}
+{%
+	enhanced,
+	breakable,
+	colback = myexercisebg,
+	frame hidden,
+	boxrule = 0sp,
+	borderline west = {2pt}{0pt}{myexercisefg},
+	sharp corners,
+	detach title,
+	before upper = \tcbtitle\par\smallskip,
+	coltitle = myexercisefg,
+	fonttitle = \bfseries\sffamily,
+	description font = \mdseries,
+	separator sign none,
+	segmentation style={solid, myexercisefg},
+}
+{th}
+
+\tcbuselibrary{theorems,skins,hooks}
+\newtcbtheorem[number within=chapter]{exercise}{Exercise}
+{%
+	enhanced,
+	breakable,
+	colback = myexercisebg,
+	frame hidden,
+	boxrule = 0sp,
+	borderline west = {2pt}{0pt}{myexercisefg},
+	sharp corners,
+	detach title,
+	before upper = \tcbtitle\par\smallskip,
+	coltitle = myexercisefg,
+	fonttitle = \bfseries\sffamily,
+	description font = \mdseries,
+	separator sign none,
+	segmentation style={solid, myexercisefg},
+}
+{th}
 
 %================================
 % EXAMPLE BOX
@@ -388,7 +433,7 @@
 
 
 %================================
-% EXERCISE BOX
+% Solution BOX
 %================================
 
 \makeatletter
@@ -567,6 +612,10 @@
 \newenvironment{myproof}[1][\proofname]{%
 	\proof[\bfseries #1: ]%
 }{\endproof}
+
+\newcommand{\mclm}[2]{\begin{myclaim}[#1]#2\end{myclaim}}
+\newenvironment{myclaim}[1][\claimname]{\proof[\bfseries #1: ]}{}
+
 \newcounter{mylabelcounter}
 
 \makeatletter

@@ -6,11 +6,12 @@
   "diagnostic.infoSign": "",
   "codeLens.separator": " ",
   "codeLens.subseparator": " | ",
-  "inlayHint.subSeparator": "‣ ",
   "inlayHint.typeSeparator": "‣ ",
   "inlayHint.parameterSeparator": "‣ ",
   "codeLens.enable": true,
-  "notification.disabledProgressSources": ["*"],
+  "notification.disabledProgressSources": [
+    "*"
+  ],
   "diagnostic.virtualText": true,
   "diagnostic.virtualTextCurrentLineOnly": false,
   "diagnostic.virtualTextLineSeparator": ". ",
@@ -45,11 +46,6 @@
   "rpc.lowerDetailsNotFound": "🦀",
   "rpc.lowerDetailsEditing": "Editing: {file_name}",
   "snippets.ultisnips.enable": true,
-  "snippets.ultisnips.directories": [
-    "UltiSnips",
-    "/Users/charlie/.local/share/nvim/site/pack/packer/start/vim-snippets/snippets",
-    "/Users/charlie/.local/share/nvim/site/pack/packer/start/vim-snippets/UltiSnips"
-  ],
   "java.errors.incompleteClasspath.severity": "ignore",
   "java.codeGeneration.generateComments": true,
   "java.completion.guessMethodArguments": true,

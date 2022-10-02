@@ -27,7 +27,7 @@ require('packer').startup(function()
     use 'nathom/filetype.nvim'
 
     use 'github/copilot.vim'
-    use 'wbthomason/packer.nvim' -- Package manager
+    use 'wbthomason/packer.nvim' -- plugin manager
     use {
         'nvim-telescope/telescope.nvim',
         requires = {'nvim-lua/plenary.nvim', 'nvim-lua/popup.nvim'}
@@ -57,8 +57,8 @@ require('packer').startup(function()
         'haringsrob/nvim_context_vt',
         config = function()
             require('nvim_context_vt').setup({
+                disable_ft = {'rust', 'rs'},
                 disable_virtual_lines = true,
-                -- disabe_virtual_lines_on_windows
                 min_rows = 8
             })
         end
@@ -98,7 +98,7 @@ require('packer').startup(function()
 
     use 'lukas-reineke/indent-blankline.nvim'
     use 'windwp/nvim-autopairs'
-    use({"uga-rosa/ccc.nvim", branch = "0.7.2"})
+    use 'uga-rosa/ccc.nvim'
     use 'wellle/targets.vim' -- adds more targets like [ or ,
     use 'editorconfig/editorconfig-vim'
     use {'puremourning/vimspector', run = 'python3 install_gadget.py --all'}
@@ -108,7 +108,7 @@ require('packer').startup(function()
     use {"akinsho/toggleterm.nvim", tag = 'v2.*'}
 
     -- use 'sheerun/vim-polyglot' -- vim syntax for different languages
-    -- use 'tweekmonster/startuptime.vim'
+    use 'tweekmonster/startuptime.vim'
     -- use {
     --   'chipsenkbeil/distant.nvim',
     --   config = function()
@@ -188,8 +188,6 @@ require("gruvbox").setup({
         CursorLineNr = {fg = "#fabd2f", bg = "#0E1018"},
         CocWarningFloat = {fg = "#dfaf87"},
         CocInlayHint = {fg = "#87afaf"},
-        -- DiagnosticVirtualTextInfo = {link = "GruvboxAqua"},
-        -- DiagnosticVirtualTextHint = {fg = "#87afaf", bg = "#0E1018"},
         DiagnosticVirtualTextWarn = {fg = "#dfaf87"},
         GruvboxOrangeSign = {fg = "#dfaf87", bg = "#0E1018"},
         GruvboxAquaSign = {fg = "#8EC07C", bg = "#0E1018"},
@@ -316,11 +314,15 @@ end
 vim.opt.statusline = "%!luaeval('status_line()')"
 
 -- Key remapping
-vim.g.mapleader = ","
 local keyset = vim.keymap.set
+vim.g.mapleader = ","
+vim.api.nvim_set_keymap("i", "<c-v>", [[copilot#Accept("\<c-v>")]], {
+    expr = true,
+    silent = true,
+    script = true
+})
+vim.g.copilot_no_tab_map = true
 keyset("i", "jk", "<esc>")
--- vim.g.copilot_no_tab_map  = true
--- keyset("i", "<c-v>", [[copilot#Accept("\<c-v>")]], {expr = true, silent = true, script = true})
 
 -- dial
 keyset("n", "<C-a>", require("dial.map").inc_normal())
@@ -415,7 +417,7 @@ else
     keyset("n", "<leader>0", ":silent !xdg-open %<cr>")
 end
 
--- coc settings
+-- ccc color picker
 local ccc = require("ccc")
 ccc.setup({
     highlighter = {auto_enable = true},
@@ -425,13 +427,14 @@ ccc.setup({
     }
 })
 
+-- coc settings
 vim.opt.backup = false
 vim.opt.writebackup = false
 vim.opt.updatetime = 300
-vim.opt.shortmess:append('c') -- don't give |ins-completion-menu| messages.
 vim.api.nvim_create_user_command("Format", "call CocAction('format')", {})
+
 vim.g.coc_global_extensions = {
-    'coc-java', 'coc-rust-analyzer', 'coc-html', 'coc-css', 'coc-vimlsp',
+    'coc-java', 'coc-rust-analyzer', 'coc-css', 'coc-vimlsp',
     'coc-tsserver', 'coc-snippets', 'coc-emmet', 'coc-json', 'coc-texlab'
 }
 
@@ -453,9 +456,12 @@ end
 
 -- auto complete
 local opts = {silent = true, noremap = true, expr = true}
-vim.api.nvim_set_keymap("i", "<TAB>", 'coc#pum#visible() ? coc#pum#next(1) : v:lua.check_back_space() ? "<TAB>" : coc#refresh()', opts)
-vim.api.nvim_set_keymap("i", "<S-TAB>", [[coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"]], opts)
-vim.api.nvim_set_keymap("i", "<cr>", [[coc#pum#visible() ? coc#pum#confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"]], opts)
+vim.api.nvim_set_keymap("i", "<TAB>",
+                        'coc#pum#visible() ? coc#pum#next(1) : v:lua.check_back_space() ? "<TAB>" : coc#refresh()', opts)
+vim.api.nvim_set_keymap("i", "<S-TAB>",
+                        [[coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"]], opts)
+vim.api.nvim_set_keymap("i", "<cr>",
+                        [[coc#pum#visible() ? coc#pum#confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"]], opts)
 keyset("i", "<c-j>", "<Plug>(coc-snippets-expand-jump)")
 keyset("i", "<c-space>", "coc#refresh()", {silent = true, expr = true})
 
@@ -464,10 +470,8 @@ keyset("i", "<c-space>", "coc#refresh()", {silent = true, expr = true})
 local opts = {silent = true, nowait = true, expr = true}
 keyset("n", "<C-f>", 'coc#float#has_scroll() ? coc#float#scroll(1) : "<C-f>"', opts)
 keyset("n", "<C-b>", 'coc#float#has_scroll() ? coc#float#scroll(0) : "<C-b>"', opts)
-keyset("i", "<C-f>",
-       'coc#float#has_scroll() ? "<c-r>=coc#float#scroll(1)<cr>" : "<Right>"', opts)
-keyset("i", "<C-b>",
-       'coc#float#has_scroll() ? "<c-r>=coc#float#scroll(0)<cr>" : "<Left>"', opts)
+keyset("i", "<C-f>", 'coc#float#has_scroll() ? "<c-r>=coc#float#scroll(1)<cr>" : "<Right>"', opts)
+keyset("i", "<C-b>", 'coc#float#has_scroll() ? "<c-r>=coc#float#scroll(0)<cr>" : "<Left>"', opts)
 keyset("v", "<C-f>", 'coc#float#has_scroll() ? coc#float#scroll(1) : "<C-f>"', opts)
 keyset("v", "<C-b>", 'coc#float#has_scroll() ? coc#float#scroll(0) : "<C-b>"', opts)
 
@@ -517,7 +521,7 @@ vim.api.nvim_create_autocmd("CursorHold", {
 vim.g.tex_flavor = 'latex'
 vim.g.vimtex_view_method = 'zathura'
 vim.g.vimtex_quickfix_mode = 0
-vim.g.tex_conceal = 'abdmg'
+vim.g.tex_conceal = 'abdmgs'
 vim.g.indentLine_setConceal = 0
 
 -- Other settings
@@ -716,6 +720,7 @@ local bad_files = function(filepath)
     return true
 end
 
+---@diagnostic disable-next-line: redefined-local
 local new_maker = function(filepath, bufnr, opts)
     opts = opts or {}
     if opts.use_ft_detect == nil then opts.use_ft_detect = true end
