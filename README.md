@@ -4,7 +4,7 @@ This is a collection of dotfiles for my personal use. I do not update the docume
 
 I now use a macbook with the following:
 
-![macbook setup](https://share.cleanshot.com/LJXshr)
+![macbook setup](./images/macfetch.png)
 
 Charlie
 
@@ -33,7 +33,7 @@ Overall theme is from Gruvbox.
 
 skeleton.tex comes from: https://wso.williams.edu/wiki/index.php/LaTeX_MLA_Template
 
-![Current Vim Setup](./scrot-region-20210501-164757.png)
+![Current Vim Setup](./images/scrot-region-20210501-164757.png)
 
 ![Number3](https://imgur.com/VgUHRG0.png)
 
