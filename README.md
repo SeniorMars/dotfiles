@@ -2,12 +2,16 @@
 This is a collection of dotfiles for my personal use. I do not update the documentation, but I do update the code.
 
 
+I now use a macbook with the following:
+
+![macbook setup](https://share.cleanshot.com/LJXshr)
+
 Charlie
 
-
-
 ========================
-My Rice Setup. No I don't actually use my setup like this.
+
+
+My 2020 Rice Setup. No I don't actually use my setup like this everyday.
 
 This is outdated but when I have time I will update everything. I have learned so much about vim these weeks.
 
