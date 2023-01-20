@@ -1,8 +1,15 @@
 \documentclass{report}
 
-\input{preamble}
-\input{macros}
-\input{letterfonts}
+% Old Relative Path, hard to use the same .tex files for every project.
+%\input{preamble}
+%\input{macros}
+%\input{letterfonts}
+
+%New Paths, in this case in home, \string let's you use shell things (like ~ in this case).
+%This let's you use the same .tex files for several projects.
+\input{\string~/my-preamble-latex/preamble.tex}
+\input{\string~/my-preamble-latex/macros.tex}
+\input{\string~/my-preamble-latex/letterfonts.tex}
 
 \title{\Huge{Some Class}\\Random Examples}
 \author{\huge{Your Name}}
