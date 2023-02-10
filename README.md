@@ -1,10 +1,13 @@
-# dotfiles
+## dotfiles
 This is a collection of dotfiles for my personal use. I do not update the documentation, but I do update the code.
 
 
 I now use a macbook with the following:
 
+[Neovim](./images/two.png)
+[Daily workflow](./images/one.png)
 ![macbook setup](./images/macfetch.png)
+
 
 Charlie
 
