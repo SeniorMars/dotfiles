@@ -1,3 +1,4 @@
+vim.g.mapleader = ","
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
@@ -16,7 +17,6 @@ if not vim.fn.executable('nvr') then
     vim.api.nvim_command('!pip3 install --user neovim-remote')
 end
 
-vim.g.mapleader = ","
 require("lazy").setup({
     {'github/copilot.vim'},
     {
@@ -27,8 +27,8 @@ require("lazy").setup({
     'goolord/alpha-nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function ()
-        local alpha = require'alpha'
-        local dashboard = require'alpha.themes.dashboard'
+        local alpha = require('alpha')
+        local dashboard = require('alpha.themes.dashboard')
         dashboard.section.header.val = {
             [[                                                                       ]],
             [[  ██████   █████                   █████   █████  ███                  ]],
@@ -40,7 +40,7 @@ require("lazy").setup({
             [[  █████  ░░█████░░██████ ░░██████     ░░███      █████ █████░███ █████ ]],
             [[ ░░░░░    ░░░░░  ░░░░░░   ░░░░░░       ░░░      ░░░░░ ░░░░░ ░░░ ░░░░░  ]],
             [[                                                                       ]],
-            [[                      it be like that sometimes]],
+            [[                     λ it be like that sometimes λ                     ]],
         }
 
         dashboard.section.buttons.val = {
@@ -49,7 +49,7 @@ require("lazy").setup({
             dashboard.button("c", "  Configuration", ":e ~/.config/nvim/init.lua <CR>"),
             dashboard.button("u", "  Update plugins", ":Lazy sync<CR>"),
             dashboard.button("r", "  Recently opened files", "<cmd>Telescope oldfiles<CR>"),
-            dashboard.button("l", "  Open last session", "<cmd>RestoreSession"),
+            dashboard.button("l", "  Open last session", "<cmd>RestoreSession<CR>"),
             dashboard.button("q", "  Quit", ":qa<CR>"),
         }
 
@@ -64,6 +64,7 @@ require("lazy").setup({
     {'neoclide/coc.nvim', branch = 'release', build = ':CocUpdate'},
     {'rafcamlet/coc-nvim-lua'},
     {'honza/vim-snippets'}, -- Snippets are separated from the engine
+
     {'ellisonleao/gruvbox.nvim', priority=1000, config = function()
         require("gruvbox").setup({
             overrides = {
@@ -82,12 +83,7 @@ require("lazy").setup({
                 FoldColumn = {fg = "#fe8019", bg = "#0E1018"},
                 DiffAdd = {bold = true, reverse = false, fg = "", bg = "#2a4333"},
                 DiffChange = {bold = true, reverse = false, fg = "", bg = "#333841"},
-                DiffDelete = {
-                    bold = true,
-                    reverse = false,
-                    fg = "#442d30",
-                    bg = "#442d30"
-                },
+                DiffDelete = { bold = true, reverse = false, fg = "#442d30", bg = "#442d30"},
                 DiffText = {bold = true, reverse = false, fg = "", bg = "#213352"},
                 StatusLine = {bg = "#ffffff", fg = "#0E1018"},
                 StatusLineNC = {bg = "#3c3836", fg = "#0E1018"},
@@ -148,7 +144,6 @@ require("lazy").setup({
         config = function() require('guess-indent').setup{} end
     },
 
-
     {'tpope/vim-fugitive'}, -- Git control for vim
     {'tpope/vim-repeat'}, -- repeats
     {
@@ -157,7 +152,7 @@ require("lazy").setup({
     },
     {'mhinz/vim-grepper'},
     {'gelguy/wilder.nvim', build = ':UpdateRemotePlugins'},
-    {'lewis6991/gitsigns.nvim'},
+    {'lewis6991/gitsigns.nvim', lazy = true},
     {'lukas-reineke/indent-blankline.nvim'},
     {'windwp/nvim-autopairs'},
     {'uga-rosa/ccc.nvim'},
@@ -243,6 +238,7 @@ vim.opt.diffopt:append{"internal,algorithm:patience"}
 vim.opt.cursorline = true
 vim.opt.cursorlineopt = "number"
 vim.opt.showmode = false
+vim.opt.virtualedit = "all"
 vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal"
 
 vim.api.nvim_create_user_command("FixWhitespace", [[%s/\s\+$//e]], {})
@@ -266,6 +262,28 @@ local git_branch = function()
     return ''
 end
 
+local human_file_size = function()
+    local function format_file_size(file)
+      local size = vim.fn.getfsize(file)
+      if size <= 0 then
+        return ""
+      end
+      local sufixes = { " B", " KB", " MB", " GB" }
+      local i = 1
+      while size > 1024 do
+        size = size / 1024
+        i = i + 1
+      end
+      return string.format("[%.1f%s]", size, sufixes[i])
+    end
+
+    local file = vim.fn.expand "%:p"
+    if string.len(file) == 0 then
+      return ""
+    end
+    return format_file_size(file)
+end
+
 local file_path = function()
     local buf_name = vim.api.nvim_buf_get_name(0)
     if buf_name == "" then return "[No Name]" end
@@ -276,6 +294,9 @@ local file_path = function()
     if buf_name:sub(1, 5):find("term") ~= nil then
         file_dir = vim.env.PWD
         is_term = true
+        if file_dir == home then
+            return "$HOME "
+        end
     else
         file_dir = vim.fn.expand("%:p:h")
     end
@@ -289,9 +310,9 @@ local file_path = function()
     end
 
     if is_term then
-        return file_dir
+        return file_dir .. " "
     else
-        return string.format("%s/%s", file_dir, vim.fn.expand("%:t"))
+        return string.format("%s/%s ", file_dir, vim.fn.expand("%:t"))
     end
 end
 
@@ -353,6 +374,7 @@ function status_line()
         "%{get(b:,'gitsigns_status','')}[", -- gitsigns
         word_count(), -- word count
         "][%-3.(%l|%c]", -- line number, column number
+        human_file_size(), -- file size
         "[%{strlen(&ft)?&ft[0].&ft[1:]:'None'}]" -- file type
     }
 end
@@ -390,10 +412,8 @@ keyset("n", "cp", "yap<S-}p")
 
 -- general
 keyset("n", "<space><space>", ":ToggleTerm size=15<cr>", {silent = true})
-keyset("n", "<space>t", ":ToggleTerm size=60 direction=vertical<cr>",
-       {silent = true})
-keyset("n", "<leader>t", ":lua require('neogen').generate()<CR>",
-       {silent = true})
+keyset("n", "<space>t", ":ToggleTerm size=60 direction=vertical<cr>", {silent = true})
+keyset("n", "<leader>t", ":lua require('neogen').generate()<CR>", {silent = true})
 keyset("n", "<leader>u", ":UndotreeToggle<cr>")
 keyset("n", "<Leader>ww", ":VimwikiIndex<cr>")
 keyset("n", "<Leader>wd", ":VimwikiMakeDiaryNote<cr>")
@@ -540,25 +560,6 @@ keyset("n", "<space>c", ":<C-u>CocList commands<cr>", opts)
 keyset("n", "<space>o", ":<C-u>CocList outline<cr>", opts)
 keyset("n", "<space>q", ":<C-u>CocList<cr>", opts)
 
-vim.api.nvim_create_augroup("CocGroup", {})
-vim.api.nvim_create_autocmd("FileType", {
-    group = "CocGroup",
-    pattern = "typescript,json",
-    command = "setl formatexpr=CocAction('formatSelected')",
-    desc = "Setup formatexpr specified filetype(s)."
-})
-vim.api.nvim_create_autocmd("User", {
-    group = "CocGroup",
-    pattern = "CocJumpPlaceholder",
-    command = "call CocActionAsync('showSignatureHelp')",
-    desc = "Update signature help on jump placeholder"
-})
-vim.api.nvim_create_autocmd("CursorHold", {
-    group = "CocGroup",
-    command = "silent call CocActionAsync('highlight')",
-    desc = "Highlight symbol under cursor on CursorHold"
-})
-
 -- Vimtex config
 vim.g.tex_flavor = 'latex'
 vim.g.vimtex_view_method = 'zathura'
@@ -656,21 +657,63 @@ else
 end
 
 -- autocmds
-vim.api.nvim_create_augroup("Random", {})
-vim.api.nvim_create_autocmd('VimResized', {
+vim.api.nvim_create_augroup("Random", {clear = true})
+local autocmd = vim.api.nvim_create_autocmd
+
+autocmd("User", {
+group = "Random",
+  pattern = "AlphaReady",
+  callback = function()
+    vim.opt.cmdheight = 0
+    vim.opt.laststatus = 0
+    vim.wo.fillchars='eob: '
+
+    autocmd("BufUnload", {
+      pattern = "<buffer>",
+      callback = function()
+        vim.opt.cmdheight = 1
+        vim.opt.laststatus = 3
+        vim.wo.fillchars='eob:~'
+      end,
+    })
+  end,
+  desc = "Disable Bufferline in Alpha",
+})
+
+autocmd('VimResized', {
     group = "Random",
     desc = 'Keep windows equally resized',
     command = 'tabdo wincmd ='
 })
--- vim.api.nvim_create_autocmd("")
-vim.api.nvim_create_autocmd("TermOpen", {
+
+autocmd("TermOpen", {
     group = "Random",
     command = "setlocal nonumber norelativenumber signcolumn=no"
 })
-vim.api.nvim_create_autocmd("InsertEnter",
-                            {group = "Random", command = "set timeoutlen=100"})
-vim.api.nvim_create_autocmd("InsertLeave",
-                            {group = "Random", command = "set timeoutlen=1000"})
+
+autocmd("InsertEnter", {group = "Random", command = "set timeoutlen=100"})
+autocmd("InsertLeave", {group = "Random", command = "set timeoutlen=1000"})
+
+--- coc auto commands
+vim.api.nvim_create_augroup("CocGroup", {})
+autocmd("FileType", {
+    group = "CocGroup",
+    pattern = "typescript,json",
+    command = "setl formatexpr=CocAction('formatSelected')",
+    desc = "Setup formatexpr specified filetype(s)."
+})
+autocmd("User", {
+    group = "CocGroup",
+    pattern = "CocJumpPlaceholder",
+    command = "call CocActionAsync('showSignatureHelp')",
+    desc = "Update signature help on jump placeholder"
+})
+autocmd("CursorHold", {
+    group = "CocGroup",
+    command = "silent call CocActionAsync('highlight')",
+    desc = "Highlight symbol under cursor on CursorHold"
+})
+
 
 -- toggleterm
 require("toggleterm").setup {
