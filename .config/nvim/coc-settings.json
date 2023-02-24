@@ -53,7 +53,7 @@
   "rust-analyzer.check.command": "clippy",
   "rust-analyzer.check.features": "all",
   "rust-analyzer.debug.runtime": "vimspector",
-  "rust-analyzer.debug.vimspector.configuration.name": "rust - lldb",
+  "rust-analyzer.debug.vimspector.configuration.name": "rust-lldb",
   "rust-analyzer.terminal.startinsert": false,
   "rust-analyzer.procMacro.enable": true,
   "rust-analyzer.procMacro.attributes.enable": true,

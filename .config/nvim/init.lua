@@ -1,270 +1,238 @@
 vim.g.mapleader = ","
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
-	vim.fn.system({
-		"git",
-		"clone",
-		"--filter=blob:none",
-		"https://github.com/folke/lazy.nvim.git",
-		"--branch=stable", -- latest stable release
-		lazypath,
-	})
+    vim.fn.system({
+        "git",
+        "clone",
+        "--filter=blob:none",
+        "https://github.com/folke/lazy.nvim.git",
+        "--branch=stable", -- latest stable release
+        lazypath
+    })
 end
 
 vim.opt.rtp:prepend(lazypath)
 
 -- would be nice if we could do it for python-neovim
 if not vim.fn.executable("nvr") then
-	vim.api.nvim_command("!pip3 install --user neovim-remote")
+    vim.api.nvim_command("!pip3 install --user neovim-remote")
 end
 
 require("lazy").setup({
-	{ "github/copilot.vim" },
-	{
-		"nvim-telescope/telescope.nvim",
-		dependencies = { "nvim-lua/plenary.nvim", "nvim-lua/popup.nvim" },
-	},
-	{
-		"goolord/alpha-nvim",
-		dependencies = { "nvim-tree/nvim-web-devicons" },
-		config = function()
-			local alpha = require("alpha")
-			local dashboard = require("alpha.themes.dashboard")
-			dashboard.section.header.val = {
-				[[                                                                       ]],
-				[[  ██████   █████                   █████   █████  ███                  ]],
-				[[ ░░██████ ░░███                   ░░███   ░░███  ░░░                   ]],
-				[[  ░███░███ ░███   ██████   ██████  ░███    ░███  ████  █████████████   ]],
-				[[  ░███░░███░███  ███░░███ ███░░███ ░███    ░███ ░░███ ░░███░░███░░███  ]],
-				[[  ░███ ░░██████ ░███████ ░███ ░███ ░░███   ███   ░███  ░███ ░███ ░███  ]],
-				[[  ░███  ░░█████ ░███░░░  ░███ ░███  ░░░█████░    ░███  ░███ ░███ ░███  ]],
-				[[  █████  ░░█████░░██████ ░░██████     ░░███      █████ █████░███ █████ ]],
-				[[ ░░░░░    ░░░░░  ░░░░░░   ░░░░░░       ░░░      ░░░░░ ░░░░░ ░░░ ░░░░░  ]],
-				[[                                                                       ]],
-				[[                     λ it be like that sometimes λ                     ]],
-			}
+    {"github/copilot.vim"}, {
+        "nvim-telescope/telescope.nvim",
+        dependencies = {"nvim-lua/plenary.nvim", "nvim-lua/popup.nvim"}
+    }, {
+        "goolord/alpha-nvim",
+        dependencies = {"nvim-tree/nvim-web-devicons"},
+        config = function()
+            local alpha = require("alpha")
+            local dashboard = require("alpha.themes.dashboard")
+            dashboard.section.header.val = {
+                [[                                                                       ]],
+                [[  ██████   █████                   █████   █████  ███                  ]],
+                [[ ░░██████ ░░███                   ░░███   ░░███  ░░░                   ]],
+                [[  ░███░███ ░███   ██████   ██████  ░███    ░███  ████  █████████████   ]],
+                [[  ░███░░███░███  ███░░███ ███░░███ ░███    ░███ ░░███ ░░███░░███░░███  ]],
+                [[  ░███ ░░██████ ░███████ ░███ ░███ ░░███   ███   ░███  ░███ ░███ ░███  ]],
+                [[  ░███  ░░█████ ░███░░░  ░███ ░███  ░░░█████░    ░███  ░███ ░███ ░███  ]],
+                [[  █████  ░░█████░░██████ ░░██████     ░░███      █████ █████░███ █████ ]],
+                [[ ░░░░░    ░░░░░  ░░░░░░   ░░░░░░       ░░░      ░░░░░ ░░░░░ ░░░ ░░░░░  ]],
+                [[                                                                       ]],
+                [[                     λ it be like that sometimes λ                     ]]
+            }
 
-			dashboard.section.buttons.val = {
-				dashboard.button("f", "  Find file", ":Telescope find_files hidden=true no_ignore=true<CR>"),
-				dashboard.button("e", "  New file", ":ene <BAR> startinsert <CR>"),
-				dashboard.button("c", "  Configuration", ":e ~/.config/nvim/init.lua <CR>"),
-				dashboard.button("u", "  Update plugins", ":Lazy sync<CR>"),
-				dashboard.button("r", "  Recently opened files", "<cmd>Telescope oldfiles<CR>"),
-				dashboard.button("l", "  Open last session", "<cmd>RestoreSession<CR>"),
-				dashboard.button("q", "  Quit", ":qa<CR>"),
-			}
+            dashboard.section.buttons.val = {
+                dashboard.button("f", "  Find file", ":Telescope find_files hidden=true no_ignore=true<CR>"),
+                dashboard.button("e", "  New file", ":ene <BAR> startinsert <CR>"),
+                dashboard.button("c", "  Configuration", ":e ~/.config/nvim/init.lua <CR>"),
+                dashboard.button("u", "  Update plugins", ":Lazy sync<CR>"),
+                dashboard.button("r", "  Recently opened files", "<cmd>Telescope oldfiles<CR>"),
+                dashboard.button("l", "  Open last session", "<cmd>RestoreSession<CR>"),
+                dashboard.button("q", "  Quit", ":qa<CR>")
+            }
 
-			local handle = io.popen("fortune -s")
-			-- check nil
-			if handle == nil then
-				dashboard.section.footer.val = "No fortune found"
-				alpha.setup(dashboard.opts)
-				return
-			end
-			local fortune = handle:read("*a")
-			handle:close()
-			dashboard.section.footer.val = fortune
-			alpha.setup(dashboard.opts)
-		end,
-	},
+            local handle = io.popen("fortune -s")
+            -- check nil
+            if handle == nil then
+                dashboard.section.footer.val = "No fortune found"
+                alpha.setup(dashboard.opts)
+                return
+            end
+            local fortune = handle:read("*a")
+            handle:close()
+            dashboard.section.footer.val = fortune
+            alpha.setup(dashboard.opts)
+        end
+    }, {"neoclide/coc.nvim", branch = "release", build = ":CocUpdate"},
+    {"honza/vim-snippets"}, -- Snippets are separated from the engine
+    {
+        "ellisonleao/gruvbox.nvim",
+        priority = 1000,
+        config = function()
+            require("gruvbox").setup({
+                contrast = "hard",
+                palette_overrides = {dark0_hard = "#0E1018"},
+                overrides = {
+                    SignColumn = {bg = "#ff9900"},
+                    Comment = {fg = "#fe8019", italic = true},
+                    Define = {link = "GruvboxPurple"},
+                    Macro = {link = "GruvboxPurple"},
 
-	{ "neoclide/coc.nvim", branch = "release", build = ":CocUpdate" },
-	{ "honza/vim-snippets" }, -- Snippets are separated from the engine
+                    ["@constant.builtin"] = {link = "GruvboxPurple"},
+                    ["@storageclass.lifetime"] = {link = "GruvboxAqua"},
+                    ["@text.note"] = {link = "TODO"},
+                    ["@namespace.latex"] = {link = "Include"},
+                    ["@namespace.rust"] = {link = "Include"},
 
-	{
-		"ellisonleao/gruvbox.nvim",
-		priority = 1000,
-		config = function()
-			require("gruvbox").setup({
-				contrast = "hard",
-				palette_overrides = {
-					dark0_hard = "#0E1018",
-				},
-				overrides = {
-					SignColumn = { bg = "#ff9900" },
-					Comment = { fg = "#fe8019", italic = true },
-					Define = { link = "GruvboxPurple" },
-					Macro = { link = "GruvboxPurple" },
+                    ContextVt = {fg = "#878787"},
+                    CocCodeLens = {fg = "#878787"},
+                    CocWarningFloat = {fg = "#dfaf87"},
+                    CocInlayHint = {fg = "#87afaf"},
 
-					["@constant.builtin"] = { link = "GruvboxPurple" },
-					["@storageclass.lifetime"] = { link = "GruvboxAqua" },
-					["@text.note"] = { link = "TODO" },
-					["@namespace.latex"] = { link = "Include" },
-					["@namespace.rust"] = { link = "Include" },
+                    Folded = {italic = true, fg = "#fe8019", bg = "#3c3836"},
+                    FoldColumn = {fg = "#fe8019", bg = "#0E1018"},
+                    DiffAdd = { bold = true, reverse = false, fg = "", bg = "#2a4333" },
+                    DiffChange = { bold = true, reverse = false, fg = "", bg = "#333841" },
+                    DiffDelete = { bold = true, reverse = false, fg = "#442d30", bg = "#442d30" },
+                    DiffText = { bold = true, reverse = false, fg = "", bg = "#213352" },
 
-					ContextVt = { fg = "#878787" },
-					CocCodeLens = { fg = "#878787" },
-					CocWarningFloat = { fg = "#dfaf87" },
-					CocInlayHint = { fg = "#87afaf" },
+                    StatusLine = {bg = "#ffffff", fg = "#0E1018"},
+                    StatusLineNC = {bg = "#3c3836", fg = "#0E1018"},
+                    CursorLineNr = {fg = "#fabd2f", bg = ""},
 
-					Folded = { italic = true, fg = "#fe8019", bg = "#3c3836" },
-					FoldColumn = { fg = "#fe8019", bg = "#0E1018" },
-					DiffAdd = { bold = true, reverse = false, fg = "", bg = "#2a4333" },
-					DiffChange = { bold = true, reverse = false, fg = "", bg = "#333841" },
-					DiffDelete = { bold = true, reverse = false, fg = "#442d30", bg = "#442d30" },
-					DiffText = { bold = true, reverse = false, fg = "", bg = "#213352" },
+                    DiagnosticVirtualTextWarn = {fg = "#dfaf87"},
+                    GruvboxOrangeSign = {fg = "#dfaf87", bg = ""},
+                    GruvboxAquaSign = {fg = "#8EC07C", bg = ""},
+                    GruvboxGreenSign = {fg = "#b8bb26", bg = ""},
+                    GruvboxRedSign = {fg = "#fb4934", bg = ""},
+                    GruvboxBlueSign = {fg = "#83a598", bg = ""},
+                    WilderMenu = {fg = "#ebdbb2", bg = ""},
+                    WilderAccent = {fg = "#f4468f", bg = ""},
 
-					StatusLine = { bg = "#ffffff", fg = "#0E1018" },
-					StatusLineNC = { bg = "#3c3836", fg = "#0E1018" },
-					CursorLineNr = { fg = "#fabd2f", bg = "" },
+                    -- semantic token
+                    ["@class"] = {link = "@constructor"},
+                    ["@decorator"] = {link = "Identifier"},
+                    ["@enum"] = {link = "@constructor"},
+                    ["@enumMember"] = {link = "Constant"},
+                    ["@event"] = {link = "Identifier"},
+                    ["@interface"] = {link = "Identifier"},
+                    ["@modifier"] = {link = "Identifier"},
+                    ["@regexp"] = {link = "SpecialChar"},
+                    ["@struct"] = {link = "@constructor"},
+                    ["@typeParameter"] = {link = "Type"},
 
-					DiagnosticVirtualTextWarn = { fg = "#dfaf87" },
-					GruvboxOrangeSign = { fg = "#dfaf87", bg = "" },
-					GruvboxAquaSign = { fg = "#8EC07C", bg = "" },
-					GruvboxGreenSign = { fg = "#b8bb26", bg = "" },
-					GruvboxRedSign = { fg = "#fb4934", bg = "" },
-					GruvboxBlueSign = { fg = "#83a598", bg = "" },
-					WilderMenu = { fg = "#ebdbb2", bg = "" },
-					WilderAccent = { fg = "#f4468f", bg = "" },
+                    -- coc semantic token
+                    CocSemStruct = {link = "GruvboxYellow"},
+                    CocSemVariable = {fg = "", bg = "#0E1018"},
+                    CocSemKeyword = {fg = "", bg = "#0E1018"},
+                    CocSemEnumMember = {fg = "", bg = "#0E1018"},
+                    CocSemTypeParameter = {fg = "", bg = "#0E1018"},
+                    CocSemFunction = {fg = "", bg = "#0E1018"}
+                }
+            })
+            vim.cmd.colorscheme("gruvbox")
+        end
+    }, {"numToStr/Comment.nvim"},
+    {"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"}, -- :TSInstallFromGrammar
+    {"nvim-treesitter/nvim-treesitter-textobjects"},
+    {"JoosepAlviste/nvim-ts-context-commentstring"}, {"windwp/nvim-ts-autotag"},
+    {"nvim-treesitter/playground", lazy = true, cmd = "TSPlaygroundToggle"},
+    {"danymat/neogen", config = function() require("neogen").setup({}) end}, {
+        "haringsrob/nvim_context_vt",
+        config = function()
+            require("nvim_context_vt").setup({
+                disable_ft = {"rust", "rs"},
+                disable_virtual_lines = true,
+                min_rows = 8
+            })
+        end
+    }, {"kevinhwang91/nvim-bqf"}, {"sbdchd/neoformat"},
+    {"mbbill/undotree", lazy = true, cmd = "UndotreeToggle"},
+    {"monaqa/dial.nvim"}, {
+        "smjonas/live-command.nvim",
+        config = function()
+            require("live-command").setup({commands = {Norm = {cmd = "norm"}}})
+        end
+    }, {
+        "rmagatti/auto-session",
+        config = function()
+            require("auto-session").setup({
+                log_level = "error",
+                auto_session_suppress_dirs = {
+                    "~/", "~/Downloads", "~/Documents"
+                },
+                auto_session_use_git_branch = true,
+                auto_save_enabled = true
+            })
+        end
+    }, {
+        "nmac427/guess-indent.nvim",
+        config = function() require("guess-indent").setup({}) end
+    }, {"tpope/vim-repeat"}, -- repeats
+    {
+        "kylechui/nvim-surround",
+        config = function() require("nvim-surround").setup({}) end
+    }, {"mhinz/vim-grepper"},
+    {"gelguy/wilder.nvim", build = ":UpdateRemotePlugins"},
+    {"tpope/vim-fugitive"}, -- Git control for vim
+    {
+        "lewis6991/gitsigns.nvim",
+        config = function()
+            require("gitsigns").setup({
+                signcolumn = false,
+                status_formatter = function(status)
+                    local added, changed, removed = status.added, status.changed, status.removed
+                    local status_txt = {}
+                    if added and added > 0 then
+                        table.insert(status_txt, "+" .. added)
+                    end
+                    if changed and changed > 0 then
+                        table.insert(status_txt, "~" .. changed)
+                    end
+                    if removed and removed > 0 then
+                        table.insert(status_txt, "-" .. removed)
+                    end
+                    -- format the table with commas if there are multiple changes
+                    if #status_txt > 1 then
+                        for i = 2, #status_txt do
+                            status_txt[i] = "," .. status_txt[i]
+                        end
+                    end
 
-					-- semantic token
-					["@class"] = { link = "@constructor" },
-					["@decorator"] = { link = "Identifier" },
-					["@enum"] = { link = "@constructor" },
-					["@enumMember"] = { link = "Constant" },
-					["@event"] = { link = "Identifier" },
-					["@interface"] = { link = "Identifier" },
-					["@modifier"] = { link = "Identifier" },
-					["@regexp"] = { link = "SpecialChar" },
-					["@struct"] = { link = "@constructor" },
-					["@typeParameter"] = { link = "Type" },
+                    table.insert(status_txt, 1, "[")
+                    table.insert(status_txt, "]")
 
-					-- coc semantic token
-					CocSemStruct = { link = "GruvboxYellow" },
-					CocSemVariable = { fg = "", bg = "#0E1018" },
-					CocSemKeyword = { fg = "", bg = "#0E1018" },
-					CocSemEnumMember = { fg = "", bg = "#0E1018" },
-					CocSemTypeParameter = { fg = "", bg = "#0E1018" },
-					CocSemFunction = { fg = "", bg = "#0E1018" },
-				},
-			})
-			vim.cmd.colorscheme("gruvbox")
-		end,
-	},
-
-	{ "numToStr/Comment.nvim" },
-	{ "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" }, -- :TSInstallFromGrammar
-	{ "nvim-treesitter/nvim-treesitter-textobjects" },
-	{ "JoosepAlviste/nvim-ts-context-commentstring" },
-	{ "windwp/nvim-ts-autotag" },
-	{ "nvim-treesitter/playground", lazy = true, cmd = "TSPlaygroundToggle" },
-	{
-		"danymat/neogen",
-		config = function()
-			require("neogen").setup({})
-		end,
-	},
-	{
-		"haringsrob/nvim_context_vt",
-		config = function()
-			require("nvim_context_vt").setup({
-				disable_ft = { "rust", "rs" },
-				disable_virtual_lines = true,
-				min_rows = 8,
-			})
-		end,
-	},
-
-	{ "kevinhwang91/nvim-bqf" },
-	{ "sbdchd/neoformat" },
-	{ "mbbill/undotree", lazy = true, cmd = "UndotreeToggle" },
-	{ "monaqa/dial.nvim" },
-	{
-		"smjonas/live-command.nvim",
-		config = function()
-			require("live-command").setup({
-				commands = { Norm = { cmd = "norm" }, },
-			})
-		end,
-	},
-
-	{
-		"rmagatti/auto-session",
-		config = function()
-			require("auto-session").setup({
-				log_level = "error",
-				auto_session_suppress_dirs = { "~/", "~/Downloads", "~/Documents"},
-				auto_session_use_git_branch = true,
-				auto_save_enabled = true,
-			})
-		end,
-	},
-	{
-		"nmac427/guess-indent.nvim",
-		config = function()
-			require("guess-indent").setup({})
-		end,
-	},
-
-	{ "tpope/vim-repeat" }, -- repeats
-	{
-		"kylechui/nvim-surround",
-		config = function()
-			require("nvim-surround").setup({})
-		end,
-	},
-	{ "mhinz/vim-grepper" },
-	{ "gelguy/wilder.nvim", build = ":UpdateRemotePlugins" },
-	{ "tpope/vim-fugitive" }, -- Git control for vim
-	{
-		"lewis6991/gitsigns.nvim",
-		config = function()
-			require("gitsigns").setup({
-				signcolumn = false,
-				status_formatter = function(status)
-					local added, changed, removed = status.added, status.changed, status.removed
-					local status_txt = {}
-					table.insert(status_txt, "[")
-					if added and added > 0 then
-						table.insert(status_txt, "+" .. added)
-					end
-					if changed and changed > 0 then
-						table.insert(status_txt, "~" .. changed)
-					end
-					if removed and removed > 0 then
-						table.insert(status_txt, "-" .. removed)
-					end
-					table.insert(status_txt, "]")
-
-					-- check if there are any changes
-					if #status_txt > 2 then
-						return table.concat(status_txt, "")
-					else
-						return ""
-					end
-				end,
-			})
-		end,
-	},
-
-	{ "windwp/nvim-autopairs" }, -- autopairs
-	{ "uga-rosa/ccc.nvim" }, -- color highlighting
-	{ "wellle/targets.vim" }, -- adds more targets like [ or ,
-
-	{
-		"vimwiki/vimwiki",
-		lazy = true,
-		keys = { "<Leader>ww", "<cmd>VimwikiIndex<cr>", desc = "vimwiki index", },
-	}, -- To take notes better - testing this with vimtex
-
-	{ "lervag/vimtex" }, -- for latex
-	{ "akinsho/toggleterm.nvim" }, -- for smart terminal
+                    -- check if there are any changes
+                    if #status_txt > 2 then
+                        return table.concat(status_txt, "")
+                    else
+                        return ""
+                    end
+                end
+            })
+        end
+    },
+    {"windwp/nvim-autopairs"}, -- autopairs
+    {"uga-rosa/ccc.nvim"}, -- color highlighting
+    {"wellle/targets.vim"}, -- adds more targets like [ or ,
+    {
+        "vimwiki/vimwiki", lazy = true,
+        keys = {"<Leader>ww", "<cmd>VimwikiIndex<cr>", desc = "vimwiki index"}
+    }, -- To take notes better - testing this with vimtex
+    {"lervag/vimtex"}, -- for latex
+    {"akinsho/toggleterm.nvim"}, -- for smart terminal
+    {'puremourning/vimspector', run = 'python3 install_gadget.py --enable-c --enable-rust --enable-python'},
 }, {
-	performance = {
-		rtp = {
-			-- disable some rtp plugins
-			disabled_plugins = {
-				"gzip",
-				"tarPlugin",
-				"tohtml",
-				"tutor",
-				"zipPlugin",
-			},
-		},
-	},
-	install = {
-		colorscheme = { "gruvbox" },
-	},
+    performance = {
+        rtp = {
+            -- disable some rtp plugins
+            disabled_plugins = {
+                "gzip", "tarPlugin", "tohtml", "tutor", "zipPlugin"
+            }
+        }
+    },
+    install = {colorscheme = {"gruvbox"}}
 })
 
 -- global options
@@ -305,155 +273,147 @@ vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,
 vim.api.nvim_create_user_command("FixWhitespace", [[%s/\s\+$//e]], {})
 
 function SpellToggle()
-	if vim.opt.spell:get() then
-		vim.opt_local.spell = false
-		vim.opt_local.spelllang = "en"
-	else
-		vim.opt_local.spell = true
-		vim.opt_local.spelllang = { "en_us" }
-	end
+    if vim.opt.spell:get() then
+        vim.opt_local.spell = false
+        vim.opt_local.spelllang = "en"
+    else
+        vim.opt_local.spell = true
+        vim.opt_local.spelllang = {"en_us"}
+    end
 end
 
 -- statusline
 local git_branch = function()
-	if vim.g.loaded_fugitive then
-		local branch = vim.fn.FugitiveHead()
-		if branch ~= "" then
-			return string.upper(" " .. branch)
-		end
-	end
-	return ""
+    if vim.g.loaded_fugitive then
+        local branch = vim.fn.FugitiveHead()
+        if branch ~= "" then
+            if vim.api.nvim_win_get_width(0) <= 80 then
+                return string.upper(" " .. branch:sub(1, 2))
+            end
+            return string.upper(" " .. branch)
+        end
+    end
+    return ""
 end
 
 local human_file_size = function()
-	local function format_file_size(file)
-		local size = vim.fn.getfsize(file)
-		if size <= 0 then
-			return ""
-		end
-		local sufixes = { " B", " KB", " MB", " GB" }
-		local i = 1
-		while size > 1024 do
-			size = size / 1024
-			i = i + 1
-		end
-		return string.format("[%.1f%s]", size, sufixes[i])
-	end
+    local function format_file_size(file)
+        local size = vim.fn.getfsize(file)
+        if size <= 0 then return "" end
+        local sufixes = {"B", "KB", "MB", "GB"}
+        local i = 1
+        while size > 1024 do
+            size = size / 1024
+            i = i + 1
+        end
+        return string.format("[%.0f%s]", size, sufixes[i])
+    end
 
-	local file = vim.fn.expand("%:p")
-	if string.len(file) == 0 then
-		return ""
-	end
-	return format_file_size(file)
+    local file = vim.fn.expand("%:p")
+    if string.len(file) == 0 then return "" end
+    return format_file_size(file)
 end
 
 local file_path = function()
-	local buf_name = vim.api.nvim_buf_get_name(0)
-	if buf_name == "" then
-		return "[No Name]"
-	end
-	local home = vim.env.HOME
-	local is_term = false
-	local file_dir = ""
+    local buf_name = vim.api.nvim_buf_get_name(0)
+    if buf_name == "" then return "[No Name]" end
+    local home = vim.env.HOME
+    local is_term = false
+    local file_dir = ""
 
-	if buf_name:sub(1, 5):find("term") ~= nil then
-		file_dir = vim.env.PWD
-		is_term = true
-		if file_dir == home then
-			return "$HOME "
-		end
-	else
-		file_dir = vim.fn.expand("%:p:h")
-	end
+    if buf_name:sub(1, 5):find("term") ~= nil then
+        file_dir = vim.env.PWD
+        is_term = true
+        if file_dir == home then return "$HOME " end
+    else
+        file_dir = vim.fn.expand("%:p:h")
+    end
 
-	if file_dir:find(home, 0, true) ~= nil then
-		file_dir = file_dir:gsub(home, "~", 1)
-	end
+    if file_dir:find(home, 0, true) ~= nil then
+        file_dir = file_dir:gsub(home, "~", 1)
+    end
 
-	if vim.api.nvim_win_get_width(0) <= 80 then
-		file_dir = vim.fn.pathshorten(file_dir)
-	end
+    if vim.api.nvim_win_get_width(0) <= 80 then
+        file_dir = vim.fn.pathshorten(file_dir)
+    end
 
-	if is_term then
-		return file_dir .. " "
-	else
-		return string.format("%s/%s ", file_dir, vim.fn.expand("%:t"))
-	end
+    if is_term then
+        return file_dir .. " "
+    else
+        return string.format("%s/%s ", file_dir, vim.fn.expand("%:t"))
+    end
 end
 
 local word_count = function()
-	if vim.fn.wordcount().visual_words ~= nil then
-		return vim.fn.wordcount().visual_words
-	else
-		return vim.fn.wordcount().words
-	end
+    if vim.fn.wordcount().visual_words ~= nil then
+        return vim.fn.wordcount().visual_words
+    else
+        return vim.fn.wordcount().words
+    end
 end
 
 local modes = setmetatable({
-	["n"] = { "NORMAL", "N" },
-	["no"] = { "N·OPERATOR", "N·P" },
-	["v"] = { "VISUAL", "V" },
-	["V"] = { "V·LINE", "V·L" },
-	[""] = { "V·BLOCK", "V·B" },
-	[""] = { "V·BLOCK", "V·B" },
-	["s"] = { "SELECT", "S" },
-	["S"] = { "S·LINE", "S·L" },
-	[""] = { "S·BLOCK", "S·B" },
-	["i"] = { "INSERT", "I" },
-	["ic"] = { "INSERT", "I" },
-	["R"] = { "REPLACE", "R" },
-	["Rv"] = { "V·REPLACE", "V·R" },
-	["c"] = { "COMMAND", "C" },
-	["cv"] = { "VIM·EX", "V·E" },
-	["ce"] = { "EX", "E" },
-	["r"] = { "PROMPT", "P" },
-	["rm"] = { "MORE", "M" },
-	["r?"] = { "CONFIRM", "C" },
-	["!"] = { "SHELL", "S" },
-	["t"] = { "TERMINAL", "T" },
+    ["n"] = {"NORMAL", "N"},
+    ["no"] = {"N·OPERATOR", "N·P"},
+    ["v"] = {"VISUAL", "V"},
+    ["V"] = {"V·LINE", "V·L"},
+    [""] = {"V·BLOCK", "V·B"},
+    [""] = {"V·BLOCK", "V·B"},
+    ["s"] = {"SELECT", "S"},
+    ["S"] = {"S·LINE", "S·L"},
+    [""] = {"S·BLOCK", "S·B"},
+    ["i"] = {"INSERT", "I"},
+    ["ic"] = {"INSERT", "I"},
+    ["R"] = {"REPLACE", "R"},
+    ["Rv"] = {"V·REPLACE", "V·R"},
+    ["c"] = {"COMMAND", "C"},
+    ["cv"] = {"VIM·EX", "V·E"},
+    ["ce"] = {"EX", "E"},
+    ["r"] = {"PROMPT", "P"},
+    ["rm"] = {"MORE", "M"},
+    ["r?"] = {"CONFIRM", "C"},
+    ["!"] = {"SHELL", "S"},
+    ["t"] = {"TERMINAL", "T"}
 }, {
-	__index = function()
-		return { "UNKNOWN", "U" } -- handle edge cases
-	end,
+    __index = function()
+        return {"UNKNOWN", "U"} -- handle edge cases
+    end
 })
 
 local get_current_mode = function()
-	local current_mode = vim.api.nvim_get_mode().mode
-	if vim.api.nvim_win_get_width(0) <= 80 then
-		return string.format("%s ", modes[current_mode][2])
-	else
-		return string.format("%s ", modes[current_mode][1])
-	end
+    local current_mode = vim.api.nvim_get_mode().mode
+    if vim.api.nvim_win_get_width(0) <= 80 then
+        return string.format("%s ", modes[current_mode][2])
+    else
+        return string.format("%s ", modes[current_mode][1])
+    end
 end
 
 ---@diagnostic disable-next-line: lowercase-global
 function status_line()
-	return table.concat({
-		get_current_mode(), -- get current mode
-		"%{toupper(&spelllang)}", -- display language and if spell is on
-		git_branch(), -- branch name
-		" %<", -- spacing
-		file_path(), -- smart full path filename
-		"%h%m%r%w", -- help flag, modified, readonly, and preview
-		"%=", -- right align
-		"%{get(b:,'gitsigns_status','')}[", -- gitsigns
-		word_count(), -- word count
-		"][%-3.(%l|%c]", -- line number, column number
-		human_file_size(), -- file size
-		"[%{strlen(&ft)?&ft[0].&ft[1:]:'None'}]", -- file type
-	})
+    return table.concat({
+        get_current_mode(), -- get current mode
+        "%{toupper(&spelllang)}", -- display language and if spell is on
+        git_branch(), -- branch name
+        " %<", -- spacing
+        file_path(), -- smart full path filename
+        "%h%m%r%w", -- help flag, modified, readonly, and preview
+        "%=", -- right align
+        "%{get(b:,'gitsigns_status','')}[", -- gitsigns
+        word_count(), -- word count
+        "][%-3.(%l|%c]", -- line number, column number
+        human_file_size(), -- file size
+        "[%{strlen(&ft)?&ft[0].&ft[1:]:'None'}]" -- file type
+    })
 end
 
 vim.opt.statusline = "%!v:lua.status_line()"
 
 -- Key remapping
 local keyset = vim.keymap.set
-vim.api.nvim_set_keymap("i", "<c-v>", [[copilot#Accept("")]], {
-    expr = true,
-    silent = true,
-    script = true
-})
+vim.api.nvim_set_keymap("i", "<c-v>", [[copilot#Accept("")]], {expr = true, silent = true, script = true})
 vim.g.copilot_no_tab_map = true
+vim.g.copilot_filetypes = { VimspectorPrompt = false }
 keyset("i", "jk", "<esc>")
 
 -- dial
@@ -553,8 +513,8 @@ vim.opt.updatetime = 300
 vim.api.nvim_create_user_command("Format", "call CocAction('format')", {})
 
 vim.g.coc_global_extensions = {
-    'coc-java', 'coc-rust-analyzer', 'coc-css', 'coc-vimlsp',
-    'coc-tsserver', 'coc-snippets', 'coc-emmet', 'coc-json', 'coc-texlab'
+    'coc-java', 'coc-rust-analyzer', 'coc-css', 'coc-vimlsp', 'coc-tsserver',
+    'coc-snippets', 'coc-emmet', 'coc-json', 'coc-texlab'
 }
 
 function _G.check_back_space()
@@ -576,7 +536,7 @@ end
 -- auto complete
 local opts = {silent = true, noremap = true, expr = true}
 vim.api.nvim_set_keymap("i", "<TAB>", 'coc#pum#visible() ? coc#pum#next(1) : v:lua.check_back_space() ? "<TAB>" : coc#refresh()', opts)
-vim.api.nvim_set_keymap("i", "<S-TAB>", [[coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"]], opts)
+vim.api.nvim_set_keymap("i", "<S-TAB>", [[coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"]], opts) 
 vim.api.nvim_set_keymap("i", "<cr>", [[coc#pum#visible() ? coc#pum#confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"]], opts)
 keyset("i", "<c-j>", "<Plug>(coc-snippets-expand-jump)")
 keyset("i", "<c-space>", "coc#refresh()", {silent = true, expr = true})
@@ -639,116 +599,107 @@ vim.g.neoformat_try_formatprg = 1
 -- ccc color picker
 local ccc = require("ccc")
 ccc.setup({
-	highlighter = { auto_enable = true },
-	pickers = {
-		ccc.picker.hex,
-		ccc.picker.css_rgb,
-		ccc.picker.css_hsl,
-		ccc.picker.css_name,
-	},
+    highlighter = {auto_enable = true},
+    pickers = {
+        ccc.picker.hex, ccc.picker.css_rgb, ccc.picker.css_hsl,
+        ccc.picker.css_name
+    }
 })
 
 -- wilder
 local wilder = require("wilder")
-wilder.setup({ modes = { ":", "/", "?" } })
+wilder.setup({modes = {":", "/", "?"}})
 wilder.set_option("pipeline", {
-	wilder.branch(
-		wilder.python_file_finder_pipeline({
-			file_command = function(_, arg)
-				if string.find(arg, ".") ~= nil then
-					return { "fd", "-tf", "-H" }
-				else
-					return { "fd", "-tf" }
-				end
-			end,
-			dir_command = { "fd", "-td" },
-			filters = { "fuzzy_filter", "difflib_sorter" },
-		}),
-		wilder.cmdline_pipeline(),
-		wilder.python_search_pipeline()
-	),
+    wilder.branch(wilder.python_file_finder_pipeline({
+        file_command = function(_, arg)
+            if string.find(arg, ".") ~= nil then
+                return {"fd", "-tf", "-H"}
+            else
+                return {"fd", "-tf"}
+            end
+        end,
+        dir_command = {"fd", "-td"},
+        filters = {"fuzzy_filter", "difflib_sorter"}
+    }), wilder.cmdline_pipeline(), wilder.python_search_pipeline())
 })
 
-wilder.set_option(
-	"renderer",
-	wilder.popupmenu_renderer({
-		highlighter = wilder.basic_highlighter(),
-		left = { " " },
-		right = { " ", wilder.popupmenu_scrollbar({ thumb_char = " " }) },
-		highlights = { default = "WilderMenu", accent = "WilderAccent" },
-	})
-)
+wilder.set_option("renderer", wilder.popupmenu_renderer({
+    highlighter = wilder.basic_highlighter(),
+    left = {" "},
+    right = {" ", wilder.popupmenu_scrollbar({thumb_char = " "})},
+    highlights = {default = "WilderMenu", accent = "WilderAccent"}
+}))
 
 -- firenvim
 vim.g.firenvim_config = {
-	globalSettings = { alt = "all" },
-	localSettings = {
-		[".*"] = {
-			cmdline = "neovim",
-			content = "text",
-			priority = 0,
-			selector = "textarea",
-			takeover = "never",
-		},
-	},
+    globalSettings = {alt = "all"},
+    localSettings = {
+        [".*"] = {
+            cmdline = "neovim",
+            content = "text",
+            priority = 0,
+            selector = "textarea",
+            takeover = "never"
+        }
+    }
 }
 
 -- autocmds
-vim.api.nvim_create_augroup("Random", { clear = true })
+vim.api.nvim_create_augroup("Random", {clear = true})
 local autocmd = vim.api.nvim_create_autocmd
 
 autocmd("User", {
-	group = "Random",
-	pattern = "AlphaReady",
-	callback = function()
-		vim.opt.cmdheight = 0
-		vim.opt.laststatus = 0
-		vim.wo.fillchars = "eob: "
+    group = "Random",
+    pattern = "AlphaReady",
+    callback = function()
+        vim.opt.cmdheight = 0
+        vim.opt.laststatus = 0
+        vim.wo.fillchars = "eob: "
 
-		autocmd("BufUnload", {
-			pattern = "<buffer>",
-			callback = function()
-				vim.opt.cmdheight = 1
-				vim.opt.laststatus = 3
-				vim.wo.fillchars = "eob:~"
-			end,
-		})
-	end,
-	desc = "Disable Bufferline in Alpha",
+        autocmd("BufUnload", {
+            pattern = "<buffer>",
+            callback = function()
+                vim.opt.cmdheight = 1
+                vim.opt.laststatus = 3
+                vim.wo.fillchars = "eob:~"
+            end
+        })
+    end,
+    desc = "Disable Bufferline in Alpha"
 })
 
 autocmd("VimResized", {
-	group = "Random",
-	desc = "Keep windows equally resized",
-	command = "tabdo wincmd =",
+    group = "Random",
+    desc = "Keep windows equally resized",
+    command = "tabdo wincmd ="
 })
 
 autocmd("TermOpen", {
-	group = "Random",
-	command = "setlocal nonumber norelativenumber signcolumn=no",
+    group = "Random",
+    command = "setlocal nonumber norelativenumber signcolumn=no"
 })
 
-autocmd("InsertEnter", { group = "Random", command = "set timeoutlen=100" })
-autocmd("InsertLeave", { group = "Random", command = "set timeoutlen=1000" })
+autocmd("InsertEnter", {group = "Random", command = "set timeoutlen=100"})
+autocmd("InsertLeave", {group = "Random", command = "set timeoutlen=1000"})
 
 --- coc auto commands
 vim.api.nvim_create_augroup("CocGroup", {})
 autocmd("FileType", {
-	group = "CocGroup",
-	pattern = "typescript,json",
-	command = "setl formatexpr=CocAction('formatSelected')",
-	desc = "Setup formatexpr specified filetype(s).",
+    group = "CocGroup",
+    pattern = "typescript,json",
+    command = "setl formatexpr=CocAction('formatSelected')",
+    desc = "Setup formatexpr specified filetype(s)."
 })
 autocmd("User", {
-	group = "CocGroup",
-	pattern = "CocJumpPlaceholder",
-	command = "call CocActionAsync('showSignatureHelp')",
-	desc = "Update signature help on jump placeholder",
+    group = "CocGroup",
+    pattern = "CocJumpPlaceholder",
+    command = "call CocActionAsync('showSignatureHelp')",
+    desc = "Update signature help on jump placeholder"
 })
 autocmd("CursorHold", {
-	group = "CocGroup",
-	command = "silent call CocActionAsync('highlight')",
-	desc = "Highlight symbol under cursor on CursorHold",
+    group = "CocGroup",
+    command = "silent call CocActionAsync('highlight')",
+    desc = "Highlight symbol under cursor on CursorHold"
 })
 
 -- toggleterm
@@ -764,127 +715,121 @@ local Terminal = require("toggleterm.terminal").Terminal
 
 local lg_cmd = "lazygit -w (pwd)"
 if vim.v.servername ~= nil then
-	lg_cmd = string.format("NVIM_SERVER=%s lazygit -ucf ~/.config/nvim/lazygit.toml -w (pwd)", vim.v.servername)
+    lg_cmd = string.format(
+                 "NVIM_SERVER=%s lazygit -ucf ~/.config/nvim/lazygit.toml -w (pwd)",
+                 vim.v.servername)
 end
 
-vim.cmd([[let $GIT_EDITOR = "nvr -cc split --remote-wait +'set bufhidden=wipe'"]])
+vim.cmd(
+    [[let $GIT_EDITOR = "nvr -cc split --remote-wait +'set bufhidden=wipe'"]])
 
 local lazygit = Terminal:new({
-	cmd = lg_cmd,
-	count = 5,
-	-- dir = "git_dir",
-	direction = "float",
-	float_opts = {
-		border = "double",
-		width = function()
-			return vim.o.columns
-		end,
-		height = function()
-			return vim.o.lines
-		end,
-	},
+    cmd = lg_cmd,
+    count = 5,
+    -- dir = "git_dir",
+    direction = "float",
+    float_opts = {
+        border = "double",
+        width = function() return vim.o.columns end,
+        height = function() return vim.o.lines end
+    },
 
-	-- function to run on opening the terminal
-	on_open = function(term)
-		vim.cmd("startinsert!")
-		vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>", { noremap = true, silent = true })
-	end,
+    -- function to run on opening the terminal
+    on_open = function(term)
+        vim.cmd("startinsert!")
+        vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>",
+                                    {noremap = true, silent = true})
+    end
 })
 
 function Edit(fn, line_number)
-	local edit_cmd = string.format(":e %s", fn)
-	if line_number ~= nil then
-		edit_cmd = string.format(":e +%d %s", line_number, fn)
-	end
-	vim.cmd(edit_cmd)
+    local edit_cmd = string.format(":e %s", fn)
+    if line_number ~= nil then
+        edit_cmd = string.format(":e +%d %s", line_number, fn)
+    end
+    vim.cmd(edit_cmd)
 end
 
-function Lazygit_toggle()
-	lazygit:toggle()
-end
+function Lazygit_toggle() lazygit:toggle() end
 
-keyset("n", "<leader>lg", "<cmd>lua Lazygit_toggle()<CR>", { silent = true })
+keyset("n", "<leader>lg", "<cmd>lua Lazygit_toggle()<CR>", {silent = true})
 
 require("nvim-autopairs").setup({
-	disable_filetype = { "TelescopePrompt" },
-	map_cr = false,
-	disable_in_macro = false,
-	disable_in_visualblock = false,
+    disable_filetype = {"TelescopePrompt"},
+    map_cr = false,
+    disable_in_macro = false,
+    disable_in_visualblock = false
 })
 
 require("Comment").setup({
-	pre_hook = function()
-		return require("ts_context_commentstring.internal").calculate_commentstring()
-	end,
+    pre_hook = function()
+        return
+            require("ts_context_commentstring.internal").calculate_commentstring()
+    end
 })
 
 -- https://github-wiki-see.page/m/nvim-telescope/telescope.nvim/wiki/Configuration-Recipes
 local actions = require("telescope.actions")
 local previewers = require("telescope.previewers")
 local Job = require("plenary.job")
-local _bad = { ".*%.csv", ".*%.lua" } -- Put all filetypes that slow you down in this array
+local _bad = {".*%.csv", ".*%.lua"} -- Put all filetypes that slow you down in this array
 local bad_files = function(filepath)
-	for _, v in ipairs(_bad) do
-		if filepath:match(v) then
-			return false
-		end
-	end
+    for _, v in ipairs(_bad) do if filepath:match(v) then return false end end
 
-	return true
+    return true
 end
 
 ---@diagnostic disable-next-line: redefined-local
 local new_maker = function(filepath, bufnr, opts)
-	opts = opts or {}
-	if opts.use_ft_detect == nil then
-		opts.use_ft_detect = true
-	end
-	opts.use_ft_detect = opts.use_ft_detect == false and false or bad_files(filepath)
-	filepath = vim.fn.expand(filepath)
-	Job:new({
-		command = "file",
-		args = { "--mime-type", "-b", filepath },
-		on_exit = function(j)
-			local mime_type = vim.split(j:result()[1], "/")[1]
-			if mime_type == "text" then
-				previewers.buffer_previewer_maker(filepath, bufnr, opts)
-			else
-				-- maybe we want to write something to the buffer here
-				vim.schedule(function()
-					vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, { "BINARY" })
-				end)
-			end
-		end,
-	}):sync()
+    opts = opts or {}
+    if opts.use_ft_detect == nil then opts.use_ft_detect = true end
+    opts.use_ft_detect = opts.use_ft_detect == false and false or
+                             bad_files(filepath)
+    filepath = vim.fn.expand(filepath)
+    Job:new({
+        command = "file",
+        args = {"--mime-type", "-b", filepath},
+        on_exit = function(j)
+            local mime_type = vim.split(j:result()[1], "/")[1]
+            if mime_type == "text" then
+                previewers.buffer_previewer_maker(filepath, bufnr, opts)
+            else
+                -- maybe we want to write something to the buffer here
+                vim.schedule(function()
+                    vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, {"BINARY"})
+                end)
+            end
+        end
+    }):sync()
 end
 require("telescope").setup({
-	defaults = {
-		file_sorter = require("telescope.sorters").get_fzy_sorter,
-		buffer_previewer_maker = new_maker,
-		layout_config = { prompt_position = "bottom" },
-		mappings = {
-			i = {
-				["<Esc>"] = actions.close,
-				["<C-q>"] = actions.send_to_qflist,
-				["<C-k>"] = actions.move_selection_previous,
-				["<C-j>"] = actions.move_selection_next,
-			},
-		},
-	},
-	pickers = {
-		find_files = { theme = "ivy", layout_config = { height = 0.4 } },
-		git_files = { theme = "ivy", layout_config = { height = 0.4 } },
-		buffers = { theme = "ivy", layout_config = { height = 0.4 } },
-		man_pages = {
-			sections = { "ALL" },
-			theme = "ivy",
-			layout_config = { height = 0.4 },
-		},
-		keymaps = { theme = "ivy", layout_config = { height = 0.4 } },
-		file_browser = { theme = "ivy", layout_config = { height = 0.4 } },
-		treesitter = { theme = "ivy", layout_config = { height = 0.4 } },
-		help_tags = { theme = "ivy", layout_config = { height = 0.5 } },
-	},
+    defaults = {
+        file_sorter = require("telescope.sorters").get_fzy_sorter,
+        buffer_previewer_maker = new_maker,
+        layout_config = {prompt_position = "bottom"},
+        mappings = {
+            i = {
+                ["<Esc>"] = actions.close,
+                ["<C-q>"] = actions.send_to_qflist,
+                ["<C-k>"] = actions.move_selection_previous,
+                ["<C-j>"] = actions.move_selection_next
+            }
+        }
+    },
+    pickers = {
+        find_files = {theme = "ivy", layout_config = {height = 0.4}},
+        git_files = {theme = "ivy", layout_config = {height = 0.4}},
+        buffers = {theme = "ivy", layout_config = {height = 0.4}},
+        man_pages = {
+            sections = {"ALL"},
+            theme = "ivy",
+            layout_config = {height = 0.4}
+        },
+        keymaps = {theme = "ivy", layout_config = {height = 0.4}},
+        file_browser = {theme = "ivy", layout_config = {height = 0.4}},
+        treesitter = {theme = "ivy", layout_config = {height = 0.4}},
+        help_tags = {theme = "ivy", layout_config = {height = 0.5}}
+    }
 })
 
 -- require("indent_blankline").setup {
@@ -902,72 +847,75 @@ require("telescope").setup({
 -- local parsers = require("nvim-treesitter.parsers")
 -- local enabled_list = {"clojure", "fennel", "commonlisp", "query"}
 require("nvim-treesitter.configs").setup({
-	highlight = {
-		enable = true,
-		additional_vim_regex_highlighting = { "latex"},
-		custom_captures = { ["@function.macro"] = "GruvboxPurple", ["@variable"] = "GruvboxPurple" },
-	},
-	playground = {
-		enable = true,
-		updatetime = 25, -- Debounced time for highlighting nodes in the playground from source code
-		persist_queries = false, -- Whether the query persists across vim sessions
-	},
-	indent = { enable = true, disable = { "python" } },
-	context_commentstring = { enable = true, config = { lua = "-- %s" } },
-	textobjects = {
-		move = {
-			enable = true,
-			goto_next_start = {
-				["]m"] = "@function.outer",
-				["]]"] = "@class.outer",
-			},
-			goto_next_end = {
-				["]M"] = "@function.outer",
-				["]["] = "@class.outer",
-			},
-			goto_previous_start = {
-				["[m"] = "@function.outer",
-				["[["] = "@class.outer",
-			},
-			goto_previous_end = {
-				["[M"] = "@function.outer",
-				["[]"] = "@class.outer",
-			},
-		},
-		swap = {
-			enable = true,
-			swap_next = { ["<leader>a"] = "@parameter.inner" },
-			swap_previous = { ["<leader>A"] = "@parameter.inner" },
-		},
-		select = {
-			enable = true,
-			keymaps = {
-				["af"] = "@function.outer",
-				["if"] = "@function.inner",
-				["ac"] = "@class.outer",
-				["ic"] = "@class.inner",
-			},
-		},
-	},
-	incremental_selection = {
-		enable = true,
-		keymaps = {
-			init_selection = "<space>i",
-			scope_incremental = "<space>i",
-			node_incremental = "<space>n",
-			node_decremental = "<space>p",
-		},
-	},
-	-- rainbow = {
-	--     enable = true,
-	--     -- Enable only for lisp like languages
-	--     disable = vim.tbl_filter(function(p)
-	--         local disable = true
-	--         for _, lang in pairs(enabled_list) do
-	--             if p == lang then disable = false end
-	--         end
-	--         return disable
-	--     end, parsers.available_parsers())
-	-- },
-	autotag = { enable = true },
+    highlight = {
+        enable = true,
+        additional_vim_regex_highlighting = {"latex"},
+        custom_captures = {
+            ["@function.macro"] = "GruvboxPurple",
+            ["@variable"] = "GruvboxPurple"
+        }
+    },
+    playground = {
+        enable = true,
+        updatetime = 25, -- Debounced time for highlighting nodes in the playground from source code
+        persist_queries = false -- Whether the query persists across vim sessions
+    },
+    indent = {enable = true, disable = {"python"}},
+    context_commentstring = {enable = true, config = {lua = "-- %s"}},
+    textobjects = {
+        move = {
+            enable = true,
+            goto_next_start = {
+                ["]m"] = "@function.outer",
+                ["]]"] = "@class.outer"
+            },
+            goto_next_end = {
+                ["]M"] = "@function.outer",
+                ["]["] = "@class.outer"
+            },
+            goto_previous_start = {
+                ["[m"] = "@function.outer",
+                ["[["] = "@class.outer"
+            },
+            goto_previous_end = {
+                ["[M"] = "@function.outer",
+                ["[]"] = "@class.outer"
+            }
+        },
+        swap = {
+            enable = true,
+            swap_next = {["<leader>a"] = "@parameter.inner"},
+            swap_previous = {["<leader>A"] = "@parameter.inner"}
+        },
+        select = {
+            enable = true,
+            keymaps = {
+                ["af"] = "@function.outer",
+                ["if"] = "@function.inner",
+                ["ac"] = "@class.outer",
+                ["ic"] = "@class.inner"
+            }
+        }
+    },
+    incremental_selection = {
+        enable = true,
+        keymaps = {
+            init_selection = "<space>i",
+            scope_incremental = "<space>i",
+            node_incremental = "<space>n",
+            node_decremental = "<space>p"
+        }
+    },
+    -- rainbow = {
+    --     enable = true,
+    --     -- Enable only for lisp like languages
+    --     disable = vim.tbl_filter(function(p)
+    --         local disable = true
+    --         for _, lang in pairs(enabled_list) do
+    --             if p == lang then disable = false end
+    --         end
+    --         return disable
+    --     end, parsers.available_parsers())
+    -- },
+    autotag = {enable = true}
 })
