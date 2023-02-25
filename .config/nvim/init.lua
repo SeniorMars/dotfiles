@@ -1,4 +1,6 @@
+---@diagnostic disable: missing-parameter, need-check-nil, cast-local-type, param-type-mismatch, undefined-field
 vim.g.mapleader = ","
+vim.g.maplocalleader = " "
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
     vim.fn.system({
@@ -19,11 +21,24 @@ if not vim.fn.executable("nvr") then
 end
 
 require("lazy").setup({
-    {"github/copilot.vim"}, {
+     {
+      "zbirenbaum/copilot.lua", -- Copilot but lua
+      cmd = "Copilot",
+      event = "InsertEnter",
+    },
+    {
         "nvim-telescope/telescope.nvim",
         dependencies = {"nvim-lua/plenary.nvim", "nvim-lua/popup.nvim"}
     }, {
-        "goolord/alpha-nvim",
+        "nvim-telescope/telescope-frecency.nvim",
+        config = function()
+            require"telescope".load_extension("frecency")
+        end,
+        dependencies = {"kkharji/sqlite.lua"}
+    },
+
+    {
+        "goolord/alpha-nvim", -- Dashboard
         dependencies = {"nvim-tree/nvim-web-devicons"},
         config = function()
             local alpha = require("alpha")
@@ -53,9 +68,8 @@ require("lazy").setup({
             }
 
             local handle = io.popen("fortune -s")
-            -- check nil
             if handle == nil then
-                dashboard.section.footer.val = "No fortune found"
+                dashboard.section.footer.val = "May the truth be found."
                 alpha.setup(dashboard.opts)
                 return
             end
@@ -64,10 +78,10 @@ require("lazy").setup({
             dashboard.section.footer.val = fortune
             alpha.setup(dashboard.opts)
         end
-    }, {"neoclide/coc.nvim", branch = "release", build = ":CocUpdate"},
+    }, {"neoclide/coc.nvim", branch = "release", build = ":CocUpdate"}, -- auto complete
     {"honza/vim-snippets"}, -- Snippets are separated from the engine
     {
-        "ellisonleao/gruvbox.nvim",
+        "ellisonleao/gruvbox.nvim", -- theme
         priority = 1000,
         config = function()
             require("gruvbox").setup({
@@ -86,6 +100,7 @@ require("lazy").setup({
                     ["@namespace.rust"] = {link = "Include"},
 
                     ContextVt = {fg = "#878787"},
+                    CopilotSuggestion = {fg = "#878787"},
                     CocCodeLens = {fg = "#878787"},
                     CocWarningFloat = {fg = "#dfaf87"},
                     CocInlayHint = {fg = "#87afaf"},
@@ -133,12 +148,12 @@ require("lazy").setup({
             })
             vim.cmd.colorscheme("gruvbox")
         end
-    }, {"numToStr/Comment.nvim"},
+    }, {"numToStr/Comment.nvim"}, -- comment
     {"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"}, -- :TSInstallFromGrammar
-    {"nvim-treesitter/nvim-treesitter-textobjects"},
-    {"JoosepAlviste/nvim-ts-context-commentstring"}, {"windwp/nvim-ts-autotag"},
-    {"nvim-treesitter/playground", lazy = true, cmd = "TSPlaygroundToggle"},
-    {"danymat/neogen", config = function() require("neogen").setup({}) end}, {
+    {"nvim-treesitter/nvim-treesitter-textobjects"}, -- TS objects
+    {"JoosepAlviste/nvim-ts-context-commentstring"}, -- use TS for comment.nvim
+    {"nvim-treesitter/playground", lazy = true, cmd = "TSPlaygroundToggle"}, -- playing around with treesitter
+    {"danymat/neogen", config = function() require("neogen").setup({}) end}, { -- generate doc comment
         "haringsrob/nvim_context_vt",
         config = function()
             require("nvim_context_vt").setup({
@@ -147,15 +162,16 @@ require("lazy").setup({
                 min_rows = 8
             })
         end
-    }, {"kevinhwang91/nvim-bqf"}, {"sbdchd/neoformat"},
-    {"mbbill/undotree", lazy = true, cmd = "UndotreeToggle"},
-    {"monaqa/dial.nvim"}, {
-        "smjonas/live-command.nvim",
+    }, {"kevinhwang91/nvim-bqf"}, -- beter quickfix
+    {"sbdchd/neoformat"}, -- format code
+    {"mbbill/undotree", lazy = true, cmd = "UndotreeToggle"}, -- see undo tree
+    {"monaqa/dial.nvim"}, { -- <c-a> and <c-x> for numbers
+        "smjonas/live-command.nvim", -- live command
         config = function()
             require("live-command").setup({commands = {Norm = {cmd = "norm"}}})
         end
     }, {
-        "rmagatti/auto-session",
+        "rmagatti/auto-session", -- auto save session
         config = function()
             require("auto-session").setup({
                 log_level = "error",
@@ -167,17 +183,17 @@ require("lazy").setup({
             })
         end
     }, {
-        "nmac427/guess-indent.nvim",
+        "nmac427/guess-indent.nvim", -- guess indent
         config = function() require("guess-indent").setup({}) end
     }, {"tpope/vim-repeat"}, -- repeats
     {
-        "kylechui/nvim-surround",
+        "kylechui/nvim-surround", -- surround objects
         config = function() require("nvim-surround").setup({}) end
-    }, {"mhinz/vim-grepper"},
-    {"gelguy/wilder.nvim", build = ":UpdateRemotePlugins"},
+    }, {"mhinz/vim-grepper"}, -- rg support
+    {"gelguy/wilder.nvim", build = ":UpdateRemotePlugins"}, -- : autocomplete
     {"tpope/vim-fugitive"}, -- Git control for vim
     {
-        "lewis6991/gitsigns.nvim",
+        "lewis6991/gitsigns.nvim", -- git signs
         config = function()
             require("gitsigns").setup({
                 signcolumn = false,
@@ -194,18 +210,16 @@ require("lazy").setup({
                         table.insert(status_txt, "-" .. removed)
                     end
                     -- format the table with commas if there are multiple changes
+
                     if #status_txt > 1 then
                         for i = 2, #status_txt do
                             status_txt[i] = "," .. status_txt[i]
                         end
                     end
 
-                    table.insert(status_txt, 1, "[")
-                    table.insert(status_txt, "]")
-
                     -- check if there are any changes
                     if #status_txt > 2 then
-                        return table.concat(status_txt, "")
+                        return "[" .. table.concat(status_txt, "") .. "]"
                     else
                         return ""
                     end
@@ -217,12 +231,12 @@ require("lazy").setup({
     {"uga-rosa/ccc.nvim"}, -- color highlighting
     {"wellle/targets.vim"}, -- adds more targets like [ or ,
     {
-        "vimwiki/vimwiki", lazy = true,
+        "vimwiki/vimwiki", lazy = true, -- To take notes better
         keys = {"<Leader>ww", "<cmd>VimwikiIndex<cr>", desc = "vimwiki index"}
-    }, -- To take notes better - testing this with vimtex
+    },
     {"lervag/vimtex"}, -- for latex
     {"akinsho/toggleterm.nvim"}, -- for smart terminal
-    {'puremourning/vimspector', run = 'python3 install_gadget.py --enable-c --enable-rust --enable-python'},
+    {'puremourning/vimspector'}, -- debugging
 }, {
     performance = {
         rtp = {
@@ -411,9 +425,6 @@ vim.opt.statusline = "%!v:lua.status_line()"
 
 -- Key remapping
 local keyset = vim.keymap.set
-vim.api.nvim_set_keymap("i", "<c-v>", [[copilot#Accept("")]], {expr = true, silent = true, script = true})
-vim.g.copilot_no_tab_map = true
-vim.g.copilot_filetypes = { VimspectorPrompt = false }
 keyset("i", "jk", "<esc>")
 
 -- dial
@@ -447,6 +458,7 @@ keyset('n', '<Leader>lp', '<Plug>VimwikiPrevLink')
 keyset("n", "<leader>e", ":Neoformat<cr>")
 keyset("n", "<leader>q", ":!zathura <C-r>=expand('%:r')<cr>.pdf &<cr>")
 keyset("n", "<leader>cd", ":cd %:p:h<cr>:pwd<cr>")
+keyset("n", "<leader>cc", ":close<cr>")
 keyset("n", "<leader>cn", ":cnext<cr>")
 keyset("n", "<leader>cp", ":cprevious<cr>")
 keyset("n", "<leader>P", '"+gP')
@@ -479,13 +491,12 @@ keyset("n", "k", "(v:count ? 'k' : 'gk')", {expr = true})
 -- Telescope + grepper
 keyset("n", "<leader><leader>f", ":Telescope git_files<cr>")
 keyset("n", "<leader>fl", ":Telescope live_grep<cr>")
-keyset("n", "<leader>ff", ":Telescope find_files<cr>")
+keyset("n", "<leader>ff", ":Telescope frecency workspace=CWD theme=ivy layout_config={height=0.4}<cr>")
 keyset("n", "<leader>fb", ":Telescope buffers<cr>")
 keyset("n", "<leader>fm", ":Telescope man_pages<cr>")
 keyset("n", "<leader>ft", ":Telescope treesitter<cr>")
 keyset("n", "<leader>fk", ":Telescope keymaps<cr>")
 keyset("n", "<leader>fh", ":Telescope help_tags<cr>")
-keyset("n", "<leader>fd", ":Telescope file_browser<cr>")
 keyset("n", "<leader>fs", ':GrepperRg "" .<Left><Left><Left>')
 keyset("n", "<leader>fS", ":Rg<space>")
 keyset("n", "<leader>*", ":Grepper -tool rg -cword -noprompt<cr>")
@@ -512,9 +523,9 @@ vim.opt.writebackup = false
 vim.opt.updatetime = 300
 vim.api.nvim_create_user_command("Format", "call CocAction('format')", {})
 
+vim.g.coc_enable_locationlist = 0
 vim.g.coc_global_extensions = {
-    'coc-java', 'coc-rust-analyzer', 'coc-css', 'coc-vimlsp', 'coc-tsserver',
-    'coc-snippets', 'coc-emmet', 'coc-json', 'coc-texlab'
+    'coc-rust-analyzer', 'coc-discord-rpc', 'coc-snippets', 'coc-sumneko-lua', 'coc-json', 'coc-texlab', 'coc-pyright'
 }
 
 function _G.check_back_space()
@@ -533,10 +544,47 @@ function _G.show_docs()
     end
 end
 
+function _G.jumpToLoc(locs)
+    locs = locs or vim.g.coc_jump_locations
+    vim.fn.setloclist(0, {}, ' ', {title = 'CocLocationList', items = locs})
+    local winid = vim.fn.getloclist(0, {winid = 0}).winid
+    if winid == 0 then
+        vim.cmd('bel lw')
+    else
+        vim.api.nvim_set_current_win(winid)
+    end
+end
+
+function _G.diagnostic()
+    vim.fn.CocActionAsync('diagnosticList', '', function(err, res)
+        if err == vim.NIL then
+            local items = {}
+            for _, d in ipairs(res) do
+                local text = ('[%s%s] %s'):format((d.source == '' and 'coc.nvim' or d.source),
+                    (d.code == vim.NIL and '' or ' ' .. d.code), d.message:match('([^\n]+)\n*'))
+
+                local item = {
+                    filename = d.file,
+                    lnum = d.lnum,
+                    end_lnum = d.end_lnum,
+                    col = d.col,
+                    end_col = d.end_col,
+                    text = text,
+                    type = d.severity
+                }
+                table.insert(items, item)
+            end
+            vim.fn.setqflist({}, ' ', {title = 'CocDiagnosticList', items = items})
+
+            vim.cmd('bo cope')
+        end
+    end)
+end
+
 -- auto complete
 local opts = {silent = true, noremap = true, expr = true}
 vim.api.nvim_set_keymap("i", "<TAB>", 'coc#pum#visible() ? coc#pum#next(1) : v:lua.check_back_space() ? "<TAB>" : coc#refresh()', opts)
-vim.api.nvim_set_keymap("i", "<S-TAB>", [[coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"]], opts) 
+vim.api.nvim_set_keymap("i", "<S-TAB>", [[coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"]], opts)
 vim.api.nvim_set_keymap("i", "<cr>", [[coc#pum#visible() ? coc#pum#confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"]], opts)
 keyset("i", "<c-j>", "<Plug>(coc-snippets-expand-jump)")
 keyset("i", "<c-space>", "coc#refresh()", {silent = true, expr = true})
@@ -568,7 +616,7 @@ keyset("n", "<space>a", "<Plug>(coc-codeaction-cursor)", opts)
 keyset("x", "<space>a", "<Plug>(coc-codeaction-selected)", opts)
 keyset("n", "<space>g", "<Plug>(coc-codelens-action)", opts)
 -- keyset("n", "<space>f", "<Plug>(coc-fix-current)", opts)
-keyset("n", "<space>d", ":<C-u>CocList diagnostics<cr>", opts)
+keyset("n", "<space>d", "<Cmd>lua _G.diagnostic()<CR>", opts)
 keyset("n", "<space>e", ":<C-u>CocList extensions<cr>", opts)
 keyset("n", "<space>c", ":<C-u>CocList commands<cr>", opts)
 keyset("n", "<space>o", ":<C-u>CocList outline<cr>", opts)
@@ -580,9 +628,9 @@ vim.g.vimtex_view_method = 'zathura'
 vim.g.vimtex_quickfix_mode = 0
 vim.g.tex_conceal = 'abdmgs'
 vim.g.indentLine_setConceal = 0
+vim.g.vimtex_compiler_latexmk_engines = {["_"] = "-lualatex" }
 
 -- Other settings
--- vim.g.polyglot_disabled = { 'javascript', 'css', 'java', 'c', 'typescript', 'python', 'cpp', 'rs', 'bash', 'zsh', 'html', 'lua', 'ruby', 'ocaml', 'haskell', 'go', 'yaml', 'json' } -- "treesitter
 vim.g.vimwiki_list = {{path = '~/Work/vimwiki'}}
 vim.g.vimwiki_ext2syntax = {[".wiki"] = "media", [".mw"] = "media"}
 vim.g.vimwiki_global_ext = 0
@@ -595,6 +643,7 @@ vim.g.netrw_browsex_viewer = "open -a firefox"
 vim.g.termdebug_popup = 0
 vim.g.termdebug_wide = 163
 vim.g.neoformat_try_formatprg = 1
+vim.g.vimspector_install_gadgets = { 'debugpy', 'vscode-cpptools', 'CodeLLDB' }
 
 -- ccc color picker
 local ccc = require("ccc")
@@ -629,20 +678,6 @@ wilder.set_option("renderer", wilder.popupmenu_renderer({
     right = {" ", wilder.popupmenu_scrollbar({thumb_char = " "})},
     highlights = {default = "WilderMenu", accent = "WilderAccent"}
 }))
-
--- firenvim
-vim.g.firenvim_config = {
-    globalSettings = {alt = "all"},
-    localSettings = {
-        [".*"] = {
-            cmdline = "neovim",
-            content = "text",
-            priority = 0,
-            selector = "textarea",
-            takeover = "never"
-        }
-    }
-}
 
 -- autocmds
 vim.api.nvim_create_augroup("Random", {clear = true})
@@ -684,6 +719,12 @@ autocmd("InsertLeave", {group = "Random", command = "set timeoutlen=1000"})
 
 --- coc auto commands
 vim.api.nvim_create_augroup("CocGroup", {})
+autocmd("User", {
+    group = "CocGroup",
+    pattern = "CocLocationsChange",
+    command = "lua _G.jumpToLoc()"
+})
+
 autocmd("FileType", {
     group = "CocGroup",
     pattern = "typescript,json",
@@ -711,6 +752,53 @@ require("toggleterm").setup {
     }
 }
 
+-- copilot
+ require('copilot').setup({
+  panel = {
+    enabled = true,
+    auto_refresh = false,
+    keymap = {
+      jump_prev = "[[",
+      jump_next = "]]",
+      accept = "<CR>",
+      refresh = "gr",
+      open = ",fd"
+    },
+    layout = {
+      position = "bottom", -- | top | left | right
+      ratio = 0.4
+    },
+  },
+  suggestion = {
+    enabled = true,
+    auto_trigger = true,
+    debounce = 75,
+    keymap = {
+      accept = "<C-v>",
+      accept_word = false,
+      accept_line = false,
+      next = false,
+      prev = false,
+      dismiss = "<C-]>",
+    },
+  },
+  filetypes = {
+    yaml = false,
+    markdown = false,
+    help = false,
+    gitcommit = false,
+    gitrebase = false,
+    hgcommit = false,
+    svn = false,
+    cvs = false,
+    VimspectorPrompt = false,
+    ["."] = false,
+  },
+  copilot_node_command = 'node', -- Node.js version must be > 16.x
+  server_opts_overrides = {},
+})
+
+
 local Terminal = require("toggleterm.terminal").Terminal
 
 local lg_cmd = "lazygit -w (pwd)"
@@ -720,13 +808,11 @@ if vim.v.servername ~= nil then
                  vim.v.servername)
 end
 
-vim.cmd(
-    [[let $GIT_EDITOR = "nvr -cc split --remote-wait +'set bufhidden=wipe'"]])
+vim.cmd( [[let $GIT_EDITOR = "nvr -cc split --remote-wait +'set bufhidden=wipe'"]])
 
 local lazygit = Terminal:new({
     cmd = lg_cmd,
     count = 5,
-    -- dir = "git_dir",
     direction = "float",
     float_opts = {
         border = "double",
@@ -757,9 +843,27 @@ keyset("n", "<leader>lg", "<cmd>lua Lazygit_toggle()<CR>", {silent = true})
 require("nvim-autopairs").setup({
     disable_filetype = {"TelescopePrompt"},
     map_cr = false,
-    disable_in_macro = false,
-    disable_in_visualblock = false
+    disable_in_visualblock = true,
+    check_ts = true,
 })
+
+local rule = require('nvim-autopairs.rule')
+local npairs = require('nvim-autopairs')
+local cond = require('nvim-autopairs.conds')
+npairs.add_rules({
+  rule("$", "$",{"tex", "latex"})
+    -- don't add a pair if the next character is %
+    :with_pair(cond.not_after_regex("%%"))
+    -- don't add a pair if  the previous character is xxx
+    :with_pair(cond.not_before_regex("xxx", 3))
+    -- don't move right when repeat character
+    :with_move(cond.none())
+    -- don't delete if the next character is xx
+    :with_del(cond.not_after_regex("xx"))
+    -- disable adding a newline when you press <cr>
+    :with_cr(cond.none())
+  }
+)
 
 require("Comment").setup({
     pre_hook = function()
@@ -786,6 +890,15 @@ local new_maker = function(filepath, bufnr, opts)
     opts.use_ft_detect = opts.use_ft_detect == false and false or
                              bad_files(filepath)
     filepath = vim.fn.expand(filepath)
+
+    vim.loop.fs_stat(filepath, function(_, stat)
+        if not stat then return end
+        if stat.size > 100000 then
+            return
+        end
+    end)
+
+
     Job:new({
         command = "file",
         args = {"--mime-type", "-b", filepath},
@@ -802,6 +915,7 @@ local new_maker = function(filepath, bufnr, opts)
         end
     }):sync()
 end
+
 require("telescope").setup({
     defaults = {
         file_sorter = require("telescope.sorters").get_fzy_sorter,
@@ -812,13 +926,15 @@ require("telescope").setup({
                 ["<Esc>"] = actions.close,
                 ["<C-q>"] = actions.send_to_qflist,
                 ["<C-k>"] = actions.move_selection_previous,
-                ["<C-j>"] = actions.move_selection_next
+                ["<C-j>"] = actions.move_selection_next,
+                ["<C-d>"] = actions.delete_buffer + actions.move_to_top,
             }
         }
     },
     pickers = {
         find_files = {theme = "ivy", layout_config = {height = 0.4}},
         git_files = {theme = "ivy", layout_config = {height = 0.4}},
+        live_grep = {theme = "ivy", layout_config = {height = 0.4}},
         buffers = {theme = "ivy", layout_config = {height = 0.4}},
         man_pages = {
             sections = {"ALL"},
@@ -828,8 +944,8 @@ require("telescope").setup({
         keymaps = {theme = "ivy", layout_config = {height = 0.4}},
         file_browser = {theme = "ivy", layout_config = {height = 0.4}},
         treesitter = {theme = "ivy", layout_config = {height = 0.4}},
-        help_tags = {theme = "ivy", layout_config = {height = 0.5}}
-    }
+        help_tags = {theme = "ivy", layout_config = {height = 0.5}},
+    },
 })
 
 -- require("indent_blankline").setup {
@@ -844,8 +960,6 @@ require("telescope").setup({
 -- }
 --
 
--- local parsers = require("nvim-treesitter.parsers")
--- local enabled_list = {"clojure", "fennel", "commonlisp", "query"}
 require("nvim-treesitter.configs").setup({
     highlight = {
         enable = true,
@@ -906,16 +1020,5 @@ require("nvim-treesitter.configs").setup({
             node_decremental = "<space>p"
         }
     },
-    -- rainbow = {
-    --     enable = true,
-    --     -- Enable only for lisp like languages
-    --     disable = vim.tbl_filter(function(p)
-    --         local disable = true
-    --         for _, lang in pairs(enabled_list) do
-    --             if p == lang then disable = false end
-    --         end
-    --         return disable
-    --     end, parsers.available_parsers())
-    -- },
-    autotag = {enable = true}
+    -- autotag = {enable = true}
 })
