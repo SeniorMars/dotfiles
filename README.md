@@ -2,11 +2,11 @@
 This is a collection of dotfiles for my personal use. I do not update the documentation, but I do update the code.
 
 
-I now use a macbook with the following:
+I now use a MacBook with the following:
 
 ![Neovim](./images/two.png)
 ![Daily workflow](./images/one.png)
-![macbook setup](./images/macfetch.png)
+![MacBook setup](./images/macfetch.png)
 
 
 Charlie
@@ -14,17 +14,17 @@ Charlie
 ========================
 
 
-My 2020 Rice Setup. No I don't actually use my setup like this everyday.
+My 2020 Rice Setup. No, I don't actually use my setup like this everyday.
 
-This is outdated but when I have time I will update everything. I have learned so much about vim these weeks.
+This is outdated, but when I have time I will update everything. I have learned so much about vim these weeks.
 
-Rice for arch linux. i3 as my window manager and picom as the compositor.
+Rice for arch Linux. i3 as my window manager and picom as the compositor.
 
-Currently all this repo has all my files for my config, but I am working to improve it more.
+Currently, all this repo has all my files for my config, but I am working to improve it more.
 
 Screenshot tool: flameshot
 
-Shell: Zsh
+Shell: zsh
 
 Mail client: neomutt
 

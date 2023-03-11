@@ -1,5 +1,6 @@
----@diagnostic disable: missing-parameter, need-check-nil, cast-local-type, param-type-mismatch, undefined-field
+---@diagnostic disable: missing-parameter, cast-local-type, param-type-mismatch, undefined-field
 vim.g.mapleader = ","
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
     vim.fn.system({
@@ -18,32 +19,28 @@ if not vim.fn.executable("nvr") then
     vim.api.nvim_command("!pip3 install --user neovim-remote")
 end
 
--- local handle, _ = io.popen("pip3 show pynvim 2> /dev/null")
--- if not handle:read("*a") then
---     vim.api.nvim_command("!pip3 install --user pynvim")
--- end
--- handle:close()
+local result = vim.fn.system("pip3 show pynvim 2> /dev/null")
+if result == "" then
+    vim.api.nvim_command("!pip3 install --user pynvim")
+end
 
 require("lazy").setup({
     {
         "zbirenbaum/copilot.lua", -- Copilot but lua
         cmd = "Copilot",
-        event = "InsertEnter",
-    },
-    {
-        "nvim-telescope/telescope.nvim",
-        dependencies = { "nvim-lua/plenary.nvim", "nvim-lua/popup.nvim" }
+        event = "InsertEnter"
     }, {
-    "nvim-telescope/telescope-frecency.nvim",
-    config = function()
-        require "telescope".load_extension("frecency")
-    end,
-    dependencies = { "kkharji/sqlite.lua" }
-    },
-
-    {
+        "nvim-telescope/telescope.nvim",
+        dependencies = {"nvim-lua/plenary.nvim", "nvim-lua/popup.nvim"}
+    }, {
+        "nvim-telescope/telescope-frecency.nvim",
+        config = function()
+            require("telescope").load_extension("frecency")
+        end,
+        dependencies = {"kkharji/sqlite.lua"}
+    }, {
         "goolord/alpha-nvim", -- Dashboard
-        dependencies = { "nvim-tree/nvim-web-devicons" },
+        dependencies = {"nvim-tree/nvim-web-devicons"},
         config = function()
             local alpha = require("alpha")
             local dashboard = require("alpha.themes.dashboard")
@@ -70,9 +67,8 @@ require("lazy").setup({
                 dashboard.button("l", "  Open last session", "<cmd>RestoreSession<CR>"),
                 dashboard.button("q", "  Quit", ":qa<CR>")
             }
-
             local handle, err = io.popen("fortune -s")
-            if err then
+            if err or handle == nil then
                 dashboard.section.footer.val = "May the truth be found."
                 alpha.setup(dashboard.opts)
                 return
@@ -82,112 +78,115 @@ require("lazy").setup({
             dashboard.section.footer.val = fortune
             alpha.setup(dashboard.opts)
         end
-    }, { "neoclide/coc.nvim", branch = "release", build = ":CocUpdate" }, -- auto complete
-    { "honza/vim-snippets" }, -- Snippets are separated from the engine
+    }, {"neoclide/coc.nvim", branch = "release", build = ":CocUpdate"}, -- auto complete
+    {"honza/vim-snippets"}, -- Snippets are separated from the engine
     {
         "ellisonleao/gruvbox.nvim", -- theme
         priority = 1000,
         config = function()
             require("gruvbox").setup({
                 contrast = "hard",
-                palette_overrides = { dark0_hard = "#0E1018" },
+                palette_overrides = {dark0_hard = "#0E1018"},
                 overrides = {
-                    SignColumn = { bg = "#ff9900" },
-                    Comment = { fg = "#fe8019", italic = true },
-                    Define = { link = "GruvboxPurple" },
-                    Macro = { link = "GruvboxPurple" },
+                    SignColumn = {bg = "#ff9900"},
+                    Comment = {fg = "#fe8019", italic = true},
+                    Define = {link = "GruvboxPurple"},
+                    Macro = {link = "GruvboxPurple"},
 
-                    ["@constant.builtin"] = { link = "GruvboxPurple" },
-                    ["@storageclass.lifetime"] = { link = "GruvboxAqua" },
-                    ["@text.note"] = { link = "TODO" },
-                    ["@namespace.latex"] = { link = "Include" },
-                    ["@namespace.rust"] = { link = "Include" },
+                    ["@constant.builtin"] = {link = "GruvboxPurple"},
+                    ["@storageclass.lifetime"] = {link = "GruvboxAqua"},
+                    ["@text.note"] = {link = "TODO"},
+                    ["@namespace.latex"] = {link = "Include"},
+                    ["@namespace.rust"] = {link = "Include"},
 
-                    ContextVt = { fg = "#878787" },
-                    CopilotSuggestion = { fg = "#878787" },
-                    CocCodeLens = { fg = "#878787" },
-                    CocWarningFloat = { fg = "#dfaf87" },
-                    CocInlayHint = { fg = "#87afaf" },
+                    ContextVt = {fg = "#878788"},
+                    CopilotSuggestion = {fg = "#878787"},
+                    CocCodeLens = {fg = "#878787"},
+                    CocWarningFloat = {fg = "#dfaf87"},
+                    CocInlayHint = {fg = "#8892af"},
 
-                    Folded = { italic = true, fg = "#fe8019", bg = "#3c3836" },
-                    FoldColumn = { fg = "#fe8019", bg = "#0E1018" },
+                    Folded = {italic = true, fg = "#fe8019", bg = "#3c3836"},
+                    FoldColumn = {fg = "#fe8019", bg = "#0E1018"},
                     DiffAdd = { bold = true, reverse = false, fg = "", bg = "#2a4333" },
                     DiffChange = { bold = true, reverse = false, fg = "", bg = "#333841" },
                     DiffDelete = { bold = true, reverse = false, fg = "#442d30", bg = "#442d30" },
                     DiffText = { bold = true, reverse = false, fg = "", bg = "#213352" },
 
-                    StatusLine = { bg = "#ffffff", fg = "#0E1018" },
-                    StatusLineNC = { bg = "#3c3836", fg = "#0E1018" },
-                    CursorLineNr = { fg = "#fabd2f", bg = "" },
+                    StatusLine = {bg = "#ffffff", fg = "#0E1018"},
+                    StatusLineNC = {bg = "#3c3836", fg = "#0E1018"},
+                    CursorLineNr = {fg = "#fabd2f", bg = ""},
 
-                    DiagnosticVirtualTextWarn = { fg = "#dfaf87" },
-                    GruvboxOrangeSign = { fg = "#dfaf87", bg = "" },
-                    GruvboxAquaSign = { fg = "#8EC07C", bg = "" },
-                    GruvboxGreenSign = { fg = "#b8bb26", bg = "" },
-                    GruvboxRedSign = { fg = "#fb4934", bg = "" },
-                    GruvboxBlueSign = { fg = "#83a598", bg = "" },
-                    WilderMenu = { fg = "#ebdbb2", bg = "" },
-                    WilderAccent = { fg = "#f4468f", bg = "" },
+                    DiagnosticVirtualTextWarn = {fg = "#dfaf87"},
+                    GruvboxOrangeSign = {fg = "#dfaf87", bg = ""},
+                    GruvboxAquaSign = {fg = "#8EC07C", bg = ""},
+                    GruvboxGreenSign = {fg = "#b8bb26", bg = ""},
+                    GruvboxRedSign = {fg = "#fb4934", bg = ""},
+                    GruvboxBlueSign = {fg = "#83a598", bg = ""},
+                    WilderMenu = {fg = "#ebdbb2", bg = ""},
+                    WilderAccent = {fg = "#f4468f", bg = ""},
 
                     -- coc semantic token
-                    CocSemStruct = { link = "GruvboxYellow" },
-                    CocSemVariable = { fg = "", bg = "#0E1018" },
-                    CocSemKeyword = { fg = "", bg = "#0E1018" },
-                    CocSemEnumMember = { fg = "", bg = "#0E1018" },
-                    CocSemTypeParameter = { fg = "", bg = "#0E1018" },
-                    CocSemFunction = { fg = "", bg = "#0E1018" },
+                    CocSemStruct = {link = "GruvboxYellow"},
+                    CocSemFunction = {link = "GruvboxGreen"},
+                    CocSemKeyword = {fg = "", bg = "#0E1018"},
+                    CocSemEnumMember = {fg = "", bg = "#0E1018"},
+                    CocSemTypeParameter = {fg = "", bg = "#0E1018"},
+                    CocSemComment = {fg = "", bg = "#0E1018"},
+                    CocSemMacro = {fg = "", bg = "#0E1018"},
+                    -- CocSemVariable = {fg = "", bg = "#0E1018"},
+                    -- CocSemParameter = {fg = "", bg = "#0E1018"},
 
                     -- neorg
-                    ["@neorg.markup.inline_macro"] = {link = "GruvboxGreen"},
+                    ["@neorg.markup.inline_macro"] = {link = "GruvboxGreen"}
                 }
             })
             vim.cmd.colorscheme("gruvbox")
         end
-    }, { "numToStr/Comment.nvim" }, -- comment
-    { "nvim-treesitter/nvim-treesitter",            build = ":TSUpdate" }, -- :TSInstallFromGrammar
-    { "nvim-treesitter/nvim-treesitter-textobjects" }, -- TS objects
-    { "JoosepAlviste/nvim-ts-context-commentstring" }, -- use TS for comment.nvim
-    { "nvim-treesitter/playground",                 lazy = true,                                        cmd = "TSPlaygroundToggle" }, -- playing around with treesitter
-    { "danymat/neogen",                             config = function() require("neogen").setup({}) end },
+    }, {"numToStr/Comment.nvim"}, -- comment
+    {"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"}, -- :TSInstallFromGrammar
+    {"nvim-treesitter/nvim-treesitter-textobjects"}, -- TS objects
+    {"JoosepAlviste/nvim-ts-context-commentstring"}, -- use TS for comment.nvim
+    {"nvim-treesitter/playground", lazy = true, cmd = "TSPlaygroundToggle"}, -- playing around with treesitter
+    {"danymat/neogen", config = function() require("neogen").setup({}) end},
     { -- generate doc comment
         "haringsrob/nvim_context_vt",
         config = function()
             require("nvim_context_vt").setup({
-                disable_ft = { "rust", "rs" },
+                disable_ft = {"rust", "rs"},
                 disable_virtual_lines = true,
                 min_rows = 8
             })
         end
-    }, { "kevinhwang91/nvim-bqf" }, -- beter quickfix
-    { "sbdchd/neoformat" }, -- format code
-    { "mbbill/undotree",      lazy = true, cmd = "UndotreeToggle" }, -- see undo tree
-    { "monaqa/dial.nvim" }, { -- <c-a> and <c-x> for numbers
-    "smjonas/live-command.nvim", -- live command
-    config = function()
-        require("live-command").setup({ commands = { Norm = { cmd = "norm" } } })
-    end
-}, {
-    "rmagatti/auto-session", -- auto save session
-    config = function()
-        require("auto-session").setup({
-            log_level = "error",
-            auto_session_suppress_dirs = {
-                "~/", "~/Downloads", "~/Documents"
-            },
-            auto_session_use_git_branch = true,
-            auto_save_enabled = true
-        })
-    end
-}, {
-    "nmac427/guess-indent.nvim", -- guess indent
-    config = function() require("guess-indent").setup({}) end
-}, { "tpope/vim-repeat" }, -- repeats
+    }, {"kevinhwang91/nvim-bqf"}, -- beter quickfix
+    {"sbdchd/neoformat"}, -- format code
+    {"mbbill/undotree", lazy = true, cmd = "UndotreeToggle"}, -- see undo tree
+    {"monaqa/dial.nvim"}, { -- <c-a> and <c-x> for numbers
+        "smjonas/live-command.nvim", -- live command
+        config = function()
+            require("live-command").setup({commands = {Norm = {cmd = "norm"}}})
+        end
+    }, {
+        "rmagatti/auto-session", -- auto save session
+        config = function()
+            require("auto-session").setup({
+                log_level = "error",
+                auto_session_suppress_dirs = {
+                    "~/", "~/Downloads", "~/Documents"
+                },
+                auto_session_use_git_branch = true,
+                auto_save_enabled = true
+            })
+        end
+    }, {
+        "nmac427/guess-indent.nvim", -- guess indent
+        config = function() require("guess-indent").setup({}) end
+    }, {"tpope/vim-repeat"}, -- repeats
     {
         "kylechui/nvim-surround", -- surround objects
         config = function() require("nvim-surround").setup({}) end
-    }, { "mhinz/vim-grepper" }, -- rg support
-    { "gelguy/wilder.nvim", build = ":UpdateRemotePlugins" }, -- : autocomplete
-    { "tpope/vim-fugitive" }, -- Git control for vim
+    }, {"mhinz/vim-grepper"}, -- rg support
+    {"gelguy/wilder.nvim", build = ":UpdateRemotePlugins"}, -- : autocomplete
+    {"tpope/vim-fugitive"}, -- Git control for vim
     {
         "lewis6991/gitsigns.nvim", -- git signs
         config = function()
@@ -215,34 +214,37 @@ require("lazy").setup({
 
                     -- check if there are any changes
                     if #status_txt > 2 then
-                        return "[" .. table.concat(status_txt, "") .. "]"
+                        return string.format("[%s]", table.concat(status_txt))
                     else
                         return ""
                     end
                 end
             })
         end
-    },
-    { "windwp/nvim-autopairs" }, -- autopairs
-    { "uga-rosa/ccc.nvim" }, -- color highlighting
-    { "wellle/targets.vim" }, -- adds more targets like [ or ,
+    }, {"windwp/nvim-autopairs"}, -- autopairs
+    {"uga-rosa/ccc.nvim"}, -- color highlighting
+    {"wellle/targets.vim"}, -- adds more targets like [ or ,
+    {"nvim-neorg/neorg"},
     {
-        "nvim-neorg/neorg", -- neorg
-        build = ":Neorg sync-parsers",
-        dependencies = { "nvim-neorg/neorg-telescope"},
-    },
-    { "lervag/vimtex" }, -- for latex
-    { "akinsho/toggleterm.nvim" }, -- for smart terminal
-    { 'puremourning/vimspector' }, -- debugging
+        "edluffy/hologram.nvim",
+        lazy = true,
+        config = function()
+            require("hologram").setup({
+                auto_display = true -- WIP automatic markdown image display, may be prone to breaking
+            })
+        end
+    }, {"lervag/vimtex"}, -- for latex
+    {"akinsho/toggleterm.nvim"}, -- for smart terminal
+    {"puremourning/vimspector"} -- debugging
 }, {
     performance = {
         rtp = {
             disabled_plugins = { -- disable some rtp plugins
-                "gzip", "tarPlugin", "tohtml", "tutor", "zipPlugin"
+                "gzip", "tarPlugin", "tohtml", "tutor", "zip Plugin"
             }
         }
     },
-    install = { colorscheme = { "gruvbox" } }
+    install = {colorscheme = {"gruvbox"}}
 })
 
 -- global options
@@ -278,6 +280,7 @@ vim.opt.cursorline = true
 vim.opt.cursorlineopt = "number"
 vim.opt.showmode = false
 vim.opt.virtualedit = "all"
+vim.opt.shell = "/opt/homebrew/bin/fish"
 vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal"
 vim.api.nvim_create_user_command("FixWhitespace", [[%s/\s\+$//e]], {})
 
@@ -297,9 +300,9 @@ local git_branch = function()
         local branch = vim.fn.FugitiveHead()
         if branch ~= "" then
             if vim.api.nvim_win_get_width(0) <= 80 then
-                return string.upper(" " .. branch:sub(1, 2))
+                return " " .. string.upper(branch:sub(1, 2))
             end
-            return string.upper(" " .. branch)
+            return " " .. string.upper(branch)
         end
     end
     return ""
@@ -318,7 +321,7 @@ local human_file_size = function()
         return string.format("[%.0f%s]", size, sufixes[i])
     end
 
-    local file = vim.fn.expand("%:p")
+    local file = vim.api.nvim_buf_get_name(0)
     if string.len(file) == 0 then return "" end
     return format_file_size(file)
 end
@@ -331,10 +334,13 @@ local smart_file_path = function()
     local file_dir = ""
 
     if buf_name:sub(1, 5):find("term") ~= nil then
+        ---@type string
         file_dir = vim.env.PWD
         if file_dir == home then return "$HOME " end
         is_term = true
     else
+        ---@type string
+        ---@diagnostic disable-next-line: assign-type-mismatch
         file_dir = vim.fn.expand("%:p:h")
     end
 
@@ -354,10 +360,11 @@ local smart_file_path = function()
 end
 
 local word_count = function()
-    if vim.fn.wordcount().visual_words ~= nil then
-        return vim.fn.wordcount().visual_words
+    local words = vim.fn.wordcount()
+    if words.visual_words ~= nil then
+        return string.format('[%s]', words.visual_words)
     else
-        return vim.fn.wordcount().words
+        return string.format('[%s]', words.words)
     end
 end
 
@@ -408,9 +415,9 @@ function status_line()
         smart_file_path(), -- smart full path filename
         "%h%m%r%w", -- help flag, modified, readonly, and preview
         "%=", -- right align
-        "%{get(b:,'gitsigns_status','')}[", -- gitsigns
+        "%{get(b:,'gitsigns_status','')}", -- gitsigns
         word_count(), -- word count
-        "][%-3.(%l|%c]", -- line number, column number
+        "[%-3.(%l|%c]", -- line number, column number
         human_file_size(), -- file size
         "[%{strlen(&ft)?&ft[0].&ft[1:]:'None'}]" -- file type
     })
@@ -450,9 +457,10 @@ keyset("n", "<leader>ww", ":Neorg workspace notes<cr>")
 keyset("n", "<leader>wd", ":Neorg journal today<cr>")
 keyset("n", "<leader>lc", ":Neorg keybind all core.looking-glass.magnify-code-block<cr>")
 keyset("n", "<leader>e", ":Neoformat<cr>")
-keyset("n", "<leader>q", ":!zathura <C-r>=expand('%:r')<cr>.pdf &<cr>")
+keyset("n", "<leader>q", [[:!zathura -x "nvim --headless -c \"VimtexInverseSearch %{line} '%{input}'\"" <C-r>=expand('%:r')<cr>.pdf &<cr>]])
+-- keyset("n", "<leader>q", [[:!zathura -x "nvim --headless -c \"VimtexInverseSearch %{line} '%{input}'\"" --synctex-forward 1:1:"<C-r>=expand('%')<cr>" <C-r>=expand('%:r')<cr>.pdf &<cr>]])
 keyset("n", "<leader>cd", ":cd %:p:h<cr>:pwd<cr>")
-keyset("n", "<leader>cc", ":close<cr>")
+keyset("n", "<leader>cc", ":bdelete<cr>")
 keyset("n", "<leader>cn", ":cnext<cr>")
 keyset("n", "<leader>cp", ":cprevious<cr>")
 keyset("n", "<leader>P", '"+gP')
@@ -515,16 +523,16 @@ end
 vim.opt.backup = false
 vim.opt.writebackup = false
 vim.opt.updatetime = 300
-vim.api.nvim_create_user_command("Format", "call CocAction('format')", {})
-
 vim.g.coc_enable_locationlist = 0
 vim.g.coc_global_extensions = {
-    'coc-rust-analyzer', 'coc-discord-rpc', 'coc-snippets', 'coc-sumneko-lua', 'coc-json', 'coc-texlab', 'coc-pyright'
+    'coc-rust-analyzer', 'coc-snippets', 'coc-sumneko-lua', 'coc-json', 'coc-texlab', 'coc-pyright'
 }
+
+vim.api.nvim_create_user_command("Format", "call CocAction('format')", {})
 
 function _G.check_back_space()
     local col = vim.fn.col('.') - 1
-    return col == 0 or vim.fn.getline('.'):sub(col, col):match('%s')
+    return col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') ~= nil
 end
 
 function _G.show_docs()
@@ -534,7 +542,7 @@ function _G.show_docs()
     elseif vim.api.nvim_eval('coc#rpc#ready()') then
         vim.fn.CocActionAsync('doHover')
     else
-        vim.api.nvim_command('!' .. vim.o.keywordprg .. ' ' .. cw)
+	vim.api.nvim_command(string.format('!%s %s', vim.o.keywordprg, cw))
     end
 end
 
@@ -552,10 +560,20 @@ end
 function _G.diagnostic()
     vim.fn.CocActionAsync('diagnosticList', '', function(err, res)
         if err == vim.NIL then
-            local items = {}
+            if vim.tbl_isempty(res) then
+                return
+            end
+	    local items = {}
             for _, d in ipairs(res) do
-                local text = ('[%s%s] %s'):format((d.source == '' and 'coc.nvim' or d.source),
-                    (d.code == vim.NIL and '' or ' ' .. d.code), d.message:match('([^\n]+)\n*'))
+                local text = ""
+                local type = d.severity
+                local msg = d.message:match('([^\n]+)\n*')
+                local code = d.code
+                if code == vim.NIL or code == nil or code == "NIL" then
+                    text = ('[%s] %s'):format(type, msg)
+                else
+                    text = ('[%s|%s] %s'):format(type, code, msg)
+                end
 
                 local item = {
                     filename = d.file,
@@ -564,25 +582,22 @@ function _G.diagnostic()
                     col = d.col,
                     end_col = d.end_col,
                     text = text,
-                    type = d.severity
                 }
                 table.insert(items, item)
             end
-            if vim.tbl_isempty(items) then
-                return
-            else
-                vim.fn.setqflist({}, ' ', { title = 'CocDiagnosticList', items = items })
-                vim.cmd('bo cope')
-            end
+            vim.fn.setqflist({}, ' ', { title = 'CocDiagnosticList', items = items })
+            vim.cmd('bo cope')
         end
     end)
 end
 
 -- auto complete
 local opts = { silent = true, noremap = true, expr = true }
-vim.api.nvim_set_keymap("i", "<TAB>", 'coc#pum#visible() ? coc#pum#next(1) : v:lua.check_back_space() ? "<TAB>" : coc#refresh()', opts)
+vim.api.nvim_set_keymap("i", "<TAB>",
+    'coc#pum#visible() ? coc#pum#next(1) : v:lua.check_back_space() ? "<TAB>" : coc#refresh()', opts)
 vim.api.nvim_set_keymap("i", "<S-TAB>", [[coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"]], opts)
-vim.api.nvim_set_keymap("i", "<cr>", [[coc#pum#visible() ? coc#pum#confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"]], opts)
+vim.api.nvim_set_keymap("i", "<cr>", [[coc#pum#visible() ? coc#pum#confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"]],
+    opts)
 keyset("i", "<c-j>", "<Plug>(coc-snippets-expand-jump)")
 keyset("i", "<c-space>", "coc#refresh()", { silent = true, expr = true })
 
@@ -611,6 +626,8 @@ keyset("n", "gr", "<Plug>(coc-references)", { silent = true })
 local opts = { silent = true, nowait = true }
 keyset("n", "<space>a", "<Plug>(coc-codeaction-cursor)", opts)
 keyset("x", "<space>a", "<Plug>(coc-codeaction-selected)", opts)
+keyset("n", "<space>s", "<Plug>(coc-codeaction-source)", opts)
+keyset("n", "<space>x", "<Plug>(coc-codeaction-line)", opts)
 keyset("n", "<space>g", "<Plug>(coc-codelens-action)", opts)
 keyset("n", "<space>f", "<Plug>(coc-fix-current)", opts)
 keyset("n", "<space>d", "<Cmd>lua _G.diagnostic()<CR>", opts)
@@ -621,14 +638,15 @@ keyset("n", "<space>q", ":<C-u>CocList<cr>", opts)
 
 -- Vimtex config
 vim.g.tex_flavor = 'latex'
-vim.g.vimtex_view_method = 'zathura'
-vim.g.vimtex_quickfix_mode = 0
 vim.g.tex_conceal = 'abdmgs'
-vim.g.indentLine_setConceal = 0
+vim.g.vimtex_view_method = 'zathura_simple'
+vim.g.vimtex_quickfix_mode = 0
 vim.g.vimtex_compiler_latexmk_engines = { ["_"] = "-lualatex" }
 
 -- Other settings
-vim.g.python3_host_prog = '/opt/homebrew/bin/python3'
+vim.g.python3_host_prog = '~/.asdf/shims/python3'
+vim.g.loaded_ruby_provider = 0
+vim.g.loaded_perl_provider = 0
 vim.g.netrw_banner = 0
 vim.g.netrw_browse_split = 4
 vim.g.netrw_liststyle = 3
@@ -718,7 +736,6 @@ autocmd("User", {
     pattern = "CocLocationsChange",
     command = "lua _G.jumpToLoc()"
 })
-
 autocmd("FileType", {
     group = "CocGroup",
     pattern = "typescript,json",
@@ -756,7 +773,7 @@ require('copilot').setup({
             jump_next = "]]",
             accept = "<CR>",
             refresh = "gr",
-            open = ",fd"
+            open = "<leader>ck"
         },
         layout = {
             position = "bottom", -- | top | left | right
@@ -770,7 +787,7 @@ require('copilot').setup({
         keymap = {
             accept = "<C-v>",
             accept_word = false,
-            accept_line = false,
+            accept_line = "<C-q>",
             next = false,
             prev = false,
             dismiss = "<C-]>",
@@ -788,7 +805,7 @@ require('copilot').setup({
         VimspectorPrompt = false,
         ["."] = false,
     },
-    copilot_node_command = 'node', -- Node.js version must be > 16.x
+    copilot_node_command = 'node',
     server_opts_overrides = {},
 })
 
@@ -841,20 +858,16 @@ require("nvim-autopairs").setup({
 
 local rule = require('nvim-autopairs.rule')
 local cond = require('nvim-autopairs.conds')
-require('nvim-autopairs').add_rules({
+local autopairs = require('nvim-autopairs')
+
+autopairs.add_rules({
     rule("$", "$", { "tex", "latex", "neorg" })
-    -- don't add a pair if the next character is %
-    :with_pair(cond.not_after_regex("%%"))
-    -- don't add a pair if  the previous character is xxx
-    :with_pair(cond.not_before_regex("xxx", 3))
-    -- don't move right when repeat character
-    :with_move(cond.none())
-    -- don't delete if the next character is xx
-    :with_del(cond.not_after_regex("xx"))
-    -- disable adding a newline when you press <cr>
-    :with_cr(cond.none())
-}
+        :with_cr(cond.none())
+    }
 )
+
+autopairs.get_rule("`").not_filetypes = { "tex", "latex" }
+autopairs.get_rule("'")[1].not_filetypes = { "tex", "latex" }
 
 require("Comment").setup({
     pre_hook = function()
@@ -964,7 +977,6 @@ keyset({ "n", "x", "o" }, "F", ts_repeat_move.builtin_F)
 keyset({ "n", "x", "o" }, "t", ts_repeat_move.builtin_t)
 keyset({ "n", "x", "o" }, "T", ts_repeat_move.builtin_T)
 
-
 require("nvim-treesitter.configs").setup({
     highlight = {
         enable = true,
@@ -976,7 +988,7 @@ require("nvim-treesitter.configs").setup({
         persist_queries = false -- Whether the query persists across vim sessions
     },
     indent = { enable = true, disable = { "python" } },
-    context_commentstring = { enable = true, config = { lua = "-- %s" } },
+    context_commentstring = { enable = true},
     textobjects = {
         move = {
             enable = true,
@@ -985,15 +997,14 @@ require("nvim-treesitter.configs").setup({
                 ["]m"] = "@function.outer",
                 ["]]"] = { query = "@class.outer", desc = "Next class start" },
                 ["]s"] = { query = "@scope", query_group = "locals", desc = "Next scope" },
-                ["]z"] = { query = "@fold", query_group = "folds", desc = "Next fold" },
-            },
-            goto_next_end = {
-                ["]M"] = "@function.outer",
-                ["]["] = "@class.outer",
             },
             goto_previous_start = {
                 ["[m"] = "@function.outer",
                 ["[["] = "@class.outer",
+            },
+            goto_next_end = {
+                ["]M"] = "@function.outer",
+                ["]["] = "@class.outer",
             },
             goto_previous_end = {
                 ["[M"] = "@function.outer",
@@ -1049,7 +1060,7 @@ require('neorg').setup {
         },
         ["core.keybinds"] = {
             config = {
-                hook = function (keybinds)
+                hook = function(keybinds)
                     keybinds.remap_key("norg", "n", "<CR>", "<leader>ll")
                 end
             }
@@ -1059,7 +1070,6 @@ require('neorg').setup {
                 export_dir = "~/Notes/export"
             }
         },
-        ["core.integrations.telescope"] = {},
         ["core.norg.esupports.metagen"] = {},
         ["core.norg.dirman"] = { -- Manage your directories with Neorg
             config = {
@@ -1075,24 +1085,7 @@ require('neorg').setup {
                 journal_folder = "journal",
                 strategy = "flat",
                 workspace = "journal",
-                -- template = "",
             }
         },
     },
 }
-
-local neorg_callbacks = require("neorg.callbacks")
-neorg_callbacks.on_event("core.keybinds.events.enable_keybinds", function(_, keybinds)
-    -- Map all the below keybinds only when the "norg" mode is active
-    keybinds.map_event_to_mode("norg", {
-        n = { -- Bind keys in normal mode
-            { "<C-s>", "core.integrations.telescope.find_linkable" },
-        },
-        i = { -- Bind in insert mode
-            { "<C-l>", "core.integrations.telescope.insert_link" },
-        },
-    }, {
-            silent = true,
-            noremap = true,
-        })
-end)
