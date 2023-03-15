@@ -1,12 +1,12 @@
 [user]
 	email = cjh16@rice.edu
-	name = KarlWithK
-	username = KarlWithK
+	name = SeniorMars
+	username = SeniorMars
 	signingkey = 7C668A6D13D5729989FB126B183357B41320BB2B
 [core]
 	pager = delta
 	editor = nvim
-	excludesfile = /Users/karl/.config/git/gitignore_global
+	excludesfile = /Users/charlie/.config/git/gitignore_global
 [credential]
 	helper = cache
 [diff]
@@ -14,15 +14,14 @@
 	compactionHeuristic = true
 	tool = nvimdiff
 [difftool "nvimdiff"]
-	cmd = nvim -d $LOCAL $REMOTE
+	cmd = nvim -d \"$LOCAL\" \"$REMOTE\" -c \"wincmd w\" -c \"wincmd L\"
 [merge]
-	tool = nfugitive
+	tool = nvimdiff4
+	prompt = false
 [mergetool "nvimdiff4"]
 	cmd = nvim -d $LOCAL $BASE $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
-[mergetool "nfugitive"]
-	cmd = nvim -f -c "Gdiff" "$MERGED"
 [commit]
-	template = /Users/karl/.config/git/commit_template
+	template = /Users/charlie/.config/git/commit_template
 	verbose = true
 	gpgSign = true
 [pull]
@@ -47,3 +46,5 @@
 	keepBackup = false
 [push]
 	autoSetupRemote = true
+[init]
+	defaultBranch = main
