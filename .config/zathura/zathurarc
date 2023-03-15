@@ -1,5 +1,6 @@
-set status-bar-h padding 0
-set page=padding 1
+set synctex true
+set statusbar-h-padding 0
+set font 'monospace normal 14'
 map u scroll half-up
 map d scroll half-down
 map D toggle_page_mode
@@ -10,17 +11,17 @@ map J zoom out
 map i recolor
 map p print
 set selection-clipboard clipboard
-/* color scheme */
-set default-bg                  "#10151a"
+
+set default-bg                  "#0E1018"
 set default-fg                  "#ebdbb2"
 
-set statusbar-fg                "#bdae93"
-set statusbar-bg                "#504945"
+set statusbar-fg                "#ffffff"
+set statusbar-bg                "#0E1018"
 
-set inputbar-bg                 "#10151a"
+set inputbar-bg                 "#0E1018"
 set inputbar-fg                 "#fbf1c7"
 
-set notification-bg             "#10151a"
+set notification-bg             "#0E1018"
 set notification-fg             "#fbf1c7"
 
 set notification-error-bg       "#1d2021"
@@ -38,8 +39,8 @@ set completion-fg               "#83a598"
 set completion-highlight-fg     "#fbf1c7"
 set completion-highlight-bg     "#83a598"
 
-set recolor-lightcolor          "#10151a"
-set recolor-darkcolor           "#ebdbb2"
+set recolor-lightcolor          "#0E1018"
+set recolor-darkcolor           "#ffffff"
 
 set recolor                     "false"
-set recolor-keephue             "false"
+set recolor-keephue             "true"
