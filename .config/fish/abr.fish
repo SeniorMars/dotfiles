@@ -1,4 +1,9 @@
 # these are abreviations for fish shell
+function last_history_item; echo $history[1]; end
+abbr -a !! --position anywhere --function last_history_item
+
+abbr -a dotfiles '/usr/bin/git --git-dir=/Users/charlie/Work/dotfiles/.git --work-tree=$HOME/'
+
 abbr -a ali '$EDITOR ~/.config/fish/abr.fish'
 abbr -a alr '$EDITOR ~/.config/alacritty/alacritty.yml'
 abbr -a cat ccat
