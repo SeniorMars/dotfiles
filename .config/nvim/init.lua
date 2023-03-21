@@ -1,8 +1,7 @@
---- @diagnostic disable: missing-parameter, cast-local-type, param-type-mismatch, undefined-field
+--- @diagnostic disable: missing-parameter, cast-local-type, param-type-mismatch, undefined-field, deprecated
 vim.g.mapleader = ","
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-
 -- if not vim.loop.fs_stat(lazypath) then
 --     vim.fn.system({
 --         "git", "clone", "--filter=blob:none",
@@ -270,15 +269,16 @@ vim.opt.splitbelow = true -- split windows below
 vim.opt.splitright = true -- split windows right
 vim.opt.wildmode = "list:longest,list:full" -- for : stuff
 vim.opt.wildignore:append({".javac", "node_modules", "*.pyc"})
+vim.opt.wildignore:append({".aux", ".out", ".toc"}) -- LaTeX
+vim.opt.wildignore:append({".o", ".obj", ".dll", ".exe", ".so", ".a", ".lib", ".pyc", ".pyo", ".pyd", ".swp", ".swo", ".class", ".DS_Store", ".git", ".hg", ".orig"})
 vim.opt.suffixesadd:append({".java", ".rs"}) -- search for suffexes using gf
--- vim.opt.diffopt:append("linematch:50")
+vim.opt.diffopt:append("linematch:50")
 vim.opt.cursorline = true
 vim.opt.cursorlineopt = "number"
 vim.opt.showmode = false
 vim.opt.virtualedit = "all"
 vim.opt.shell = "/bin/zsh" -- unfortunately, fish does not behave well with a lot of plugins
 -- vim.opt.shell = "/opt/homebrew/bin/fish"
-vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal"
 vim.api.nvim_create_user_command("FixWhitespace", [[%s/\s\+$//e]], {})
 
 function SpellToggle()
@@ -291,7 +291,6 @@ function SpellToggle()
     end
 end
 
--- statusline
 local git_branch = function()
     if vim.g.loaded_fugitive then
         local branch = vim.fn.FugitiveHead()
@@ -336,14 +335,10 @@ local smart_file_path = function()
         if file_dir == home then return "$HOME " end
         is_term = true
     else
-        ---@type string
-        ---@diagnostic disable-next-line: assign-type-mismatch
-        file_dir = vim.fn.expand("%:p:h")
+        file_dir = vim.fs.dirname(buf_name)
     end
 
-    if file_dir:find(home, 0, true) ~= nil then
-        file_dir = file_dir:gsub(home, "~", 1)
-    end
+    file_dir = file_dir:gsub(home, "~", 1)
 
     if vim.api.nvim_win_get_width(0) <= 80 then
         file_dir = vim.fn.pathshorten(file_dir)
@@ -352,7 +347,7 @@ local smart_file_path = function()
     if is_term then
         return file_dir .. " "
     else
-        return string.format("%s/%s ", file_dir, vim.fn.expand("%:t"))
+        return string.format("%s/%s ", file_dir, vim.fs.basename(buf_name))
     end
 end
 
@@ -453,17 +448,15 @@ keyset("n", "<leader>u", ":UndotreeToggle<cr>")
 keyset("n", "<leader>ww", ":Neorg workspace notes<cr>")
 keyset("n", "<leader>wd", ":Neorg journal today<cr>")
 keyset("n", "<leader>lc", ":Neorg keybind all core.looking-glass.magnify-code-block<cr>")
+keyset("n", "<leader>lm", ":Neorg inject-metadata<cr>")
 keyset("n", "<leader>e", ":Neoformat<cr>")
-keyset("n", "<leader>q",
-    [[:!zathura -x "nvim --headless -c \"VimtexInverseSearch %{line} '%{input}'\"" <C-r>=expand('%:r')<cr>.pdf &<cr>]])
--- keyset("n", "<leader>q", [[:!zathura -x "nvim --headless -c \"VimtexInverseSearch %{line} '%{input}'\"" --synctex-forward 1:1:"<C-r>=expand('%')<cr>" <C-r>=expand('%:r')<cr>.pdf &<cr>]])
 keyset("n", "<leader>cd", ":cd %:p:h<cr>:pwd<cr>")
 keyset("n", "<leader>cc", ":bdelete<cr>")
 keyset("n", "<leader>cn", ":cnext<cr>")
 keyset("n", "<leader>cp", ":cprevious<cr>")
 keyset("n", "<leader>P", '"+gP')
 keyset("n", "<leader>p", '"+gp')
-keyset("n", "<leader>sv", ":source $MYVIMRC<cr>")
+keyset("n", "<leader>sf", ":source %<cr>")
 keyset("n", "<leader>z", "[s1z=``")
 keyset("n", "<leader>1", ":bp<cr>")
 keyset("n", "<leader>2", ":bn<cr>")
@@ -522,38 +515,15 @@ vim.opt.backup = false
 vim.opt.writebackup = false
 vim.opt.updatetime = 300
 vim.g.coc_enable_locationlist = 0
-vim.g.coc_global_extensions = {
-    "coc-rust-analyzer", "coc-snippets", "coc-sumneko-lua", "coc-json",
-    "coc-texlab", "coc-pyright"
-}
+-- vim.g.coc_global_extensions = {
+--     "coc-rust-analyzer", "coc-sumneko-lua", "coc-json", "coc-texlab", "coc-pyright"
 
 vim.api.nvim_create_user_command("Format", "call CocAction('format')", {})
 
 function _G.check_back_space()
-    local col = vim.fn.col(".") - 1
-    return col == 0 or vim.fn.getline("."):sub(col, col):match("%s") ~= nil
-end
-
-function _G.show_docs()
-    local cw = vim.fn.expand("<cword>")
-    if vim.fn.index({"vim", "help"}, vim.bo.filetype) >= 0 then
-        vim.api.nvim_command("h " .. cw)
-    elseif vim.api.nvim_eval("coc#rpc#ready()") then
-        vim.fn.CocActionAsync("doHover")
-    else
-        vim.api.nvim_command(string.format("!%s %s", vim.o.keywordprg, cw))
-    end
-end
-
-function _G.jumpToLoc(locs)
-    locs = locs or vim.g.coc_jump_locations
-    vim.fn.setloclist(0, {}, " ", {title = "CocLocationList", items = locs})
-    local winid = vim.fn.getloclist(0, {winid = 0}).winid
-    if winid == 0 then
-        vim.cmd("bel lw")
-    else
-        vim.api.nvim_set_current_win(winid)
-    end
+    local col = vim.api.nvim_win_get_cursor(0)[2]
+    local has_backspace = vim.api.nvim_get_current_line():sub(col, col):match("%s") ~= nil
+    return col == 0 or has_backspace
 end
 
 function _G.diagnostic()
@@ -607,7 +577,6 @@ keyset("v", "<C-f>", 'coc#float#has_scroll() ? coc#float#scroll(1) : "<C-f>"', o
 keyset("v", "<C-b>", 'coc#float#has_scroll() ? coc#float#scroll(0) : "<C-b>"', opts)
 
 -- go to definition and other things
-keyset("n", "K", "<CMD>lua _G.show_docs()<CR>", {silent = true})
 keyset("n", "<c-k>", "<Plug>(coc-rename)", {silent = true})
 keyset("n", "[g", "<Plug>(coc-diagnostic-prev)", {silent = true})
 keyset("n", "]g", "<Plug>(coc-diagnostic-next)", {silent = true})
@@ -625,18 +594,30 @@ keyset("n", "<space>s", "<Plug>(coc-codeaction-source)", opts)
 keyset("n", "<space>x", "<Plug>(coc-codeaction-line)", opts)
 keyset("n", "<space>g", "<Plug>(coc-codelens-action)", opts)
 keyset("n", "<space>f", "<Plug>(coc-fix-current)", opts)
-keyset("n", "<space>d", "<Cmd>lua _G.diagnostic()<CR>", opts)
 keyset("n", "<space>e", ":<C-u>CocList extensions<cr>", opts)
 keyset("n", "<space>c", ":<C-u>CocList commands<cr>", opts)
 keyset("n", "<space>o", ":<C-u>CocList outline<cr>", opts)
 keyset("n", "<space>q", ":<C-u>CocList<cr>", opts)
+keyset("n", "<space>d", "<Cmd>lua _G.diagnostic()<CR>", opts)
+keyset("n", "K", function()
+    local cw = vim.fn.expand("<cword>")
+    if vim.fn.index({"vim", "help"}, vim.bo.filetype) >= 0 then
+        vim.api.nvim_command("h " .. cw)
+    elseif vim.api.nvim_eval("coc#rpc#ready()") then
+        vim.fn.CocActionAsync("doHover")
+    else
+        vim.api.nvim_command(string.format("!%s %s", vim.o.keywordprg, cw))
+    end
+end, {silent = true})
 
 -- Vimtex config
 vim.g.tex_flavor = "latex"
 vim.g.tex_conceal = "abdmgs"
-vim.g.vimtex_view_method = "zathura_simple"
 vim.g.vimtex_quickfix_mode = 0
 vim.g.vimtex_compiler_latexmk_engines = {["_"] = "-lualatex"}
+vim.g.vimtex_view_enabled = 0
+vim.g.vimtex_view_automatic = 0
+vim.g.vimtex_indent_on_ampersands = 0
 
 -- Other settings
 vim.g.neoformat_try_formatprg = 1
@@ -727,28 +708,96 @@ autocmd("InsertLeave", {group = "Random", command = "set timeoutlen=1000"})
 
 --- coc auto commands
 vim.api.nvim_create_augroup("CocGroup", {})
+
 autocmd("User", {
     group = "CocGroup",
     pattern = "CocLocationsChange",
-    command = "lua _G.jumpToLoc()"
+    desc = "Update location list on locations change",
+    callback = function()
+        local locs = vim.g.coc_jump_locations
+        vim.fn.setloclist(0, {}, " ", {title = "CocLocationList", items = locs})
+        local winid = vim.fn.getloclist(0, {winid = 0}).winid
+        if winid == 0 then
+            vim.cmd("bel lw")
+        else
+            vim.api.nvim_set_current_win(winid)
+        end
+    end,
 })
+
 autocmd("FileType", {
     group = "CocGroup",
     pattern = "typescript,json",
     command = "setl formatexpr=CocAction('formatSelected')",
     desc = "Setup formatexpr specified filetype(s)."
 })
+
 autocmd("User", {
     group = "CocGroup",
     pattern = "CocJumpPlaceholder",
     command = "call CocActionAsync('showSignatureHelp')",
     desc = "Update signature help on jump placeholder"
 })
+
 autocmd("CursorHold", {
     group = "CocGroup",
     command = "silent call CocActionAsync('highlight')",
     desc = "Highlight symbol under cursor on CursorHold"
 })
+
+-- vimtex
+vim.g.tex_compiles_successfully = false
+vim.g.term_pdf_vierer_open = false
+
+vim.api.nvim_create_augroup("CustomTex", {})
+autocmd("User", {
+    group = "CustomTex",
+    pattern = "VimtexEventCompileSuccess",
+    callback = function()
+        vim.g.tex_compiles_successfully = true
+
+        -- a hacky way to reload the pdf in the terminal
+        -- when it has changed
+        if vim.g.term_pdf_vierer_open and vim.g.tex_compiles_successfully then
+            local command = "termpdf.py " .. vim.api.nvim_call_function("expand", {"%:r"}) .. ".pdf" .. "'\r'"
+            local kitty = "kitty @ send-text --match title:termpdf "
+            vim.fn.system(kitty .. command)
+        end
+    end,
+})
+
+autocmd("User", {
+    group = "CustomTex",
+    pattern = "VimtexEventCompileFailed",
+    callback = function()
+        vim.g.tex_compiles_successfully = false
+    end,
+})
+
+autocmd("User", {
+    group = "CustomTex",
+    pattern = "VimtexEventQuit",
+    callback = function()
+        vim.fn.system("kitty @ close-window --match title:termpdf")
+    end,
+})
+
+function VimtexPDFToggle()
+    if vim.g.term_pdf_vierer_open then
+        vim.fn.system("kitty @ close-window --match title:termpdf")
+        vim.g.term_pdf_vierer_open = false
+    elseif vim.g.tex_compiles_successfully then
+        vim.fn.system("kitty @ launch --location=vsplit --cwd=current --title=termpdf")
+
+        local command = "termpdf.py " .. vim.api.nvim_call_function("expand", {"%:r"}) .. ".pdf" .. "'\r'"
+        local kitty = "kitty @ send-text --match title:termpdf "
+        vim.fn.system(kitty .. command)
+        vim.g.term_pdf_vierer_open = true
+    end
+end
+
+keyset("n", "<leader>q", ":lua VimtexPDFToggle()<cr>")
+
 
 -- toggleterm
 require("toggleterm").setup({
@@ -862,7 +911,7 @@ autopairs.add_rules({
 })
 
 autopairs.get_rule("`").not_filetypes = {"tex", "latex"}
-autopairs.get_rule("'")[1].not_filetypes = {"tex", "latex"}
+autopairs.get_rule("'")[1].not_filetypes = {"tex", "latex", "rust"}
 
 require("Comment").setup({
     pre_hook = function()
@@ -1051,7 +1100,7 @@ require("neorg").setup({
             config = {
                 workspaces = {
                     notes = "~/Notes/notes",
-                    journal = "~/Notes/journal"
+                    journal = "~/Notes"
                 },
                 index = "index.norg"
             }
