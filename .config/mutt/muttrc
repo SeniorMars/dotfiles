@@ -3,11 +3,7 @@ color status green default
 
 #User
 set from = "cjh16@rice.edu"
-set realname = "Karl Hernandez"
-
-# Ensure TLS is enforced
-set ssl_starttls = yes
-set ssl_force_tls = yes
+set realname = "Charlie Cruz"
 
 # My credentials
 set imap_user = "cjh16@rice.edu"
@@ -15,10 +11,14 @@ set smtp_url = "smtps://cjh16@rice.edu@smtp.gmail.com:465/"
 set smtp_authenticators = 'gssapi:login'
 source "gpg -dq ~/.config/mutt/rice.gpg |"
 
+# Ensure TLS is enforced
+set ssl_starttls = yes
+set ssl_force_tls = yes
+
 # Use GPGME/PGP
 # Use my key for signing and encrypting
-set pgp_sign_as = 7C668A6D13D5729989FB126B183357B41320BB2B
 set pgp_default_key = 7C668A6D13D5729989FB126B183357B41320BB2B
+set pgp_sign_as = 7C668A6D13D5729989FB126B183357B41320BB2B
 
 set crypt_use_gpgme = yes
 
@@ -37,9 +37,7 @@ set crypt_replysignencrypted = yes
 # Attempt to verify signatures automatically
 set crypt_verify_sig = yes
 
-set signature = "~/.config/mutt/rice"
-
-set crypt_opportunistic_encrypt = yes
+set crypt_opportunistic_encrypt = no # doesn't work great with rice emails
 
 # My mailboxes
 set folder = "imaps://imap.gmail.com:993/[Gmail]"
@@ -51,30 +49,26 @@ set trash = "+Trash"
 mailboxes =Important =Starred =Drafts ="Sent Mail" =Spam =Trash
 
 # Where to put the stuff
-set header_cache = "~/.config/mutt/cache/headers"
-set message_cachedir = "~/.config/mutt/cache/bodies"
-set certificate_file = "~/.config/mutt/certificates"
+set header_cache = "$XDG_CACHE_HOME/mutt/headers"
+set message_cachedir = "$XDG_CACHE_HOME/mutt/bodies"
+set certificate_file = "$XDG_CACHE_HOME/mutt/certificates"
 unset record
 
 # Etc
-set pager_index_lines = 10
-set pager_context = 3
-set pager_stop
-set menu_scroll
-set tilde
-set move=no
-set mail_check = 30
-set imap_keepalive = 900
 set editor = "nvim"
-set sleep_time = 0
-set wait_key = no		# mutt won't ask "press key to continue"
-set forward_format = "fwd: %s"	# format of subject when forwarding
-set forward_quote		# include message in forwards
-set reverse_name		# reply as whomever it was to
-unset markers
+set signature = "$XDG_CONFIG_HOME/mutt/rice"
 
-# certs used.
-set use_from = yes
+# settings
+set pager_index_lines = 10          
+set pager_context = 3                # show 3 lines of context
+set pager_stop                       # stop at end of message
+set menu_scroll                      # scroll menu
+set tilde                            # use ~ to pad mutt
+set move=no                          # don't move messages when marking as read
+set mail_check = 15                  # check for new mail every 30 seconds
+set imap_keepalive = 900             # 15 minutes
+set sleep_time = 0                   # don't sleep when idle
+set wait_key = no		             # mutt won't ask "press key to continue"
 set envelope_from                    # which from?
 set edit_headers                     # show headers when composing
 set fast_reply                       # skip to compose when replying
@@ -82,17 +76,17 @@ set askcc                            # ask for CC:
 set fcc_attach                       # save attachments with the body
 set forward_format = "Fwd: %s"       # format of subject when forwarding
 set forward_decode                   # decode when forwarding
+set forward_quote                    # include message in forwards
+set mime_forward                     # forward attachments as part of body
 set attribution = "On %d, %n wrote:" # format of quoting header
 set reply_to                         # reply to Reply to: field
 set reverse_name                     # reply as whomever it was to
 set include                          # include message in replies
-set forward_quote                    # include message in forwards
-set text_flowed
+set text_flowed=yes                  # correct indentation for plain text
 unset sig_dashes                     # no dashes before sig
-unset mime_forward                   # forward attachments as part of body
+unset markers
 
 # Sort by newest conversation first.
-# # status bar, date format, finding stuff etc.
 set charset = "utf-8"
 set uncollapse_jump
 set sort_re
@@ -102,37 +96,45 @@ set reply_regexp = "^(([Rr][Ee]?(\[[0-9]+\])?: *)?(\[[^]]+\] *)?)*"
 set quote_regexp = "^( {0,4}[>|:#%]| {0,4}[a-z0-9]+[>|]+)+"
 set send_charset = "utf-8:iso-8859-1:us-ascii"
 
-# open in gui browser: hit "v" then go down to text/html then hit "m" or "Enter"
+# mailcap
 set mailcap_path = "~/.config/mutt/mailcap"
 bind attach <return> view-mailcap
+macro attach s '<save-entry> <bol>/Users/charlie/Documents/attachments/<eol>' 'save attachment'
 auto_view text/html		# automatically show html (mailcap uses lynx)
 auto_view application/pgp-encrypted
-# alternative_order text/plain text/enriched text/html     # list html for last
 
 #sidebar
-set sidebar_visible
-# set sidebar_format = "%B%?F? [%F]?%* %?N?%N/?%S"
+# set sidebar_visible # disable by default
 set sidebar_short_path
 set sidebar_folder_indent
 set sidebar_format = "%B %* [%?N?%N / ?%S]"
 set mail_check_stats
 bind index,pager \CJ sidebar-prev
 bind index,pager \CK sidebar-next
-bind index,pager \CO sidebar-open
+bind index,pager \CE sidebar-open
+bind index,pager B sidebar-toggle-visible
 
-
-## lbdb
+## external commands
 set query_command="/opt/homebrew/bin/lbdbq '%s'"
+bind editor <Tab> complete-query
 
-bind editor        <Tab> complete-query
+macro index,pager \cb "<pipe-message> urlscan<Enter>" "call urlscan to extract URLs out of a message"
+macro attach,compose \cb "<pipe-entry> urlscan<Enter>" "call urlscan to extract URLs out of a message"
 
+# Vim like bindings
 macro index A \
     "<tag-pattern>~N<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>" \
     "mark all new as read"
-
 
 bind index j next-entry
 bind index k previous-entry
 bind pager j next-line
 bind pager k previous-line
+
+bind attach,index,pager \CD next-page
+bind attach,index,pager \CU previous-page
+bind pager g top
+bind pager G bottom
+bind attach,index g first-entry
+bind attach,index G last-entry
 # vim:ft=muttrc et :

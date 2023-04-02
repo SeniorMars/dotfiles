@@ -1,5 +1,12 @@
-text/html; open -a Firefox %s; test=test -n "$DISPLAY"; needsterminal;
-text/html; lynx -display_charset=utf-8 -dump %s; nametemplate=%s.html; copiousoutput
+text/html; open -a firefox %s; test=test -n "$display"; needsterminal;
+text/html; lynx -assume_charset=%{charset} -display_charset=utf-8 -dump -width=1024 %s; nametemplate=%s.html; copiousoutput;
+# text/html; w3m -i %{charset} -t text/html -graph -f -no-cookie -o confirm_qq=false -o use_wide=true -o display_link=true -o color=true -o auto_image=true -o display_image=true -o max_load_image=20 -o imgdisplay='kitty +kitten icat %s' %s; nametemplate=%s.html
 text/plain; cat %s; copiousoutput
-image/*; sxiv '%s'; test=test -n "$DISPLAY";
-application/pdf; zathura '%s'; test=test -n "$DISPLAY"; needsterminal;
+image/*; icat.sh '%s'; test=test -n "$display"; needsterminal;
+video/*; setsid mpv --quiet %s &; copiousoutput
+audio/*; mpv %s ;
+application/pdf; open -a firefox %s; test=test -n "$display"; needsterminal;
+application/pgp-encrypted; gpg -d '%s'; copiousoutput;
+application/pgp-keys; gpg --import '%s'; copiousoutput;
+application/x-subrip; $editor %s ;
+application/octet-stream; icat.sh '%s'; test=test -n "$display"; needsterminal;
