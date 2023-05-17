@@ -83,7 +83,7 @@ tab,
 tree,
 .tree-rows {
     font-family: 'Input Condensed', monospace !important;
-    font-size: 12pt !important;
+    font-size: 8pt !important;
     font-weight: bold;
     font-style: normal !important;
     -moz-appearance: none !important;
@@ -116,12 +116,12 @@ menupopup {
 }
 
 .panel-arrowcontainer, .panel-arrowcontainer, .panel-arrowcontent {
-    border-radius: 13px !important;
+    border-radius: 8px !important;
 }
 
 /* This moves the tabs under the URL bar */
 #titlebar {
-    -moz-box-ordinal-group: 3 !important;
+    order: 3 !important;
   }
 
 .tabbrowser-tab {
@@ -157,8 +157,8 @@ menupopup {
 
 .urlbarView:not(.megabar) .urlbarView-row:not([type="tip"])[selected],
 .urlbarView.megabar .urlbarView-row:not([type="tip"])[selected] > .urlbarView-row-inner {
-  background: #c33dab !important;
-  color: #111111 !important;
+  color: #98cfe5 !important;
+  background: #21252B !important;
   fill-opacity: 1;
 }
 
@@ -181,8 +181,8 @@ menupopup {
     border: none !important;
 }
 
-.customization-target {
-    padding: 18px !important;
+:root[sessionrestored] .customization-target {
+    padding: 14px !important;
 }
 
 #statuspanel-label {
@@ -193,12 +193,34 @@ menupopup {
 }
 
 /* Hide minimize, restore, close in full screen */
-
-#minimize-button, #restore-button, #close-button {
+/* #minimize-button, #restore-button, #close-button {
     display: none !important;
-}
+ }
+*/
 
 #urlbar,
 #searchbar {
     border: none !important;
+}
+
+/*Transition color while opening websites - disable if you like flashbangs */
+#browser vbox#appcontent tabbrowser,
+#content,
+#tabbrowser-tabpanels,
+browser[type="content-primary"],
+browser[type="content"] > html {  
+    background: #111 !important;
+}
+
+#tabbrowser-tabpanels,
+#webextpanels-window,
+#webext-panels-stack,
+#webext-panels-browser {
+        background: #111 !important;
+}
+
+url(chrome://browser/content/browser.xhtml) { 
+    #main-window, browser[type="content-primary"], browser[type="content"], tabbrowser#content, #content, browser[type="content"] > html { 
+        background: #111111 !important;
+    }
 }

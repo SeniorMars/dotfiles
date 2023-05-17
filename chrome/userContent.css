@@ -306,3 +306,5 @@
     #diff li:nth-child(even) { background-color: #666 !important; }
     #diff textarea { background-color: #333 !important; color: #ccc !important; }
 }
+
+"utf-8";/* CSS Document */@-moz-document url("about:newtab") {body { background-color: #111 !important;}}@-moz-document url(chrome://browser/content/browser.xhtml) {browser[type="content-primary"] {background: #111 !important}}
