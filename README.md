@@ -1,26 +1,32 @@
 ## dotfiles
 This is a collection of dotfiles for my personal use. I do not update the documentation, but I do update the code.
 
-
 I now use a MacBook with the following:
+
+Shell: fish
+Mail client: neomutt
+Font: Meslo LG M DZ for Powerline patched with ligatures
+Terminal Emulator: kitty
+Overall theme is from Gruvbox, but I made some changes to the colors.
 
 ![Neovim](./images/two.png)
 ![Daily workflow](./images/one.png)
-![MacBook setup](./images/macfetch.png)
+
+Neofetch (btw the creator of neofetch is now a farmer -- very cool!):
+![Neofetch](images/neofetch.png)
 
 Firefox:
 
 ![Homepage](images/homepage.png)
 ![My website](images/website.png)
 
-Neofetch (btw the creator of neofetch is now a farmer -- very cool!):
-![Neofetch](images/neofetch.png)
-
 I made a blog to explain my neovim setup: [An Experienced (Neo)Vimmer's Workflow](https://seniormars.com/posts/neovim-workflow/)
 
 Charlie
 
-========================
+Old set up, but this repo still contains my dotfiles for my arch linux setup.
+
+---
 
 
 My 2020 Rice Setup. No, I don't actually use my setup like this everyday.
