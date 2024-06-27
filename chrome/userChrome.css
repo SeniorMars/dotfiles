@@ -124,16 +124,22 @@ menupopup {
     order: 3 !important;
   }
 
-.tabbrowser-tab {
-    /* transition: color 0.25s !important; */
-    text-align: center !important;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+/* .tabbrowser-tab[selected]:not(:hover):not([pinned]) .tab-label-container, */
+/* #tabbrowser-tabs:not([closebuttons="activetab"]) .tabbrowser-tab:not(:hover):not([pinned]) .tab-label-container{ */
+/*   padding-inline-end: 6px !important; */
+/*   color: #c33dab !important; */
+/* } */
+.tab-icon-stack{
+  margin-inline-start: auto
+}
+.tab-label-container{
+  max-width: min-content;
+  margin-inline-end: auto;
 }
 
 .tabbrowser-tab[selected="true"], .tab-label-container[selected="true"] {
   color: #c33dab !important;
+  padding-inline-end: 6px !important;
   /* background-color: var(--color3) !important; */
   /* background-image: linear-gradient(var(--color3), var(--color3)) !important; */
 }
@@ -223,4 +229,8 @@ url(chrome://browser/content/browser.xhtml) {
     #main-window, browser[type="content-primary"], browser[type="content"], tabbrowser#content, #content, browser[type="content"] > html { 
         background: #111111 !important;
     }
+}
+
+#tabs-newtab-button {
+    display: none !important;
 }
