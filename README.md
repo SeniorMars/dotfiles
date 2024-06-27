@@ -8,6 +8,15 @@ I now use a MacBook with the following:
 ![Daily workflow](./images/one.png)
 ![MacBook setup](./images/macfetch.png)
 
+Firefox:
+
+![Homepage](images/homepage.png)
+![My website](images/website.png)
+
+Neofetch (btw the creator of neofetch is now a farmer -- very cool!):
+![Neofetch](images/neofetch.png)
+
+I made a blog to explain my neovim setup: [An Experienced (Neo)Vimmer's Workflow](https://seniormars.com/posts/neovim-workflow/)
 
 Charlie
 
