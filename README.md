@@ -4,9 +4,15 @@ This is a collection of dotfiles for my personal use. I do not update the docume
 I now use a MacBook with the following:
 
 Shell: fish
+
 Mail client: neomutt
+
 Font: Meslo LG M DZ for Powerline patched with ligatures
+
 Terminal Emulator: kitty
+
+window manager: yabai
+
 Overall theme is from Gruvbox, but I made some changes to the colors.
 
 ![Neovim](./images/two.png)
