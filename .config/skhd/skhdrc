@@ -1,0 +1,61 @@
+# The start of the configuration
+
+# focus space
+cmd + ctrl + alt + shift - h : yabai -m space --focus prev || yabai -m space --focus last
+cmd + ctrl + alt + shift - l : yabai -m space --focus next || yabai -m space --focus first
+cmd + ctrl + alt + shift - t : yabai -m space --focus recent
+cmd - 1 : yabai -m space --focus 1
+cmd - 2 : yabai -m space --focus 2
+cmd - 3 : yabai -m space --focus 3
+cmd - 4 : yabai -m space --focus 4
+cmd - 5 : yabai -m space --focus 5
+cmd - 6 : yabai -m space --focus 6
+cmd - 7 : yabai -m space --focus 7
+cmd - 8 : yabai -m space --focus 8
+cmd - 9 : yabai -m space --focus 9
+cmd - 0 : yabai -m space --focus 10
+
+# create and destroy spaces
+cmd + ctrl + alt + shift - c : yabai -m space --create
+cmd + ctrl + alt + shift - d : yabai -m space --destroy
+
+# focus monitor
+cmd + ctrl + alt + shift - i : yabai -m display --focus prev
+cmd + ctrl + alt + shift - o : yabai -m display --focus next
+
+# send window to monitor and follow focus
+cmd + shift - m : yabai -m window --display next; yabai -m display --focus next
+cmd + shift - u : yabai -m space --display prev; yabai -m display --focus prev
+cmd + shift - 1 : yabai -m window --space prev --focus
+cmd + shift - 2 : yabai -m window --space next --focus
+
+# Reload configuration
+cmd + ctrl + alt + shift - r : yabai --restart-service
+
+# focus window
+cmd + ctrl + alt + shift - j : yabai -m window --focus prev
+cmd + ctrl + alt + shift - k : yabai -m window --focus next
+cmd + ctrl + alt + shift - m : yabai -m window --focus recent
+
+# swap window
+shift + cmd - k : /Users/charlie/.local/bin/cycle_clockwise.sh
+shift + cmd - j : /Users/charlie/.local/bin/cycle_counter_clockwise.sh
+
+# balance size of windows
+cmd + shift - 0 : yabai -m space --balance
+
+# make floating window fill screen
+shift + cmd - f : yabai -m window --grid 1:1:0:0:1:1
+
+# toggle window zoom
+cmd + ctrl + alt + shift - z : yabai -m window --toggle zoom-parent
+cmd + ctrl + alt + shift - a : yabai -m window --toggle zoom-fullscreen
+cmd + ctrl + alt + shift - s : yabai -m window --toggle split
+cmd + ctrl + alt + shift - f : yabai -m window --toggle float --grid 4:4:1:1:2:2
+cmd + ctrl + alt + shift - e : yabai -m window --toggle sticky --toggle pip 
+
+# create desktop, move window and follow focus - uses jq for parsing json (brew install jq)
+shift + cmd - n : yabai -m space --create && \
+                  index="$(yabai -m query --spaces --display | jq 'map(select(."is-native-fullscreen" == false))[-1].index')" && \
+                  yabai -m window --space "${index}" && \
+                  yabai -m space --focus "${index}"

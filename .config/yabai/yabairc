@@ -1,0 +1,42 @@
+#!/usr/bin/env sh
+
+# for this to work you must configure sudo such that
+# it will be able to run the command without password
+
+yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
+sudo yabai --load-sa
+
+# global settings
+yabai -m config                                     \
+	external_bar                 off:40:0       \
+	menubar_opacity              1.0            \
+	mouse_follows_focus          off            \
+	focus_follows_mouse          off            \
+	display_arrangement_order    default        \
+	window_origin_display        default        \
+	window_placement             second_child   \
+	window_zoom_persist          on             \
+	window_shadow                off            \
+	window_opacity               off            \
+	window_opacity_duration      0.0            \
+	active_window_opacity        1.0            \
+	normal_window_opacity        0.90           \
+	window_animation_duration    0.0            \
+	window_animation_easing      ease_out_circ  \
+	insert_feedback_color        0xffd75f5f     \
+	split_ratio                  0.50           \
+	split_type                   auto           \
+	mouse_modifier               fn             \
+	mouse_action1                move           \
+	mouse_action2                resize         \
+	mouse_drop_action            swap           \
+	layout                       bsp            \
+	top_padding                  0              \
+	bottom_padding               0              \
+	left_padding                 0              \
+	right_padding                0              \
+	window_gap                   0              \
+	auto_balance                 off            
+
+yabai -m rule --add app="^System Preferences$" manage=off
+echo "yabai configuration loaded.."
