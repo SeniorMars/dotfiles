@@ -1,6 +1,4 @@
 --- @diagnostic disable: missing-parameter, cast-local-type, param-type-mismatch, undefined-field, deprecated
-vim.g.mapleader = ","
-
 local home = vim.env.HOME
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
@@ -19,6 +17,9 @@ end
 
 local result = vim.fn.system("pip3 show pynvim 2> /dev/null")
 if result == "" then vim.api.nvim_command("!pip3 install --user pynvim") end
+
+vim.g.mapleader = ","
+
 require("lazy").setup({
     {
         "zbirenbaum/copilot.lua", -- Copilot but lua
@@ -26,6 +27,8 @@ require("lazy").setup({
         event = "InsertEnter"
     }, {
         "robitx/gp.nvim",
+        lazy = true,
+        cmd = "GpNew",
         config = function()
             local key = os.getenv("GPG_KEY")
             require("gp").setup({
@@ -191,8 +194,8 @@ require("lazy").setup({
     }, {"kevinhwang91/nvim-bqf"}, -- beter quickfix
     {"sbdchd/neoformat"}, -- format code
     {"mbbill/undotree", lazy = true, cmd = "UndotreeToggle"}, -- see undo tree
-    {"monaqa/dial.nvim"}, {
-        -- <c-a> and <c-x> for numbers
+    {"monaqa/dial.nvim"}, -- <c-a> and <c-x> for numbers
+    {
         "smjonas/live-command.nvim", -- live command
         config = function()
             require("live-command").setup({commands = {Norm = {cmd = "norm"}}})
@@ -258,9 +261,6 @@ require("lazy").setup({
     }, {"windwp/nvim-autopairs"}, -- autopairs
     {
         'glacambre/firenvim',
-
-        -- Lazy load firenvim
-        -- Explanation: https://github.com/folke/lazy.nvim/discussions/463#discussioncomment-4819297
         lazy = not vim.g.started_by_firenvim,
         build = function() vim.fn["firenvim#install"](0) end
     }, {
@@ -275,31 +275,23 @@ require("lazy").setup({
         end
     }, {"uga-rosa/ccc.nvim"}, -- color highlighting
     {"wellle/targets.vim"}, -- adds more targets like [ or ,
-    {"vhyrro/luarocks.nvim", priority = 1000, config = true},
-    {"nvim-neorg/neorg", dependencies = {"luarocks.nvim"}}, {
-        "edluffy/hologram.nvim",
-        lazy = true,
-        config = function()
-            require("hologram").setup({
-                auto_display = true -- WIP automatic markdown image display, may be prone to breaking
-            })
-        end
-    }, {
+    {"nvim-neorg/neorg", opts = {}}, {
         "HakonHarnes/img-clip.nvim",
         event = "BufEnter",
         keys = {
             {"<leader>i", "<cmd>PasteImage<cr>", desc = "Paste clipboard image"}
         }
-    }, {"lervag/vimtex"}, -- for latex
+    }, {'pwntester/octo.nvim', lazy = true, config = function() require"octo".setup() end},
+    {"lervag/vimtex"}, -- for latex
     {"akinsho/toggleterm.nvim"}, -- for smart terminal
-    {"puremourning/vimspector"}, -- debugging
-    {'NoahTheDuke/vim-just'}
+    {"puremourning/vimspector"} -- debugging
+    -- {'NoahTheDuke/vim-just'}
     -- {"IndianBoy42/tree-sitter-just"}
 }, {
     performance = {
         rtp = {
             disabled_plugins = { -- disable some rtp plugins
-                "gzip", "tarPlugin", "tohtml", "tutor", "zip Plugin", "matchit"
+                "gzip", "tarPlugin", "tutor", "zip Plugin", "matchit"
             }
         }
     }
@@ -314,7 +306,6 @@ vim.opt.inccommand = "split" -- "for incsearch while sub
 vim.opt.lazyredraw = true -- redraw for macros
 vim.opt.number = true -- line number on
 vim.opt.relativenumber = true -- relative line number on
--- vim.opt.termguicolors = true -- true colors term support
 vim.opt.undofile = true -- undo even when it closes
 vim.opt.foldmethod = "expr" -- treesiter time
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()" -- treesiter
@@ -343,7 +334,6 @@ vim.opt.cursorline = true
 vim.opt.cursorlineopt = "number"
 vim.opt.showmode = false
 vim.opt.virtualedit = "all"
--- vim.opt.shell = "/bin/zsh" -- unfortunately, fish does not behave well with a lot of plugins
 vim.opt.shell = "/opt/homebrew/bin/fish"
 vim.api.nvim_create_user_command("FixWhitespace", [[%s/\s\+$//e]], {})
 
@@ -488,6 +478,28 @@ local get_current_mode = function()
     end
 end
 
+local file_type = function()
+    local ft = vim.bo.filetype
+    if ft == "" then return "[None]" end
+
+    local width = vim.api.nvim_win_get_width(0)
+
+    if width > 80 then
+        return string.format("[%s]", ft)
+    else
+        local buf_name = vim.api.nvim_buf_get_name(0)
+        if buf_name == "" then
+            return string.format("[%s]", ft)
+        else
+            local ext = vim.fn.fnamemodify(buf_name, ":e")
+            local len = string.len
+            local shorter = (len(ft) < len(ext)) and ft or ext
+
+            return string.format("[%s]", shorter)
+        end
+    end
+end
+
 ---@diagnostic disable-next-line: lowercase-global
 function status_line()
     return table.concat({
@@ -502,7 +514,7 @@ function status_line()
         word_count(), -- word count
         "[%-3.(%l|%c]", -- line number, column number
         human_file_size(), -- file size
-        "[%{strlen(&ft)?&ft[0].&ft[1:]:'None'}]" -- file type
+        file_type() -- file type
     })
 end
 
@@ -579,7 +591,6 @@ keyset("n", "k", "(v:count ? 'k' : 'gk')", {expr = true})
 -- Telescope + grepper
 keyset("n", "<leader><leader>f", ":Telescope git_files<cr>")
 keyset("n", "<leader>fl", ":Telescope live_grep<cr>")
--- keyset("n", "<leader>ff", ":Telescope find_files<cr>")
 keyset("n", "<leader>ff",
        ":Telescope frecency workspace=CWD theme=ivy layout_config={height=0.4} path_display={'shorten'}<cr>")
 keyset("n", "<leader>fb", ":Telescope buffers<cr>")
@@ -613,9 +624,6 @@ vim.opt.writebackup = false
 vim.opt.updatetime = 300
 vim.g.coc_node_path = "/Users/charlie/.asdf/shims/node"
 vim.g.coc_enable_locationlist = 0
--- vim.g.coc_global_extensions = {
---     "coc-rust-analyzer", "coc-sumneko-lua", "coc-json", "coc-texlab", "coc-pyright"
-
 vim.api.nvim_create_user_command("Format", "call CocAction('format')", {})
 
 function _G.check_back_space()
@@ -725,9 +733,7 @@ keyset("n", "K", function()
 end, {silent = true})
 
 -- Vimtex config
-vim.g.tex_flavor = "latex"
-vim.g.tex_conceal = "abdmgs"
-vim.g.vimtex_quickfix_mode = 0
+vim.g.vimtex_quickfix_mode = 2
 vim.g.vimtex_compiler_latexmk_engines = {["_"] = "-lualatex -shell-escape"}
 vim.g.vimtex_indent_on_ampersands = 0
 vim.g.vimtex_view_method = 'sioyek'
@@ -735,7 +741,7 @@ vim.g.matchup_override_vimtex = 1
 
 -- Other settings
 vim.g.neoformat_try_formatprg = 1
-vim.g.latexindent_opt = "-m"
+vim.g.latexindent_opt = "-m" -- for neorg
 vim.g.python3_host_prog = "~/.asdf/shims/python3"
 vim.g.node_host_prog = "/Users/charlie/.local/share/npm/bin/neovim-node-host"
 vim.g.loaded_ruby_provider = 0
@@ -840,13 +846,6 @@ autocmd("User", {
     end
 })
 
-autocmd("FileType", {
-    group = "CocGroup",
-    pattern = "typescript,json",
-    command = "setl formatexpr=CocAction('formatSelected')",
-    desc = "Setup formatexpr specified filetype(s)."
-})
-
 autocmd("User", {
     group = "CocGroup",
     pattern = "CocJumpPlaceholder",
@@ -859,62 +858,6 @@ autocmd("CursorHold", {
     command = "silent call CocActionAsync('highlight')",
     desc = "Highlight symbol under cursor on CursorHold"
 })
-
--- vimtex
-vim.g.tex_compiles_successfully = false
-vim.g.term_pdf_vierer_open = false
-
-vim.api.nvim_create_augroup("CustomTex", {})
-
-autocmd("User", {
-    group = "CustomTex",
-    pattern = "VimtexEventCompileSuccess",
-    callback = function()
-        vim.g.tex_compiles_successfully = true
-
-        -- a hacky way to reload the pdf in the terminal when it has changed
-        if vim.g.term_pdf_vierer_open and vim.g.tex_compiles_successfully then
-            local command = "termpdf.py " ..
-                                vim.api.nvim_call_function("expand", {"%:r"}) ..
-                                ".pdf" .. "'\r'"
-            local kitty = "kitty @ send-text --match title:termpdf "
-            vim.fn.system(kitty .. command)
-            vim.fn.system("kitty @ send-text --match title:termpdf G")
-        end
-    end
-})
-
-autocmd("User", {
-    group = "CustomTex",
-    pattern = "VimtexEventCompileFailed",
-    callback = function() vim.g.tex_compiles_successfully = false end
-})
-
-autocmd("User", {
-    group = "CustomTex",
-    pattern = "VimtexEventQuit",
-    callback = function()
-        vim.fn.system("kitty @ close-window --match title:termpdf")
-    end
-})
-
-function VimtexPDFToggle()
-    if vim.g.term_pdf_vierer_open then
-        vim.fn.system("kitty @ close-window --match title:termpdf")
-        vim.g.term_pdf_vierer_open = false
-    elseif vim.g.tex_compiles_successfully then
-        vim.fn.system(
-            "kitty @ launch --location=vsplit --cwd=current --title=termpdf")
-        local command = "termpdf.py " ..
-                            vim.api.nvim_call_function("expand", {"%:r"}) ..
-                            ".pdf '\r'"
-        local kitty = "kitty @ send-text --match title:termpdf "
-        vim.fn.system(kitty .. command)
-        vim.g.term_pdf_vierer_open = true
-    end
-end
-
-keyset("n", "<leader>q", ":lua VimtexPDFToggle()<cr>")
 
 -- toggleterm
 require("toggleterm").setup({
@@ -1117,13 +1060,13 @@ require("telescope").setup({
             layout_config = {height = 0.4}
         }
     },
-  extensions = {
-	frecency = {
-	  auto_validate = false,
-	  matcher = "fuzzy",
-	  path_display = { "shorten" },
-	},
-  },
+    extensions = {
+        frecency = {
+            auto_validate = false,
+            matcher = "fuzzy",
+            path_display = {"shorten"}
+        }
+    }
 })
 
 local augend = require("dial.augend")
@@ -1153,7 +1096,6 @@ require("nvim-treesitter.configs").setup({
     playground = {
         enable = true,
         updatetime = 25 -- Debounced time for highlighting nodes in the playground from source code
-        -- persist_queries = false -- Whether the query persists across vim sessions
     },
     indent = {enable = true, disable = {"python"}},
     textobjects = {

@@ -1,49 +1,29 @@
 # Servers to auto-connect
 servers:
-  - addr: chat.freenode.net
-    join:
-      - '#bioinformatics'
-    port: 6697
-    tls: true
-    alias: freenode
-    realname: Karl Hernandez
-    nicks: [SeniorMars, Karl.SeniorMars, Karl.SeniorMars_]
-    pass: "F,[B1Xk,~ssrHk_G?n]/RlAn'"
-
-  - addr: irc.oftc.net
-    join:
-      - '#tiny'
-    port: 6697
-    tls: true
-    alias: OFTC
-    realname: Karl Hernandez
-    nicks: [SeniorMars, Karl.SeniorMars, Karl.SeniorMars_]
-    pass: "F,[B1Xk,~ssrHk_G?n]/RlAn'"
-
   - addr: irc.libera.chat
     join:
       - "#vim"
       - "#archlinux"
       - "#archlinux-offtopic"
-      - "#archlinux-aur"
+      # - "#archlinux-aur"
       - "#rust"
+      - "#ricesec-general"
     port: 6697
     tls: true
     alias: libera
-    realname: Karl Hernandez
-    nicks: [SeniorMars, Karl.SeniorMars, Karl.SeniorMars_]
-    pass: HO(q'YnnCLR"[`s2cqfi{MF7Z
-
-    # sasl:
+    realname: SeniorMars
+    nicks: [SeniorMars, CC.SeniorMars, CC.SeniorMars_]
+    password:
+      command: 'gpg -dq ~/.config/tiny/tiny.gpg |'
 
 # Defaults used when connecting to servers via the /connect command
 defaults:
   nicks: [SeniorMars]
-  realname: Karl.SeniorMars
+  realname: CC.SeniorMars
   join: []
 
 # Where to put log files
-log_dir: "/Users/karl/.local/share/tiny_logs"
+log_dir: "/Users/charlie/.local/share/tiny_logs"
 
 # (Optional) Limits the maximum number of messages stored for each UI tab. Defaults to unlimited.
 # scrollback: 512

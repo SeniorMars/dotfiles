@@ -1,6 +1,6 @@
 function fisher --argument-names cmd --description "A plugin manager for Fish"
     set --query fisher_path || set --local fisher_path $__fish_config_dir
-    set --local fisher_version 4.4.2
+    set --local fisher_version 4.4.4
     set --local fish_plugins $__fish_config_dir/fish_plugins
 
     switch "$cmd"
@@ -13,8 +13,8 @@ function fisher --argument-names cmd --description "A plugin manager for Fish"
             echo "       fisher update                Update all installed plugins"
             echo "       fisher list    [<regex>]     List installed plugins matching regex"
             echo "Options:"
-            echo "       -v or --version  Print version"
-            echo "       -h or --help     Print this help message"
+            echo "       -v, --version  Print version"
+            echo "       -h, --help     Print this help message"
             echo "Variables:"
             echo "       \$fisher_path  Plugin installation path. Default: $__fish_config_dir" | string replace --regex -- $HOME \~
         case ls list
@@ -98,7 +98,7 @@ function fisher --argument-names cmd --description "A plugin manager for Fish"
 
                         echo Fetching (set_color --underline)\$url(set_color normal)
 
-                        if curl --silent -L \$url | tar -xzC \$temp -f - 2>/dev/null
+                        if command curl -q --silent -L \$url | command tar -xzC \$temp -f - 2>/dev/null
                             command cp -Rf \$temp/*/* $source
                         else
                             echo fisher: Invalid plugin name or host unavailable: \\\"$plugin\\\" >&2
@@ -173,7 +173,7 @@ function fisher --argument-names cmd --description "A plugin manager for Fish"
                 end
 
                 for file in (string replace -- $source/ "" $files)
-                    command cp -Rf $source/$file $fisher_path/$file
+                    command cp -RLf $source/$file $fisher_path/$file
                 end
 
                 set --local plugin_files_var _fisher_(string escape --style=var -- $plugin)_files
