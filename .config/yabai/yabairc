@@ -10,7 +10,7 @@ sudo yabai --load-sa
 yabai -m config                                     \
 	external_bar                 off:40:0       \
 	menubar_opacity              1.0            \
-	mouse_follows_focus          off            \
+	mouse_follows_focus          on 	    \
 	focus_follows_mouse          off            \
 	display_arrangement_order    default        \
 	window_origin_display        default        \
@@ -20,7 +20,7 @@ yabai -m config                                     \
 	window_opacity               off            \
 	window_opacity_duration      0.0            \
 	active_window_opacity        1.0            \
-	normal_window_opacity        0.90           \
+	normal_window_opacity        0.80           \
 	window_animation_duration    0.0            \
 	window_animation_easing      ease_out_circ  \
 	insert_feedback_color        0xffd75f5f     \
@@ -33,10 +33,10 @@ yabai -m config                                     \
 	layout                       bsp            \
 	top_padding                  0              \
 	bottom_padding               0              \
-	left_padding                 0              \
-	right_padding                0              \
+	left_padding                 1              \
+	right_padding                1              \
 	window_gap                   0              \
 	auto_balance                 off            
 
 yabai -m rule --add app="^System Preferences$" manage=off
-echo "yabai configuration loaded.."
+borders active_color=0xffebdbb2 inactive_color=0xff282828 width=5.0 style=square hidpi=on &

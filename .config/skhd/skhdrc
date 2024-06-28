@@ -1,8 +1,8 @@
 # The start of the configuration
 
-# focus space
-cmd + ctrl + alt + shift - h : yabai -m space --focus prev || yabai -m space --focus last
-cmd + ctrl + alt + shift - l : yabai -m space --focus next || yabai -m space --focus first
+# focus space -- We should use jq to make sure it only moves in current monitor
+cmd + ctrl + alt + shift - h : /Users/charlie/.local/bin/cycle_spaces.sh prev
+cmd + ctrl + alt + shift - l : /Users/charlie/.local/bin/cycle_spaces.sh next
 cmd + ctrl + alt + shift - t : yabai -m space --focus recent
 cmd - 1 : yabai -m space --focus 1
 cmd - 2 : yabai -m space --focus 2
@@ -54,7 +54,7 @@ cmd + ctrl + alt + shift - s : yabai -m window --toggle split
 cmd + ctrl + alt + shift - f : yabai -m window --toggle float --grid 4:4:1:1:2:2
 cmd + ctrl + alt + shift - e : yabai -m window --toggle sticky --toggle pip 
 
-# create desktop, move window and follow focus - uses jq for parsing json (brew install jq)
+# create space, move window and follow focus - uses jq for parsing json (brew install jq)
 shift + cmd - n : yabai -m space --create && \
                   index="$(yabai -m query --spaces --display | jq 'map(select(."is-native-fullscreen" == false))[-1].index')" && \
                   yabai -m window --space "${index}" && \
