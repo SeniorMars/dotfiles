@@ -222,43 +222,7 @@ require("lazy").setup({
     }, {"mhinz/vim-grepper"}, -- rg support
     {"gelguy/wilder.nvim", build = ":UpdateRemotePlugins"}, -- : autocomplete
     {"tpope/vim-fugitive"}, -- Git control for vim
-    {
-        "lewis6991/gitsigns.nvim", -- git signs
-        config = function()
-            require("gitsigns").setup({
-                signcolumn = false,
-                status_formatter = function(status)
-                    local added, changed, removed = status.added,
-                                                    status.changed,
-                                                    status.removed
-                    local status_txt = {}
-                    if added and added > 0 then
-                        table.insert(status_txt, "+" .. added)
-                    end
-                    if changed and changed > 0 then
-                        table.insert(status_txt, "~" .. changed)
-                    end
-                    if removed and removed > 0 then
-                        table.insert(status_txt, "-" .. removed)
-                    end
-
-                    -- format the table with commas if there are multiple changes
-                    if #status_txt > 1 then
-                        for i = 2, #status_txt do
-                            status_txt[i] = "," .. status_txt[i]
-                        end
-                    end
-
-                    -- check if there are any changes
-                    if #status_txt > 2 then
-                        return string.format("[%s]", table.concat(status_txt))
-                    else
-                        return ""
-                    end
-                end
-            })
-        end
-    }, {"windwp/nvim-autopairs"}, -- autopairs
+    {"windwp/nvim-autopairs"}, -- autopairs
     {
         'glacambre/firenvim',
         lazy = not vim.g.started_by_firenvim,
@@ -281,12 +245,9 @@ require("lazy").setup({
         keys = {
             {"<leader>i", "<cmd>PasteImage<cr>", desc = "Paste clipboard image"}
         }
-    }, {'pwntester/octo.nvim', lazy = true, config = function() require"octo".setup() end},
-    {"lervag/vimtex"}, -- for latex
+    }, {"lervag/vimtex"}, -- for latex
     {"akinsho/toggleterm.nvim"}, -- for smart terminal
     {"puremourning/vimspector"} -- debugging
-    -- {'NoahTheDuke/vim-just'}
-    -- {"IndianBoy42/tree-sitter-just"}
 }, {
     performance = {
         rtp = {
@@ -362,6 +323,20 @@ vim.g.firenvim_config = {
     }
 }
 
+local cache = {}
+
+local function refresh_cache(key)
+    if cache[key] then cache[key].value = cache[key].fn() end
+end
+
+local function cache_get(key, compute_fn)
+    local cached = cache[key]
+    if cached then return cached.value end
+    local value = compute_fn()
+    cache[key] = {value = value, fn = compute_fn}
+    return value
+end
+
 function SpellToggle()
     if vim.opt.spell:get() then
         vim.opt_local.spell = false
@@ -372,67 +347,116 @@ function SpellToggle()
     end
 end
 
-local git_branch = function()
-    if vim.g.loaded_fugitive then
-        local branch = vim.fn.FugitiveHead()
-        if branch ~= "" then
-            if vim.api.nvim_win_get_width(0) <= 80 then
-                return " " .. string.upper(branch:sub(1, 2))
-            end
-            return " " .. string.upper(branch)
-        end
+local function spell_status()
+    local spellLang = vim.opt_local.spelllang:get()
+    if type(spellLang) == "table" then
+        spellLang = table.concat(spellLang, ", ")
     end
-    return ""
+    return string.upper(spellLang)
 end
 
-local human_file_size = function()
-    local format_file_size = function(file)
+local function git_branch()
+    return cache_get("git_branch", function()
+        if vim.g.loaded_fugitive then
+            local branch = vim.fn.FugitiveHead()
+            if branch ~= "" then
+                if vim.api.nvim_win_get_width(0) <= 80 then
+                    return " " .. string.upper(branch:sub(1, 2))
+                end
+                return " " .. string.upper(branch)
+            end
+        end
+        return ""
+    end)
+end
+
+local function update_status_for_file(file_path)
+    -- Get number of lines added and deleted using git diff --numstat
+    local diff_stats = vim.fn.system("git diff --numstat " ..
+                                         vim.fn.shellescape(file_path))
+    if vim.v.shell_error ~= 0 or diff_stats == "" then return "" end
+
+    local added, deleted = diff_stats:match("(%d+)%s+(%d+)%s+%S+")
+    added, deleted = tonumber(added), tonumber(deleted)
+    local delta = math.min(added, deleted)
+
+    local status = {
+        changed = delta,
+        added = added - delta,
+        removed = deleted - delta
+    }
+
+    -- Format the status for display
+    local status_txt = {}
+    if status.added > 0 then table.insert(status_txt, "+" .. status.added) end
+    if status.changed > 0 then
+        table.insert(status_txt, "~" .. status.changed)
+    end
+    if status.removed > 0 then
+        table.insert(status_txt, "-" .. status.removed)
+    end
+
+    if #status_txt > 1 then
+        for i = 2, #status_txt do status_txt[i] = "," .. status_txt[i] end
+    end
+
+    local formatted_status = ""
+    if #status_txt > 0 then
+        formatted_status = string.format("[%s]", table.concat(status_txt))
+    else
+        formatted_status = ""
+    end
+
+    return formatted_status
+end
+
+local function status_for_file()
+    return cache_get("file_status", function()
+        local file_path = vim.api.nvim_buf_get_name(0)
+
+        if file_path == "" then return "" end
+        return update_status_for_file(file_path)
+    end)
+end
+
+local function human_file_size()
+    return cache_get("file_size", function()
+        local file = vim.api.nvim_buf_get_name(0)
+        if file == "" then return "" end
+
         local size = vim.fn.getfsize(file)
-        if size <= 0 then return "" end
-        local sufixes = {"B", "KB", "MB", "GB"}
+        local suffixes = {"B", "KB", "MB", "GB"}
         local i = 1
         while size > 1024 do
             size = size / 1024
             i = i + 1
         end
-        return string.format("[%.0f%s]", size, sufixes[i])
-    end
 
-    local file = vim.api.nvim_buf_get_name(0)
-    if string.len(file) == 0 then return "" end
-    return format_file_size(file)
+        return size <= 0 and "" or string.format("[%.0f%s]", size, suffixes[i])
+    end)
 end
 
-local smart_file_path = function()
-    local buf_name = vim.api.nvim_buf_get_name(0)
-    if buf_name == "" then return "[No Name]" end
-    local is_term = false
-    local file_dir = ""
+local function smart_file_path()
+    return cache_get("file_path", function()
+        local buf_name = vim.api.nvim_buf_get_name(0)
+        local is_wide = vim.api.nvim_win_get_width(0) > 80
+        if buf_name == "" then return "[No Name]" end
 
-    if buf_name:sub(1, 5):find("term") ~= nil then
-        ---@type string
-        file_dir = vim.env.PWD
-        if file_dir == home then return "$HOME " end
-        is_term = true
-    else
-        file_dir = vim.fs.dirname(buf_name)
-    end
+        local file_dir = buf_name:sub(1, 5):find("term") and vim.env.PWD or
+                             vim.fs.dirname(buf_name)
+        file_dir = file_dir:gsub(home, "~", 1)
 
-    ---@diagnostic disable-next-line: need-check-nil
-    file_dir = file_dir:gsub(home, "~", 1)
+        if not is_wide then file_dir = vim.fn.pathshorten(file_dir) end
 
-    if vim.api.nvim_win_get_width(0) <= 80 then
-        file_dir = vim.fn.pathshorten(file_dir)
-    end
-
-    if is_term then
-        return file_dir .. " "
-    else
-        return string.format("%s/%s ", file_dir, vim.fs.basename(buf_name))
-    end
+        if buf_name:sub(1, 5):find("term") then
+            return file_dir .. " "
+        else
+            return string.format("%s/%s ", file_dir, vim.fs.basename(buf_name))
+        end
+    end)
 end
 
-local word_count = function()
+local function word_count()
     local words = vim.fn.wordcount()
     if words.visual_words ~= nil then
         return string.format("[%s]", words.visual_words)
@@ -469,7 +493,7 @@ local modes = setmetatable({
     end
 })
 
-local get_current_mode = function()
+local function get_current_mode()
     local mode = modes[vim.api.nvim_get_mode().mode]
     if vim.api.nvim_win_get_width(0) <= 80 then
         return string.format("%s ", mode[2]) -- short name
@@ -478,45 +502,76 @@ local get_current_mode = function()
     end
 end
 
-local file_type = function()
-    local ft = vim.bo.filetype
-    if ft == "" then return "[None]" end
-
-    local width = vim.api.nvim_win_get_width(0)
-
-    if width > 80 then
-        return string.format("[%s]", ft)
-    else
+local function file_type()
+    return cache_get("file_type", function()
         local buf_name = vim.api.nvim_buf_get_name(0)
-        if buf_name == "" then
-            return string.format("[%s]", ft)
-        else
-            local ext = vim.fn.fnamemodify(buf_name, ":e")
-            local len = string.len
-            local shorter = (len(ft) < len(ext)) and ft or ext
+        local width = vim.api.nvim_win_get_width(0)
 
-            return string.format("[%s]", shorter)
+        local ft = vim.bo.filetype
+        if ft == "" then
+            return "[None]"
+        else
+            if width > 80 then
+                return string.format("[%s]", ft)
+            else
+                local ext = vim.fn.fnamemodify(buf_name, ":e")
+                local shorter = (string.len(ft) < string.len(ext)) and ft or ext
+                return string.format("[%s]", shorter)
+            end
         end
-    end
+    end)
 end
 
 ---@diagnostic disable-next-line: lowercase-global
 function status_line()
     return table.concat({
         get_current_mode(), -- get current mode
-        "%{toupper(&spelllang)}", -- display language and if spell is on
+        spell_status(), -- display language and if spell is on
         git_branch(), -- branch name
         " %<", -- spacing
         smart_file_path(), -- smart full path filename
         "%h%m%r%w", -- help flag, modified, readonly, and preview
         "%=", -- right align
-        "%{get(b:,'gitsigns_status','')}", -- gitsigns
+        status_for_file(), -- git status for file
         word_count(), -- word count
         "[%-3.(%l|%c]", -- line number, column number
         human_file_size(), -- file size
         file_type() -- file type
     })
 end
+
+vim.api.nvim_create_augroup("StatusLineCache", {})
+vim.api.nvim_create_autocmd({"BufEnter"}, {
+    pattern = "*",
+    group = "StatusLineCache",
+    callback = function()
+        refresh_cache("git_branch") -- this should be another event
+        refresh_cache("file_status")
+        refresh_cache("file_size")
+        refresh_cache("file_path")
+        refresh_cache("file_type")
+    end
+})
+
+vim.api.nvim_create_autocmd({"BufWritePost"}, {
+    pattern = "*",
+    group = "StatusLineCache",
+    callback = function()
+        refresh_cache("file_status")
+        refresh_cache("file_size")
+        refresh_cache("file_path")
+    end
+})
+
+vim.api.nvim_create_autocmd({"WinResized"}, {
+    pattern = "*",
+    group = "StatusLineCache",
+    callback = function()
+        refresh_cache("git_branch")
+        refresh_cache("file_path")
+        refresh_cache("file_type")
+    end
+})
 
 vim.opt.statusline = "%!luaeval('status_line()')"
 
