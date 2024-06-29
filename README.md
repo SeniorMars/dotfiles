@@ -13,13 +13,12 @@ Terminal Emulator: kitty
 
 window manager: yabai
 
-Overall theme is from Gruvbox, but I made some changes to the colors.
-
-![Neovim](./images/two.png)
-![Daily workflow](./images/one.png)
+Overall theme is from Gruvbox, but I introduced some changes to the colors.
+![nvim](images/nvim.png)
 
 Neofetch (btw the creator of neofetch is now a farmer -- very cool!):
-![Neofetch](images/neofetch.png)
+
+![neofetch](images/neofetch.png)
 
 Firefox:
 
