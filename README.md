@@ -14,7 +14,7 @@ Terminal Emulator: kitty
 window manager: yabai
 
 Overall theme is from Gruvbox, but I introduced some changes to the colors.
-![nvim](images/nvim.png)
+![neovim](images/neovim.png)
 
 Neofetch (btw the creator of neofetch is now a farmer -- very cool!):
 
