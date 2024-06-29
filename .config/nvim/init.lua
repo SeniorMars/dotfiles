@@ -1,12 +1,10 @@
---- @diagnostic disable: missing-parameter, cast-local-type, param-type-mismatch, undefined-field, deprecated
+local api = vim.api
 local home = vim.env.HOME
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
-    vim.fn.system({
-        "git", "clone", "--filter=blob:none",
-        "https://github.com/folke/lazy.nvim.git", "--branch=stable", -- latest stable release
-        lazypath
-    })
+
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+  local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+  vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
 end
 
 vim.opt.rtp:prepend(lazypath)
@@ -50,6 +48,7 @@ require("lazy").setup({
         config = function()
             local alpha = require("alpha")
             local dashboard = require("alpha.themes.dashboard")
+            local button = dashboard.button
             dashboard.section.header.val = {
                 [[                                                                       ]],
                 [[  ██████   █████                   █████   █████  ███                  ]],
@@ -65,18 +64,16 @@ require("lazy").setup({
             }
 
             dashboard.section.buttons.val = {
-                dashboard.button("f", "  Find file",
-                                 ":Telescope find_files hidden=true no_ignore=true<CR>"),
-                dashboard.button("e", "  New file",
-                                 ":ene <BAR> startinsert <CR>"),
-                dashboard.button("c", "  Configuration",
-                                 ":e ~/.config/nvim/init.lua <CR>"),
-                dashboard.button("u", "  Update plugins", ":Lazy sync<CR>"),
-                dashboard.button("r", "  Recently opened files",
-                                 "<cmd>Telescope oldfiles<CR>"),
-                dashboard.button("l", "  Open last session",
-                                 "<cmd>RestoreSession<CR>"),
-                dashboard.button("q", "  Quit", ":qa<CR>")
+                button("f", "  Find file",
+                       ":Telescope find_files hidden=true no_ignore=true<CR>"),
+                button("e", "  New file", ":ene <BAR> startinsert <CR>"),
+                button("c", "  Configuration",
+                       ":e ~/.config/nvim/init.lua <CR>"),
+                button("u", "  Update plugins", ":Lazy sync<CR>"),
+                button("r", "  Recently opened files",
+                       ":Telescope oldfiles<CR>"),
+                button("l", "  Open last session", ":RestoreSession<CR>"),
+                button("q", "  Quit", ":qa<CR>")
             }
 
             local handle, err = io.popen("fortune -s")
@@ -100,8 +97,6 @@ require("lazy").setup({
                 contrast = "hard",
                 palette_overrides = {dark0_hard = "#0E1018"},
                 overrides = {
-                    -- Comment = {fg = "#626A73", italic = true, bold = true},
-                    -- #736B62,  #626273, #627273
                     NormalFloat = {fg = "#ebdbb2", bg = "#504945"},
                     Comment = {fg = "#81878f", italic = true, bold = true},
                     Define = {link = "GruvboxPurple"},
@@ -113,6 +108,8 @@ require("lazy").setup({
                     ["@punctuation.bracket"] = {link = "GruvboxOrange"},
                     texMathDelimZoneLI = {link = "GruvboxOrange"},
                     texMathDelimZoneLD = {link = "GruvboxOrange"},
+                    luaParenError = {link = "luaParen"},
+                    luaError = {link = "NONE"},
                     ContextVt = {fg = "#878788"},
                     CopilotSuggestion = {fg = "#878787"},
                     CocCodeLens = {fg = "#878787"},
@@ -176,13 +173,16 @@ require("lazy").setup({
             })
             vim.cmd.colorscheme("gruvbox")
         end
-    }, {"numToStr/Comment.nvim"}, -- comment
-    {"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"}, -- :TSInstallFromGrammar
+    }, {"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"}, -- :TSInstallFromGrammar
     {"nvim-treesitter/nvim-treesitter-textobjects", event = "InsertEnter"}, -- TS objects
-    {"JoosepAlviste/nvim-ts-context-commentstring"}, -- use TS for comment.nvim
+    {
+        "JoosepAlviste/nvim-ts-context-commentstring",
+        config = function()
+            require('ts_context_commentstring').setup {enable_autocmd = false}
+        end
+    }, -- use TS for comment.nvim
     {"nvim-treesitter/playground", lazy = true, cmd = "TSPlaygroundToggle"}, -- playing around with treesitter
     {"danymat/neogen", config = function() require("neogen").setup({}) end}, {
-        -- generate doc comment
         "haringsrob/nvim_context_vt",
         config = function()
             require("nvim_context_vt").setup({
@@ -194,7 +194,6 @@ require("lazy").setup({
     }, {"kevinhwang91/nvim-bqf"}, -- beter quickfix
     {"sbdchd/neoformat"}, -- format code
     {"mbbill/undotree", lazy = true, cmd = "UndotreeToggle"}, -- see undo tree
-    {"monaqa/dial.nvim"}, -- <c-a> and <c-x> for numbers
     {
         "smjonas/live-command.nvim", -- live command
         config = function()
@@ -222,7 +221,7 @@ require("lazy").setup({
     }, {"mhinz/vim-grepper"}, -- rg support
     {"gelguy/wilder.nvim", build = ":UpdateRemotePlugins"}, -- : autocomplete
     {"tpope/vim-fugitive"}, -- Git control for vim
-    {"windwp/nvim-autopairs"}, -- autopairs
+    {"windwp/nvim-autopairs", event = "InsertEnter"}, -- autopairs
     {
         'glacambre/firenvim',
         lazy = not vim.g.started_by_firenvim,
@@ -230,8 +229,8 @@ require("lazy").setup({
     }, {
         'andymass/vim-matchup',
         config = function()
-            vim.api.nvim_set_hl(0, "OffScreenPopup",
-                                {fg = "#fe8019", bg = "#3c3836", italic = true})
+            api.nvim_set_hl(0, "OffScreenPopup",
+                            {fg = "#fe8019", bg = "#3c3836", italic = true})
             vim.g.matchup_matchparen_offscreen = {
                 method = "popup",
                 highlight = "OffScreenPopup"
@@ -274,7 +273,7 @@ vim.opt.scrolloff = 8 -- number of lines to always go down
 vim.opt.signcolumn = "number"
 vim.opt.colorcolumn = "99999" -- fix columns
 vim.opt.mouse = "a" -- set mouse to be on
--- vim.opt.shortmess='nocI'
+vim.opt.shortmess = "ltToOcCF"
 -- vim.opt.cmdheight = 0 -- status line smaller
 vim.opt.laststatus = 3
 vim.opt.breakindent = true -- break indentation for long lines
@@ -296,14 +295,14 @@ vim.opt.cursorlineopt = "number"
 vim.opt.showmode = false
 vim.opt.virtualedit = "all"
 vim.opt.shell = "/opt/homebrew/bin/fish"
-vim.api.nvim_create_user_command("FixWhitespace", [[%s/\s\+$//e]], {})
+api.nvim_create_user_command("FixWhitespace", [[%s/\s\+$//e]], {})
 
 vim.filetype.add({extension = {typ = "typst"}, pattern = {["*.typ"] = "typst"}})
 
 -- firenvim
-vim.api.nvim_create_autocmd({'UIEnter'}, {
+api.nvim_create_autocmd({'UIEnter'}, {
     callback = function(_)
-        local client = vim.api.nvim_get_chan_info(vim.v.event.chan).client
+        local client = api.nvim_get_chan_info(vim.v.event.chan).client
         if client ~= nil and client.name == "Firenvim" then
             vim.o.laststatus = 0
         end
@@ -323,6 +322,10 @@ vim.g.firenvim_config = {
     }
 }
 
+-- global funcs
+_G.MUtils = {}
+
+-- status line cache
 local cache = {}
 
 local function refresh_cache(key)
@@ -337,7 +340,7 @@ local function cache_get(key, compute_fn)
     return value
 end
 
-function SpellToggle()
+MUtils.spell_toggle = function()
     if vim.opt.spell:get() then
         vim.opt_local.spell = false
         vim.opt_local.spelllang = "en"
@@ -346,7 +349,6 @@ function SpellToggle()
         vim.opt_local.spelllang = {"en_us"}
     end
 end
-
 local function spell_status()
     local spellLang = vim.opt_local.spelllang:get()
     if type(spellLang) == "table" then
@@ -360,7 +362,7 @@ local function git_branch()
         if vim.g.loaded_fugitive then
             local branch = vim.fn.FugitiveHead()
             if branch ~= "" then
-                if vim.api.nvim_win_get_width(0) <= 80 then
+                if api.nvim_win_get_width(0) <= 80 then
                     return " " .. string.upper(branch:sub(1, 2))
                 end
                 return " " .. string.upper(branch)
@@ -378,6 +380,7 @@ local function update_status_for_file(file_path)
 
     local added, deleted = diff_stats:match("(%d+)%s+(%d+)%s+%S+")
     added, deleted = tonumber(added), tonumber(deleted)
+    ---@diagnostic disable-next-line: param-type-mismatch
     local delta = math.min(added, deleted)
 
     local status = {
@@ -412,7 +415,7 @@ end
 
 local function status_for_file()
     return cache_get("file_status", function()
-        local file_path = vim.api.nvim_buf_get_name(0)
+        local file_path = api.nvim_buf_get_name(0)
 
         if file_path == "" then return "" end
         return update_status_for_file(file_path)
@@ -421,7 +424,7 @@ end
 
 local function human_file_size()
     return cache_get("file_size", function()
-        local file = vim.api.nvim_buf_get_name(0)
+        local file = api.nvim_buf_get_name(0)
         if file == "" then return "" end
 
         local size = vim.fn.getfsize(file)
@@ -438,8 +441,8 @@ end
 
 local function smart_file_path()
     return cache_get("file_path", function()
-        local buf_name = vim.api.nvim_buf_get_name(0)
-        local is_wide = vim.api.nvim_win_get_width(0) > 80
+        local buf_name = api.nvim_buf_get_name(0)
+        local is_wide = api.nvim_win_get_width(0) > 80
         if buf_name == "" then return "[No Name]" end
 
         local file_dir = buf_name:sub(1, 5):find("term") and vim.env.PWD or
@@ -494,8 +497,8 @@ local modes = setmetatable({
 })
 
 local function get_current_mode()
-    local mode = modes[vim.api.nvim_get_mode().mode]
-    if vim.api.nvim_win_get_width(0) <= 80 then
+    local mode = modes[api.nvim_get_mode().mode]
+    if api.nvim_win_get_width(0) <= 80 then
         return string.format("%s ", mode[2]) -- short name
     else
         return string.format("%s ", mode[1]) -- long name
@@ -504,8 +507,8 @@ end
 
 local function file_type()
     return cache_get("file_type", function()
-        local buf_name = vim.api.nvim_buf_get_name(0)
-        local width = vim.api.nvim_win_get_width(0)
+        local buf_name = api.nvim_buf_get_name(0)
+        local width = api.nvim_win_get_width(0)
 
         local ft = vim.bo.filetype
         if ft == "" then
@@ -522,8 +525,7 @@ local function file_type()
     end)
 end
 
----@diagnostic disable-next-line: lowercase-global
-function status_line()
+function StatusLine()
     return table.concat({
         get_current_mode(), -- get current mode
         spell_status(), -- display language and if spell is on
@@ -540,12 +542,12 @@ function status_line()
     })
 end
 
-vim.api.nvim_create_augroup("StatusLineCache", {})
-vim.api.nvim_create_autocmd({"BufEnter"}, {
+api.nvim_create_augroup("StatusLineCache", {})
+api.nvim_create_autocmd({"BufEnter"}, {
     pattern = "*",
     group = "StatusLineCache",
     callback = function()
-        refresh_cache("git_branch") -- this should be another event
+        refresh_cache("git_branch")
         refresh_cache("file_status")
         refresh_cache("file_size")
         refresh_cache("file_path")
@@ -553,7 +555,7 @@ vim.api.nvim_create_autocmd({"BufEnter"}, {
     end
 })
 
-vim.api.nvim_create_autocmd({"BufWritePost"}, {
+api.nvim_create_autocmd({"BufWritePost"}, {
     pattern = "*",
     group = "StatusLineCache",
     callback = function()
@@ -563,7 +565,7 @@ vim.api.nvim_create_autocmd({"BufWritePost"}, {
     end
 })
 
-vim.api.nvim_create_autocmd({"WinResized"}, {
+api.nvim_create_autocmd({"WinResized"}, {
     pattern = "*",
     group = "StatusLineCache",
     callback = function()
@@ -573,19 +575,11 @@ vim.api.nvim_create_autocmd({"WinResized"}, {
     end
 })
 
-vim.opt.statusline = "%!luaeval('status_line()')"
+vim.opt.statusline = "%!luaeval('StatusLine()')"
 
 -- Key remapping
 local keyset = vim.keymap.set
 keyset("i", "jk", "<esc>")
-
--- dial
-keyset("n", "<C-a>", require("dial.map").inc_normal(), {noremap = true})
-keyset("n", "<C-x>", require("dial.map").dec_normal(), {noremap = true})
-keyset("v", "<C-a>", require("dial.map").inc_visual(), {noremap = true})
-keyset("v", "<C-x>", require("dial.map").dec_visual(), {noremap = true})
-keyset("v", "g<C-a>", require("dial.map").inc_gvisual(), {noremap = true})
-keyset("v", "g<C-x>", require("dial.map").dec_gvisual(), {noremap = true})
 
 -- remap to include undo and more things
 keyset("i", ",", ",<C-g>U")
@@ -624,7 +618,7 @@ keyset("n", "<leader>1", ":bp<cr>")
 keyset("n", "<leader>2", ":bn<cr>")
 keyset("n", "<leader>3", ":retab<cr>:FixWhitespace<cr>")
 keyset("n", "<leader>4", ":Format<cr>")
-keyset("n", "<leader>5", ":lua SpellToggle()<cr>")
+keyset("n", "<leader>5", _G.MUtils.spell_toggle)
 keyset("n", "<leader>sr", ":%s/<<C-r><C-w>>//g<Left><Left>")
 
 -- Movement
@@ -673,22 +667,36 @@ else
     keyset("n", "<leader>0", ":silent !xdg-open %<cr>")
 end
 
+--- autopairs
+local npairs = require('nvim-autopairs')
+npairs.setup({map_cr = false, check_ts = true})
+
+local rule = require("nvim-autopairs.rule")
+local cond = require("nvim-autopairs.conds")
+
+npairs.add_rules({
+    rule("$", "$", {"tex", "latex", "neorg"}):with_cr(cond.none())
+})
+
+npairs.get_rules("`")[1].not_filetypes = {"tex", "latex"}
+npairs.get_rules("'")[1].not_filetypes = {"tex", "latex", "rust"}
+
 -- coc settings
 vim.opt.backup = false
 vim.opt.writebackup = false
 vim.opt.updatetime = 300
 vim.g.coc_node_path = "/Users/charlie/.asdf/shims/node"
 vim.g.coc_enable_locationlist = 0
-vim.api.nvim_create_user_command("Format", "call CocAction('format')", {})
+api.nvim_create_user_command("Format", "call CocAction('format')", {})
 
-function _G.check_back_space()
-    local col = vim.api.nvim_win_get_cursor(0)[2]
-    local has_backspace = vim.api.nvim_get_current_line():sub(col, col):match(
-                              "%s") ~= nil
+MUtils.check_back_space = function()
+    local col = api.nvim_win_get_cursor(0)[2]
+    local has_backspace =
+        api.nvim_get_current_line():sub(col, col):match("%s") ~= nil
     return col == 0 or has_backspace
 end
 
-function _G.diagnostic()
+MUtils.diagnostic = function()
     vim.fn.CocActionAsync("diagnosticList", "", function(err, res)
         if err == vim.NIL then
             if vim.tbl_isempty(res) then return end
@@ -723,20 +731,58 @@ end
 
 -- auto complete
 local opts = {silent = true, noremap = true, expr = true}
-vim.api.nvim_set_keymap("i", "<TAB>",
-                        'coc#pum#visible() ? coc#pum#next(1) : v:lua.check_back_space() ? "<TAB>" : coc#refresh()',
-                        opts)
-vim.api.nvim_set_keymap("i", "<S-TAB>",
-                        [[coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"]], opts)
-vim.api.nvim_set_keymap("i", "<cr>",
-                        [[coc#pum#visible() ? coc#pum#confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"]],
-                        opts)
+
+MUtils.tab_complete = function()
+    if vim.fn["coc#pum#visible"]() ~= 0 then
+        return vim.fn["coc#pum#next"](1)
+    else
+        if MUtils.check_back_space() then
+            local key = api.nvim_replace_termcodes("<tab>", true, true, true)
+            api.nvim_feedkeys(key, "n", false)
+        else
+            return vim.fn["coc#refresh"]()
+        end
+    end
+end
+
+MUtils.back_tab_complete = function()
+    if vim.fn["coc#pum#visible"]() ~= 0 then
+        return vim.fn["coc#pum#prev"](1)
+    else
+        local key = api.nvim_replace_termcodes("<C-h>", true, true, true)
+        api.nvim_feedkeys(key, "n", false)
+    end
+end
+
+MUtils.enter = function()
+    if vim.fn["coc#pum#visible"]() ~= 0 then
+        return vim.fn["coc#_select_confirm"]()
+    else
+        local key = api.nvim_replace_termcodes("<C-g>u<CR>", true, true, true)
+        api.nvim_feedkeys(key, "n", false)
+        return vim.fn["coc#on_enter"]()
+    end
+end
+
+MUtils.help = function()
+    local cw = vim.fn.expand("<cword>")
+    if vim.fn.index({"vim", "help"}, vim.bo.filetype) >= 0 then
+        api.nvim_command("h " .. cw)
+    elseif api.nvim_eval("coc#rpc#ready()") then
+        vim.fn.CocActionAsync("doHover")
+    else
+        api.nvim_command(string.format("!%s %s", vim.o.keywordprg, cw))
+    end
+end
+
+keyset("i", "<Tab>", _G.MUtils.tab_complete, opts)
+keyset("i", "<S-Tab>", _G.MUtils.back_tab_complete, opts)
+keyset("i", "<CR>", _G.MUtils.enter, opts)
 keyset("i", "<c-j>", "<Plug>(coc-snippets-expand-jump)")
 keyset("i", "<c-space>", "coc#refresh()", {silent = true, expr = true})
 
 -- scroll through documentation
----@diagnostic disable-next-line: redefined-local
-local opts = {silent = true, nowait = true, expr = true}
+opts = {silent = true, nowait = true, expr = true}
 keyset("n", "<C-f>", 'coc#float#has_scroll() ? coc#float#scroll(1) : "<C-f>"',
        opts)
 keyset("n", "<C-b>", 'coc#float#has_scroll() ? coc#float#scroll(0) : "<C-b>"',
@@ -762,8 +808,7 @@ keyset("n", "gi", "<Plug>(coc-implementation)", {silent = true})
 keyset("n", "gr", "<Plug>(coc-references)", {silent = true})
 
 -- code actions and coc stuff
----@diagnostic disable-next-line: redefined-local
-local opts = {silent = true, nowait = true}
+opts = {silent = true, nowait = true}
 keyset("n", "<space>a", "<Plug>(coc-codeaction-cursor)", opts)
 keyset("n", "<space>s", "<Plug>(coc-codeaction-refactor)", opts)
 keyset("n", "<space>x", "<Plug>(coc-codeaction-line)", opts)
@@ -775,18 +820,8 @@ keyset("n", "<space>e", ":<C-u>CocList extensions<cr>", opts)
 keyset("n", "<space>c", ":<C-u>CocList commands<cr>", opts)
 keyset("n", "<space>o", ":<C-u>CocList outline<cr>", opts)
 keyset("n", "<space>q", ":<C-u>CocList<cr>", opts)
-keyset("n", "<space>d", "<Cmd>lua _G.diagnostic()<CR>", opts)
-keyset("n", "K", function()
-    local cw = vim.fn.expand("<cword>")
-    if vim.fn.index({"vim", "help"}, vim.bo.filetype) >= 0 then
-        vim.api.nvim_command("h " .. cw)
-    elseif vim.api.nvim_eval("coc#rpc#ready()") then
-        vim.fn.CocActionAsync("doHover")
-    else
-        vim.api.nvim_command(string.format("!%s %s", vim.o.keywordprg, cw))
-    end
-end, {silent = true})
-
+keyset("n", "<space>d", _G.MUtils.diagnostic, opts)
+keyset("n", "K", _G.MUtils.help, {silent = true})
 -- Vimtex config
 vim.g.vimtex_quickfix_mode = 2
 vim.g.vimtex_compiler_latexmk_engines = {["_"] = "-lualatex -shell-escape"}
@@ -845,8 +880,8 @@ wilder.set_option("renderer", wilder.popupmenu_renderer({
 }))
 
 -- autocmds
-local autocmd = vim.api.nvim_create_autocmd
-vim.api.nvim_create_augroup("Random", {clear = true})
+local autocmd = api.nvim_create_autocmd
+api.nvim_create_augroup("Random", {clear = true})
 
 autocmd("User", {
     group = "Random",
@@ -883,7 +918,7 @@ autocmd("InsertEnter", {group = "Random", command = "set timeoutlen=100"})
 autocmd("InsertLeave", {group = "Random", command = "set timeoutlen=1000"})
 
 --- coc auto commands
-vim.api.nvim_create_augroup("CocGroup", {})
+api.nvim_create_augroup("CocGroup", {})
 
 autocmd("User", {
     group = "CocGroup",
@@ -896,7 +931,7 @@ autocmd("User", {
         if winid == 0 then
             vim.cmd("bel lw")
         else
-            vim.api.nvim_set_current_win(winid)
+            api.nvim_set_current_win(winid)
         end
     end
 })
@@ -971,7 +1006,7 @@ require("copilot").setup({
 })
 
 keyset("n", "<leader>ck",
-       '<cmd>lua require("copilot.suggestion").toggle_auto_trigger()<cr>')
+       ':lua require("copilot.suggestion").toggle_auto_trigger()<cr>')
 
 local Terminal = require("toggleterm.terminal").Terminal
 
@@ -996,12 +1031,12 @@ local lazygit = Terminal:new({
     -- function to run on opening the terminal
     on_open = function(term)
         vim.cmd("startinsert!")
-        vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>",
-                                    {noremap = true, silent = true})
+        api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>",
+                                {noremap = true, silent = true})
     end
 })
 
-function Edit(fn, line_number)
+MUtils.edit = function(fn, line_number)
     local edit_cmd = string.format(":e %s", fn)
     if line_number ~= nil then
         edit_cmd = string.format(":e +%d %s", line_number, fn)
@@ -1009,36 +1044,9 @@ function Edit(fn, line_number)
     vim.cmd(edit_cmd)
 end
 
-function Lazygit_toggle() lazygit:toggle() end
+MUtils.lazygit = function() lazygit:toggle() end
 
-keyset("n", "<leader>lg", "<cmd>lua Lazygit_toggle()<CR>", {silent = true})
-
-require("nvim-autopairs").setup({
-    disable_filetype = {"TelescopePrompt"},
-    map_cr = false,
-    disable_in_visualblock = true,
-    check_ts = true
-})
-
-local rule = require("nvim-autopairs.rule")
-local cond = require("nvim-autopairs.conds")
-local autopairs = require("nvim-autopairs")
-
-autopairs.add_rules({
-    rule("$", "$", {"tex", "latex", "neorg"}):with_cr(cond.none())
-})
-
-autopairs.get_rules("`")[1].not_filetypes = {"tex", "latex"}
-autopairs.get_rules("'")[1].not_filetypes = {"tex", "latex", "rust"}
-
-vim.g.skip_ts_context_commentstring_module = true
-
-require("Comment").setup({
-    pre_hook = function()
-        return
-            require("ts_context_commentstring.internal").calculate_commentstring()
-    end
-})
+keyset("n", "<leader>lg", _G.MUtils.lazygit, {silent = true})
 
 -- https://github-wiki-see.page/m/nvim-telescope/telescope.nvim/wiki/Configuration-Recipes
 local actions = require("telescope.actions")
@@ -1068,8 +1076,8 @@ local new_maker = function(filepath, bufnr, opts)
                     if not stat then return end
                     if stat.size > 100000 then
                         vim.schedule(function()
-                            vim.api.nvim_buf_set_lines(bufnr, 0, -1, false,
-                                                       {"FILE TOO LARGE"})
+                            api.nvim_buf_set_lines(bufnr, 0, -1, false,
+                                                   {"FILE TOO LARGE"})
                         end)
                     else
                         previewers.buffer_previewer_maker(filepath, bufnr, opts)
@@ -1078,7 +1086,7 @@ local new_maker = function(filepath, bufnr, opts)
             else
                 -- maybe we want to write something to the buffer here
                 vim.schedule(function()
-                    vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, {"BINARY"})
+                    api.nvim_buf_set_lines(bufnr, 0, -1, false, {"BINARY"})
                 end)
             end
         end
@@ -1124,19 +1132,15 @@ require("telescope").setup({
     }
 })
 
-local augend = require("dial.augend")
-require("dial.config").augends:register_group({
-    default = {
-        augend.constant.alias.bool, augend.integer.alias.decimal,
-        augend.integer.alias.hex, augend.constant.new({
-            elements = {"and", "or"},
-            word = true, -- if false, "sand" is incremented into "sor", "doctor" into "doctand", etc.
-            cyclic = true -- "or" is incremented into "and".
-        }),
-        augend.constant
-            .new({elements = {"&&", "||"}, word = false, cyclic = true})
-    }
-})
+-- Neovim now has built-in comments. let's use it with treesitter
+vim.g.skip_ts_context_commentstring_module = true
+local get_option = vim.filetype.get_option
+---@diagnostic disable-next-line: duplicate-set-field
+vim.filetype.get_option = function(filetype, option)
+    return option == "commentstring" and
+               require("ts_context_commentstring.internal").calculate_commentstring() or
+               get_option(filetype, option)
+end
 
 local ts_repeat_move = require("nvim-treesitter.textobjects.repeatable_move")
 keyset({"n", "x", "o"}, ";", ts_repeat_move.repeat_last_move_next)
@@ -1235,7 +1239,7 @@ require("neorg").setup({
         },
         ["core.journal"] = {
             config = {
-                journal_folder = "journal",
+                journal_folder = "~/Notes/journal",
                 strategy = "flat",
                 workspace = "journal"
             }

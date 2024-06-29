@@ -6,11 +6,10 @@
 direction="${1:-next}"  # 'next' or 'prev', defaulting to 'next'
 
 # Get the current display's focus status and its spaces
-focused_display=$(yabai -m query --displays --display)
-spaces=$(echo "$focused_display" | jq '.spaces[]')
 current_space=$(yabai -m query --spaces --space | jq '.index')
-first_space=$(echo "$spaces" | head -n 1)
-last_space=$(echo "$spaces" | tail -n 1)
+spaces=$(yabai -m query --displays --display | jq '.spaces | .[0], .[-1]')
+# shellcheck disable=SC2086
+read -r first_space last_space <<< $spaces
 
 # Calculate next or previous index
 if [ "$direction" == "next" ]; then

@@ -1,19 +1,21 @@
 # The start of the configuration
 
 # focus space -- We should use jq to make sure it only moves in current monitor
-cmd + ctrl + alt + shift - h : /Users/charlie/.local/bin/cycle_spaces.sh prev
-cmd + ctrl + alt + shift - l : /Users/charlie/.local/bin/cycle_spaces.sh next
+cmd + ctrl + alt + shift - h : ~/.local/bin/cycle_spaces.sh prev
+cmd + ctrl + alt + shift - l : ~/.local/bin/cycle_spaces.sh next
 cmd + ctrl + alt + shift - t : yabai -m space --focus recent
-cmd - 1 : yabai -m space --focus 1
-cmd - 2 : yabai -m space --focus 2
-cmd - 3 : yabai -m space --focus 3
-cmd - 4 : yabai -m space --focus 4
-cmd - 5 : yabai -m space --focus 5
-cmd - 6 : yabai -m space --focus 6
-cmd - 7 : yabai -m space --focus 7
-cmd - 8 : yabai -m space --focus 8
-cmd - 9 : yabai -m space --focus 9
-cmd - 0 : yabai -m space --focus 10
+
+# smart focus that knows how many spaces there are in each monitor
+cmd - 1 : ~/.local/bin/smart_focus.sh 1
+cmd - 2 : ~/.local/bin/smart_focus.sh 2
+cmd - 3 : ~/.local/bin/smart_focus.sh 3
+cmd - 4 : ~/.local/bin/smart_focus.sh 4
+cmd - 5 : ~/.local/bin/smart_focus.sh 5
+cmd - 6 : ~/.local/bin/smart_focus.sh 6
+cmd - 7 : ~/.local/bin/smart_focus.sh 7
+cmd - 8 : ~/.local/bin/smart_focus.sh 8
+cmd - 9 : ~/.local/bin/smart_focus.sh 9
+cmd - 0 : ~/.local/bin/smart_focus.sh 10
 
 # create and destroy spaces
 cmd + ctrl + alt + shift - c : yabai -m space --create
@@ -25,12 +27,12 @@ cmd + ctrl + alt + shift - o : yabai -m display --focus next
 
 # send window to monitor and follow focus
 cmd + shift - m : yabai -m window --display next; yabai -m display --focus next
-cmd + shift - u : yabai -m space --display prev; yabai -m display --focus prev
+cmd + shift - u : yabai -m window --display prev; yabai -m display --focus prev
 cmd + shift - 1 : yabai -m window --space prev --focus
 cmd + shift - 2 : yabai -m window --space next --focus
 
 # Reload configuration
-cmd + ctrl + alt + shift - r : yabai --restart-service
+cmd + ctrl + alt + shift - w : yabai --restart-service
 
 # focus window
 cmd + ctrl + alt + shift - j : yabai -m window --focus prev
@@ -38,8 +40,9 @@ cmd + ctrl + alt + shift - k : yabai -m window --focus next
 cmd + ctrl + alt + shift - m : yabai -m window --focus recent
 
 # swap window
-shift + cmd - k : /Users/charlie/.local/bin/cycle_clockwise.sh
-shift + cmd - j : /Users/charlie/.local/bin/cycle_counter_clockwise.sh
+cmd + ctrl + alt + shift - g : yabai -m window --swap mouse
+shift + cmd - k : ~/.local/bin/cycle_swap.sh next
+shift + cmd - j : ~/.local/bin/cycle_swap.sh prev
 
 # balance size of windows
 cmd + shift - 0 : yabai -m space --balance

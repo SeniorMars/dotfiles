@@ -25,18 +25,17 @@ yabai -m config                                     \
 	window_animation_easing      ease_out_circ  \
 	insert_feedback_color        0xffd75f5f     \
 	split_ratio                  0.50           \
-	split_type                   auto           \
+	split_type                   vertical       \
 	mouse_modifier               fn             \
 	mouse_action1                move           \
 	mouse_action2                resize         \
 	mouse_drop_action            swap           \
 	layout                       bsp            \
 	top_padding                  0              \
-	bottom_padding               0              \
+	bottom_padding               1              \
 	left_padding                 1              \
 	right_padding                1              \
 	window_gap                   0              \
 	auto_balance                 off            
 
-yabai -m rule --add app="^System Preferences$" manage=off
-borders active_color=0xffebdbb2 inactive_color=0xff282828 width=5.0 style=square hidpi=on &
+borders active_color=0xffebdbb2 inactive_color=0xff282828 width=5.0 style=round hidpi=on &
