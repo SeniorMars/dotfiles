@@ -75,16 +75,7 @@ require("lazy").setup({
                 button("l", "  Open last session", ":RestoreSession<CR>"),
                 button("q", "  Quit", ":qa<CR>")
             }
-
-            local handle, err = io.popen("fortune -s")
-            if err or handle == nil then
-                dashboard.section.footer.val = "May the truth be found."
-                alpha.setup(dashboard.opts)
-                return
-            end
-            local fortune = handle:read("*a")
-            handle:close()
-            dashboard.section.footer.val = fortune
+            dashboard.section.footer.val =  require'alpha.fortune'()
             alpha.setup(dashboard.opts)
         end
     }, {"neoclide/coc.nvim", branch = "release", build = ":CocUpdate"}, -- auto complete
@@ -119,8 +110,7 @@ require("lazy").setup({
                     CocPumDetail = {fg = "#fe8019"},
                     DiagnosticVirtualTextWarn = {fg = "#dfaf87"},
                     -- fold
-                    Folded = {fg = "#fe8019", bg = "#3c3836", italic = true},
-                    FoldColumn = {fg = "#fe8019", bg = "#0E1018"},
+                    Folded = {fg = "#fe8019", bg = "#0E1018", italic = true},
                     SignColumn = {bg = "#fe8019"},
                     -- new git colors
                     DiffAdd = {
@@ -175,14 +165,9 @@ require("lazy").setup({
         end
     }, {"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"}, -- :TSInstallFromGrammar
     {"nvim-treesitter/nvim-treesitter-textobjects", event = "InsertEnter"}, -- TS objects
-    {
-        "JoosepAlviste/nvim-ts-context-commentstring",
-        config = function()
-            require('ts_context_commentstring').setup {enable_autocmd = false}
-        end
-    }, -- use TS for comment.nvim
+    { "folke/ts-comments.nvim", opts = {}, event = "VeryLazy"}, -- use TS for comment.nvim
     {"nvim-treesitter/playground", lazy = true, cmd = "TSPlaygroundToggle"}, -- playing around with treesitter
-    {"danymat/neogen", config = function() require("neogen").setup({}) end}, {
+    {"danymat/neogen", config = true}, {
         "haringsrob/nvim_context_vt",
         config = function()
             require("nvim_context_vt").setup({
@@ -269,11 +254,11 @@ vim.opt.relativenumber = true -- relative line number on
 vim.opt.undofile = true -- undo even when it closes
 vim.opt.foldmethod = "expr" -- treesiter time
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()" -- treesiter
+vim.opt.foldtext = ''
 vim.opt.scrolloff = 8 -- number of lines to always go down
 vim.opt.signcolumn = "number"
 vim.opt.colorcolumn = "99999" -- fix columns
 vim.opt.mouse = "a" -- set mouse to be on
-vim.opt.shortmess = "ltToOcCF"
 -- vim.opt.cmdheight = 0 -- status line smaller
 vim.opt.laststatus = 3
 vim.opt.breakindent = true -- break indentation for long lines
@@ -325,6 +310,16 @@ vim.g.firenvim_config = {
 -- global funcs
 _G.MUtils = {}
 
+MUtils.spell_toggle = function()
+    if vim.opt.spell:get() then
+        vim.opt_local.spell = false
+        vim.opt_local.spelllang = "en"
+    else
+        vim.opt_local.spell = true
+        vim.opt_local.spelllang = {"en_us"}
+    end
+end
+
 -- status line cache
 local cache = {}
 
@@ -340,15 +335,6 @@ local function cache_get(key, compute_fn)
     return value
 end
 
-MUtils.spell_toggle = function()
-    if vim.opt.spell:get() then
-        vim.opt_local.spell = false
-        vim.opt_local.spelllang = "en"
-    else
-        vim.opt_local.spell = true
-        vim.opt_local.spelllang = {"en_us"}
-    end
-end
 local function spell_status()
     local spellLang = vim.opt_local.spelllang:get()
     if type(spellLang) == "table" then
@@ -442,14 +428,15 @@ end
 local function smart_file_path()
     return cache_get("file_path", function()
         local buf_name = api.nvim_buf_get_name(0)
-        local is_wide = api.nvim_win_get_width(0) > 80
         if buf_name == "" then return "[No Name]" end
+        local long_name = string.len(buf_name) > 35
+        local is_wide = api.nvim_win_get_width(0) > 80
 
         local file_dir = buf_name:sub(1, 5):find("term") and vim.env.PWD or
                              vim.fs.dirname(buf_name)
         file_dir = file_dir:gsub(home, "~", 1)
 
-        if not is_wide then file_dir = vim.fn.pathshorten(file_dir) end
+        if not is_wide or long_name then file_dir = vim.fn.pathshorten(file_dir) end
 
         if buf_name:sub(1, 5):find("term") then
             return file_dir .. " "
@@ -685,7 +672,7 @@ npairs.get_rules("'")[1].not_filetypes = {"tex", "latex", "rust"}
 vim.opt.backup = false
 vim.opt.writebackup = false
 vim.opt.updatetime = 300
-vim.g.coc_node_path = "/Users/charlie/.asdf/shims/node"
+vim.g.coc_node_path = "~/.asdf/shims/node"
 vim.g.coc_enable_locationlist = 0
 api.nvim_create_user_command("Format", "call CocAction('format')", {})
 
@@ -833,7 +820,7 @@ vim.g.matchup_override_vimtex = 1
 vim.g.neoformat_try_formatprg = 1
 vim.g.latexindent_opt = "-m" -- for neorg
 vim.g.python3_host_prog = "~/.asdf/shims/python3"
-vim.g.node_host_prog = "/Users/charlie/.local/share/npm/bin/neovim-node-host"
+vim.g.node_host_prog = "~/.local/share/npm/bin/neovim-node-host"
 vim.g.loaded_ruby_provider = 0
 vim.g.loaded_perl_provider = 0
 vim.g.netrw_banner = 0
@@ -1132,16 +1119,6 @@ require("telescope").setup({
     }
 })
 
--- Neovim now has built-in comments. let's use it with treesitter
-vim.g.skip_ts_context_commentstring_module = true
-local get_option = vim.filetype.get_option
----@diagnostic disable-next-line: duplicate-set-field
-vim.filetype.get_option = function(filetype, option)
-    return option == "commentstring" and
-               require("ts_context_commentstring.internal").calculate_commentstring() or
-               get_option(filetype, option)
-end
-
 local ts_repeat_move = require("nvim-treesitter.textobjects.repeatable_move")
 keyset({"n", "x", "o"}, ";", ts_repeat_move.repeat_last_move_next)
 keyset({"n", "x", "o"}, ",", ts_repeat_move.repeat_last_move_previous)
@@ -1156,7 +1133,7 @@ require("nvim-treesitter.configs").setup({
         enable = true,
         updatetime = 25 -- Debounced time for highlighting nodes in the playground from source code
     },
-    indent = {enable = true, disable = {"python"}},
+    indent = {enable = true},
     textobjects = {
         move = {
             enable = true,
