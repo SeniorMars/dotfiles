@@ -10,11 +10,11 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 if not vim.fn.executable("nvr") then
-    vim.api.nvim_command("!pip3 install --user neovim-remote")
+    vim.fn.system("pip3 install --user neovim-remote")
 end
 
 local result = vim.fn.system("pip3 show pynvim 2> /dev/null")
-if result == "" then vim.api.nvim_command("!pip3 install --user pynvim") end
+if result == "" then vim.fn.system("pip3 install --user pynvim") end
 
 vim.g.mapleader = ","
 
@@ -75,7 +75,7 @@ require("lazy").setup({
                 button("l", "  Open last session", ":RestoreSession<CR>"),
                 button("q", "  Quit", ":qa<CR>")
             }
-            dashboard.section.footer.val =  require'alpha.fortune'()
+            dashboard.section.footer.val = require 'alpha.fortune'()
             alpha.setup(dashboard.opts)
         end
     }, {"neoclide/coc.nvim", branch = "release", build = ":CocUpdate"}, -- auto complete
@@ -165,7 +165,7 @@ require("lazy").setup({
         end
     }, {"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"}, -- :TSInstallFromGrammar
     {"nvim-treesitter/nvim-treesitter-textobjects", event = "InsertEnter"}, -- TS objects
-    { "folke/ts-comments.nvim", opts = {}, event = "VeryLazy"}, -- use TS for comment.nvim
+    {"folke/ts-comments.nvim", opts = {}, event = "VeryLazy"}, -- use TS for comment.nvim
     {"nvim-treesitter/playground", lazy = true, cmd = "TSPlaygroundToggle"}, -- playing around with treesitter
     {"danymat/neogen", config = true}, {
         "haringsrob/nvim_context_vt",
@@ -223,13 +223,14 @@ require("lazy").setup({
         end
     }, {"uga-rosa/ccc.nvim"}, -- color highlighting
     {"wellle/targets.vim"}, -- adds more targets like [ or ,
-    {"nvim-neorg/neorg", opts = {}}, {
+    {"nvim-neorg/neorg"}, {
         "HakonHarnes/img-clip.nvim",
         event = "BufEnter",
         keys = {
             {"<leader>i", "<cmd>PasteImage<cr>", desc = "Paste clipboard image"}
         }
-    }, {"lervag/vimtex"}, -- for latex
+    }, {"3rd/image.nvim"},
+    {"lervag/vimtex"}, -- for latex
     {"akinsho/toggleterm.nvim"}, -- for smart terminal
     {"puremourning/vimspector"} -- debugging
 }, {
@@ -259,6 +260,7 @@ vim.opt.scrolloff = 8 -- number of lines to always go down
 vim.opt.signcolumn = "number"
 vim.opt.colorcolumn = "99999" -- fix columns
 vim.opt.mouse = "a" -- set mouse to be on
+vim.opt.shortmess:append("c") -- no ins-completion messages
 -- vim.opt.cmdheight = 0 -- status line smaller
 vim.opt.laststatus = 3
 vim.opt.breakindent = true -- break indentation for long lines
@@ -281,8 +283,6 @@ vim.opt.showmode = false
 vim.opt.virtualedit = "all"
 vim.opt.shell = "/opt/homebrew/bin/fish"
 api.nvim_create_user_command("FixWhitespace", [[%s/\s\+$//e]], {})
-
-vim.filetype.add({extension = {typ = "typst"}, pattern = {["*.typ"] = "typst"}})
 
 -- firenvim
 api.nvim_create_autocmd({'UIEnter'}, {
@@ -358,53 +358,52 @@ local function git_branch()
     end)
 end
 
-local function update_status_for_file(file_path)
+local function update_status_for_file(file_path, old_status)
     -- Get number of lines added and deleted using git diff --numstat
-    local diff_stats = vim.fn.system("git diff --numstat " ..
-                                         vim.fn.shellescape(file_path))
+    local diff_stats = vim.fn.system("git diff --numstat " .. file_path)
     if vim.v.shell_error ~= 0 or diff_stats == "" then return "" end
+
+    local status = {added = 0, modified = 0, deleted = 0}
+    if old_status == nil then old_status = status end -- init
 
     local added, deleted = diff_stats:match("(%d+)%s+(%d+)%s+%S+")
     added, deleted = tonumber(added), tonumber(deleted)
-    ---@diagnostic disable-next-line: param-type-mismatch
-    local delta = math.min(added, deleted)
 
-    local status = {
-        changed = delta,
-        added = added - delta,
-        removed = deleted - delta
-    }
-
-    -- Format the status for display
-    local status_txt = {}
-    if status.added > 0 then table.insert(status_txt, "+" .. status.added) end
-    if status.changed > 0 then
-        table.insert(status_txt, "~" .. status.changed)
-    end
-    if status.removed > 0 then
-        table.insert(status_txt, "-" .. status.removed)
+    if added and deleted then
+        local delta = math.min(added, deleted)
+        status.modified = status.modified + delta
+        status.added = old_status.added + added - delta
+        status.deleted = old_status.deleted + deleted - delta
+    elseif added then
+        status.added = old_status.added + added
+    elseif deleted then
+        status.deleted = old_status.deleted + deleted
     end
 
-    if #status_txt > 1 then
-        for i = 2, #status_txt do status_txt[i] = "," .. status_txt[i] end
+    old_status = status -- update old status
+
+    local fmt_status = ""
+    if status.added > 0 then fmt_status = "+" .. status.added end
+    if status.modified > 0 then
+        if #fmt_status > 0 then fmt_status = fmt_status .. ", " end
+        fmt_status = fmt_status .. "~" .. status.modified
+    end
+    if status.deleted > 0 then
+        if #fmt_status > 0 then fmt_status = fmt_status .. ", " end
+        fmt_status = fmt_status .. "-" .. status.deleted
     end
 
-    local formatted_status = ""
-    if #status_txt > 0 then
-        formatted_status = string.format("[%s]", table.concat(status_txt))
-    else
-        formatted_status = ""
-    end
-
-    return formatted_status
+    if #fmt_status > 0 then fmt_status = "[" .. fmt_status .. "]" end
+    return fmt_status
 end
 
+local old_status = nil
 local function status_for_file()
     return cache_get("file_status", function()
         local file_path = api.nvim_buf_get_name(0)
 
         if file_path == "" then return "" end
-        return update_status_for_file(file_path)
+        return update_status_for_file(file_path, old_status)
     end)
 end
 
@@ -429,16 +428,18 @@ local function smart_file_path()
     return cache_get("file_path", function()
         local buf_name = api.nvim_buf_get_name(0)
         if buf_name == "" then return "[No Name]" end
-        local long_name = string.len(buf_name) > 35
+        local long_name = string.len(buf_name) > 40
+        local is_term = buf_name:sub(1, 5):find("term")
         local is_wide = api.nvim_win_get_width(0) > 80
 
-        local file_dir = buf_name:sub(1, 5):find("term") and vim.env.PWD or
-                             vim.fs.dirname(buf_name)
+        local file_dir = is_term and vim.env.PWD or vim.fs.dirname(buf_name)
         file_dir = file_dir:gsub(home, "~", 1)
 
-        if not is_wide or long_name then file_dir = vim.fn.pathshorten(file_dir) end
+        if not is_wide or long_name then
+            file_dir = vim.fn.pathshorten(file_dir)
+        end
 
-        if buf_name:sub(1, 5):find("term") then
+        if is_term then
             return file_dir .. " "
         else
             return string.format("%s/%s ", file_dir, vim.fs.basename(buf_name))
@@ -529,8 +530,10 @@ function StatusLine()
     })
 end
 
+local autocmd = api.nvim_create_autocmd
 api.nvim_create_augroup("StatusLineCache", {})
-api.nvim_create_autocmd({"BufEnter"}, {
+
+autocmd({"BufEnter"}, {
     pattern = "*",
     group = "StatusLineCache",
     callback = function()
@@ -542,7 +545,7 @@ api.nvim_create_autocmd({"BufEnter"}, {
     end
 })
 
-api.nvim_create_autocmd({"BufWritePost"}, {
+autocmd({"BufWritePost"}, {
     pattern = "*",
     group = "StatusLineCache",
     callback = function()
@@ -552,7 +555,7 @@ api.nvim_create_autocmd({"BufWritePost"}, {
     end
 })
 
-api.nvim_create_autocmd({"WinResized"}, {
+autocmd({"WinResized"}, {
     pattern = "*",
     group = "StatusLineCache",
     callback = function()
@@ -662,7 +665,7 @@ local rule = require("nvim-autopairs.rule")
 local cond = require("nvim-autopairs.conds")
 
 npairs.add_rules({
-    rule("$", "$", {"tex", "latex", "neorg"}):with_cr(cond.none())
+    rule("$", "$", {"tex", "latex", "neorg", "md"}):with_cr(cond.none())
 })
 
 npairs.get_rules("`")[1].not_filetypes = {"tex", "latex"}
@@ -867,7 +870,6 @@ wilder.set_option("renderer", wilder.popupmenu_renderer({
 }))
 
 -- autocmds
-local autocmd = api.nvim_create_autocmd
 api.nvim_create_augroup("Random", {clear = true})
 
 autocmd("User", {
@@ -1199,6 +1201,7 @@ require("neorg").setup({
         ["core.defaults"] = {}, -- Load all the default modules
         ["core.qol.toc"] = {},
         ["core.concealer"] = {config = {icon_preset = "diamond"}},
+        ["core.latex.renderer"] = {},
         ["core.keybinds"] = {
             config = {
                 hook = function(keybinds)
@@ -1206,17 +1209,17 @@ require("neorg").setup({
                 end
             }
         },
-        ["core.export"] = {config = {export_dir = "~/Notes/export"}},
-        ["core.esupports.metagen"] = {},
-        ["core.dirman"] = { -- Manage your directories with Neorg
+        ["core.dirman"] = {
             config = {
-                workspaces = {notes = "~/Notes/notes", journal = "~/Notes"},
-                index = "index.norg"
-            }
+                workspaces = {
+                    notes = "~/Notes",
+                    journal = "~/Notes/"
+                },
+                default_workspace = "notes",
+            },
         },
         ["core.journal"] = {
             config = {
-                journal_folder = "~/Notes/journal",
                 strategy = "flat",
                 workspace = "journal"
             }
