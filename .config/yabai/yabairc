@@ -2,7 +2,6 @@
 
 # for this to work you must configure sudo such that
 # it will be able to run the command without password
-
 yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
 sudo yabai --load-sa
 

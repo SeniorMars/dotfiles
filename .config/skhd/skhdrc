@@ -19,11 +19,11 @@ cmd - 0 : ~/.local/bin/smart_focus.sh 10
 
 # create and destroy spaces
 cmd + ctrl + alt + shift - c : yabai -m space --create
-cmd + ctrl + alt + shift - d : yabai -m space --destroy
+cmd + ctrl + alt + shift - d : yabai -m space mouse --destroy
 
 # focus monitor
-cmd + ctrl + alt + shift - i : yabai -m display --focus prev
-cmd + ctrl + alt + shift - o : yabai -m display --focus next
+cmd + ctrl + alt + shift - i : yabai -m display --focus prev || yabai -m display --focus last
+cmd + ctrl + alt + shift - o : yabai -m display --focus next || yabai -m display --focus first
 
 # send window to monitor and follow focus
 cmd + shift - m : yabai -m window --display next; yabai -m display --focus next
@@ -35,12 +35,13 @@ cmd + shift - 2 : yabai -m window --space next --focus
 cmd + ctrl + alt + shift - w : yabai --restart-service
 
 # focus window
-cmd + ctrl + alt + shift - j : yabai -m window --focus prev
-cmd + ctrl + alt + shift - k : yabai -m window --focus next
+cmd + ctrl + alt + shift - j : yabai -m window --focus prev || yabai -m window --focus last
+cmd + ctrl + alt + shift - k : yabai -m window --focus next || yabai -m window --focus first
 cmd + ctrl + alt + shift - m : yabai -m window --focus recent
 
 # swap window
 cmd + ctrl + alt + shift - g : yabai -m window --swap mouse
+cmd + ctrl + alt + shift - v : ~/.local/bin/swap_spaces.sh
 shift + cmd - k : ~/.local/bin/cycle_swap.sh next
 shift + cmd - j : ~/.local/bin/cycle_swap.sh prev
 
@@ -57,8 +58,13 @@ cmd + ctrl + alt + shift - s : yabai -m window --toggle split
 cmd + ctrl + alt + shift - f : yabai -m window --toggle float --grid 4:4:1:1:2:2
 cmd + ctrl + alt + shift - e : yabai -m window --toggle sticky --toggle pip 
 
-# create space, move window and follow focus - uses jq for parsing json (brew install jq)
+# create space, move window and follow focus
 shift + cmd - n : yabai -m space --create && \
                   index="$(yabai -m query --spaces --display | jq 'map(select(."is-native-fullscreen" == false))[-1].index')" && \
                   yabai -m window --space "${index}" && \
                   yabai -m space --focus "${index}"
+
+# focus on specific apps
+cmd + shift - 3 : ~/.local/bin/focus_app.sh "kitty"
+cmd + shift - 4 : ~/.local/bin/focus_instance.sh "Firefox"
+cmd + shift - 5 : ~/.local/bin/focus_app.sh "Spotify"
