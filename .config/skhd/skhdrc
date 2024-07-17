@@ -1,4 +1,4 @@
-# The start of the configuration
+# My yabai config
 
 # focus space -- We should use jq to make sure it only moves in current monitor
 cmd + ctrl + alt + shift - h : ~/.local/bin/cycle_spaces.sh prev
@@ -56,7 +56,7 @@ cmd + ctrl + alt + shift - z : yabai -m window --toggle zoom-parent
 cmd + ctrl + alt + shift - a : yabai -m window --toggle zoom-fullscreen
 cmd + ctrl + alt + shift - s : yabai -m window --toggle split
 cmd + ctrl + alt + shift - f : yabai -m window --toggle float --grid 4:4:1:1:2:2
-cmd + ctrl + alt + shift - e : yabai -m window --toggle sticky --toggle pip 
+cmd + ctrl + alt + shift - e : yabai -m window --toggle sticky --toggle pip
 
 # create space, move window and follow focus
 shift + cmd - n : yabai -m space --create && \
@@ -65,6 +65,8 @@ shift + cmd - n : yabai -m space --create && \
                   yabai -m space --focus "${index}"
 
 # focus on specific apps
-cmd + shift - 3 : ~/.local/bin/focus_app.sh "kitty"
-cmd + shift - 4 : ~/.local/bin/focus_instance.sh "Firefox"
-cmd + shift - 5 : ~/.local/bin/focus_app.sh "Spotify"
+cmd + shift - 3 : ~/.local/bin/focus_app.sh kitty
+cmd + shift - 4 : ~/.local/bin/focus_app.sh Spotify
+cmd + shift - 5 : ~/.local/bin/focus_app.sh Discord
+cmd + shift - 8 : ~/.local/bin/focus_instance.sh Firefox prev
+cmd + shift - 9 : ~/.local/bin/focus_instance.sh Firefox next

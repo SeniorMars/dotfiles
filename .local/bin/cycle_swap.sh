@@ -1,4 +1,7 @@
 #!/bin/bash
+# cycle_swap.sh
+# Usage: ./cycle_swap.sh next  # To swap the current window with the next window
+#       ./cycle_swap.sh prev  # To swap the current window with the previous window
 
 direction="${1:-next}"  # 'next' or 'prev', defaulting to 'next'
 

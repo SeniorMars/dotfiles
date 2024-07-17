@@ -1,4 +1,7 @@
 #!/bin/bash
+# focus_instance.sh
+# Usage: ./focus_instance.sh <app_name> [next|prev]
+# This script will focus the next or previous instance of the specified application.
 
 # Check if the application name is provided
 if [ -z "$1" ]; then
@@ -7,6 +10,7 @@ if [ -z "$1" ]; then
 fi
 
 app_name="$1"
+direction="${2:-next}"
 
 # Find the window IDs of the specified application, sorted
 app_windows=$(yabai -m query --windows | jq -r --arg app_name "$app_name" '.[] | select(.app == $app_name) | .id' | sort -n)
@@ -33,10 +37,18 @@ for i in "${!app_windows_array[@]}"; do
 done
 
 # Calculate the index of the next window to focus
-if [ "$current_index" -eq -1 ]; then
-  next_index=0
+if [ "$direction" == "next" ]; then
+  if [ "$current_index" -eq -1 ]; then
+    next_index=0
+  else
+    next_index=$(( (current_index + 1) % ${#app_windows_array[@]} ))
+  fi
 else
-  next_index=$(( (current_index + 1) % ${#app_windows_array[@]} ))
+  if [ "$current_index" -eq -1 ]; then
+    next_index=$(( ${#app_windows_array[@]} - 1 ))
+  else
+    next_index=$(( (current_index - 1 + ${#app_windows_array[@]}) % ${#app_windows_array[@]} ))
+  fi
 fi
 
 # Focus on the next window

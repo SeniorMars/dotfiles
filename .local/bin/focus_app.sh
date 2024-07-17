@@ -1,4 +1,7 @@
 #!/bin/bash
+# focus_app.sh
+# Usage: ./focus_app.sh <app_name>
+# This script will focus the instance of the specified application.
 
 # Check if the application name is provided
 if [ -z "$1" ]; then

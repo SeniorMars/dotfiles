@@ -1,4 +1,4 @@
-#target_space!/bin/bash
+#!/bin/bash
 # smart_focus.sh
 # Usage: ./smart_focus.sh <space_number>
 # This script will focus the specified space within the current display.
