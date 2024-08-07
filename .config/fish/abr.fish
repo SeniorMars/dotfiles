@@ -27,12 +27,12 @@ abbr -a md mkdir -p
 abbr -a rd rmdir
 
 # # List directory contents
-abbr -a ls exa
-abbr -a sl exa
-abbr -a la exa -aF
-abbr -a ll exa -al
-abbr -a l exa -a
-abbr -a l1 exa -1
+abbr -a ls eza
+abbr -a sl eza
+abbr -a la eza -aF
+abbr -a ll eza -al
+abbr -a l eza -a
+abbr -a l1 eza -1
 
 abbr -a q exit
 abbr -a yr 'cal -y'

@@ -9,7 +9,6 @@ if status is-interactive
     setenv LESS_TERMCAP_ue \e'[0m' # end underline
 
     # Set fish to use vi key bindings
-
     set -g fish_key_bindings hybrid_bindings
     set fish_key_bindings fish_user_key_bindings
 
@@ -22,4 +21,5 @@ if status is-interactive
     source ~/.config/fish/abr.fish # abbrs / alias
     zoxide init fish | source
     atuin init fish | source
+    starship init fish | source
 end

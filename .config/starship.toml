@@ -1,0 +1,87 @@
+format = """
+[λ in ](bright-red)\
+$directory\
+$git_branch\
+$git_state\
+$git_status\
+$cmd_duration\
+$character\
+$status"""
+
+add_newline = false
+
+[character]
+format = "$symbol "
+success_symbol = "[❯❯](fg:#FF6AC1)"
+error_symbol = "[❯❯](black)"
+vimcmd_symbol = "[❮❮](fg:#FF6AC1)"
+vimcmd_replace_one_symbol = "[◌](fg:#FF6AC1)"
+vimcmd_replace_symbol = "[▶](fg:#FF6AC1)"
+vimcmd_visual_symbol = "[▼](fg:#FF6AC1)"
+
+[cmd_duration]
+format = '[took $duration]($style) '
+style = "bright-black"
+
+[directory]
+format = '[$path]($style)[$read_only]($read_only_style) '
+truncation_length = 2
+style = "fg:#0087AF"
+read_only = " 󰌾"
+read_only_style = "bold blue"
+repo_root_format = '[$before_root_path]($before_repo_root_style)[$repo_root]($repo_root_style)[$path]($style)[$read_only]($read_only_style) '
+repo_root_style = 'fg:#0087AF'
+before_repo_root_style = 'blue'
+fish_style_pwd_dir_length = 1
+
+[git_branch]
+format = "on [$branch(:$remote_branch)]($style)"
+style = "bright-black"
+
+[git_status]
+format = '([$ahead_behind$all_status]($style))'
+conflicted = '[=${count}$conflicted](fg:#fd2601) '
+ahead = '[⇡${count}$ahead](green) '
+behind = '[⇣${count}$behind](green) '
+diverged = '[⇕$diverged](bright-black) '
+up_to_date = ' '
+untracked = '[?${count}$untracked](bright-yellow) '
+stashed = '[*${count}$stashed](fg:#5FD700) '
+modified = '[!${count}$modified](fg:#ff8700) '
+staged = '[+${count}$staged](bright-green) '
+renamed = '[◇${count}$renamed](bright-black) '
+deleted = '[✘${count}$deleted](red) '
+typechanged = ''
+
+[haskell]
+symbol = " "
+
+[lua]
+symbol = " "
+
+[ocaml]
+symbol = " "
+
+[os.symbols]
+Android = " "
+Arch = " "
+Linux = " "
+Macos = " "
+NixOS = " "
+Pop = " "
+Raspbian = " "
+Ubuntu = " "
+Windows = "󰍲 "
+
+[package]
+disabled = true
+symbol = "󰏗 "
+
+[rust]
+symbol = "󱘗 "
+
+[status]
+disabled = false
+
+[zig]
+symbol = " "
