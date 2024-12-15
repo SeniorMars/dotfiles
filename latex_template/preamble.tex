@@ -1,8 +1,3 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% PACKAGE IMPORTS
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
 \usepackage[tmargin=2cm,rmargin=1in,lmargin=1in,margin=0.85in,bmargin=2cm,footskip=.2in]{geometry}
 \usepackage{amsmath,amsfonts,amsthm,amssymb,mathtools}
 \usepackage[varbb]{newpxmath}
@@ -26,7 +21,6 @@
 %\usepackage{authblk}
 \usepackage{nameref}
 \usepackage{multicol,array}
-\usepackage{tikz-cd}
 \usepackage[ruled,vlined,linesnumbered]{algorithm2e}
 \usepackage{comment} % enables the use of multi-line comments (\ifx \fi) 
 \usepackage{import}
@@ -78,6 +72,7 @@
 \definecolor{myyellow}{RGB}{169,121,69}
 \definecolor{myexercisebg}{HTML}{F2FBF8}
 \definecolor{myexercisefg}{HTML}{88D6D1}
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -188,11 +183,11 @@
 
 
 %================================
-% LENMA
+% LEMMA
 %================================
 
 \tcbuselibrary{theorems,skins,hooks}
-\newtcbtheorem[number within=section]{Lenma}{Lenma}
+\newtcbtheorem[number within=section]{Lemma}{Lemma}
 {%
 	enhanced,
 	breakable,
@@ -230,6 +225,51 @@
 	segmentation style={solid, mylenmafr},
 }
 {th}
+
+%================================
+% Exercise
+%================================
+
+\tcbuselibrary{theorems,skins,hooks}
+\newtcbtheorem[number within=section]{Exercise}{Exercise}
+{%
+	enhanced,
+	breakable,
+	colback = myexercisebg,
+	frame hidden,
+	boxrule = 0sp,
+	borderline west = {2pt}{0pt}{myexercisefg},
+	sharp corners,
+	detach title,
+	before upper = \tcbtitle\par\smallskip,
+	coltitle = myexercisefg,
+	fonttitle = \bfseries\sffamily,
+	description font = \mdseries,
+	separator sign none,
+	segmentation style={solid, myexercisefg},
+}
+{th}
+
+\tcbuselibrary{theorems,skins,hooks}
+\newtcbtheorem[number within=chapter]{exercise}{Exercise}
+{%
+	enhanced,
+	breakable,
+	colback = myexercisebg,
+	frame hidden,
+	boxrule = 0sp,
+	borderline west = {2pt}{0pt}{myexercisefg},
+	sharp corners,
+	detach title,
+	before upper = \tcbtitle\par\smallskip,
+	coltitle = myexercisefg,
+	fonttitle = \bfseries\sffamily,
+	description font = \mdseries,
+	separator sign none,
+	segmentation style={solid, myexercisefg},
+}
+{th}
+
 
 
 %================================
@@ -303,49 +343,6 @@
 
 
 
-%================================
-% Exercise
-%================================
-
-\tcbuselibrary{theorems,skins,hooks}
-\newtcbtheorem[number within=section]{Exercise}{Exercise}
-{%
-	enhanced,
-	breakable,
-	colback = myexercisebg,
-	frame hidden,
-	boxrule = 0sp,
-	borderline west = {2pt}{0pt}{myexercisefg},
-	sharp corners,
-	detach title,
-	before upper = \tcbtitle\par\smallskip,
-	coltitle = myexercisefg,
-	fonttitle = \bfseries\sffamily,
-	description font = \mdseries,
-	separator sign none,
-	segmentation style={solid, myexercisefg},
-}
-{th}
-
-\tcbuselibrary{theorems,skins,hooks}
-\newtcbtheorem[number within=chapter]{exercise}{Exercise}
-{%
-	enhanced,
-	breakable,
-	colback = myexercisebg,
-	frame hidden,
-	boxrule = 0sp,
-	borderline west = {2pt}{0pt}{myexercisefg},
-	sharp corners,
-	detach title,
-	before upper = \tcbtitle\par\smallskip,
-	coltitle = myexercisefg,
-	fonttitle = \bfseries\sffamily,
-	description font = \mdseries,
-	separator sign none,
-	segmentation style={solid, myexercisefg},
-}
-{th}
 
 %================================
 % EXAMPLE BOX
@@ -433,7 +430,7 @@
 
 
 %================================
-% Solution BOX
+% EXERCISE BOX
 %================================
 
 \makeatletter
@@ -589,7 +586,8 @@
 
 \newcommand{\thm}[2]{\begin{Theorem}{#1}{}#2\end{Theorem}}
 \newcommand{\cor}[2]{\begin{Corollary}{#1}{}#2\end{Corollary}}
-\newcommand{\mlenma}[2]{\begin{Lenma}{#1}{}#2\end{Lenma}}
+\newcommand{\mlenma}[2]{\begin{Lemma}{#1}{}#2\end{Lemma}}
+\newcommand{\mer}[2]{\begin{Exercise}{#1}{}#2\end{Exercise}}
 \newcommand{\mprop}[2]{\begin{Prop}{#1}{}#2\end{Prop}}
 \newcommand{\clm}[3]{\begin{claim}{#1}{#2}#3\end{claim}}
 \newcommand{\wc}[2]{\begin{wconc}{#1}{}\setlength{\parindent}{1cm}#2\end{wconc}}
@@ -615,6 +613,8 @@
 
 \newcommand{\mclm}[2]{\begin{myclaim}[#1]#2\end{myclaim}}
 \newenvironment{myclaim}[1][\claimname]{\proof[\bfseries #1: ]}{}
+\newenvironment{iclaim}[1][\claimname]{\bfseries #1\mdseries:}{}
+\newcommand{\iclm}[2]{\begin{iclaim}[#1]#2\end{iclaim}}
 
 \newcounter{mylabelcounter}
 
@@ -742,7 +742,7 @@
 {\addvspace{30pt}%
 	\begin{tikzpicture}[remember picture, overlay]%
 		\draw[fill=doc!60,draw=doc!60] (-7,-.1) rectangle (-0.9,.5);%
-		\pgftext[left,x=-3.5cm,y=0.2cm]{\color{white}\Large\sc\bfseries Chapter\ \thecontentslabel};%
+		\pgftext[left,x=-3.7cm,y=0.2cm]{\color{white}\Large\sc\bfseries Chapter\ \thecontentslabel};%
 	\end{tikzpicture}\color{doc!60}\large\sc\bfseries}%
 {}
 {}
@@ -775,4 +775,3 @@
 	  \end{tikzpicture}}%
 	\@starttoc{toc}}
 \makeatother
-

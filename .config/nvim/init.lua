@@ -23,22 +23,8 @@ require("lazy").setup({
         "zbirenbaum/copilot.lua", -- Copilot but lua
         cmd = "Copilot",
         event = "InsertEnter"
-    }, {
-        "robitx/gp.nvim",
-        lazy = true,
-        cmd = "GpNew",
-        config = function()
-            local key = os.getenv("GPG_KEY")
-            require("gp").setup({
-                openai_api_key = {
-                    "gpg", "--decrypt", "-r", key, home .. "/personal/lol.gpg"
-                }
-            })
-        end
-    }, {
-        "nvim-telescope/telescope.nvim",
-        dependencies = {"nvim-lua/plenary.nvim", "nvim-lua/popup.nvim"}
-    }, {
+    }, {"nvim-telescope/telescope.nvim", dependencies = {"nvim-lua/plenary.nvim"}},
+    {
         "nvim-telescope/telescope-frecency.nvim",
         config = function()
             require("telescope").load_extension "frecency"
@@ -49,7 +35,8 @@ require("lazy").setup({
             local alpha = require("alpha")
             local dashboard = require("alpha.themes.dashboard")
             local button = dashboard.button
-            dashboard.section.header.val = {
+            local section = dashboard.section
+            section.header.val = {
                 [[                                                                       ]],
                 [[  ██████   █████                   █████   █████  ███                  ]],
                 [[ ░░██████ ░░███                   ░░███   ░░███  ░░░                   ]],
@@ -63,7 +50,7 @@ require("lazy").setup({
                 [[                     λ it be like that sometimes λ                     ]]
             }
 
-            dashboard.section.buttons.val = {
+            section.buttons.val = {
                 button("f", "  Find file",
                        ":Telescope find_files hidden=true no_ignore=true<CR>"),
                 button("e", "  New file", ":ene <BAR> startinsert <CR>"),
@@ -75,7 +62,7 @@ require("lazy").setup({
                 button("l", "  Open last session", ":RestoreSession<CR>"),
                 button("q", "  Quit", ":qa<CR>")
             }
-            dashboard.section.footer.val = require 'alpha.fortune'()
+            section.footer.val = require 'alpha.fortune'()
             alpha.setup(dashboard.opts)
         end
     }, {"neoclide/coc.nvim", branch = "release", build = ":CocUpdate"}, -- auto complete
@@ -180,20 +167,13 @@ require("lazy").setup({
     {"sbdchd/neoformat"}, -- format code
     {"mbbill/undotree", lazy = true, cmd = "UndotreeToggle"}, -- see undo tree
     {
-        "smjonas/live-command.nvim", -- live command
-        config = function()
-            require("live-command").setup({commands = {Norm = {cmd = "norm"}}})
-        end
-    }, {
         "rmagatti/auto-session", -- auto save session
         config = function()
             require("auto-session").setup({
                 log_level = "error",
-                auto_session_suppress_dirs = {
-                    "~/", "~/Downloads", "~/Documents"
-                },
-                auto_session_use_git_branch = true,
-                auto_save_enabled = true
+                suppressed_dirs = {"~/", "~/Downloads", "~/Documents"},
+                use_git_branch = true,
+                auto_save = true
             })
         end
     }, {
@@ -222,17 +202,19 @@ require("lazy").setup({
             }
         end
     }, {"uga-rosa/ccc.nvim"}, -- color highlighting
-    {"wellle/targets.vim"}, -- adds more targets like [ or ,
-    {"nvim-neorg/neorg"}, {
+    {
+        "chrisgrieser/nvim-various-textobjs",
+        event = "UIEnter",
+        opts = {useDefaultKeymaps = true}
+    }, {"nvim-neorg/neorg"}, {
         "HakonHarnes/img-clip.nvim",
         event = "BufEnter",
         keys = {
             {"<leader>i", "<cmd>PasteImage<cr>", desc = "Paste clipboard image"}
         }
-    }, {"3rd/image.nvim"},
-    {"lervag/vimtex"}, -- for latex
+    }, {"3rd/image.nvim"}, {"lervag/vimtex"}, -- for latex
     {"akinsho/toggleterm.nvim"}, -- for smart terminal
-    {"puremourning/vimspector"} -- debugging
+    {"puremourning/vimspector"}, -- debugging
 }, {
     performance = {
         rtp = {
@@ -261,6 +243,8 @@ vim.opt.signcolumn = "number"
 vim.opt.colorcolumn = "99999" -- fix columns
 vim.opt.mouse = "a" -- set mouse to be on
 vim.opt.shortmess:append("c") -- no ins-completion messages
+vim.o.sessionoptions =
+    "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
 -- vim.opt.cmdheight = 0 -- status line smaller
 vim.opt.laststatus = 3
 vim.opt.breakindent = true -- break indentation for long lines
@@ -459,17 +443,30 @@ end
 local modes = setmetatable({
     ["n"] = {"NORMAL", "N"},
     ["no"] = {"N·OPERATOR", "N·P"},
+    ["nov"] = {"O·PENDING", "O·P"},
+    ["noV"] = {"O·PENDING", "O·P"},
+    ["no\22"] = {"O·PENDING", "O·P"},
+    ["niI"] = {"NORMAL", "N"},
+    ["niR"] = {"NORMAL", "N"},
+    ["niV"] = {"NORMAL", "N"},
+    ["nt"] = {"NORMAL", "N"},
+    ["ntT"] = {"NORMAL", "N"},
     ["v"] = {"VISUAL", "V"},
     ["V"] = {"V·LINE", "V·L"},
-    [""] = {"V·BLOCK", "V·B"},
-    [""] = {"V·BLOCK", "V·B"},
+    ["\22"] = {"V·BLOCK", "V·B"},
+    ["\22s"] = {"V·BLOCK", "V·B"},
     ["s"] = {"SELECT", "S"},
     ["S"] = {"S·LINE", "S·L"},
-    [""] = {"S·BLOCK", "S·B"},
+    ["\19"] = {"S·BLOCK", "S·B"},
     ["i"] = {"INSERT", "I"},
     ["ic"] = {"INSERT", "I"},
+    ["ix"] = {"INSERT", "I"},
     ["R"] = {"REPLACE", "R"},
     ["Rv"] = {"V·REPLACE", "V·R"},
+    ["Rc"] = {"REPLACE", "R"},
+    ["Rx"] = {"REPLACE", "R"},
+    ["Rvc"] = {"V·REPLACE", "V·R"},
+    ["Rvx"] = {"V·REPLACE", "V·R"},
     ["c"] = {"COMMAND", "C"},
     ["cv"] = {"VIM·EX", "V·E"},
     ["ce"] = {"EX", "E"},
@@ -628,15 +625,16 @@ keyset("n", "j", "(v:count ? 'j' : 'gj')", {expr = true})
 keyset("n", "k", "(v:count ? 'k' : 'gk')", {expr = true})
 
 -- Telescope + grepper
-keyset("n", "<leader><leader>f", ":Telescope git_files<cr>")
-keyset("n", "<leader>fl", ":Telescope live_grep<cr>")
+keyset("n", "<leader><leader>f", ":Telescope git_files<cr>", {silent = true})
+keyset("n", "<leader>fl", ":Telescope live_grep<cr>", {silent = true})
 keyset("n", "<leader>ff",
-       ":Telescope frecency workspace=CWD theme=ivy layout_config={height=0.4} path_display={'shorten'}<cr>")
-keyset("n", "<leader>fb", ":Telescope buffers<cr>")
-keyset("n", "<leader>fm", ":Telescope man_pages<cr>")
-keyset("n", "<leader>ft", ":Telescope treesitter<cr>")
-keyset("n", "<leader>fk", ":Telescope keymaps<cr>")
-keyset("n", "<leader>fh", ":Telescope help_tags<cr>")
+       ":Telescope frecency workspace=CWD theme=ivy layout_config={height=0.4} path_display={'shorten'}<cr>",
+       {silent = true})
+keyset("n", "<leader>fb", ":Telescope buffers<cr>", {silent = true})
+keyset("n", "<leader>fm", ":Telescope man_pages<cr>", {silent = true})
+keyset("n", "<leader>ft", ":Telescope treesitter<cr>", {silent = true})
+keyset("n", "<leader>fk", ":Telescope keymaps<cr>", {silent = true})
+keyset("n", "<leader>fh", ":Telescope help_tags<cr>", {silent = true})
 keyset("n", "<leader>fs", ':GrepperRg "" .<Left><Left><Left>')
 keyset("n", "<leader>fS", ":Rg<space>")
 keyset("n", "<leader>*", ":Grepper -tool rg -cword -noprompt<cr>")
@@ -748,9 +746,12 @@ MUtils.enter = function()
     if vim.fn["coc#pum#visible"]() ~= 0 then
         return vim.fn["coc#_select_confirm"]()
     else
-        local key = api.nvim_replace_termcodes("<C-g>u<CR>", true, true, true)
-        api.nvim_feedkeys(key, "n", false)
-        return vim.fn["coc#on_enter"]()
+        local npairs_cr = npairs.autopairs_cr
+        local key =
+            vim.api.nvim_replace_termcodes("<C-g>u", true, true, true) ..
+                npairs_cr()
+        vim.api.nvim_feedkeys(key, 'n', false)
+        return vim.fn['coc#on_enter']()
     end
 end
 
@@ -813,7 +814,7 @@ keyset("n", "<space>q", ":<C-u>CocList<cr>", opts)
 keyset("n", "<space>d", _G.MUtils.diagnostic, opts)
 keyset("n", "K", _G.MUtils.help, {silent = true})
 -- Vimtex config
-vim.g.vimtex_quickfix_mode = 2
+vim.g.vimtex_quickfix_mode = 0
 vim.g.vimtex_compiler_latexmk_engines = {["_"] = "-lualatex -shell-escape"}
 vim.g.vimtex_indent_on_ampersands = 0
 vim.g.vimtex_view_method = 'sioyek'
@@ -1121,13 +1122,13 @@ require("telescope").setup({
     }
 })
 
-local ts_repeat_move = require("nvim-treesitter.textobjects.repeatable_move")
+local ts_repeat_move = require "nvim-treesitter.textobjects.repeatable_move"
 keyset({"n", "x", "o"}, ";", ts_repeat_move.repeat_last_move_next)
 keyset({"n", "x", "o"}, ",", ts_repeat_move.repeat_last_move_previous)
-keyset({"n", "x", "o"}, "f", ts_repeat_move.builtin_f)
-keyset({"n", "x", "o"}, "F", ts_repeat_move.builtin_F)
-keyset({"n", "x", "o"}, "t", ts_repeat_move.builtin_t)
-keyset({"n", "x", "o"}, "T", ts_repeat_move.builtin_T)
+keyset({"n", "x", "o"}, "f", ts_repeat_move.builtin_f_expr, {expr = true})
+keyset({"n", "x", "o"}, "F", ts_repeat_move.builtin_F_expr, {expr = true})
+keyset({"n", "x", "o"}, "t", ts_repeat_move.builtin_t_expr, {expr = true})
+keyset({"n", "x", "o"}, "T", ts_repeat_move.builtin_T_expr, {expr = true})
 
 require("nvim-treesitter.configs").setup({
     highlight = {enable = true, disable = {"latex"}},
@@ -1142,12 +1143,7 @@ require("nvim-treesitter.configs").setup({
             set_jumps = true, -- whether to set jumps in the jumplist
             goto_next_start = {
                 ["]m"] = "@function.outer",
-                ["]]"] = {query = "@class.outer", desc = "Next class start"},
-                ["]s"] = {
-                    query = "@scope",
-                    query_group = "locals",
-                    desc = "Next scope"
-                }
+                ["]]"] = {query = "@class.outer", desc = "Next class start"}
             },
             goto_previous_start = {
                 ["[m"] = "@function.outer",
@@ -1201,7 +1197,6 @@ require("neorg").setup({
         ["core.defaults"] = {}, -- Load all the default modules
         ["core.qol.toc"] = {},
         ["core.concealer"] = {config = {icon_preset = "diamond"}},
-        ["core.latex.renderer"] = {},
         ["core.keybinds"] = {
             config = {
                 hook = function(keybinds)
@@ -1211,18 +1206,10 @@ require("neorg").setup({
         },
         ["core.dirman"] = {
             config = {
-                workspaces = {
-                    notes = "~/Notes",
-                    journal = "~/Notes/"
-                },
-                default_workspace = "notes",
-            },
-        },
-        ["core.journal"] = {
-            config = {
-                strategy = "flat",
-                workspace = "journal"
+                workspaces = {notes = "~/Notes", journal = "~/Notes/"},
+                default_workspace = "notes"
             }
-        }
+        },
+        ["core.journal"] = {config = {strategy = "flat", workspace = "journal"}}
     }
 })

@@ -1,69 +1,10 @@
-%From M275 "Topology" at SJSU
-\newcommand{\id}{\mathrm{id}}
-\newcommand{\taking}[1]{\xrightarrow{#1}}
-\newcommand{\inv}{^{-1}}
-
-%From M170 "Introduction to Graph Theory" at SJSU
-\DeclareMathOperator{\diam}{diam}
-\DeclareMathOperator{\ord}{ord}
-\newcommand{\defeq}{\overset{\mathrm{def}}{=}}
-
-%From the USAMO .tex files
-\newcommand{\ts}{\textsuperscript}
-\newcommand{\dg}{^\circ}
-\newcommand{\ii}{\item}
-
-% % From Math 55 and Math 145 at Harvard
-% \newenvironment{subproof}[1][Proof]{%
-% \begin{proof}[#1] \renewcommand{\qedsymbol}{$\blacksquare$}}%
-% {\end{proof}}
-
-\newcommand{\liff}{\leftrightarrow}
-\newcommand{\lthen}{\rightarrow}
-\newcommand{\opname}{\operatorname}
-\newcommand{\surjto}{\twoheadrightarrow}
-\newcommand{\injto}{\hookrightarrow}
-\newcommand{\On}{\mathrm{On}} % ordinals
-\DeclareMathOperator{\img}{im} % Image
-\DeclareMathOperator{\Img}{Im} % Image
-\DeclareMathOperator{\coker}{coker} % Cokernel
-\DeclareMathOperator{\Coker}{Coker} % Cokernel
-\DeclareMathOperator{\Ker}{Ker} % Kernel
-\DeclareMathOperator{\rank}{rank}
-\DeclareMathOperator{\Spec}{Spec} % spectrum
-\DeclareMathOperator{\Tr}{Tr} % trace
-\DeclareMathOperator{\pr}{pr} % projection
-\DeclareMathOperator{\ext}{ext} % extension
-\DeclareMathOperator{\pred}{pred} % predecessor
-\DeclareMathOperator{\dom}{dom} % domain
-\DeclareMathOperator{\ran}{ran} % range
-\DeclareMathOperator{\Hom}{Hom} % homomorphism
-\DeclareMathOperator{\Mor}{Mor} % morphisms
-\DeclareMathOperator{\End}{End} % endomorphism
-
 \newcommand{\eps}{\epsilon}
 \newcommand{\veps}{\varepsilon}
-\newcommand{\ol}{\overline}
-\newcommand{\ul}{\underline}
-\newcommand{\wt}{\widetilde}
-\newcommand{\wh}{\widehat}
-\newcommand{\vocab}[1]{\textbf{\color{blue} #1}}
-\providecommand{\half}{\frac{1}{2}}
-\newcommand{\dang}{\measuredangle} %% Directed angle
-\newcommand{\ray}[1]{\overrightarrow{#1}}
-\newcommand{\seg}[1]{\overline{#1}}
-\newcommand{\arc}[1]{\wideparen{#1}}
-\DeclareMathOperator{\cis}{cis}
-\DeclareMathOperator*{\lcm}{lcm}
-\DeclareMathOperator*{\argmin}{arg min}
-\DeclareMathOperator*{\argmax}{arg max}
-\newcommand{\cycsum}{\sum_{\mathrm{cyc}}}
-\newcommand{\symsum}{\sum_{\mathrm{sym}}}
-\newcommand{\cycprod}{\prod_{\mathrm{cyc}}}
-\newcommand{\symprod}{\prod_{\mathrm{sym}}}
 \newcommand{\Qed}{\begin{flushright}\qed\end{flushright}}
+
 \newcommand{\parinn}{\setlength{\parindent}{1cm}}
 \newcommand{\parinf}{\setlength{\parindent}{0cm}}
+
 % \newcommand{\norm}{\|\cdot\|}
 \newcommand{\inorm}{\norm_{\infty}}
 \newcommand{\opensets}{\{V_{\alpha}\}_{\alpha\in I}}
@@ -74,6 +15,8 @@
 \newcommand{\Del}[3]{\frac{\partial^{#1} #2}{\partial^{#1} #3}}
 \newcommand{\deld}[2]{\dfrac{\partial #1}{\partial #2}}
 \newcommand{\Deld}[3]{\dfrac{\partial^{#1} #2}{\partial^{#1} #3}}
+\newcommand{\der}[2]{\frac{\mathrm{d} #1}{\mathrm{d} #2}}
+% \newcommand{\ddd}[3]{\frac{\mathrm{d}^{#3} #1}{\mathrm{d}^{#3} #2}}
 \newcommand{\lm}{\lambda}
 \newcommand{\uin}{\mathbin{\rotatebox[origin=c]{90}{$\in$}}}
 \newcommand{\usubset}{\mathbin{\rotatebox[origin=c]{90}{$\subset$}}}
@@ -83,6 +26,8 @@
 \newcommand{\exs}{\exists}
 \newcommand{\st}{\strut}
 \newcommand{\dps}[1]{\displaystyle{#1}}
+\newcommand{\id}{\text{id}}
+
 
 \newcommand{\sol}{\setlength{\parindent}{0cm}\textbf{\textit{Solution:}}\setlength{\parindent}{1cm} }
 \newcommand{\solve}[1]{\setlength{\parindent}{0cm}\textbf{\textit{Solution: }}\setlength{\parindent}{1cm}#1 \Qed}

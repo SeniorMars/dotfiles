@@ -94,11 +94,13 @@ menupopup {
   -moz-appearance: none !important;
   padding: 8px !important;
   background-color: #111111 !important;
+  color: #98cfe5 !important;
 }
 
 #navigator-toolbox {
     --tabs-border-color: none !important;
     border: none !important;
+    color: #98cfe5 !important;
 }
 
 /* /1* This removes the tab separators *1/ */
@@ -119,16 +121,6 @@ menupopup {
     border-radius: 8px !important;
 }
 
-/* This moves the tabs under the URL bar */
-#titlebar {
-    order: 3 !important;
-  }
-
-/* .tabbrowser-tab[selected]:not(:hover):not([pinned]) .tab-label-container, */
-/* #tabbrowser-tabs:not([closebuttons="activetab"]) .tabbrowser-tab:not(:hover):not([pinned]) .tab-label-container{ */
-/*   padding-inline-end: 6px !important; */
-/*   color: #c33dab !important; */
-/* } */
 .tab-icon-stack{
   margin-inline-start: auto
 }
@@ -148,7 +140,13 @@ menupopup {
     border: none !important;
     box-shadow: none !important;
     background-image: none !important;
+}
 
+#urlbar,
+#urlbar-input,
+.urlbar-input-box {
+    color: #ffffff !important; /* Sets the text color to white */
+    text-shadow: none !important; /* Removes any shadows that might obscure text */
 }
 
 .urlbarView {
@@ -198,12 +196,6 @@ menupopup {
     color: #98cfe5 !important;
 }
 
-/* Hide minimize, restore, close in full screen */
-/* #minimize-button, #restore-button, #close-button {
-    display: none !important;
- }
-*/
-
 #urlbar,
 #searchbar {
     border: none !important;
@@ -225,12 +217,155 @@ browser[type="content"] > html {
         background: #111 !important;
 }
 
+#tabs-newtab-button {
+    display: none !important;
+}
+
+/* Download progress text */
+#downloadsPanel .downloadProgress {
+    color: #ffffff !important; /* White text for download progress */
+}
+
+/* Tooltip text for all panels */
+.tooltip {
+    color: #ffffff !important;
+    background-color: #111111 !important;
+}
+
+#unified-extensions-view,
+#unified-extensions-view .unified-extensions-item {
+    color: #ffffff !important; /* Sets the text color to white */
+}
+
+#unified-extensions-view .toolbarbutton-text {
+    color: #ffffff !important; /* Ensures toolbar button text is white */
+}
+
+#unified-extensions-view .unified-extensions-item:hover {
+    color: #ffffff !important; /* Keeps the text white on hover */
+}
+
+
+/* General panel styling */
+panel,
+#appMenu-popup,
+#downloadsPanel,
+#widget-overflow {
+    background-color: #111111 !important; /* Dark background for all panels */
+    color: #ffffff !important; /* White text color */
+    border: none !important; /* Remove borders for a clean look */
+}
+
+/* Text inside panels */
+panel .toolbarbutton-text,
+panel .menuitem-text,
+panel .menuitem-label {
+    color: #ffffff !important; /* White text for items in panels */
+}
+
+/* Specific styling for overflow menu */
+#widget-overflow .toolbarbutton-text,
+#widget-overflow .menuitem-text {
+    color: #ffffff !important;
+}
+
+/* Specific styling for downloads panel */
+#downloadsPanel .downloadContainer,
+#downloadsPanel .downloadSummary,
+#downloadsPanel .downloadProgress {
+    color: #ffffff !important; /* White text for downloads panel */
+}
+
+/* Hover effect for panel items */
+panel menuitem:hover,
+panel button:hover,
+#widget-overflow .toolbarbutton:hover,
+#downloadsPanel .download:hover {
+    background-color: #21252B !important; /* Darker hover effect */
+    color: #ffffff !important; /* Keeps text white on hover */
+}
+
+/* Panel buttons */
+panel button {
+    color: #ffffff !important;
+    background-color: #111111 !important;
+    border: none !important;
+}
+
+/* Panel borders */
+panel,
+panel[role="tooltip"] {
+    border: 1px solid #21252B !important; /* Subtle border for panels */
+}
+
+/* Tooltip styling */
+panel[role="tooltip"] {
+    background-color: #111111 !important;
+    color: #ffffff !important;
+}
+
+/* Additional styling for separators in panels */
+panel menuseparator {
+    background-color: #21252B !important;
+    height: 1px !important;
+    margin: 4px 0 !important;
+    border: none !important;
+}
+
+/* Source file https://github.com/MrOtherGuy/firefox-csshacks/tree/master/chrome/tabs_on_bottom_v2.css made available under Mozilla Public License v. 2.0
+See the above repository for updates as well as full license text. */
+
+/* This reorders toolbar to place tabs below other toolbars. Requires Firefox 133+ */
+
+@media (-moz-bool-pref: "userchrome.force-window-controls-on-left.enabled"){
+  #nav-bar > .titlebar-buttonbox-container{
+    order: -1 !important;
+    > .titlebar-buttonbox{
+      flex-direction: row-reverse;
+    }
+  }
+}
+@media not (-moz-bool-pref: "sidebar.verticalTabs"){
+  .global-notificationbox,
+  #tab-notification-deck,
+  #TabsToolbar{
+    order: 1;
+  }
+  #TabsToolbar > :is(.titlebar-spacer,.titlebar-buttonbox-container){
+    display: none;
+  }
+  :root[sizemode="fullscreen"] #nav-bar > .titlebar-buttonbox-container{
+    display: flex !important;
+  }
+  :root:is([tabsintitlebar],[customtitlebar]) #toolbar-menubar:not([autohide="false"]) ~ #nav-bar{
+    > .titlebar-buttonbox-container{
+      display: flex !important;
+    }
+    :root[sizemode="normal"] & {
+      > .titlebar-spacer{
+        display: flex !important;
+      }
+    }
+    :root[sizemode="maximized"] & {
+      > .titlebar-spacer[type="post-tabs"]{
+        display: flex !important;
+      }
+      @media (-moz-bool-pref: "userchrome.force-window-controls-on-left.enabled"),
+        (-moz-gtk-csd-reversed-placement),
+        (-moz-platform: macos){
+        > .titlebar-spacer[type="post-tabs"]{
+          display: none !important;
+        }
+        > .titlebar-spacer[type="pre-tabs"]{
+          display: flex !important;
+        }
+      }
+    }
+  }
+}
+
 url(chrome://browser/content/browser.xhtml) { 
     #main-window, browser[type="content-primary"], browser[type="content"], tabbrowser#content, #content, browser[type="content"] > html { 
         background: #111111 !important;
     }
-}
-
-#tabs-newtab-button {
-    display: none !important;
 }
