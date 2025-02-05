@@ -1,20 +1,18 @@
 source ~/.config/mutt/colors.muttrc
-color status green default
+color status blue default
 
 #User
-set from = "seniormars@rice.edu"
+set from = "seniormars@riseup.net"
 set realname = "Charlie Cruz"
 
-# Ensure TLS is enforced
-set ssl_force_tls = yes
-
 # My credentials
-set imap_user = "cjh16@rice.edu"
-set smtp_url = "smtps://cjh16@rice.edu@smtp.gmail.com:465/"
-set imap_authenticators="gssapi:login"
-set smtp_authenticators = 'gssapi:login'
-set sendmail = "msmtp -a cjh16@rice.edu"
-source "gpg -dq ~/.config/mutt/rice.gpg |"
+set imap_user = "seniormars@mail.riseup.net"
+set smtp_url  = "smtps://seniormars@mail.riseup.net/"
+source "gpg -dq ~/.config/mutt/riseup.gpg |"
+
+# Ensure TLS is enforced
+set ssl_starttls = yes
+set ssl_force_tls = yes
 
 # Use GPGME/PGP
 # Use my key for signing and encrypting
@@ -37,29 +35,27 @@ set crypt_replysignencrypted = yes
 # Attempt to verify signatures automatically
 set crypt_verify_sig = yes
 
-# doesn't work great with rice emails
-set crypt_opportunistic_encrypt = no
+set crypt_opportunistic_encrypt = no # doesn't work great with rice emails
 
 # My mailboxes
-set mbox_type = Maildir
-set folder = "~/.local/share/email/cjh16"
-set spoolfile = "+[Gmail].All Mail"
-set postponed = "+[Gmail].Drafts"
-set record = "+[Gmail].Sent Mail"
-set trash = "+[Gmail].Trash"
-mailboxes ="[Gmail].All Mail" ="[Gmail].Starred" ="[Gmail].Important" ="[Gmail].Drafts" ="[Gmail].Sent Mail" ="[Gmail].Trash" ="[Gmail].Spam" =INBOX
+set folder    = "imaps://seniormars@mail.riseup.net/"
+set imap_check_subscribed
+
+ # Folder
+set spoolfile = +INBOX
+set postponed = +Drafts
+set record    = +Sent
+set trash     = +Trash
 
 # Where to put the stuff
-set header_cache = "$XDG_CACHE_HOME/mutt/headers"
-set message_cachedir = "$XDG_CACHE_HOME/mutt/bodies"
-set certificate_file = "$XDG_CACHE_HOME/mutt/certificates"
-unset record
+set header_cache = "$XDG_CACHE_HOME/mutt/personal/headers"
+set message_cachedir = "$XDG_CACHE_HOME/mutt/personal/bodies"
+set certificate_file = "$XDG_CACHE_HOME/mutt/personal/certificates"
 
 # Etc
 set editor = "nvim"
 set tmpdir = "~/.local/mutt/temp/" # where to keep temp files
 set signature = "$XDG_CONFIG_HOME/mutt/rice"
-set index_format = '%4C %Z %{%b %d, %I %p} %-15.15L (%<l?%4l&%4c>) %s'
 
 # settings
 set pager_index_lines = 10          
@@ -67,11 +63,11 @@ set pager_context = 3                # show 3 lines of context
 set pager_stop                       # stop at end of message
 set menu_scroll                      # scroll menu
 set tilde                            # use ~ to pad mutt
-set move=no                          # dont move messages when marking as read
+set move=no                          # don't move messages when marking as read
 set mail_check = 6                   # check for new mail every 6 seconds
 set imap_keepalive = 900             # 15 minutes
-set sleep_time = 0                   # dont sleep when idle
-set wait_key = no		             # mutt wont ask 'press key to continue'
+set sleep_time = 0                   # don't sleep when idle
+set wait_key = no		             # mutt won't ask "press key to continue"
 set envelope_from                    # which from?
 set edit_headers                     # show headers when composing
 set fast_reply                       # skip to compose when replying
@@ -85,7 +81,6 @@ set attribution = "On %d, %n wrote:" # format of quoting header
 set reply_to                         # reply to Reply to: field
 set reverse_name                     # reply as whomever it was to
 set include                          # include message in replies
-set include_only_first               # only include the first message
 set text_flowed                      # correct indentation for plain text
 set thorough_search                  # strip headers and eval mimes before searching
 unset sig_dashes                     # no dashes before sig
@@ -101,22 +96,19 @@ set sort_aux = last-date-received
 set reply_regexp = "^(([Rr][Ee]?(\[[0-9]+\])?: *)?(\[[^]]+\] *)?)*"
 set quote_regexp = "^( {0,4}[>|:#%]| {0,4}[a-z0-9]+[>|]+)+"
 set send_charset = "utf-8:iso-8859-1:us-ascii"
+set charset = "utf-8"
 
 # mailcap
 set mailcap_path = "~/.config/mutt/mailcap"
 bind attach <return> view-mailcap
-macro attach s "<save-entry> <bol>~/Documents/attachments/<eol>" 'save attachment'
+macro attach s '<save-entry> <bol>~/Documents/attachments/<eol>' 'save attachment'
 auto_view text/html		# automatically show html (mailcap uses lynx)
 auto_view application/pgp-encrypted
-# alternative_order text/plain text/html
-macro attach 'V' "<pipe-entry>iconv -c --to-code=UTF8 > ~/.cache/mutt/mail.html<enter><shell-escape>$BROWSER ~/.cache/mutt/mail.html<enter>"
-macro pager,index 'V' "<view-attachments><tag-pattern>text/html<enter><pipe-entry>iconv -c --to-code=UTF8 > ~/.cache/mutt/mail.html<enter><shell-escape>$BROWSER ~/.cache/mutt/mail.html<enter>" "Open HTML attachment in browser"
 
 #sidebar
 # set sidebar_visible # disable by default
 set sidebar_short_path
 set sidebar_folder_indent
-set sidebar_next_new_wrap = yes
 set sidebar_format = "%B %* [%?N?%N / ?%S]"
 set mail_check_stats
 bind index,pager \CJ sidebar-prev
@@ -124,16 +116,18 @@ bind index,pager \CK sidebar-next
 bind index,pager \CE sidebar-open
 bind index,pager B sidebar-toggle-visible
 
-# external commands
-set query_command = "notmuch address %s"
-# set query_format = "%5c %t %a %n %?e?(%e)?"
-# set query_command="/opt/homebrew/bin/lbdbq '%s'"
+## external commands
+set query_command="/opt/homebrew/bin/lbdbq '%s'"
 bind editor <Tab> complete-query
 
 macro index,pager \cb "<pipe-message> urlscan<Enter>" "call urlscan to extract URLs out of a message"
 macro attach,compose \cb "<pipe-entry> urlscan<Enter>" "call urlscan to extract URLs out of a message"
 
 # Vim like bindings
+macro index A \
+    "<tag-pattern>~N<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>" \
+    "mark all new as read"
+
 bind index j next-entry
 bind index k previous-entry
 bind pager j next-line
@@ -145,11 +139,22 @@ bind pager g top
 bind pager G bottom
 bind attach,index g first-entry
 bind attach,index G last-entry
+# set pgp_decode_command="gpg %?p?--passphrase-fd 0? --no-verbose --batch --output - %f"
+# set pgp_verify_command="gpg --no-verbose --batch --output - --verify %s %f"
+# set pgp_decrypt_command="gpg --passphrase-fd 0 --no-verbose --batch --output - %f"
+# set pgp_sign_command="gpg --no-verbose --batch --output - --passphrase-fd 0 --armor --detach-sign --textmode %?a?-u %a? %f"
+# set pgp_clearsign_command="gpg --no-verbose --batch --output - --passphrase-fd 0 --armor --textmode --clearsign %?a?-u %a? %f"
+# set pgp_encrypt_only_command="pgpewrap gpg --batch --quiet --no-verbose --output - --encrypt --textmode --armor --always-trust --encrypt-to 7C668A6D13D5729989FB126B183357B41320BB2B -- -r %r -- %f"
+# set pgp_encrypt_sign_command="pgpewrap gpg --passphrase-fd 0 --batch --quiet --no-verbose --textmode --output - --encrypt --sign %?a?-u %a? --armor --always-trust --encrypt-to 7C668A6D13D5729989FB126B183357B41320BB2B -- -r %r -- %f"
+# set pgp_import_command="gpg --no-verbose --import -v %f"
+# set pgp_export_command="gpg --no-verbose --export --armor %r"
+# set pgp_verify_key_command="gpg --no-verbose --batch --fingerprint --check-sigs %r"
+# set pgp_list_pubring_command="gpg --no-verbose --batch --with-colons --list-keys %r"
+# set pgp_list_secring_command="gpg --no-verbose --batch --with-colons --list-secret-keys %r"
+# set pgp_autosign=yes
+# set postpone_encrypt=yes
+# set pgp_replyencrypt=yes
+# set pgp_timeout=1800
+# set pgp_good_sign="^gpg: Good signature from"
 
-# additonal bindings
-macro index A \
-    "<tag-pattern>~N<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>" \
-    "mark all new as read"
-macro index S "<shell-escape>mbsync -V gmail<enter><shell-escape>notmuch new<enter>" "sync email"
-macro index \Cf "<enter-command>unset wait_key<enter><shell-escape>read -p 'Enter a search term to find with notmuch: ' x; echo \$x >~/.cache/mutt_terms<enter><limit>~i \"\`notmuch search --output=messages \$(cat ~/.cache/mutt_terms) | head -n 600 | perl -le '@a=<>;s/\^id:// for@a;$,=\"|\";print@a' | perl -le '@a=<>; chomp@a; s/\\+/\\\\+/ for@a;print@a' \`\"<enter>" "show only messages matching a notmuch pattern"
 # vim:ft=muttrc et :

@@ -1,11 +1,10 @@
-# text/html; kitty @ launch --type overlay --title neomutt-html w3m -I %{charset} -T text/html -graph -F -no-cookie -o confirm_qq=FALSE -o use_wide=TRUE -o display_link=TRUE -o display_link_number=TRUE -o color=TRUE -o auto_image=TRUE -o display_image=TRUE -o max_load_image=20 -o imgdisplay="kitty +kitten icat" %s; nametemplate=%s.html
-text/html; open -a Firefox %s; test=test -n "$DISPLAY"; needsterminal;
+text/html; firefox %s; test=test -n "$DISPLAY"; needsterminal;
 text/html; lynx -assume_charset=%{charset} -display_charset=utf-8 -dump -width=1024 %s; nametemplate=%s.html; copiousoutput;
 text/plain; cat %s; copiousoutput;
 image/*; icat.sh '%s'; test=test -n "$DISPLAY"; needsterminal;
 video/*; setsid mpv --quiet %s &; copiousoutput
 audio/*; mpv %s ;
-application/pdf; open -a Firefox %s; test=test -n "$DISPLAY"; needsterminal;
+application/pdf; firefox %s;
 application/pgp-encrypted; gpg -d '%s'; copiousoutput;
 application/pgp-keys; gpg --import '%s'; copiousoutput;
 application/x-subrip; $EDITOR %s ;

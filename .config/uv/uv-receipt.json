@@ -1,0 +1,1 @@
+{"binaries":["uv","uvx"],"binary_aliases":{},"cdylibs":[],"cstaticlibs":[],"install_layout":"flat","install_prefix":"/Users/charlie/.local/share/../bin","modify_path":true,"provider":{"source":"cargo-dist","version":"0.28.0"},"source":{"app_name":"uv","name":"uv","owner":"astral-sh","release_type":"github"},"version":"0.5.25"}

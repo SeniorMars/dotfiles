@@ -7,7 +7,7 @@ abbr -a dotfiles '/usr/bin/git --git-dir=/Users/charlie/Work/dotfiles/.git --wor
 abbr -a j 'just'
 abbr -a ali '$EDITOR ~/.config/fish/abr.fish'
 abbr -a alr '$EDITOR ~/.config/alacritty/alacritty.yml'
-abbr -a cat ccat
+abbr -a cat bat
 abbr -a grep 'grep --color=auto'
 abbr -a glp "git log --graph --pretty=format:'%C(yellow)%h%C(auto)%d%Creset %s %C(white)- %an, %ar%Creset'"
 abbr -a gla 'git log --all --graph --decorate --oneline'

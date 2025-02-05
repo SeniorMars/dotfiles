@@ -1,5 +1,6 @@
 # This file contains fish universal variable definitions.
 # VERSION: 3.0
+SETUVAR --export BROWSER:firefox
 SETUVAR --export CARGO_HOME:/Users/charlie/\x2elocal/share/cargo
 SETUVAR --export COLORTERM:truecolor
 SETUVAR --export DOCKER_CONFIG:/Users/charlie/\x2econfig/docker
@@ -12,7 +13,6 @@ SETUVAR --export GEM_HOME:/Users/charlie/\x2elocal/share/gem
 SETUVAR --export --path GEM_PATH:/Users/charlie/\x2elocal/share/gem
 SETUVAR --export GEM_SPEC_CACHE:/Users/charlie/\x2ecache/gem
 SETUVAR --export --path GOPATH:/Users/charlie/\x2elocal/share/go
-SETUVAR --export GPG_KEY:7C668A6D13D5729989FB126B183357B41320BB2B
 SETUVAR --export GRADLE_USER_HOME:/Users/charlie/\x2elocal/share/gradle
 SETUVAR HOMEBREW_NO_ANALYTICS:1
 SETUVAR --export INPUTRC:/Users/charlie/\x2econfig/readline/inputrc
@@ -56,6 +56,8 @@ SETUVAR _fish_abbr_pr:gh\x20pr\x20create\x20\x2dt\x20\x28git\x20show\x20\x2ds\x2
 SETUVAR _fish_abbr_vimdiff:nvim\x20\x2dd
 SETUVAR _fish_abbr_yr:cal\x20\x2dy
 SETUVAR _fisher_upgraded_to_4_4:\x1d
+SETUVAR _tide_left_items:\x1d
+SETUVAR _tide_right_items:\x1d
 SETUVAR fish_color_autosuggestion:555\x1ebrblack
 SETUVAR fish_color_cancel:\x2dr
 SETUVAR fish_color_command:005fd7
@@ -74,7 +76,7 @@ SETUVAR fish_color_operator:00a6b2
 SETUVAR fish_color_param:00afff
 SETUVAR fish_color_quote:999900
 SETUVAR fish_color_redirection:00afff
-SETUVAR fish_color_search_match:bryellow\x1e\x2d\x2dbackground\x3dbrblack
+SETUVAR fish_color_search_match:white\x1e\x2d\x2dbackground\x3dbrblack
 SETUVAR fish_color_selection:white\x1e\x2d\x2dbold\x1e\x2d\x2dbackground\x3dbrblack
 SETUVAR fish_color_status:red
 SETUVAR fish_color_user:brgreen

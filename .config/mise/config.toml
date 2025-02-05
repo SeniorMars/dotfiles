@@ -1,0 +1,5 @@
+[tools]
+cosign = "latest"
+node = "22"
+python = "3.11"
+slsa-verifier = "latest"

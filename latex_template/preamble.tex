@@ -8,7 +8,7 @@
 \usepackage{enumitem}
 \usepackage{hyperref,theoremref}
 \hypersetup{
-	pdftitle={Assignment},
+	pdftitle={assignment},
 	colorlinks=true, linkcolor=doc!90,
 	bookmarksnumbered=true,
 	bookmarksopen=true
@@ -27,6 +27,9 @@
 \usepackage{xifthen}
 \usepackage{pdfpages}
 \usepackage{transparent}
+\usepackage{chngcntr}
+\usepackage{tikz}
+\usepackage{titletoc}
 
 \newcommand\mycommfont[1]{\footnotesize\ttfamily\textcolor{blue}{#1}}
 \SetCommentSty{mycommfont}
@@ -36,8 +39,24 @@
 }
 
 \usepackage{tikzsymbols}
+\tikzset{
+	symbol/.style={
+			draw=none,
+			every to/.append style={
+					edge node={node [sloped, allow upside down, auto=false]{$#1$}}}
+		}
+}
+\tikzstyle{c} = [circle,fill=black,scale=0.5]
+\tikzstyle{b} = [draw, thick, black, -]
+\tikzset{
+    vertex/.style={
+        circle,
+        draw,
+        minimum size=6mm,
+        inner sep=0pt
+    }
+}
 \renewcommand\qedsymbol{$\Laughey$}
-
 
 %\usepackage{import}
 %\usepackage{xifthen}
@@ -49,15 +68,14 @@
 % SELF MADE COLORS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
-
+\definecolor{doc}{RGB}{0,60,110}
 \definecolor{myg}{RGB}{56, 140, 70}
 \definecolor{myb}{RGB}{45, 111, 177}
 \definecolor{myr}{RGB}{199, 68, 64}
 \definecolor{mytheorembg}{HTML}{F2F2F9}
 \definecolor{mytheoremfr}{HTML}{00007B}
-\definecolor{mylenmabg}{HTML}{FFFAF8}
-\definecolor{mylenmafr}{HTML}{983b0f}
+\definecolor{mylemmabg}{HTML}{FFFAF8}
+\definecolor{mylemmafr}{HTML}{983b0f}
 \definecolor{mypropbg}{HTML}{f2fbfc}
 \definecolor{mypropfr}{HTML}{191971}
 \definecolor{myexamplebg}{HTML}{F2FBF8}
@@ -72,8 +90,6 @@
 \definecolor{myyellow}{RGB}{169,121,69}
 \definecolor{myexercisebg}{HTML}{F2FBF8}
 \definecolor{myexercisefg}{HTML}{88D6D1}
-
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % TCOLORBOX SETUPS
@@ -191,38 +207,38 @@
 {%
 	enhanced,
 	breakable,
-	colback = mylenmabg,
+	colback = mylemmabg,
 	frame hidden,
 	boxrule = 0sp,
-	borderline west = {2pt}{0pt}{mylenmafr},
+	borderline west = {2pt}{0pt}{mylemmafr},
 	sharp corners,
 	detach title,
 	before upper = \tcbtitle\par\smallskip,
-	coltitle = mylenmafr,
+	coltitle = mylemmafr,
 	fonttitle = \bfseries\sffamily,
 	description font = \mdseries,
 	separator sign none,
-	segmentation style={solid, mylenmafr},
+	segmentation style={solid, mylemmafr},
 }
 {th}
 
 \tcbuselibrary{theorems,skins,hooks}
-\newtcbtheorem[number within=chapter]{lenma}{Lenma}
+\newtcbtheorem[number within=chapter]{lemma}{lemma}
 {%
 	enhanced,
 	breakable,
-	colback = mylenmabg,
+	colback = mylemmabg,
 	frame hidden,
 	boxrule = 0sp,
-	borderline west = {2pt}{0pt}{mylenmafr},
+	borderline west = {2pt}{0pt}{mylemmafr},
 	sharp corners,
 	detach title,
 	before upper = \tcbtitle\par\smallskip,
-	coltitle = mylenmafr,
+	coltitle = mylemmafr,
 	fonttitle = \bfseries\sffamily,
 	description font = \mdseries,
 	separator sign none,
-	segmentation style={solid, mylenmafr},
+	segmentation style={solid, mylemmafr},
 }
 {th}
 
@@ -269,7 +285,6 @@
 	segmentation style={solid, myexercisefg},
 }
 {th}
-
 
 
 %================================
@@ -340,7 +355,6 @@
 	,segmentation style={solid, myg!85!black}
 }
 {th}
-
 
 
 
@@ -428,13 +442,16 @@
 	title={#2},#1}{def}
 
 
-
 %================================
 % EXERCISE BOX
 %================================
 
+\newcounter{questioncounter}
+\counterwithin{questioncounter}{chapter}
+% \counterwithin{questioncounter}{section}
+
 \makeatletter
-\newtcbtheorem{question}{Question}{enhanced,
+\newtcbtheorem[use counter=questioncounter]{question}{Question}{enhanced,
 	breakable,
 	colback=white,
 	colframe=myb!80!black,
@@ -538,7 +555,6 @@
 }{def}
 
 
-
 %================================
 % NOTE BOX
 %================================
@@ -583,10 +599,9 @@
 % SELF MADE COMMANDS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
 \newcommand{\thm}[2]{\begin{Theorem}{#1}{}#2\end{Theorem}}
 \newcommand{\cor}[2]{\begin{Corollary}{#1}{}#2\end{Corollary}}
-\newcommand{\mlenma}[2]{\begin{Lemma}{#1}{}#2\end{Lemma}}
+\newcommand{\mlemma}[2]{\begin{Lemma}{#1}{}#2\end{Lemma}}
 \newcommand{\mer}[2]{\begin{Exercise}{#1}{}#2\end{Exercise}}
 \newcommand{\mprop}[2]{\begin{Prop}{#1}{}#2\end{Prop}}
 \newcommand{\clm}[3]{\begin{claim}{#1}{#2}#3\end{claim}}
@@ -624,18 +639,6 @@
 	#1\def\@currentlabel{\unexpanded{#1}}\label{#2}%
 }
 \makeatother
-
-
-
-
-\tikzset{
-	symbol/.style={
-			draw=none,
-			every to/.append style={
-					edge node={node [sloped, allow upside down, auto=false]{$#1$}}}
-		}
-}
-
 
 % deliminators
 \DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
@@ -692,51 +695,10 @@
 \renewcommand{\leq}{\leqslant}
 \renewcommand{\geq}{\geqslant}
 
-% % redefine matrix env to allow for alignment, use r as default
-% \renewcommand*\env@matrix[1][r]{\hskip -\arraycolsep
-%     \let\@ifnextchar\new@ifnextchar
-%     \array{*\c@MaxMatrixCols #1}}
-
-
-%\usepackage{framed}
-%\usepackage{titletoc}
-%\usepackage{etoolbox}
-%\usepackage{lmodern}
-
-
-%\patchcmd{\tableofcontents}{\contentsname}{\sffamily\contentsname}{}{}
-
-%\renewenvironment{leftbar}
-%{\def\FrameCommand{\hspace{6em}%
-%		{\color{myyellow}\vrule width 2pt depth 6pt}\hspace{1em}}%
-%	\MakeFramed{\parshape 1 0cm \dimexpr\textwidth-6em\relax\FrameRestore}\vskip2pt%
-%}
-%{\endMakeFramed}
-
-%\titlecontents{chapter}
-%[0em]{\vspace*{2\baselineskip}}
-%{\parbox{4.5em}{%
-%		\hfill\Huge\sffamily\bfseries\color{myred}\thecontentspage}%
-%	\vspace*{-2.3\baselineskip}\leftbar\textsc{\small\chaptername~\thecontentslabel}\\\sffamily}
-%{}{\endleftbar}
-%\titlecontents{section}
-%[8.4em]
-%{\sffamily\contentslabel{3em}}{}{}
-%{\hspace{0.5em}\nobreak\itshape\color{myred}\contentspage}
-%\titlecontents{subsection}
-%[8.4em]
-%{\sffamily\contentslabel{3em}}{}{}  
-%{\hspace{0.5em}\nobreak\itshape\color{myred}\contentspage}
-
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % TABLE OF CONTENTS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\usepackage{tikz}
-\definecolor{doc}{RGB}{0,60,110}
-\usepackage{titletoc}
 \contentsmargin{0cm}
 \titlecontents{chapter}[3.7pc]
 {\addvspace{30pt}%

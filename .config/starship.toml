@@ -35,7 +35,7 @@ before_repo_root_style = 'blue'
 fish_style_pwd_dir_length = 1
 
 [git_branch]
-format = "on [$branch(:$remote_branch)]($style)"
+format = "on [$branch(:$remote_branch)]($style) "
 style = "bright-black"
 
 [git_status]
@@ -44,7 +44,7 @@ conflicted = '[=${count}$conflicted](fg:#fd2601) '
 ahead = '[⇡${count}$ahead](green) '
 behind = '[⇣${count}$behind](green) '
 diverged = '[⇕$diverged](bright-black) '
-up_to_date = ' '
+up_to_date = ''
 untracked = '[?${count}$untracked](bright-yellow) '
 stashed = '[*${count}$stashed](fg:#5FD700) '
 modified = '[!${count}$modified](fg:#ff8700) '

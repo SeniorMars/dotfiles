@@ -8,10 +8,12 @@
   "coc.preferences.enableMarkdown": true,
   "ltex.language": "en-US",
   "ltex.additionalRules.motherTongue": "en-US",
+  "ltex.additionalRules.enablePickyRules": true,
   "ltex.completionEnabled": true,
   "ltex.sentenceCacheSize": 6000,
   "ltex.languageToolHttpServerUri": "https://api.languagetoolplus.com",
-  "ltex.checkFrequency": "manual",
+  "ltex.languageToolOrg.username": "",
+  "ltex.languageToolOrg.apiKey": "",
   "ltex.enabled": [
     "bibtex",
     "context",
@@ -19,13 +21,17 @@
     "html",
     "latex",
     "markdown",
-    "org",
     "restructuredtext",
-    "rsweave",
     "mail",
     "norg",
     "help",
   ],
+  "ltex.latex.environments": {
+    "lstlisting": "ignore",
+    "verbatim": "ignore",
+    "minted": "ignore",
+    "leancode": "ignore",
+  },
   "ltex.diagnosticSeverity": {
     "CONFUSED_WORDS": "warning",
     "UPPERCASE_SENTENCE_START": "warning",
@@ -47,14 +53,12 @@
     "disabledRules": "userExternalFile",
     "hiddenFalsePositives": "userExternalFile",
   },
-  "ltex.additionalRules.enablePickyRules": true,
+  "ltex.checkFrequency": "save",
   "diagnostic.hintSign": "✹",
   "diagnostic.errorSign": "✘",
   "diagnostic.warningSign": "",
   "diagnostic.infoSign": "",
-  "codeLens.enable": true,
-  "codeLens.separator": " ",
-  "codeLens.subseparator": " | ",
+  "codeLens.enable": false,
   "notification.disabledProgressSources": [
     "*"
   ],
@@ -135,9 +139,14 @@
   },
   "snippets.ultisnips.enable": true,
   "snippets.ultisnips.pythonPrompt": false,
-  "zig.path": "/opt/homebrew/bin/zls",
-  "typescript.inlayHints.variableTypes.enabled": true,
-  "typescript.showUnused": false,
+  "eslint.enable": false,
+  "languageserver": {
+    "ctags-lsp": {
+      "command": "ctags-lsp",
+      "filetypes": ["toml"]
+    }
+  },
+  "Lua.diagnostics.globals": ["Snacks"],
   "rpc.enabled": true,
   "rpc.idleText": "Crying Inside",
   "rpc.buttonInactiveUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
@@ -145,4 +154,5 @@
   "rpc.detailsViewing": "In {workspace_folder}",
   "rpc.lowerDetailsNotFound": "🦀",
   "rpc.lowerDetailsEditing": "Editing: {file_name}",
+  "rpc.suppressNotifications": true,
 }
