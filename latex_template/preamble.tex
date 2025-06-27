@@ -56,13 +56,18 @@
         inner sep=0pt
     }
 }
+
 \renewcommand\qedsymbol{$\Laughey$}
 
-%\usepackage{import}
-%\usepackage{xifthen}
-%\usepackage{pdfpages}
-%\usepackage{transparent}
-
+% \usepackage{xparse}
+% \usepackage{pgffor}
+% \usepackage{emoji}
+%
+% \NewDocumentCommand{\memoji}{m o}{%
+%   \IfNoValueTF{#2}
+%     {\ifmmode \text{\emoji{#1}} \else \emoji{#1}\fi} % Single emoji case
+%     {\foreach \index in {1,...,#2}{\ifmmode \text{\emoji{#1}} \else \emoji{#1}\fi}} % Repeated emoji case
+% }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % SELF MADE COLORS

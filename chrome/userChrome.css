@@ -15,14 +15,17 @@ textbox {
     border: none !important;
 }
 
-vbox[style], hbox[style] {
-  background-color: #111111 !important;
-  border: none !important;
+vbox[style],
+hbox[style] {
+    background-color: #111111 !important;
+    border: none !important;
 }
+
 .sidebar-placesTree {
     background-color: #111111 !important;
     border: none !important;
 }
+
 :root[lwt-popup-brighttext] {
     --panel-separator-color: #111111 !important;
     border: none !important;
@@ -32,13 +35,14 @@ vbox[style], hbox[style] {
     border: none !important;
 }
 
-:root:not([uidensity="compact"]):not([chromehidden~="toolbar"]) #nav-bar[brighttext] > #PanelUI-button {
+:root:not([uidensity="compact"]):not([chromehidden~="toolbar"]) #nav-bar[brighttext]>#PanelUI-button {
     border-image-source: linear-gradient(transparent, transparent) !important;
 }
 
 #identity-box,
 #tracking-protection-icon-container,
-.urlbar-icon, .tab-icon-image {
+.urlbar-icon,
+.tab-icon-image {
     display: none !important;
 }
 
@@ -91,10 +95,10 @@ tree,
 }
 
 menupopup {
-  -moz-appearance: none !important;
-  padding: 8px !important;
-  background-color: #111111 !important;
-  color: #98cfe5 !important;
+    -moz-appearance: none !important;
+    padding: 8px !important;
+    background-color: #111111 !important;
+    color: #98cfe5 !important;
 }
 
 #navigator-toolbox {
@@ -110,30 +114,34 @@ menupopup {
 }
 
 .tab-background[selected=true] {
-  color: #111111 !important;
+    color: #111111 !important;
 }
 
 #sidebar-search-container {
-  background-color: #111111;
+    background-color: #111111;
 }
 
-.panel-arrowcontainer, .panel-arrowcontainer, .panel-arrowcontent {
+.panel-arrowcontainer,
+.panel-arrowcontainer,
+.panel-arrowcontent {
     border-radius: 8px !important;
 }
 
-.tab-icon-stack{
-  margin-inline-start: auto
-}
-.tab-label-container{
-  max-width: min-content;
-  margin-inline-end: auto;
+.tab-icon-stack {
+    margin-inline-start: auto
 }
 
-.tabbrowser-tab[selected="true"], .tab-label-container[selected="true"] {
-  color: #c33dab !important;
-  padding-inline-end: 6px !important;
-  /* background-color: var(--color3) !important; */
-  /* background-image: linear-gradient(var(--color3), var(--color3)) !important; */
+.tab-label-container {
+    max-width: min-content;
+    margin-inline-end: auto;
+}
+
+.tabbrowser-tab[selected="true"],
+.tab-label-container[selected="true"] {
+    color: #c33dab !important;
+    padding-inline-end: 6px !important;
+    /* background-color: var(--color3) !important; */
+    /* background-image: linear-gradient(var(--color3), var(--color3)) !important; */
 }
 
 .chromeclass-location {
@@ -145,14 +153,16 @@ menupopup {
 #urlbar,
 #urlbar-input,
 .urlbar-input-box {
-    color: #ffffff !important; /* Sets the text color to white */
-    text-shadow: none !important; /* Removes any shadows that might obscure text */
+    color: #ffffff !important;
+    /* Sets the text color to white */
+    text-shadow: none !important;
+    /* Removes any shadows that might obscure text */
 }
 
 .urlbarView {
-  background-color: #111111 !important;
-  box-shadow: none !important;
-  margin: auto !important;
+    background-color: #111111 !important;
+    box-shadow: none !important;
+    margin: auto !important;
 }
 
 .urlbarView-favicon {
@@ -160,24 +170,24 @@ menupopup {
 }
 
 .urlbarView:not(.megabar) .urlbarView-row:not([type="tip"])[selected],
-.urlbarView.megabar .urlbarView-row:not([type="tip"])[selected] > .urlbarView-row-inner {
-  color: #98cfe5 !important;
-  background: #21252B !important;
-  fill-opacity: 1;
+.urlbarView.megabar .urlbarView-row:not([type="tip"])[selected]>.urlbarView-row-inner {
+    color: #98cfe5 !important;
+    background: #21252B !important;
+    fill-opacity: 1;
 }
 
 #urlbar-background,
 #urlbar-container,
 .urlbar-input-box {
-  background-color: #111111 !important;
-  background-image: none !important;
+    background-color: #111111 !important;
+    background-image: none !important;
 }
 
 #urlbar:not(.megabar),
-#urlbar.megabar > #urlbar-background,
+#urlbar.megabar>#urlbar-background,
 #searchbar {
-  border: none !important;
-  box-shadow: none !important;
+    border: none !important;
+    box-shadow: none !important;
 }
 
 .sidebar-splitter {
@@ -206,7 +216,7 @@ menupopup {
 #content,
 #tabbrowser-tabpanels,
 browser[type="content-primary"],
-browser[type="content"] > html {  
+browser[type="content"]>html {
     background: #111 !important;
 }
 
@@ -214,7 +224,7 @@ browser[type="content"] > html {
 #webextpanels-window,
 #webext-panels-stack,
 #webext-panels-browser {
-        background: #111 !important;
+    background: #111 !important;
 }
 
 #tabs-newtab-button {
@@ -223,7 +233,8 @@ browser[type="content"] > html {
 
 /* Download progress text */
 #downloadsPanel .downloadProgress {
-    color: #ffffff !important; /* White text for download progress */
+    color: #ffffff !important;
+    /* White text for download progress */
 }
 
 /* Tooltip text for all panels */
@@ -234,15 +245,18 @@ browser[type="content"] > html {
 
 #unified-extensions-view,
 #unified-extensions-view .unified-extensions-item {
-    color: #ffffff !important; /* Sets the text color to white */
+    color: #ffffff !important;
+    /* Sets the text color to white */
 }
 
 #unified-extensions-view .toolbarbutton-text {
-    color: #ffffff !important; /* Ensures toolbar button text is white */
+    color: #ffffff !important;
+    /* Ensures toolbar button text is white */
 }
 
 #unified-extensions-view .unified-extensions-item:hover {
-    color: #ffffff !important; /* Keeps the text white on hover */
+    color: #ffffff !important;
+    /* Keeps the text white on hover */
 }
 
 
@@ -251,16 +265,20 @@ panel,
 #appMenu-popup,
 #downloadsPanel,
 #widget-overflow {
-    background-color: #111111 !important; /* Dark background for all panels */
-    color: #ffffff !important; /* White text color */
-    border: none !important; /* Remove borders for a clean look */
+    background-color: #111111 !important;
+    /* Dark background for all panels */
+    color: #ffffff !important;
+    /* White text color */
+    border: none !important;
+    /* Remove borders for a clean look */
 }
 
 /* Text inside panels */
 panel .toolbarbutton-text,
 panel .menuitem-text,
 panel .menuitem-label {
-    color: #ffffff !important; /* White text for items in panels */
+    color: #ffffff !important;
+    /* White text for items in panels */
 }
 
 /* Specific styling for overflow menu */
@@ -273,7 +291,8 @@ panel .menuitem-label {
 #downloadsPanel .downloadContainer,
 #downloadsPanel .downloadSummary,
 #downloadsPanel .downloadProgress {
-    color: #ffffff !important; /* White text for downloads panel */
+    color: #ffffff !important;
+    /* White text for downloads panel */
 }
 
 /* Hover effect for panel items */
@@ -281,8 +300,10 @@ panel menuitem:hover,
 panel button:hover,
 #widget-overflow .toolbarbutton:hover,
 #downloadsPanel .download:hover {
-    background-color: #21252B !important; /* Darker hover effect */
-    color: #ffffff !important; /* Keeps text white on hover */
+    background-color: #21252B !important;
+    /* Darker hover effect */
+    color: #ffffff !important;
+    /* Keeps text white on hover */
 }
 
 /* Panel buttons */
@@ -295,7 +316,8 @@ panel button {
 /* Panel borders */
 panel,
 panel[role="tooltip"] {
-    border: 1px solid #21252B !important; /* Subtle border for panels */
+    border: 1px solid #21252B !important;
+    /* Subtle border for panels */
 }
 
 /* Tooltip styling */
@@ -312,60 +334,79 @@ panel menuseparator {
     border: none !important;
 }
 
+url(chrome://browser/content/browser.xhtml){
+
+#main-window,
+browser[type="content-primary"],
+browser[type="content"],
+tabbrowser#content,
+#content,
+browser[type="content"]>html {
+    background: #111111 !important;
+}
+}
+
 /* Source file https://github.com/MrOtherGuy/firefox-csshacks/tree/master/chrome/tabs_on_bottom_v2.css made available under Mozilla Public License v. 2.0
 See the above repository for updates as well as full license text. */
 
 /* This reorders toolbar to place tabs below other toolbars. Requires Firefox 133+ */
 
-@media (-moz-bool-pref: "userchrome.force-window-controls-on-left.enabled"){
-  #nav-bar > .titlebar-buttonbox-container{
-    order: -1 !important;
-    > .titlebar-buttonbox{
-      flex-direction: row-reverse;
-    }
-  }
-}
-@media not (-moz-bool-pref: "sidebar.verticalTabs"){
-  .global-notificationbox,
-  #tab-notification-deck,
-  #TabsToolbar{
-    order: 1;
-  }
-  #TabsToolbar > :is(.titlebar-spacer,.titlebar-buttonbox-container){
-    display: none;
-  }
-  :root[sizemode="fullscreen"] #nav-bar > .titlebar-buttonbox-container{
-    display: flex !important;
-  }
-  :root:is([tabsintitlebar],[customtitlebar]) #toolbar-menubar:not([autohide="false"]) ~ #nav-bar{
-    > .titlebar-buttonbox-container{
-      display: flex !important;
-    }
-    :root[sizemode="normal"] & {
-      > .titlebar-spacer{
-        display: flex !important;
-      }
-    }
-    :root[sizemode="maximized"] & {
-      > .titlebar-spacer[type="post-tabs"]{
-        display: flex !important;
-      }
-      @media (-moz-bool-pref: "userchrome.force-window-controls-on-left.enabled"),
-        (-moz-gtk-csd-reversed-placement),
-        (-moz-platform: macos){
-        > .titlebar-spacer[type="post-tabs"]{
-          display: none !important;
+@media (-moz-bool-pref: "userchrome.force-window-controls-on-left.enabled"),
+-moz-pref("userchrome.force-window-controls-on-left.enabled") {
+    #nav-bar>.titlebar-buttonbox-container {
+        order: -1 !important;
+
+        >.titlebar-buttonbox {
+            flex-direction: row-reverse;
         }
-        > .titlebar-spacer[type="pre-tabs"]{
-          display: flex !important;
-        }
-      }
     }
-  }
 }
 
-url(chrome://browser/content/browser.xhtml) { 
-    #main-window, browser[type="content-primary"], browser[type="content"], tabbrowser#content, #content, browser[type="content"] > html { 
-        background: #111111 !important;
+@media not (-moz-bool-pref: "sidebar.verticalTabs"),
+not -moz-pref("sidebar.verticalTabs") {
+
+    .global-notificationbox,
+    #tab-notification-deck,
+    #TabsToolbar {
+        order: 1;
+    }
+
+    #TabsToolbar> :is(.titlebar-spacer, .titlebar-buttonbox-container) {
+        display: none;
+    }
+
+    :root[sizemode="fullscreen"] #nav-bar>.titlebar-buttonbox-container {
+        display: flex !important;
+    }
+
+    :root:is([tabsintitlebar], [customtitlebar]) #toolbar-menubar:not([autohide="false"])~#nav-bar {
+        >.titlebar-buttonbox-container {
+            display: flex !important;
+        }
+
+        :root[sizemode="normal"] & {
+            >.titlebar-spacer {
+                display: flex !important;
+            }
+        }
+
+        :root[sizemode="maximized"] & {
+            >.titlebar-spacer[type="post-tabs"] {
+                display: flex !important;
+            }
+
+            @media (-moz-bool-pref: "userchrome.force-window-controls-on-left.enabled"),
+            -moz-pref("userchrome.force-window-controls-on-left.enabled"),
+            (-moz-gtk-csd-reversed-placement),
+            (-moz-platform: macos) {
+                >.titlebar-spacer[type="post-tabs"] {
+                    display: none !important;
+                }
+
+                >.titlebar-spacer[type="pre-tabs"] {
+                    display: flex !important;
+                }
+            }
+        }
     }
 }
