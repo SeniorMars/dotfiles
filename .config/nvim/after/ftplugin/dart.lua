@@ -1,3 +1,6 @@
-local map = vim.api.nvim_buf_set_keymap
-local options= { noremap = true}
-map(0, 'n', '<leader>9', '<Esc>:w<cr>:!dart %<cr>', options)
+local options = {buffer = true, noremap = true}
+
+vim.keymap.set("n", "<leader>9", function()
+    vim.cmd.write()
+    vim.cmd("!dart " .. vim.fn.shellescape(vim.fn.expand("%:p")))
+end, options)

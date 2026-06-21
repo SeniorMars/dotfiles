@@ -1,7 +1,14 @@
 vim.opt_local.textwidth=79
 vim.opt_local.fileformat='unix'
 vim.cmd([[autocmd BufWritePre <buffer> :FixWhitespace]])
-local map = vim.api.nvim_buf_set_keymap
-local options = { noremap = true}
-map(0, 'n', '<leader>8', '<Esc>:w<cr>:term ipython %<cr>', options)
-map(0, 'n', '<leader>9', '<Esc>:w<cr>:!python3 %<cr>', options)
+local options = {buffer = true, noremap = true}
+
+vim.keymap.set("n", "<leader>8", function()
+    vim.cmd.write()
+    vim.cmd("terminal ipython " .. vim.fn.shellescape(vim.fn.expand("%:p")))
+end, options)
+
+vim.keymap.set("n", "<leader>9", function()
+    vim.cmd.write()
+    vim.cmd("!python3 " .. vim.fn.shellescape(vim.fn.expand("%:p")))
+end, options)

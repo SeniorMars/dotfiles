@@ -1,12 +1,10 @@
 \documentclass{report}
-
-\input{preamble}
-\input{macros}
-\input{letterfonts}
+\usepackage{cmt}
 
 \title{\Huge{Some Class}\\Random Examples}
 \author{\huge{Your Name}}
 \date{}
+\metaname{Some Class - Random Examples}
 
 \begin{document}
 
@@ -23,6 +21,7 @@
 \qs{}{Is the set ${x-}$axis${\setminus\{\text{Origin}\}}$ a closed set}
 \sol We have to take its complement and check whether that set is a open set i.e. if it is a union of open balls
 \nt{We will do topology in Normed Linear Space  (Mainly $\bbR^n$ and occasionally $\bbC^n$)using the language of Metric Space}
+\rmk{Strategy}{For closed-set questions, proving that the complement is open is often the cleanest route.}
 \clm{Topology}{}{Topology is cool}
 \ex{Open Set and Close Set}{
 	\begin{tabular}{rl}
@@ -33,7 +32,10 @@
 		            & $\bullet$ $\overline{B_r(x)}$                                 \\
 		            & $x-$axis $\cup$ $y-$axis
 	\end{tabular}}
-\thm{}{If $x\in$ open set $V$ then $\exists$ $\delta>0$ such that $B_{\delta}(x)\subset V$}
+\begin{theorem}{Open neighborhoods}{open-neighborhoods}
+	If $x\in$ open set $V$ then $\exists$ $\delta>0$ such that $B_{\delta}(x)\subset V$.
+\end{theorem}
+The reference \Cref{th:open-neighborhoods} is produced by \codeinline|\Cref{th:open-neighborhoods}|.
 \begin{myproof}By openness of $V$, $x\in B_r(u)\subset V$
 	\begin{center}
 		\begin{tikzpicture}
@@ -47,13 +49,46 @@
 		\end{tikzpicture}
 	\end{center}
 
-	Given $x\in B_r(u)\subset V$, we want $\delta>0$ such that $x\in B_{\delta} (x)\subset B_r(u)\subset V$. Let $d=d(u,x)$. Choose $\delta $ such that $d+\delta<r$ (e.g. $\delta<\frac{r-d}{2}$)
-
-	If $y\in B_{\delta}(x)$ we will be done by showing that $d(u,y)<r$ but $$d(u,y)\leq d(u,x)+d(x,y)<d+\delta<r$$
+	Given $x\in B_r(u)\subset V$, we want $\delta>0$ such that $x\in B_{\delta} (x)\subset B_r(u)\subset V$. Let $d=d(u,x)$. Choose $\delta $ such that $d+\delta<r$ (e.g. $\delta<\frac{r-d}{2}$) If $y\in B_{\delta}(x)$ we will be done by showing that $d(u,y)<r$ but $$d(u,y)\leq d(u,x)+d(x,y)<d+\delta<r$$
 \end{myproof}
 
+\section{Reference Examples}
+
+\begin{Definition}{Referenceable Definition}{referenceable-definition}
+	A labeled definition uses the third argument as the label key.
+\end{Definition}
+
+\begin{Lemma}{Referenceable Lemma}{referenceable-lemma}
+	A labeled lemma works the same way.
+\end{Lemma}
+
+\begin{theorem}{Referenceable Theorem}{referenceable-theorem}
+	A labeled theorem also works the same way.
+\end{theorem}
+
+\Cref{def:referenceable-definition}, \Cref{th:referenceable-lemma}, and
+\Cref{th:referenceable-theorem} are clickable references.
+
+\begin{latexcodeblock}[title={Reference Syntax}]
+\begin{Definition}{Referenceable Definition}{referenceable-definition}
+Body
+\end{Definition}
+
+\begin{Lemma}{Referenceable Lemma}{referenceable-lemma}
+Body
+\end{Lemma}
+
+\begin{theorem}{Referenceable Theorem}{referenceable-theorem}
+Body
+\end{theorem}
+
+\Cref{def:referenceable-definition}
+\Cref{th:referenceable-lemma}
+\Cref{th:referenceable-theorem}
+\end{latexcodeblock}
+
 \cor{}{By the result of the proof, we can then show...}
-\mlenma{}{Suppose $\vec{v_1}, \dots, \vec{v_n} \in \RR[n]$ is subspace of $\RR^n$.}
+\mlemma{}{Suppose $\vec{v_1}, \dots, \vec{v_n} \in \RR[n]$ is subspace of $\RR^n$.}
 \mprop{}{$1 + 1 = 2$.}
 
 \section{Random}
@@ -95,34 +130,131 @@ Now exercise
 
 	\subsubsection*{\textbf{When field is $\bbC:$}}Modify the definition by $$\langle x,y\rangle=\sum_i\overline{x_i}y_i$$Then we still have $\langle x,x\rangle\geq 0$}
 
+\newpage
+\section{Code Blocks}
+
+\begin{codeblock}[title={Newton's method for square roots}]{Python}
+from __future__ import annotations
+
+
+def sqrt_newton(a: float, *, tol: float = 1e-12, max_steps: int = 50) -> float:
+    """Approximate sqrt(a) by Newton iteration."""
+    if a < 0:
+        raise ValueError("a must be nonnegative")
+    if a == 0:
+        return 0.0
+
+    x = max(1.0, a)
+    for step in range(1, max_steps + 1):
+        next_x = 0.5 * (x + a / x)
+        error = abs(next_x - x)
+
+        if error <= tol * max(1.0, next_x):
+            print(f"converged after {step} steps")
+            return next_x
+
+        x = next_x
+
+    raise RuntimeError("Newton iteration did not converge")
+
+
+print(sqrt_newton(2.0))
+\end{codeblock}
+
 \section{Algorithms}
 \begin{algorithm}[H]
-\KwIn{This is some input}
-\KwOut{This is some output}
-\SetAlgoLined
-\SetNoFillComment
-\tcc{This is a comment}
-\vspace{3mm}
-some code here\;
-$x \leftarrow 0$\;
-$y \leftarrow 0$\;
-\uIf{$ x > 5$} {
-    x is greater than 5 \tcp*{This is also a comment}
+\caption{Projected gradient descent}
+\KwIn{Objective $f$, feasible set $C$, initial point $x_0$, step sizes $\eta_t$}
+\KwOut{Approximate minimizer $x_t$}
+\For{$t = 0,1,\ldots,T-1$}{
+	$g_t \leftarrow \nabla f(x_t)$\tcp*{gradient at the current iterate}
+	$y_{t+1} \leftarrow x_t - \eta_t g_t$\;
+	$x_{t+1} \leftarrow \Pi_C(y_{t+1})$\tcp*{project back onto $C$}
+	\If{$\norm{x_{t+1}-x_t} < \varepsilon$}{
+		\Return $x_{t+1}$\;
+	}
 }
-\Else {
-    x is less than or equal to 5\;
-}
-\ForEach{y in 0..5} {
-    $y \leftarrow y + 1$\;
-}
-\For{$y$ in $0..5$} {
-    $y \leftarrow y - 1$\;
-}
-\While{$x > 5$} {
-    $x \leftarrow x - 1$\;
-}
-\Return Return something here\;
-\caption{what}
+\Return $x_T$\;
 \end{algorithm}
+
+\newpage
+\section{Syntax Reference}
+
+\begin{latexcodeblock}[title={Short Commands}]
+\dfn{Title}{Body}
+\dfnc{Title}{Body}
+\rmk{Title}{Body}
+\qs{Title}{Body}
+\nt{Body}
+
+\thm{Title}{Body}
+\cor{Title}{Body}
+\mlemma{Title}{Body}
+\mer{Title}{Body}
+\mprop{Title}{Body}
+\clm{Title}{label-name}{Body}
+\wc{Title}{Body}
+
+\pf{Proof name}{Body}
+\sol Body
+\begin{sol}
+Body
+\end{sol}
+\solve{Body}
+\end{latexcodeblock}
+
+\begin{latexcodeblock}[title={Theorem Environments}]
+\begin{theorem}{Title}{label-name}
+Body
+\end{theorem}
+
+\begin{Definition}{Title}{label-name}
+Body
+\end{Definition}
+
+\begin{Remark}{Title}{label-name}
+Body
+\end{Remark}
+
+\begin{question}{Title}{label-name}
+Body
+\end{question}
+
+\begin{solution}
+Body
+\end{solution}
+\end{latexcodeblock}
+
+\begin{latexcodeblock}[title={Code Helpers}]
+\codeinline|inline code|
+\codefile{path/to/file.py}{Python}
+
+\begin{codeblock}[title={Optional title}]{Python}
+print("hello")
+\end{codeblock}
+
+\begin{consoleblock}
+python script.py
+\end{consoleblock}
+\end{latexcodeblock}
+
+\begin{plaincodeblock}[title={LaTeX Code Block Syntax}, listing options={style=cmtlatexcode}]{LaTeX}
+\begin{latexcodeblock}[title={Optional title}]
+\dfn{Title}{Body}
+\end{latexcodeblock}
+\end{plaincodeblock}
+
+\begin{latexcodeblock}[title={Algorithm Syntax}]
+\begin{algorithm}[H]
+\caption{Algorithm title}
+\KwIn{Input data}
+\KwOut{Output data}
+\For{$t = 0,\ldots,T-1$}{
+    do something\;
+    \tcp*{inline comment}
+}
+\Return result\;
+\end{algorithm}
+\end{latexcodeblock}
 
 \end{document}

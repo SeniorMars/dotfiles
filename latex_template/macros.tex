@@ -16,7 +16,7 @@
 \newcommand{\deld}[2]{\dfrac{\partial #1}{\partial #2}}
 \newcommand{\Deld}[3]{\dfrac{\partial^{#1} #2}{\partial^{#1} #3}}
 \newcommand{\der}[2]{\frac{\mathrm{d} #1}{\mathrm{d} #2}}
-% \newcommand{\ddd}[3]{\frac{\mathrm{d}^{#3} #1}{\mathrm{d}^{#3} #2}}
+\newcommand{\ddd}[3]{\frac{\mathrm{d}^{#3} #1}{\mathrm{d}^{#3} #2}}
 \newcommand{\lm}{\lambda}
 \newcommand{\uin}{\mathbin{\rotatebox[origin=c]{90}{$\in$}}}
 \newcommand{\usubset}{\mathbin{\rotatebox[origin=c]{90}{$\subset$}}}
@@ -27,7 +27,9 @@
 \newcommand{\st}{\strut}
 \newcommand{\dps}[1]{\displaystyle{#1}}
 \newcommand{\id}{\text{id}}
+\newcommand{\Id}{\text{Id}}
 
-
-\newcommand{\sol}{\setlength{\parindent}{0cm}\textbf{\textit{Solution:}}\setlength{\parindent}{1cm} }
-\newcommand{\solve}[1]{\setlength{\parindent}{0cm}\textbf{\textit{Solution: }}\setlength{\parindent}{1cm}#1 \Qed}
+\newcommand{\cmtsolutionheading}{%
+	\par\noindent\textbf{\textit{Solution:}}\setlength{\parindent}{1cm} }
+\newenvironment{sol}{\cmtsolutionheading}{\par}
+\newcommand{\solve}[1]{\cmtsolutionheading #1 \Qed}

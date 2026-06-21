@@ -8,7 +8,12 @@ map(0, 'n', '<leader>o9', '<Plug>VimspectorStepOut', {})
 map(0, 'n', '<leader>o0', '<Plug>VimspectorStop', {})
 map(0, 'n', '<leader>oo', '<Plug>VimspectorToggleBreakpoint', {})
 
-local options = { noremap = true}
-map(0, 'n', '<leader>7', ':term java %<cr>', options)
-map(0, 'n', '<leader>8', ':w<cr>:make<cr>:cwindow<cr>', options)
-map(0, 'n', '<leader>9', ":!echo <C-r>=expand('%:r')<cr> <bar> xargs java<cr>", options)
+local options = {buffer = true, noremap = true}
+local map_options = {noremap = true}
+vim.keymap.set("n", "<leader>7", function()
+    vim.cmd("terminal java " .. vim.fn.shellescape(vim.fn.expand("%:p")))
+end, options)
+map(0, 'n', '<leader>8', ':w<cr>:make<cr>:cwindow<cr>', map_options)
+vim.keymap.set("n", "<leader>9", function()
+    vim.cmd("!java " .. vim.fn.shellescape(vim.fn.expand("%:p:r")))
+end, options)

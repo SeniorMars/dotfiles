@@ -1,0 +1,888 @@
+\documentclass[aspectratio=169]{beamer}
+
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,backgrounds,calc,positioning,shapes.multipart}
+\usepackage[main=english,polish]{babel}
+\usepackage{ragged2e}
+\usepackage{csquotes}
+\usepackage[
+  backend=biber,
+  style=authoryear,
+  maxcitenames=2,
+  doi=false,
+  isbn=false,
+  url=true
+]{biblatex}
+\addbibresource{refs.bib}
+
+\definecolor{cookieDemoBlue}{HTML}{356AE6}
+\usetheme[
+  accent=cookieDemoBlue,
+  progressbar=foot,
+  sectionpage=progressbar,
+  subsectionpage=progressbar,
+  numbering=fraction,
+  numberrail=subsection,
+  block=fill,
+  notes=hide,
+  toc=aftertitle,
+  closing=contact
+]{cookie}
+
+\lstset{style=cookie}
+
+\title[Cookie]{Cookie Beamer Theme}
+\subtitle{A LuaLaTeX Beamer theme with modern visuals}
+\author[Mars]{SeniorMars}
+\cookieemail{seniormars@rice.edu}
+\institute{Mathematics}
+\cookieuni{Rice University}
+\cookielocation{Houston, Texas}
+\date{June 21, 2026}
+\cookietagline{A small theme for modern slides}
+\cookietitleimage{assets/cookie-background.png}
+\cookieclosingtitle{Thank you}
+\cookieclosingtext{Questions, forks, and bug reports are welcome.}
+\cookieclosingqr{https://example.org/cookie-beamer}
+\cookieclosingqrlabel{Replace with your project URL}
+
+\titlegraphic{%
+  \begin{tikzpicture}[scale=.70]
+    \fill[white,opacity=.94] (0,0) circle[radius=1.15];
+    \fill[cookieDemoBlue!82!black] (-.43,.40) circle[radius=.12];
+    \fill[cookieDemoBlue!82!black] (.36,.50) circle[radius=.10];
+    \fill[cookieDemoBlue!82!black] (.52,-.22) circle[radius=.13];
+    \fill[cookieDemoBlue!82!black] (-.38,-.43) circle[radius=.09];
+    \fill[cookieDemoBlue!82!black] (.02,.02) circle[radius=.11];
+  \end{tikzpicture}%
+}
+
+\newsavebox{\cookieDemoPenguin}
+\savebox{\cookieDemoPenguin}{\cookiepenguin[scale=.31]}
+\newcommand{\cookiedemomathcomparisonbody}{%
+  \footnotesize
+  \setlength{\abovedisplayskip}{.24em}%
+  \setlength{\belowdisplayskip}{.24em}%
+  \begin{columns}[T,onlytextwidth]
+    \column{.18\textwidth}
+      \centering
+      \cookiekicker{Lining}\par
+      \vspace{.45em}
+      1234567890
+
+    \column{.18\textwidth}
+      \centering
+      \cookiekicker{Oldstyle}\par
+      \vspace{.45em}
+      \oldstylenums{1234567890}
+
+    \column{.22\textwidth}
+      \centering
+      \cookiekicker{Accents}\par
+      \vspace{.45em}
+      $\hat{x},\;\check{x},\;\tilde{a},\;\bar{a},\;\dot{y},\;\ddot{y}$
+
+    \column{.36\textwidth}
+      \centering
+      \cookiekicker{Differentials}\par
+      \vspace{.45em}
+      $\displaystyle \iiint f(x,y,z)\,\mathrm dx\,\mathrm dy\,\mathrm dz$
+  \end{columns}
+
+  \vspace{.30em}
+  \begin{columns}[c,onlytextwidth]
+    \column{.47\textwidth}
+      \[
+        \frac{1}{\displaystyle 1+
+          \frac{1}{\displaystyle 2+
+          \frac{1}{\displaystyle 3+x}}}
+        +
+        \frac{1}{1+\frac{1}{2+\frac{1}{3+x}}}
+      \]
+
+    \column{.47\textwidth}
+      \[
+        F:\left|\begin{array}{ccc}
+          F''_{xx} & F''_{xy} & F'_x \\
+          F''_{yx} & F''_{yy} & F'_y \\
+          F'_x     & F'_y     & 0
+        \end{array}\right|=0
+      \]
+  \end{columns}
+
+  \vspace{.02em}
+  \begin{columns}[c,onlytextwidth]
+    \column{.30\textwidth}
+      \[
+        \mathop{\int\!\!\!\int}_{\mathbf{x}\in\mathbb R^2}
+        \!\langle \mathbf{x},\mathbf{y}\rangle\,\mathrm d\mathbf{x}
+      \]
+
+    \column{.34\textwidth}
+      \[
+        \overline{\overline{a\alpha}^2+\underline{b\beta}
+        +\overline{\overline{d\delta}}}
+      \]
+
+    \column{.30\textwidth}
+      \[
+        \left]0,1\right[+\lceil x\rfloor-\langle x,y\rangle
+      \]
+  \end{columns}
+
+  \vspace{.05em}
+  \begin{columns}[c,onlytextwidth]
+    \column{.44\textwidth}
+      \[
+        \begin{aligned}
+          e^x &\approx 1+x+x^2/2! \\
+              &\quad{}+x^3/3!+x^4/4!
+        \end{aligned}
+      \]
+
+    \column{.50\textwidth}
+      \[
+        \binom{n+1}{k}=\binom{n}{k}+\binom{n}{k-1}
+      \]
+  \end{columns}
+
+  \vspace{-.15em}
+  {\scriptsize
+  \[
+    \begin{aligned}
+      p(R,\phi)
+      &\sim \int_{-\infty}^{\infty}
+      \frac{
+        \tilde{W}_n(\gamma)
+        \exp\!\left[
+          \imath R/a
+          \left(\sqrt{k^2a^2-\gamma^2}\cos\phi\right)
+        \right]
+      }{
+        \left(k^2a^2-\gamma^2\right)^{3/4}
+      }\\[-.15em]
+      &\qquad{}\times
+      \frac{1}{
+        {H_n^{\prime}}_n^{(1)}
+        \left(\sqrt{k^2a^2-\gamma^2}\right)
+      }\,d\gamma .
+    \end{aligned}
+  \]
+  }%
+}
+\begin{document}
+
+\maketitle
+
+\section{Design system}
+
+\begin{frame}{A theme for modern talks}
+  \begin{columns}[T,onlytextwidth]
+    \column{.31\textwidth}
+      \cookiekicker{Awesome-style frame}
+      \vspace{.55em}
+
+      Number rails, angled title art, and section slides are built in.
+
+    \column{.31\textwidth}
+      \cookiekicker{Metropolis defaults}
+      \vspace{.55em}
+
+      Progress bars, block styles, and fonts are set from theme options.
+
+    \column{.31\textwidth}
+      \cookiekicker{LuaLaTeX setup}
+      \vspace{.55em}
+
+      Uses installed system fonts, Unicode math, and no private package paths.
+  \end{columns}
+
+  \vfill
+  \cookiebadge{single .sty} \hspace{.35em}
+  \cookiebadge{LuaLaTeX} \hspace{.35em}
+  \cookiebadge{old-deck friendly}
+\end{frame}
+
+\begin{frame}{Navigation stays visible}{Long titles and subtitles fit the header}
+  \begin{columns}[T,onlytextwidth]
+    \column{.58\textwidth}
+      \begin{itemize}
+        \item The rail shows the current section, or section.subsection when needed.
+        \item The footer keeps author, title, section, and frame count out of the slide body.
+        \item Section pages mark turns in the talk without adding clutter to every frame.
+      \end{itemize}
+
+    \column{.36\textwidth}
+      \begin{tikzpicture}[node distance=5mm]
+        \node[cookie accent node,minimum width=3.6cm] (a) {Section};
+        \node[cookie node,below=of a,minimum width=3.6cm] (b) {Subsection};
+        \node[cookie node,below=of b,minimum width=3.6cm] (c) {Frame};
+        \draw[cookie arrow] (a) -- (b);
+        \draw[cookie arrow] (b) -- (c);
+      \end{tikzpicture}
+  \end{columns}
+  \note{
+    This frame intentionally uses a long title and a subtitle. The title area
+    should grow without colliding with the divider.
+  }
+\end{frame}
+
+\begin{frame}[label=lists]{Lists and local text}{Nested bullets, numbered steps, and Polish characters}
+  \begin{columns}[T,onlytextwidth]
+    \column{.48\textwidth}
+      \begin{itemize}
+        \item State the main point first.
+        \begin{itemize}
+          \item Add the detail that changes the argument.
+          \begin{itemize}
+            \item Keep the third level short.
+          \end{itemize}
+        \end{itemize}
+        \item Return to the main thread.
+      \end{itemize}
+
+    \column{.43\textwidth}
+      \begin{enumerate}
+        \item Define the object.
+        \item Prove the useful property.
+        \item Use it in the example.
+      \end{enumerate}
+  \end{columns}
+
+  \vspace{.75em}
+  \justifying\small
+  {\foreignlanguage{polish}{Tutaj jest krótki tekst po polsku z polskimi znakami: zażółć gęślą jaźń.}}
+
+  \vspace{.35em}
+  The quick, brown fox jumps over a lazy dog.
+\end{frame}
+
+\subsection{Components}
+
+\begin{frame}[fragile]{Blocks and emphasis}
+  \begin{columns}[T,onlytextwidth]
+    \column{.48\textwidth}
+      \begin{block}{A plain block}
+        Use this for assumptions, notation, or a short claim.
+      \end{block}
+
+      \begin{exampleblock}{An example block}
+        Use this for computations, test cases, or constructions.
+      \end{exampleblock}
+
+    \column{.48\textwidth}
+      \begin{alertblock}{An alert block}
+        Use this for a warning, failed case, or decision point.
+      \end{alertblock}
+
+      \begin{block}{Standard syntax}
+        Cookie uses Beamer's normal \verb|\begin{block}{Title}| form.
+      \end{block}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Definitions, theorems, and proofs}
+  \begin{definition}[Divisibility]
+    For integers $a,b$, write $a\mid b$ exactly when
+    $\exists c\in\mathbb Z$ such that $ac=b$.
+  \end{definition}
+
+  \begin{theorem}
+    Every integer divides zero: $\forall a\in\mathbb Z,\; a\mid 0$.
+  \end{theorem}
+
+  \begin{proof}
+    Choose $c=0$. Then $a\cdot c=a\cdot0=0$ for every integer $a$.
+  \end{proof}
+\end{frame}
+
+\begin{frame}{Mathematics and numerals}
+  \cookiedemomathcomparisonbody
+\end{frame}
+
+\begin{frame}[fragile]{Code is part of the slide}
+  \begin{columns}[T,onlytextwidth]
+    \column{.53\textwidth}
+      \begin{cookiecode}[title=Scalar C]{C}
+void square4(float *x) {
+  for (int i = 0; i < 4; ++i) {
+    x[i] = x[i] * x[i];
+  }
+}
+      \end{cookiecode}
+
+    \column{.43\textwidth}
+      \begin{block}{What the theme sets}
+        \begin{itemize}
+          \item Noto Sans Mono when it is installed
+          \item Line wrapping and padding inside the box
+          \item Colors for keywords, strings, and comments
+        \end{itemize}
+      \end{block}
+
+      \cookiebadge{listings} \hspace{.25em}\cookiebadge{no shell escape}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Longer code listing}{The title wraps without changing the code box}
+  \begin{cookiecode}[title=Sleep sort sketch]{C}
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+int main(int argc, char **argv) {
+  while (--argc > 1 && !fork())
+    sleep(atoi(argv[argc]));
+
+  puts(argv[argc]);
+  return 0;
+}
+  \end{cookiecode}
+\end{frame}
+
+\begin{frame}{Projected gradient descent}{Line numbers and comments stay readable}
+  \begin{algorithm}[H]
+    \caption{Projected gradient descent}
+    \KwIn{Objective $f$, feasible set $C$, initial point $x_0$, step sizes $\eta_t$}
+    \KwOut{Approximate minimizer $x_t$}
+    \For{$t = 0,1,\ldots,T-1$}{
+      $g_t \leftarrow \nabla f(x_t)$\tcp*{gradient at the current iterate}
+      $y_{t+1} \leftarrow x_t - \eta_t g_t$\;
+      $x_{t+1} \leftarrow \Pi_C(y_{t+1})$\tcp*{project back onto $C$}
+      \If{$\lVert x_{t+1}-x_t\rVert < \varepsilon$}{
+        \Return $x_{t+1}$\;
+      }
+    }
+    \Return $x_T$\;
+  \end{algorithm}
+\end{frame}
+
+\begin{frame}{RealBoost sketch}{A compact algorithm with math updates}
+  \begin{algorithm}[H]
+    \caption{RealBoost training loop}
+    \KwIn{Training data $(x_i,y_i)_{i=1}^m$, rounds $T$}
+    \KwOut{Classifier $F$}
+    Initialize weights $w_i \gets 1/m$\;
+    \For{$t=1,\ldots,T$}{
+      Fit $f_t(x)\in\mathbb R$ using the current weights\;
+      Set $Z_t \gets \sum_{i=1}^m w_i\exp(-f_t(x_i)y_i)$\;
+      Update $w_i \gets w_i\exp(-f_t(x_i)y_i)/Z_t$\tcp*{normalize}
+    }
+    \Return $F(x)=\sum_{t=1}^{T} f_t(x)$\;
+  \end{algorithm}
+\end{frame}
+
+\begin{frame}{Two trajectories side by side}
+  \begin{columns}[T,onlytextwidth]
+    \column{.29\textwidth}
+      \begin{cookiecard}[title=Minimum fuel]
+        \centering
+        \begin{tikzpicture}[x=.47cm,y=.032cm]
+          \draw[->,cookieMuted] (0,0) -- (6.3,0);
+          \draw[->,cookieMuted] (0,0) -- (0,92);
+          \draw[cookieAccent,line width=1.15pt,smooth]
+            plot coordinates {(0.2,82)(1,64)(2,42)(3,27)(4.2,18)(5.3,12)(6,10)};
+          \foreach \x/\y in {.7/72,1.5/53,2.4/35,3.4/23,4.5/16,5.5/11}
+            \draw[-{Latex[length=1.3mm]},cookieInk!72] (\x,\y+7) -- (\x+.32,\y);
+        \end{tikzpicture}
+
+        \vspace{.35em}
+        \footnotesize A smoother curve uses less fuel.
+      \end{cookiecard}
+
+    \column{.36\textwidth}
+      \vspace{1.05em}
+      \cookiekicker{Same dynamics}
+      \vspace{.65em}
+
+      \textbf{Left:} minimize fuel.
+
+      \vspace{.85em}
+      \textbf{Right:} minimize time.
+
+      \vspace{.85em}
+      The middle column names the tradeoff; the figures do the rest.
+
+    \column{.29\textwidth}
+      \begin{cookiecard}[title=Minimum time]
+        \centering
+        \begin{tikzpicture}[x=.47cm,y=.032cm]
+          \draw[->,cookieMuted] (0,0) -- (6.3,0);
+          \draw[->,cookieMuted] (0,0) -- (0,92);
+          \draw[cookieAlert,line width=1.15pt,smooth]
+            plot coordinates {(0.2,84)(.8,73)(1.5,56)(2.1,38)(2.8,23)(3.7,14)(5,10)(6,9)};
+          \foreach \x/\y in {.55/77,1.2/64,1.8/46,2.5/29,3.3/18,4.3/12}
+            \draw[-{Latex[length=1.3mm]},cookieInk!72] (\x,\y+7) -- (\x+.32,\y);
+        \end{tikzpicture}
+
+        \vspace{.35em}
+        \footnotesize A steeper curve reaches the target sooner.
+      \end{cookiecard}
+  \end{columns}
+\end{frame}
+
+{
+\setbeamercolor{normal text}{fg=white,bg=}
+\setbeamercolor{frametitle}{fg=white,bg=}
+\setbeamercolor{framesubtitle}{fg=white!78,bg=}
+\setbeamercolor{footline}{fg=white!78,bg=cookieInk!72}
+\begin{frame}[
+  bgimage=assets/cookie-background.png,
+  bgfit=cover,
+  bgoverlay=cookieInk,
+  bgoverlayopacity=.56
+]{Frame-local background images}{Full canvas with readable text}
+  \color{white}
+  \begin{columns}[T,onlytextwidth]
+    \column{.57\textwidth}
+      \Large
+      Use a photo, diagram, texture, or generated image on one frame without setting a deck-wide background.
+
+      \vspace{.8em}
+      \normalsize
+      Set the wash color and opacity for contrast. Use local colors when the frame needs light text.
+
+    \column{.38\textwidth}
+      \begin{cookiecard}[title=Frame syntax]
+        \ttfamily\small
+        \textbackslash begin\{frame\}[\par
+        \quad bgimage=photo.jpg,\par
+        \quad bgoverlay=cookieInk,\par
+        \quad bgoverlayopacity=.56\par
+        ]
+      \end{cookiecard}
+  \end{columns}
+\end{frame}
+}
+
+\begin{frame}{Show one layer at a time}{The geometry stays fixed across overlays}
+  \begin{wide}
+    \centering
+    \begin{tikzpicture}[
+      node distance=7mm and 10mm,
+      endpoint/.style={cookie node,minimum width=1.75cm,minimum height=.78cm,font=\small\bfseries},
+      system/.style={cookie node,minimum width=3.35cm,minimum height=1.02cm,font=\small\bfseries},
+      rowlabel/.style={anchor=east,text=cookieMuted,font=\small\bfseries}
+    ]
+      % Audience-facing model
+      \begin{scope}[muted on=<2-3>]
+        \node[rowlabel] at (-5.05,1.72) {Your view};
+        \node[endpoint] (shop1) at (-3.25,1.72) {Provider};
+        \node[system] (magic) at (0,1.72) {\usebox{\cookieDemoPenguin}};
+        \node[endpoint] (home1) at (3.25,1.72) {Home};
+        \draw[cookie arrow] (shop1) -- (magic);
+        \draw[cookie arrow] (magic) -- (home1);
+      \end{scope}
+
+      % Operator-facing model
+      \begin{scope}[muted on=<{1,3}>]
+        \node[rowlabel] at (-5.05,0) {System view};
+        \node[endpoint] (shop2) at (-3.25,0) {Provider};
+        \node[system] (dispatch) at (0,0) {Dispatch service};
+        \node[endpoint] (home2) at (3.25,0) {Home};
+        \draw[cookie arrow] ([yshift=2.2mm]shop2.east) -- ([yshift=2.2mm]dispatch.west);
+        \draw[cookie arrow] (shop2.east) -- (dispatch.west);
+        \draw[cookie arrow] ([yshift=-2.2mm]shop2.east) -- ([yshift=-2.2mm]dispatch.west);
+        \draw[cookie arrow] ([yshift=2.2mm]dispatch.east) -- ([yshift=2.2mm]home2.west);
+        \draw[cookie arrow] (dispatch.east) -- (home2.west);
+        \draw[cookie arrow] ([yshift=-2.2mm]dispatch.east) -- ([yshift=-2.2mm]home2.west);
+      \end{scope}
+
+      % Worker-facing model
+      \begin{scope}[muted on=<1-2>]
+        \node[rowlabel] at (-5.05,-1.72) {Worker view};
+        \node[endpoint] (shop3) at (-3.65,-1.72) {Provider};
+        \node[endpoint] (queue) at (-1.05,-1.72) {Queue};
+        \node[endpoint] (base) at (1.25,-1.72) {Base};
+        \node[endpoint] (home3) at (3.85,-1.72) {Home};
+        \draw[cookie arrow,draw=cookieLine,densely dashed] (shop3) -- (queue);
+        \draw[cookie arrow] (queue) -- (base);
+        \draw[cookie arrow,draw=cookieLine,densely dashed] (base) -- (home3);
+      \end{scope}
+    \end{tikzpicture}
+
+    \vspace{.45em}
+    \only<1>{\small Start with the audience's view of the system.}
+    \only<2>{\small Then show the service boundary.}
+    \only<3>{\small Add worker detail when it helps explain the failure mode.}
+    \only<4>{\small End with all rows visible so the views can be compared.}
+  \end{wide}
+
+  \note{
+    \begin{itemize}
+      \item Advance once per row.
+      \item Do not explain internal detail before the row appears.
+      \item On overlay four, compare the rows.
+      \item The penguin is Cookie's optional mascot and is available as \texttt{\string\cookiepenguin}.
+    \end{itemize}
+  }
+\end{frame}
+
+\subsection{Overlays}
+
+\begin{frame}{Reveal without moving the layout}
+  \begin{columns}[T,onlytextwidth]
+    \column{.34\textwidth}
+      \centering
+      \resizebox{\linewidth}{!}{%
+      \begin{tikzpicture}[
+        node distance=7mm and 9mm,
+        flow node/.style={
+          cookie node,
+          minimum width=1.74cm,
+          minimum height=.72cm,
+          font=\small\bfseries,
+          align=center
+        },
+        flow active/.style={
+          cookie accent node,
+          minimum width=1.74cm,
+          minimum height=.72cm,
+          font=\small\bfseries,
+          align=center
+        },
+        flow muted/.style={
+          flow node,
+          fill=cookieSoft!72!cookiePaper,
+          text=cookieMuted
+        },
+        branch label/.style={
+          font=\scriptsize\sffamily\bfseries,
+          text=cookieMuted,
+          inner sep=1pt
+        }
+      ]
+        \node[flow active] (request) {Request};
+        \node[flow active,below left=of request,visible on=<2->] (validate) {Validate};
+        \node[flow muted,below right=of request,visible on=<2->] (fallback) {Fallback};
+        \draw[cookie arrow,draw=cookieAccent,visible on=<2->]
+          (request) -- node[branch label,above left] {primary} (validate);
+        \draw[cookie arrow,draw=cookieMuted,visible on=<2->]
+          (request) -- node[branch label,above right] {backup} (fallback);
+        \node[flow active,below=10mm of validate,visible on=<3->] (readya) {Ready};
+        \node[flow active,below=10mm of fallback,visible on=<3->] (readyb) {Ready};
+        \draw[cookie arrow,draw=cookieAccent,visible on=<3->]
+          (validate) -- node[branch label,left] {ok} (readya);
+        \draw[cookie arrow,draw=cookieAccent,visible on=<3->]
+          (fallback) -- node[branch label,right] {recover} (readyb);
+        \draw[cookieAccent,line width=.8pt,densely dashed,visible on=<3->]
+          (readya.east) -- (readyb.west);
+        \node[
+          below=5mm of $(readya)!0.5!(readyb)$,
+          text=cookieAccent,
+          font=\scriptsize\sffamily\bfseries,
+          visible on=<3->
+        ] {same final state};
+      \end{tikzpicture}%
+      }
+
+    \column{.60\textwidth}
+      \begin{itemize}
+        \item<1-> \textcolor{cookieAccent}{Reserve the canvas.} The request node anchors every overlay.
+        \item<2-> \textcolor{cookieAccent}{Reveal branches.} The primary path carries the accent; fallback stays muted.
+        \item<3-> \textcolor{cookieAccent}{Show convergence.} Both paths end in the same user-visible state.
+      \end{itemize}
+
+      \vspace{.35em}
+      \uncover<3->{%
+        {\color{cookieLine}\rule{\linewidth}{.6pt}}\par\vspace{.7em}
+        \begin{tabularx}{\linewidth}{@{}>{\bfseries}lX@{}}
+          Primary & request $\rightarrow$ validate $\rightarrow$ ready\\
+          Fallback & request $\rightarrow$ fallback $\rightarrow$ ready
+        \end{tabularx}
+      }
+  \end{columns}
+
+  \begin{modal}<4>[Overlay rule]
+    \raggedright
+    Hidden nodes are present from the first overlay. Each step changes opacity,
+    so the accent path can appear without moving the text.
+  \end{modal}
+  \note{Advance through the request, branch, and convergence overlays. The modal explains why the layout does not jump.}
+\end{frame}
+
+\section{Content patterns}
+
+\begin{frame}{Let the footer carry progress}
+  \begin{wide}
+    \centering
+    \begin{tikzpicture}[node distance=1.55cm]
+      \node[cookie accent node,minimum width=3.05cm,minimum height=1.2cm] (idea) {Idea};
+      \node[cookie node,right=of idea,minimum width=3.05cm,minimum height=1.2cm] (evidence) {Evidence};
+      \node[cookie node,right=of evidence,minimum width=3.05cm,minimum height=1.2cm] (decision) {Decision};
+      \draw[cookie arrow] (idea) -- (evidence);
+      \draw[cookie arrow] (evidence) -- (decision);
+    \end{tikzpicture}
+
+    \vspace{1.1em}
+    The footer shows location and frame count; the slide can stay on the current step.
+  \end{wide}
+\end{frame}
+
+\begin{frame}{Keep tables plain}
+  \centering
+  \begin{tabularx}{.82\textwidth}{@{}Xccc@{}}
+    \toprule
+    Feature & None & Simple & Progress \\
+    \midrule
+    Section page    & \cookiecheck & \cookiecheck & \cookiecheck \\
+    Subsection page & \cookiecheck & \cookiecheck & \cookiecheck \\
+    Progress bar    & head & title & foot \\
+    Frame numbering & none & count & fraction \\
+    \bottomrule
+  \end{tabularx}
+
+  \vspace{1em}
+  \small Use \texttt{booktabs} for rules and \texttt{tabularx} for width. Cookie only sets spacing and color.
+\end{frame}
+
+\begin{frame}{A larger table}{Booktabs rules and aligned numeric columns}
+  \centering
+  \small
+  \begin{tabularx}{\textwidth}{@{}Xrrr@{}}
+    \toprule
+    Faculty & With \TeX & Total & \% \\
+    \midrule
+    Informatics       & 1\,716 & 2\,904  & 59.09 \\
+    Science           & 786    & 5\,275  & 14.90 \\
+    Economics         & 64     & 4\,591  & 1.39  \\
+    Arts              & 69     & 10\,000 & 0.69  \\
+    Medicine          & 8      & 2\,014  & 0.40  \\
+    Law               & 15     & 4\,824  & 0.31  \\
+    Education         & 19     & 8\,219  & 0.23  \\
+    Social studies    & 12     & 5\,599  & 0.21  \\
+    Sports studies    & 3      & 2\,062  & 0.15  \\
+    \bottomrule
+  \end{tabularx}
+
+  \vspace{.65em}
+  \footnotesize Example data adapted from a university thesis-count table.
+\end{frame}
+
+\begin{frame}{A probability tree}{TikZ diagram adapted from the source example}
+  \centering
+  \tikzset{
+    coin node/.style={
+      draw=cookieInk,
+      text=cookieInk,
+      circle,
+      minimum size=11mm,
+      line width=.7pt,
+      font=\Large\bfseries,
+      inner sep=0pt
+    },
+    coin prob/.style={
+      text=cookieInk,
+      font=\Large\bfseries,
+      inner sep=1pt
+    },
+    coin leafprob/.style={
+      text=cookieInk,
+      font=\Large\bfseries,
+      inner sep=1pt
+    }
+  }
+  \scalebox{.74}{%
+  \begin{tikzpicture}[line cap=round,line join=round]
+    \node[
+      draw=cookieInk,
+      text=cookieInk,
+      minimum width=6.65cm,
+      minimum height=.90cm,
+      line width=.7pt,
+      font=\Large\bfseries
+    ] (title) at (0,2.42) {Coin flipping};
+
+    \node[
+      draw=cookieInk,
+      text=cookieInk,
+      shape=circle split,
+      minimum size=13mm,
+      line width=.7pt,
+      font=\Large\bfseries,
+      inner sep=0pt,
+      rotate=30
+    ] (start) at (0,1.10)
+      {\rotatebox{-30}{H}\nodepart{lower}\rotatebox{-30}{T}};
+
+    \node[coin node] (left) at (-2.35,-.22) {H};
+    \node[coin node] (right) at (2.35,-.22) {T};
+    \node[coin node] (hh) at (-3.45,-1.72) {H};
+    \node[coin node] (ht) at (-1.25,-1.72) {T};
+    \node[coin node] (th) at (1.25,-1.72) {H};
+    \node[coin node] (tt) at (3.45,-1.72) {T};
+
+    \draw[cookieInk,line width=.7pt] (title.south) -- (start.north);
+    \draw[cookieInk,line width=.7pt] (start) -- (left);
+    \draw[cookieInk,line width=.7pt] (start) -- (right);
+    \draw[cookieInk,line width=.7pt] (left) -- (hh);
+    \draw[cookieInk,line width=.7pt] (left) -- (ht);
+    \draw[cookieInk,line width=.7pt] (right) -- (th);
+    \draw[cookieInk,line width=.7pt] (right) -- (tt);
+
+    \path (start) -- (left) node[coin prob,pos=.48,above left=1pt] {$0.5$};
+    \path (start) -- (right) node[coin prob,pos=.48,above right=1pt] {$0.5$};
+    \path (left) -- (hh) node[coin prob,pos=.42,above left=1pt] {$0.5$};
+    \path (left) -- (ht) node[coin prob,pos=.42,above right=1pt] {$0.5$};
+    \path (right) -- (th) node[coin prob,pos=.42,above left=1pt] {$0.5$};
+    \path (right) -- (tt) node[coin prob,pos=.42,above right=1pt] {$0.5$};
+
+    \node[coin leafprob] at (-3.45,-2.70) {$0.25$};
+    \node[coin leafprob] at (-1.25,-2.70) {$0.25$};
+    \node[coin leafprob] at (1.25,-2.70) {$0.25$};
+    \node[coin leafprob] at (3.45,-2.70) {$0.25$};
+  \end{tikzpicture}
+  }
+\end{frame}
+
+\begin{frame}[standout,noframenumbering]
+  One idea per slide.
+\end{frame}
+
+\begin{frame}{Use quotes sparingly}
+  \begin{cookiequote}[Cookie design principle]
+    A good slide should make the argument easier to see.
+  \end{cookiequote}
+
+  \vspace{.4em}
+  A quote works best as a turn in the talk. Don't use too many!
+\end{frame}
+
+\begin{frame}[fragile]{Speaker notes live in the source}{Use \texttt{notes=second} for presenter mode}
+  \begin{columns}[T,onlytextwidth]
+    \column{.57\textwidth}
+      \begin{cookiecode}[title=Inside any frame]{TeX}
+The audience sees this.
+
+\note{
+  Remember why this slide matters.
+  Add timing, transitions, and questions here.
+}
+      \end{cookiecode}
+
+    \column{.39\textwidth}
+      \begin{block}{Output modes}
+        \small
+        \begin{tabularx}{\linewidth}{@{}>{\ttfamily}lX@{}}
+          notes=hide & slides only \\
+          notes=show & slides plus notes \\
+          notes=second & presenter layout \\
+          notes=only & notes pages only
+        \end{tabularx}
+      \end{block}
+
+      \cookiebadge{native Beamer} \hspace{.25em}\cookiebadge{styled notes page}
+  \end{columns}
+
+  \note{
+    This note compiles even when the audience deck hides notes. Build with
+    \texttt{notes=second} to see the presenter page.
+  }
+\end{frame}
+
+\section{Configuration}
+
+\begin{frame}{Options in one place}
+  \begin{columns}[T,onlytextwidth]
+    \column{.48\textwidth}
+      \begin{block}{Layout}
+        \small
+        \begin{tabularx}{\linewidth}{@{}>{\ttfamily}lX@{}}
+          progressbar & none, head, frametitle, foot \\
+          numbering & none, counter, fraction \\
+          numberrail & none, section, subsection \\
+          covered & invisible, transparent \\
+          notes & hide, show, second, only \\
+          toc & none, aftertitle
+        \end{tabularx}
+      \end{block}
+
+    \column{.48\textwidth}
+      \begin{block}{Appearance}
+        \small
+        \begin{tabularx}{\linewidth}{@{}>{\ttfamily}lX@{}}
+          accent & any xcolor name \\
+          background & light, dark \\
+          block & transparent, fill \\
+          titleformat & regular, smallcaps, allcaps
+        \end{tabularx}
+      \end{block}
+  \end{columns}
+
+  \vfill
+  \small Compatibility aliases such as \texttt{secslide}, \texttt{subsecslide},
+  \texttt{notoc}, and \texttt{coloraccent} make older awesome-beamer decks easier to move.
+\end{frame}
+
+\begin{frame}{Two background commands}
+  \begin{columns}[T,onlytextwidth]
+    \column{.48\textwidth}
+      \begin{cookiecard}[title=Title-page wedge]
+        \texttt{\textbackslash background\{image.jpg\}}
+
+        \vspace{.45em}
+        Clips the image into Cookie's asymmetric title art.
+      \end{cookiecard}
+
+    \column{.48\textwidth}
+      \begin{cookiecard}[title=Ordinary frames]
+        \texttt{bgimage=image.jpg}
+
+        \vspace{.45em}
+        Add the frame keys you need:
+        \par\vspace{.25em}
+        {\ttfamily\small
+          bgfit=cover\par
+          bgoverlay=cookieInk\par
+          bgoverlayopacity=.56\par
+        }
+      \end{cookiecard}
+  \end{columns}
+
+  \vfill
+  \begin{block}{Global background}
+    \texttt{\textbackslash cookiebackgroundimage\{image.jpg\}} applies an image to later frames.\\
+    \texttt{\textbackslash cookieclearbackgroundimage} removes it.
+  \end{block}
+\end{frame}
+
+\begin{frame}{Build with LuaLaTeX}
+  \cookiekicker{Command}
+  \vspace{.55em}
+
+  \begin{block}{Command line}
+    \texttt{latexmk -lualatex starter.tex}
+  \end{block}
+
+  \begin{itemize}
+    \item Run at least twice when section, subsection, bibliography, or total frame counts change.
+    \item \texttt{latexmk} runs LuaLaTeX and Biber as many times as the document needs.
+    \item The included CI workflow compiles the starter and the full demo.
+  \end{itemize}
+\end{frame}
+
+\section{References}
+
+\begin{frame}{Citations use normal BibLaTeX}{No theme-specific bibliography syntax}
+  Cookie is still ordinary Beamer: the typesetting stack builds on \TeX\ \parencite{knuth1984},
+  \LaTeX\ \parencite{lamport1994}, and Beamer \parencite{tantau2025}.
+
+  \vspace{.8em}
+  The design borrows progress bars from Metropolis \parencite{metropolis} and the numbered
+  slide grammar of awesome-beamer \parencite{awesomebeamer}.
+
+  \vfill
+  \begin{block}{Source setup}
+    \texttt{\textbackslash usepackage[backend=biber,style=authoryear]\{biblatex\}}\\
+    \texttt{\textbackslash addbibresource\{refs.bib\}}
+  \end{block}
+\end{frame}
+
+\begin{frame}[allowframebreaks]{References}
+  \printbibliography[heading=none]
+\end{frame}
+
+\end{document}

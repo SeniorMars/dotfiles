@@ -1,51 +1,64 @@
-\usepackage[tmargin=2cm,rmargin=1in,lmargin=1in,margin=0.85in,bmargin=2cm,footskip=.2in]{geometry}
-\usepackage{amsmath,amsfonts,amsthm,amssymb,mathtools}
-\usepackage[varbb]{newpxmath}
-\usepackage{microtype}
-\usepackage{xfrac}
-\usepackage{xparse}
-\usepackage[makeroom]{cancel}
-\usepackage{bookmark}
-\usepackage{enumitem}
-\usepackage{caption}
-\usepackage{hyperref,theoremref}
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{cmt}[2026/06/21 Charlie's math template package]
+
+\makeatletter
+\@ifundefined{cmt@loaded}{\global\let\cmt@loaded\@empty}{\endinput}
+\makeatother
+
+%==================================================
+% package setup
+%==================================================
+
+\RequirePackage[tmargin=2cm,rmargin=1in,lmargin=1in,margin=0.85in,bmargin=2cm,footskip=.2in]{geometry}
+\RequirePackage{amsmath,amsfonts,amsthm,amssymb,mathtools}
+\RequirePackage[varbb]{newpxmath}
+\RequirePackage{microtype}
+\RequirePackage{xfrac}
+\RequirePackage{xparse}
+\RequirePackage[makeroom]{cancel}
+\RequirePackage{bookmark}
+\RequirePackage{enumitem}
+\RequirePackage{caption}
+\RequirePackage{hyperref,theoremref}
 \hypersetup{
 	pdftitle={assignment},
 	colorlinks=true, linkcolor=doc!90,
 	bookmarksnumbered=true,
 	bookmarksopen=true
 }
+\newcommand{\metaname}[1]{\hypersetup{pdftitle={#1}}}
+\let\cmtpdftitle\metaname
 \captionsetup{
 	font=small,
 	labelfont={bf,sf},
 	textfont=sf,
 	labelsep=period
 }
-\usepackage[nameinlink,noabbrev]{cleveref}
-\usepackage[most,many,breakable]{tcolorbox}
-\usepackage{xcolor}
-\usepackage{listings}
-\usepackage{varwidth}
-\usepackage{etoolbox}
-%\usepackage{authblk}
-\usepackage{nameref}
-\usepackage{multicol,array}
-\usepackage[ruled,vlined,linesnumbered]{algorithm2e}
-\usepackage{comment} % enables the use of multi-line comments (\ifx \fi) 
-\usepackage{import}
-\usepackage{xifthen}
-\usepackage{pdfpages}
-\usepackage{transparent}
-\usepackage{chngcntr}
-\usepackage{tikz}
-\usepackage{titletoc}
+\RequirePackage[nameinlink,noabbrev]{cleveref}
+\RequirePackage[most,many,breakable]{tcolorbox}
+\RequirePackage{xcolor}
+\RequirePackage{listings}
+\RequirePackage{varwidth}
+\RequirePackage{etoolbox}
+%\RequirePackage{authblk}
+\RequirePackage{nameref}
+\RequirePackage{multicol,array}
+\RequirePackage[ruled,vlined,linesnumbered]{algorithm2e}
+\RequirePackage{comment} % enables the use of multi-line comments (\ifx \fi) 
+\RequirePackage{import}
+\RequirePackage{xifthen}
+\RequirePackage{pdfpages}
+\RequirePackage{transparent}
+\RequirePackage{chngcntr}
+\RequirePackage{tikz}
+\RequirePackage{titletoc}
 
 \newcommand{\incfig}[1]{%
-    \def\svgwidth{\columnwidth}
-    \import{./figures/}{#1.pdf_tex}
+	\def\svgwidth{\columnwidth}
+	\import{./figures/}{#1.pdf_tex}
 }
 
-\usepackage{tikzsymbols}
+\RequirePackage{tikzsymbols}
 \tikzset{
 	symbol/.style={
 			draw=none,
@@ -56,19 +69,19 @@
 \tikzstyle{c} = [circle,fill=black,scale=0.5]
 \tikzstyle{b} = [draw, thick, black, -]
 \tikzset{
-    vertex/.style={
-        circle,
-        draw,
-        minimum size=6mm,
-        inner sep=0pt
-    }
+	vertex/.style={
+			circle,
+			draw,
+			minimum size=6mm,
+			inner sep=0pt
+		}
 }
 
 \renewcommand\qedsymbol{$\Laughey$}
 
-% \usepackage{xparse}
-% \usepackage{pgffor}
-% \usepackage{emoji}
+% \RequirePackage{xparse}
+% \RequirePackage{pgffor}
+% \RequirePackage{emoji}
 %
 % \NewDocumentCommand{\memoji}{m o}{%
 %   \IfNoValueTF{#2}
@@ -192,93 +205,93 @@
 
 \tcbset{
 	cmtleftpanel/.style 2 args={
-		enhanced,
-		breakable,
-		colback = #1,
-		frame hidden,
-		boxrule = 0sp,
-		borderline west = {2pt}{0pt}{#2},
-		sharp corners,
-		description font = \mdseries,
-		separator sign none,
-	},
-	cmtleftthm/.style 2 args={
-		cmtleftpanel={#1}{#2},
-		detach title,
-		before upper = \tcbtitle\par\smallskip,
-		coltitle = #2,
-		fonttitle = \bfseries\sffamily,
-		segmentation style={solid, #2},
-	},
-	cmtexamplethm/.style={
-		colback = myexamplebg,
-		breakable,
-		colframe = myexamplefr,
-		coltitle = myexampleti,
-		boxrule = 1pt,
-		sharp corners,
-		detach title,
-		before upper=\tcbtitle\par\smallskip,
-		fonttitle = \bfseries,
-		description font = \mdseries,
-		separator sign none,
-		description delimiters parenthesis,
-	},
-	cmtdefinitionthm/.style={
-		enhanced,
-		before skip=2mm,
-		after skip=2mm,
-		colback=mydefinitbg,
-		colframe=mydefinitfr,
-		boxrule=0.5mm,
-		attach boxed title to top left={xshift=1cm,yshift*=1mm-\tcboxedtitleheight},
-		varwidth boxed title*=-3cm,
-		colbacktitle=mydefinitfr,
-		coltitle=white,
-		boxed title style={
-			frame code={
-				\path[fill=tcbcolback]
-				([yshift=-1mm,xshift=-1mm]frame.north west)
-				arc[start angle=0,end angle=180,radius=1mm]
-				([yshift=-1mm,xshift=1mm]frame.north east)
-				arc[start angle=180,end angle=0,radius=1mm];
-				\path[left color=tcbcolback!60!black,right color=tcbcolback!60!black,
-					middle color=tcbcolback!80!black]
-				([xshift=-2mm]frame.north west) -- ([xshift=2mm]frame.north east)
-				[rounded corners=1mm]-- ([xshift=1mm,yshift=-1mm]frame.north east)
-				-- (frame.south east) -- (frame.south west)
-				-- ([xshift=-1mm,yshift=-1mm]frame.north west)
-				[sharp corners]-- cycle;
-			},
-			interior engine=empty,
+			enhanced,
+			breakable,
+			colback = #1,
+			frame hidden,
+			boxrule = 0sp,
+			borderline west = {2pt}{0pt}{#2},
+			sharp corners,
+			description font = \mdseries,
+			separator sign none,
 		},
-		fonttitle=\bfseries,
-	},
+	cmtleftthm/.style 2 args={
+			cmtleftpanel={#1}{#2},
+			detach title,
+			before upper = \tcbtitle\par\smallskip,
+			coltitle = #2,
+			fonttitle = \bfseries\sffamily,
+			segmentation style={solid, #2},
+		},
+	cmtexamplethm/.style={
+			colback = myexamplebg,
+			breakable,
+			colframe = myexamplefr,
+			coltitle = myexampleti,
+			boxrule = 1pt,
+			sharp corners,
+			detach title,
+			before upper=\tcbtitle\par\smallskip,
+			fonttitle = \bfseries,
+			description font = \mdseries,
+			separator sign none,
+			description delimiters parenthesis,
+		},
+	cmtdefinitionthm/.style={
+			enhanced,
+			before skip=2mm,
+			after skip=2mm,
+			colback=mydefinitbg,
+			colframe=mydefinitfr,
+			boxrule=0.5mm,
+			attach boxed title to top left={xshift=1cm,yshift*=1mm-\tcboxedtitleheight},
+			varwidth boxed title*=-3cm,
+			colbacktitle=mydefinitfr,
+			coltitle=white,
+			boxed title style={
+					frame code={
+							\path[fill=tcbcolback]
+							([yshift=-1mm,xshift=-1mm]frame.north west)
+							arc[start angle=0,end angle=180,radius=1mm]
+								([yshift=-1mm,xshift=1mm]frame.north east)
+							arc[start angle=180,end angle=0,radius=1mm];
+							\path[left color=tcbcolback!60!black,right color=tcbcolback!60!black,
+								middle color=tcbcolback!80!black]
+							([xshift=-2mm]frame.north west) -- ([xshift=2mm]frame.north east)
+								[rounded corners=1mm]-- ([xshift=1mm,yshift=-1mm]frame.north east)
+								-- (frame.south east) -- (frame.south west)
+								-- ([xshift=-1mm,yshift=-1mm]frame.north west)
+								[sharp corners]-- cycle;
+						},
+					interior engine=empty,
+				},
+			fonttitle=\bfseries,
+		},
 }
 
 \makeatletter
 \tcbset{
 	cmtribbonbox/.style={
-		enhanced,
-		breakable,
-		colback=white,
-		attach boxed title to top left={yshift*=-\tcboxedtitleheight},
-		fonttitle=\bfseries,
-		boxed title size=title,
-		boxed title style={
-			sharp corners,
-			rounded corners=northwest,
-			colback=tcbcolframe,
-			boxrule=0pt,
+			enhanced,
+			breakable,
+			colback=white,
+			attach boxed title to top left={yshift*=-\tcboxedtitleheight},
+			fonttitle=\bfseries,
+			boxed title size=title,
+			boxed title style={
+					sharp corners,
+					rounded corners=northwest,
+					colback=tcbcolframe,
+					boxrule=0pt,
+				},
+			underlay boxed title={
+					\path[fill=tcbcolframe] (title.south west)--(title.south east)
+					to[out=0, in=180] ([xshift=5mm]title.east)--
+						(title.center-|frame.east)
+						[rounded corners=\kvtcb@arc] |-
+					(frame.north) -| cycle;
+				},
 		},
-		underlay boxed title={
-			\path[fill=tcbcolframe] (title.south west)--(title.south east)
-			to[out=0, in=180] ([xshift=5mm]title.east)--
-			(title.center-|frame.east)
-			[rounded corners=\kvtcb@arc] |-
-			(frame.north) -| cycle;
-		},
-	},
 }
 \makeatother
 
@@ -306,7 +319,6 @@
 }
 {th}
 
-
 \newtcolorbox{Theoremcon}
 {%
 	cmtleftpanel={mytheorembg}{mytheoremfr}
@@ -333,7 +345,6 @@
 	cmtleftthm={myp!10}{myp!85!black},
 }
 {th}
-
 
 %================================
 % LEMMA
@@ -383,7 +394,6 @@
 }
 {th}
 
-
 %================================
 % PROPOSITION
 %================================
@@ -408,7 +418,6 @@
 }
 {th}
 
-
 %================================
 % CLAIM
 %================================
@@ -423,8 +432,6 @@
 	borderline west = {2pt}{0pt}{myg},
 }
 {th}
-
-
 
 %================================
 % EXAMPLE BOX
@@ -492,7 +499,6 @@
 	cmtleftthm={myremarkbg}{myremarkfr},
 }
 {rmk}
-
 
 %================================
 % EXERCISE BOX
@@ -563,7 +569,6 @@
 	#1
 }{def}
 
-
 %================================
 % NOTE BOX
 %================================
@@ -601,7 +606,7 @@
 					\end{scope}
 				},
 		},
-		#1,
+	#1,
 }
 
 %================================
@@ -654,44 +659,44 @@
 	keywordstyle=\bfseries\color{codekeyword},
 	commentstyle=\itshape\color{codecomment},
 	moretexcs={
-		Cref,cref,metaname,codeinline,codefile,
-		dfn,dfnc,rmk,qs,nt,thm,cor,mlemma,mer,mprop,clm,wc,pf,sol,solve,
-		KwIn,KwOut,For,If,Return,tcp
-	},
+			Cref,cref,metaname,codeinline,codefile,
+			dfn,dfnc,rmk,qs,nt,thm,cor,mlemma,mer,mprop,clm,wc,pf,sol,solve,
+			KwIn,KwOut,For,If,Return,tcp
+		},
 	morekeywords={
-		Definition,Lemma,theorem,Remark,question,solution,algorithm,
-		codeblock,plaincodeblock,latexcodeblock,consoleblock
-	},
+			Definition,Lemma,theorem,Remark,question,solution,algorithm,
+			codeblock,plaincodeblock,latexcodeblock,consoleblock
+		},
 }
 
 \tcbset{
 	cmtcodebox/.style={
-		enhanced,
-		breakable,
-		sharp corners,
-		boxrule=0pt,
-		frame hidden,
-		colback=codebg,
-		colframe=codeframe,
-		coltitle=codeidentifier,
-		fonttitle=\bfseries\sffamily\small,
-		colbacktitle=codegutter,
-		titlerule=0pt,
-		toptitle=4pt,
-		bottomtitle=4pt,
-		lefttitle=8pt,
-		righttitle=8pt,
-		left=8pt,
-		right=8pt,
-		top=6pt,
-		bottom=6pt,
-		boxsep=0pt,
-		before skip=\baselineskip,
-		after skip=\baselineskip,
-		borderline west={2pt}{0pt}{codeaccent},
-		segmentation hidden,
-		listing only,
-	},
+			enhanced,
+			breakable,
+			sharp corners,
+			boxrule=0pt,
+			frame hidden,
+			colback=codebg,
+			colframe=codeframe,
+			coltitle=codeidentifier,
+			fonttitle=\bfseries\sffamily\small,
+			colbacktitle=codegutter,
+			titlerule=0pt,
+			toptitle=4pt,
+			bottomtitle=4pt,
+			lefttitle=8pt,
+			righttitle=8pt,
+			left=8pt,
+			right=8pt,
+			top=6pt,
+			bottom=6pt,
+			boxsep=0pt,
+			before skip=\baselineskip,
+			after skip=\baselineskip,
+			borderline west={2pt}{0pt}{codeaccent},
+			segmentation hidden,
+			listing only,
+		},
 }
 
 \newtcblisting{codeblock}[2][]{%
@@ -804,34 +809,34 @@
 \newsavebox\diffdbox
 \newcommand{\slantedromand}{{\mathpalette\makesl{d}}}
 \newcommand{\makesl}[2]{%
-\begingroup
-\sbox{\diffdbox}{$\mathsurround=0pt#1\mathrm{#2}$}%
-\pdfsave
-\pdfsetmatrix{1 0 0.2 1}%
-\rlap{\usebox{\diffdbox}}%
-\pdfrestore
-\hskip\wd\diffdbox
-\endgroup
+	\begingroup
+	\sbox{\diffdbox}{$\mathsurround=0pt#1\mathrm{#2}$}%
+	\pdfsave
+	\pdfsetmatrix{1 0 0.2 1}%
+	\rlap{\usebox{\diffdbox}}%
+	\pdfrestore
+	\hskip\wd\diffdbox
+	\endgroup
 }
 \newcommand{\dd}[1][]{\ensuremath{\mathop{}\!\ifstrempty{#1}{%
-\slantedromand\@ifnextchar^{\hspace{0.2ex}}{\hspace{0.1ex}}}%
-{\slantedromand\hspace{0.2ex}^{#1}}}}
+			\slantedromand\@ifnextchar^{\hspace{0.2ex}}{\hspace{0.1ex}}}%
+		{\slantedromand\hspace{0.2ex}^{#1}}}}
 \ProvideDocumentCommand\dv{o m g}{%
-  \ensuremath{%
-    \IfValueTF{#3}{%
-      \IfNoValueTF{#1}{%
-        \frac{\dd #2}{\dd #3}%
-      }{%
-        \frac{\dd^{#1} #2}{\dd #3^{#1}}%
-      }%
-    }{%
-      \IfNoValueTF{#1}{%
-        \frac{\dd}{\dd #2}%
-      }{%
-        \frac{\dd^{#1}}{\dd #2^{#1}}%
-      }%
-    }%
-  }%
+	\ensuremath{%
+		\IfValueTF{#3}{%
+			\IfNoValueTF{#1}{%
+				\frac{\dd #2}{\dd #3}%
+			}{%
+				\frac{\dd^{#1} #2}{\dd #3^{#1}}%
+			}%
+		}{%
+			\IfNoValueTF{#1}{%
+				\frac{\dd}{\dd #2}%
+			}{%
+				\frac{\dd^{#1}}{\dd #2^{#1}}%
+			}%
+		}%
+	}%
 }
 \providecommand*{\pdv}[3][]{\frac{\partial^{#1}#2}{\partial#3^{#1}}}
 %  - others
@@ -881,12 +886,190 @@
 \makeatletter
 \renewcommand{\tableofcontents}{%
 	\chapter*{%
-	  \vspace*{-20\p@}%
-	  \begin{tikzpicture}[remember picture, overlay]%
-		  \pgftext[right,x=15cm,y=0.2cm]{\color{doc!60}\Huge\sc\bfseries \contentsname};%
-		  \draw[fill=doc!60,draw=doc!60] (13,-.75) rectangle (20,1);%
-		  \clip (13,-.75) rectangle (20,1);
-		  \pgftext[right,x=15cm,y=0.2cm]{\color{white}\Huge\sc\bfseries \contentsname};%
-	  \end{tikzpicture}}%
+		\vspace*{-20\p@}%
+		\begin{tikzpicture}[remember picture, overlay]%
+			\pgftext[right,x=15cm,y=0.2cm]{\color{doc!60}\Huge\sc\bfseries \contentsname};%
+			\draw[fill=doc!60,draw=doc!60] (13,-.75) rectangle (20,1);%
+			\clip (13,-.75) rectangle (20,1);
+			\pgftext[right,x=15cm,y=0.2cm]{\color{white}\Huge\sc\bfseries \contentsname};%
+		\end{tikzpicture}}%
 	\@starttoc{toc}}
 \makeatother
+
+%==================================================
+% math and solution macros
+%==================================================
+
+\newcommand{\eps}{\epsilon}
+\newcommand{\veps}{\varepsilon}
+\newcommand{\Qed}{\begin{flushright}\qed\end{flushright}}
+
+\newcommand{\parinn}{\setlength{\parindent}{1cm}}
+\newcommand{\parinf}{\setlength{\parindent}{0cm}}
+
+% \newcommand{\norm}{\|\cdot\|}
+\newcommand{\inorm}{\norm_{\infty}}
+\newcommand{\opensets}{\{V_{\alpha}\}_{\alpha\in I}}
+\newcommand{\oset}{V_{\alpha}}
+\newcommand{\opset}[1]{V_{\alpha_{#1}}}
+\newcommand{\lub}{\text{lub}}
+\newcommand{\del}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\Del}[3]{\frac{\partial^{#1} #2}{\partial^{#1} #3}}
+\newcommand{\deld}[2]{\dfrac{\partial #1}{\partial #2}}
+\newcommand{\Deld}[3]{\dfrac{\partial^{#1} #2}{\partial^{#1} #3}}
+\newcommand{\der}[2]{\frac{\mathrm{d} #1}{\mathrm{d} #2}}
+\newcommand{\ddd}[3]{\frac{\mathrm{d}^{#3} #1}{\mathrm{d}^{#3} #2}}
+\newcommand{\lm}{\lambda}
+\newcommand{\uin}{\mathbin{\rotatebox[origin=c]{90}{$\in$}}}
+\newcommand{\usubset}{\mathbin{\rotatebox[origin=c]{90}{$\subset$}}}
+\newcommand{\lt}{\left}
+\newcommand{\rt}{\right}
+\newcommand{\bs}[1]{\boldsymbol{#1}}
+\newcommand{\exs}{\exists}
+\newcommand{\st}{\strut}
+\newcommand{\dps}[1]{\displaystyle{#1}}
+\newcommand{\id}{\text{id}}
+\newcommand{\Id}{\text{Id}}
+
+\newcommand{\cmtsolutionheading}{%
+	\par\noindent\textbf{\textit{Solution:}}\setlength{\parindent}{1cm} }
+\newenvironment{sol}{\cmtsolutionheading}{\par}
+\newcommand{\solve}[1]{\cmtsolutionheading #1 \Qed}
+
+%==================================================
+% letter font shortcuts
+%==================================================
+
+% number sets
+\newcommand{\RR}[1][]{\ensuremath{\ifstrempty{#1}{\mathbb{R}}{\mathbb{R}^{#1}}}}
+\newcommand{\NN}[1][]{\ensuremath{\ifstrempty{#1}{\mathbb{N}}{\mathbb{N}^{#1}}}}
+\newcommand{\ZZ}[1][]{\ensuremath{\ifstrempty{#1}{\mathbb{Z}}{\mathbb{Z}^{#1}}}}
+\newcommand{\QQ}[1][]{\ensuremath{\ifstrempty{#1}{\mathbb{Q}}{\mathbb{Q}^{#1}}}}
+\newcommand{\CC}[1][]{\ensuremath{\ifstrempty{#1}{\mathbb{C}}{\mathbb{C}^{#1}}}}
+\newcommand{\PP}[1][]{\ensuremath{\ifstrempty{#1}{\mathbb{P}}{\mathbb{P}^{#1}}}}
+\newcommand{\HH}[1][]{\ensuremath{\ifstrempty{#1}{\mathbb{H}}{\mathbb{H}^{#1}}}}
+\newcommand{\FF}[1][]{\ensuremath{\ifstrempty{#1}{\mathbb{F}}{\mathbb{F}^{#1}}}}
+% expected value
+\newcommand{\EE}{\ensuremath{\mathbb{E}}}
+
+%---------------------------------------
+% BlackBoard Math Fonts :-
+%---------------------------------------
+
+%Captital Letters
+\newcommand{\bbA}{\mathbb{A}}	\newcommand{\bbB}{\mathbb{B}}
+\newcommand{\bbC}{\mathbb{C}}	\newcommand{\bbD}{\mathbb{D}}
+\newcommand{\bbE}{\mathbb{E}}	\newcommand{\bbF}{\mathbb{F}}
+\newcommand{\bbG}{\mathbb{G}}	\newcommand{\bbH}{\mathbb{H}}
+\newcommand{\bbI}{\mathbb{I}}	\newcommand{\bbJ}{\mathbb{J}}
+\newcommand{\bbK}{\mathbb{K}}	\newcommand{\bbL}{\mathbb{L}}
+\newcommand{\bbM}{\mathbb{M}}	\newcommand{\bbN}{\mathbb{N}}
+\newcommand{\bbO}{\mathbb{O}}	\newcommand{\bbP}{\mathbb{P}}
+\newcommand{\bbQ}{\mathbb{Q}}	\newcommand{\bbR}{\mathbb{R}}
+\newcommand{\bbS}{\mathbb{S}}	\newcommand{\bbT}{\mathbb{T}}
+\newcommand{\bbU}{\mathbb{U}}	\newcommand{\bbV}{\mathbb{V}}
+\newcommand{\bbW}{\mathbb{W}}	\newcommand{\bbX}{\mathbb{X}}
+\newcommand{\bbY}{\mathbb{Y}}	\newcommand{\bbZ}{\mathbb{Z}}
+
+%---------------------------------------
+% MathCal Fonts :-
+%---------------------------------------
+
+%Captital Letters
+\newcommand{\mcA}{\mathcal{A}}	\newcommand{\mcB}{\mathcal{B}}
+\newcommand{\mcC}{\mathcal{C}}	\newcommand{\mcD}{\mathcal{D}}
+\newcommand{\mcE}{\mathcal{E}}	\newcommand{\mcF}{\mathcal{F}}
+\newcommand{\mcG}{\mathcal{G}}	\newcommand{\mcH}{\mathcal{H}}
+\newcommand{\mcI}{\mathcal{I}}	\newcommand{\mcJ}{\mathcal{J}}
+\newcommand{\mcK}{\mathcal{K}}	\newcommand{\mcL}{\mathcal{L}}
+\newcommand{\mcM}{\mathcal{M}}	\newcommand{\mcN}{\mathcal{N}}
+\newcommand{\mcO}{\mathcal{O}}	\newcommand{\mcP}{\mathcal{P}}
+\newcommand{\mcQ}{\mathcal{Q}}	\newcommand{\mcR}{\mathcal{R}}
+\newcommand{\mcS}{\mathcal{S}}	\newcommand{\mcT}{\mathcal{T}}
+\newcommand{\mcU}{\mathcal{U}}	\newcommand{\mcV}{\mathcal{V}}
+\newcommand{\mcW}{\mathcal{W}}	\newcommand{\mcX}{\mathcal{X}}
+\newcommand{\mcY}{\mathcal{Y}}	\newcommand{\mcZ}{\mathcal{Z}}
+
+%---------------------------------------
+% Bold Math Fonts :-
+%---------------------------------------
+
+%Captital Letters
+\newcommand{\bmA}{\boldsymbol{A}}	\newcommand{\bmB}{\boldsymbol{B}}
+\newcommand{\bmC}{\boldsymbol{C}}	\newcommand{\bmD}{\boldsymbol{D}}
+\newcommand{\bmE}{\boldsymbol{E}}	\newcommand{\bmF}{\boldsymbol{F}}
+\newcommand{\bmG}{\boldsymbol{G}}	\newcommand{\bmH}{\boldsymbol{H}}
+\newcommand{\bmI}{\boldsymbol{I}}	\newcommand{\bmJ}{\boldsymbol{J}}
+\newcommand{\bmK}{\boldsymbol{K}}	\newcommand{\bmL}{\boldsymbol{L}}
+\newcommand{\bmM}{\boldsymbol{M}}	\newcommand{\bmN}{\boldsymbol{N}}
+\newcommand{\bmO}{\boldsymbol{O}}	\newcommand{\bmP}{\boldsymbol{P}}
+\newcommand{\bmQ}{\boldsymbol{Q}}	\newcommand{\bmR}{\boldsymbol{R}}
+\newcommand{\bmS}{\boldsymbol{S}}	\newcommand{\bmT}{\boldsymbol{T}}
+\newcommand{\bmU}{\boldsymbol{U}}	\newcommand{\bmV}{\boldsymbol{V}}
+\newcommand{\bmW}{\boldsymbol{W}}	\newcommand{\bmX}{\boldsymbol{X}}
+\newcommand{\bmY}{\boldsymbol{Y}}	\newcommand{\bmZ}{\boldsymbol{Z}}
+%Small Letters
+\newcommand{\bma}{\boldsymbol{a}}	\newcommand{\bmb}{\boldsymbol{b}}
+\newcommand{\bmc}{\boldsymbol{c}}	\newcommand{\bmd}{\boldsymbol{d}}
+\newcommand{\bme}{\boldsymbol{e}}	\newcommand{\bmf}{\boldsymbol{f}}
+\newcommand{\bmg}{\boldsymbol{g}}	\newcommand{\bmh}{\boldsymbol{h}}
+\newcommand{\bmi}{\boldsymbol{i}}	\newcommand{\bmj}{\boldsymbol{j}}
+\newcommand{\bmk}{\boldsymbol{k}}	\newcommand{\bml}{\boldsymbol{l}}
+\newcommand{\bmm}{\boldsymbol{m}}	\newcommand{\bmn}{\boldsymbol{n}}
+\newcommand{\bmo}{\boldsymbol{o}}	\newcommand{\bmp}{\boldsymbol{p}}
+\newcommand{\bmq}{\boldsymbol{q}}	\newcommand{\bmr}{\boldsymbol{r}}
+\newcommand{\bms}{\boldsymbol{s}}	\newcommand{\bmt}{\boldsymbol{t}}
+\newcommand{\bmu}{\boldsymbol{u}}	\newcommand{\bmv}{\boldsymbol{v}}
+\newcommand{\bmw}{\boldsymbol{w}}	\newcommand{\bmx}{\boldsymbol{x}}
+\newcommand{\bmy}{\boldsymbol{y}}	\newcommand{\bmz}{\boldsymbol{z}}
+
+%---------------------------------------
+% Scr Math Fonts :-
+%---------------------------------------
+
+\newcommand{\sA}{{\mathscr{A}}}   \newcommand{\sB}{{\mathscr{B}}}
+\newcommand{\sC}{{\mathscr{C}}}   \newcommand{\sD}{{\mathscr{D}}}
+\newcommand{\sE}{{\mathscr{E}}}   \newcommand{\sF}{{\mathscr{F}}}
+\newcommand{\sG}{{\mathscr{G}}}   \newcommand{\sH}{{\mathscr{H}}}
+\newcommand{\sI}{{\mathscr{I}}}   \newcommand{\sJ}{{\mathscr{J}}}
+\newcommand{\sK}{{\mathscr{K}}}   \newcommand{\sL}{{\mathscr{L}}}
+\newcommand{\sM}{{\mathscr{M}}}   \newcommand{\sN}{{\mathscr{N}}}
+\newcommand{\sO}{{\mathscr{O}}}   \newcommand{\sP}{{\mathscr{P}}}
+\newcommand{\sQ}{{\mathscr{Q}}}   \newcommand{\sR}{{\mathscr{R}}}
+\newcommand{\sS}{{\mathscr{S}}}   \newcommand{\sT}{{\mathscr{T}}}
+\newcommand{\sU}{{\mathscr{U}}}   \newcommand{\sV}{{\mathscr{V}}}
+\newcommand{\sW}{{\mathscr{W}}}   \newcommand{\sX}{{\mathscr{X}}}
+\newcommand{\sY}{{\mathscr{Y}}}   \newcommand{\sZ}{{\mathscr{Z}}}
+
+%---------------------------------------
+% Math Fraktur Font
+%---------------------------------------
+
+%Captital Letters
+\newcommand{\mfA}{\mathfrak{A}}	\newcommand{\mfB}{\mathfrak{B}}
+\newcommand{\mfC}{\mathfrak{C}}	\newcommand{\mfD}{\mathfrak{D}}
+\newcommand{\mfE}{\mathfrak{E}}	\newcommand{\mfF}{\mathfrak{F}}
+\newcommand{\mfG}{\mathfrak{G}}	\newcommand{\mfH}{\mathfrak{H}}
+\newcommand{\mfI}{\mathfrak{I}}	\newcommand{\mfJ}{\mathfrak{J}}
+\newcommand{\mfK}{\mathfrak{K}}	\newcommand{\mfL}{\mathfrak{L}}
+\newcommand{\mfM}{\mathfrak{M}}	\newcommand{\mfN}{\mathfrak{N}}
+\newcommand{\mfO}{\mathfrak{O}}	\newcommand{\mfP}{\mathfrak{P}}
+\newcommand{\mfQ}{\mathfrak{Q}}	\newcommand{\mfR}{\mathfrak{R}}
+\newcommand{\mfS}{\mathfrak{S}}	\newcommand{\mfT}{\mathfrak{T}}
+\newcommand{\mfU}{\mathfrak{U}}	\newcommand{\mfV}{\mathfrak{V}}
+\newcommand{\mfW}{\mathfrak{W}}	\newcommand{\mfX}{\mathfrak{X}}
+\newcommand{\mfY}{\mathfrak{Y}}	\newcommand{\mfZ}{\mathfrak{Z}}
+%Small Letters
+\newcommand{\mfa}{\mathfrak{a}}	\newcommand{\mfb}{\mathfrak{b}}
+\newcommand{\mfc}{\mathfrak{c}}	\newcommand{\mfd}{\mathfrak{d}}
+\newcommand{\mfe}{\mathfrak{e}}	\newcommand{\mff}{\mathfrak{f}}
+\newcommand{\mfg}{\mathfrak{g}}	\newcommand{\mfh}{\mathfrak{h}}
+\newcommand{\mfi}{\mathfrak{i}}	\newcommand{\mfj}{\mathfrak{j}}
+\newcommand{\mfk}{\mathfrak{k}}	\newcommand{\mfl}{\mathfrak{l}}
+\newcommand{\mfm}{\mathfrak{m}}	\newcommand{\mfn}{\mathfrak{n}}
+\newcommand{\mfo}{\mathfrak{o}}	\newcommand{\mfp}{\mathfrak{p}}
+\newcommand{\mfq}{\mathfrak{q}}	\newcommand{\mfr}{\mathfrak{r}}
+\newcommand{\mfs}{\mathfrak{s}}	\newcommand{\mft}{\mathfrak{t}}
+\newcommand{\mfu}{\mathfrak{u}}	\newcommand{\mfv}{\mathfrak{v}}
+\newcommand{\mfw}{\mathfrak{w}}	\newcommand{\mfx}{\mathfrak{x}}
+\newcommand{\mfy}{\mathfrak{y}}	\newcommand{\mfz}{\mathfrak{z}}

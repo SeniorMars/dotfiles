@@ -1,79 +1,92 @@
-html#main-window {
-    --toolbar-bgcolor: #111111 !important;
-    --lwt-accent-color: #111111 !important;
-    --lwt-toolbar-field-background-color: #111111 !important;
-    --lwt-toolbar-field-color: #98cfe5 !important;
-    --chrome-content-separator-color: none !important;
-    --backbutton-background: none !important;
-    --arrowpanel-background: #111111 !important;
-    --arrowpanel-border-color: #111111 !important;
-    --lwt-sidebar-background-color: #111111 !important;
+:root {
+    --uc-bg: #111111;
+    --uc-bg-hover: #172229;
+    --uc-accent: #98cfe5;
+    --uc-url-text: #98cfe5;
+    --uc-url-domain: #c9f0ff;
+    --uc-url-muted: rgba(152, 207, 229, 0.62);
+    --uc-current-tab-text: #B2399D;
+    --uc-text: #ffffff;
+    --uc-border: transparent;
+    --uc-menu-separator: rgba(152, 207, 229, 0.10);
+    --uc-toolbar-padding-x: 16px;
+    --uc-toolbar-padding-y: 8px;
+    --uc-urlbar-max-width: 820px;
+
+    --toolbar-bgcolor: var(--uc-bg) !important;
+    --toolbar-color: var(--uc-accent) !important;
+    --lwt-accent-color: var(--uc-bg) !important;
+    --lwt-text-color: var(--uc-accent) !important;
+    --lwt-toolbar-field-background-color: var(--uc-bg) !important;
+    --lwt-toolbar-field-color: var(--uc-text) !important;
+    --toolbar-field-background-color: var(--uc-bg) !important;
+    --toolbar-field-color: var(--uc-text) !important;
+    --toolbar-field-border-color: transparent !important;
+    --toolbar-field-focus-border-color: transparent !important;
+    --toolbar-field-focus-background-color: var(--uc-bg) !important;
+    --toolbar-field-focus-color: var(--uc-text) !important;
+    --urlbarView-highlight-background: var(--uc-bg-hover) !important;
+    --urlbarView-highlight-color: var(--uc-accent) !important;
+    --arrowpanel-background: var(--uc-bg) !important;
+    --arrowpanel-color: var(--uc-text) !important;
+    --arrowpanel-border-color: transparent !important;
+    --panel-background: var(--uc-bg) !important;
+    --panel-color: var(--uc-text) !important;
+    --panel-border-color: transparent !important;
+    --panel-separator-color: var(--uc-menu-separator) !important;
+    --lwt-sidebar-background-color: var(--uc-bg) !important;
+    --sidebar-background-color: var(--uc-bg) !important;
+    --chrome-content-separator-color: transparent !important;
+    --tabs-border-color: transparent !important;
+    background-color: var(--uc-bg) !important;
 }
 
-textbox {
-    background-color: #111111 !important;
-    border: none !important;
+#main-window,
+#navigator-toolbox,
+#titlebar,
+#TabsToolbar,
+#nav-bar,
+#PersonalToolbar {
+    background: var(--uc-bg) !important;
+    background-image: none !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    color: var(--uc-accent) !important;
 }
 
-vbox[style],
-hbox[style] {
-    background-color: #111111 !important;
-    border: none !important;
+toolbarbutton,
+.toolbarbutton-1,
+#nav-bar toolbarbutton,
+#TabsToolbar toolbarbutton,
+#PersonalToolbar toolbarbutton,
+#back-button,
+#forward-button,
+#reload-button,
+#stop-button,
+#home-button,
+#downloads-button,
+#bookmarks-menu-button,
+#history-panelmenu,
+#unified-extensions-button,
+#nav-bar-overflow-button,
+#PanelUI-menu-button {
+    color: var(--uc-accent) !important;
+    fill: var(--uc-accent) !important;
+    fill-opacity: 1 !important;
 }
 
-.sidebar-placesTree {
-    background-color: #111111 !important;
-    border: none !important;
+toolbarbutton .toolbarbutton-icon,
+toolbarbutton .toolbarbutton-badge-stack,
+.toolbarbutton-1 .toolbarbutton-icon,
+.toolbarbutton-1 .toolbarbutton-badge-stack {
+    color: var(--uc-accent) !important;
+    fill: var(--uc-accent) !important;
+    fill-opacity: 1 !important;
 }
 
-:root[lwt-popup-brighttext] {
-    --panel-separator-color: #111111 !important;
-    border: none !important;
-}
-
-#sidebar-header {
-    border: none !important;
-}
-
-:root:not([uidensity="compact"]):not([chromehidden~="toolbar"]) #nav-bar[brighttext]>#PanelUI-button {
-    border-image-source: linear-gradient(transparent, transparent) !important;
-}
-
-#identity-box,
-#tracking-protection-icon-container,
-.urlbar-icon,
-.tab-icon-image {
-    display: none !important;
-}
-
-#toolbar-menubar:not([autohide="true"])+#TabsToolbar .tabbrowser-tab>.tab-stack>.tab-background,
-:root:not([tabsintitlebar]) .tab-background,
-:root[extradragspace] .tab-background {
-    border-top: 0 !important;
-}
-
-.tab-line {
-    height: 0 !important;
-}
-
-.close-icon {
-    display: none !important;
-}
-
-#page-action-buttons>*:not(#star-button-box),
-.urlbar-history-dropmarker {
-    opacity: 0 !important;
-}
-
-#urlbar:hover #page-action-buttons>*,
-#urlbar:hover .urlbar-history-dropmarker {
-    opacity: 1 !important;
-}
-
-/* Removal of black bottom 1px line */
-#navigator-toolbox::after {
-    display: none !important;
-    height: 0;
+toolbarbutton[disabled="true"],
+toolbarbutton[disabled="true"] .toolbarbutton-icon {
+    opacity: 0.45 !important;
 }
 
 menubar,
@@ -85,328 +98,720 @@ textbox,
 toolbar,
 tab,
 tree,
-.tree-rows {
-    font-family: 'Input Condensed', monospace !important;
-    font-size: 8pt !important;
-    font-weight: bold;
-    font-style: normal !important;
-    -moz-appearance: none !important;
-    color: #98cfe5 !important;
-}
-
+.tree-rows,
+panel,
 menupopup {
-    -moz-appearance: none !important;
-    padding: 8px !important;
-    background-color: #111111 !important;
-    color: #98cfe5 !important;
+    font-family: "Input Condensed", monospace !important;
+    font-size: 8pt !important;
+    font-style: normal !important;
+    font-weight: bold !important;
 }
 
-#navigator-toolbox {
-    --tabs-border-color: none !important;
-    border: none !important;
-    color: #98cfe5 !important;
+/* Keep horizontal tabs below the URL/bookmarks toolbars on Firefox 152/Nova-style chrome. */
+@media not -moz-pref("sidebar.verticalTabs") {
+    .global-notificationbox,
+    #tab-notification-deck,
+    #notifications-toolbar,
+    #TabsToolbar {
+        order: 1 !important;
+    }
+
+    #TabsToolbar > :is(.titlebar-spacer, .titlebar-buttonbox-container) {
+        display: none !important;
+    }
 }
 
-/* /1* This removes the tab separators *1/ */
-.tabbrowser-tab::before,
-.tabbrowser-tab::after {
+:root[sizemode="fullscreen"] #nav-bar > .titlebar-buttonbox-container {
+    display: flex !important;
+}
+
+#navigator-toolbox::after,
+#navigator-toolbox::before,
+#TabsToolbar::after,
+#TabsToolbar::before {
     display: none !important;
 }
 
-.tab-background[selected=true] {
-    color: #111111 !important;
+#nav-bar {
+    min-height: 46px !important;
+    padding: var(--uc-toolbar-padding-y) var(--uc-toolbar-padding-x) !important;
 }
 
-#sidebar-search-container {
-    background-color: #111111;
+#TabsToolbar {
+    min-height: 38px !important;
+    padding: 2px var(--uc-toolbar-padding-x) 8px !important;
 }
 
-.panel-arrowcontainer,
-.panel-arrowcontainer,
-.panel-arrowcontent {
-    border-radius: 8px !important;
+#nav-bar .customization-target {
+    align-items: center !important;
+    display: flex !important;
+    padding-inline: 0 !important;
+    width: 100% !important;
 }
 
-.tab-icon-stack {
-    margin-inline-start: auto
+#TabsToolbar .toolbar-items {
+    padding-inline: 0 !important;
 }
 
-.tab-label-container {
-    max-width: min-content;
-    margin-inline-end: auto;
+#urlbar-container {
+    flex: 1 1 var(--uc-urlbar-max-width) !important;
+    margin-inline: auto !important;
+    max-width: min(var(--uc-urlbar-max-width), calc(100vw - 260px)) !important;
+    min-width: 260px !important;
+    padding-block: 5px !important;
+    padding-inline: 6px 12px !important;
+}
+
+#urlbar {
+    min-height: 32px !important;
+    overflow: visible !important;
+    position: relative !important;
+}
+
+#toolbar-menubar:not([autohide="true"]) + #TabsToolbar .tabbrowser-tab > .tab-stack > .tab-background,
+:root:not([tabsintitlebar]) .tab-background,
+:root[extradragspace] .tab-background {
+    border-top: 0 !important;
+}
+
+.tabbrowser-tab::before,
+.tabbrowser-tab::after,
+.tab-line {
+    display: none !important;
+}
+
+.tabbrowser-tab {
+    color: var(--uc-accent) !important;
+    min-height: 30px !important;
+}
+
+.tabbrowser-tab .tab-background {
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    margin-block: 3px !important;
+}
+
+.tabbrowser-tab:not([selected="true"]):hover .tab-background {
+    background: var(--uc-bg-hover) !important;
+}
+
+.tabbrowser-tab:is([selected="true"], [visuallyselected="true"]) {
+    background: transparent !important;
+    background-image: none !important;
+}
+
+.tabbrowser-tab:is([selected="true"], [visuallyselected="true"]) .tab-background {
+    background: transparent !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    outline: 0 !important;
 }
 
 .tabbrowser-tab[selected="true"],
-.tab-label-container[selected="true"] {
-    color: #c33dab !important;
-    padding-inline-end: 6px !important;
-    /* background-color: var(--color3) !important; */
-    /* background-image: linear-gradient(var(--color3), var(--color3)) !important; */
-}
-
-.chromeclass-location {
-    border: none !important;
-    box-shadow: none !important;
-    background-image: none !important;
-}
-
-#urlbar,
-#urlbar-input,
-.urlbar-input-box {
-    color: #ffffff !important;
-    /* Sets the text color to white */
+.tabbrowser-tab[selected="true"] .tab-label,
+.tabbrowser-tab[selected="true"] .tab-secondary-label,
+.tabbrowser-tab[visuallyselected="true"],
+.tabbrowser-tab[visuallyselected="true"] .tab-label,
+.tabbrowser-tab[visuallyselected="true"] .tab-secondary-label {
+    color: var(--uc-current-tab-text) !important;
     text-shadow: none !important;
-    /* Removes any shadows that might obscure text */
 }
 
-.urlbarView {
-    background-color: #111111 !important;
-    box-shadow: none !important;
-    margin: auto !important;
+.tab-content {
+    justify-content: center !important;
 }
 
-.urlbarView-favicon {
+.tab-icon-stack {
+    margin-inline-start: auto !important;
+}
+
+.tab-label-container {
+    margin-inline-end: auto !important;
+    max-width: min-content !important;
+}
+
+.tab-icon-image,
+.tab-close-button,
+.close-icon {
     display: none !important;
-}
-
-.urlbarView:not(.megabar) .urlbarView-row:not([type="tip"])[selected],
-.urlbarView.megabar .urlbarView-row:not([type="tip"])[selected]>.urlbarView-row-inner {
-    color: #98cfe5 !important;
-    background: #21252B !important;
-    fill-opacity: 1;
-}
-
-#urlbar-background,
-#urlbar-container,
-.urlbar-input-box {
-    background-color: #111111 !important;
-    background-image: none !important;
-}
-
-#urlbar:not(.megabar),
-#urlbar.megabar>#urlbar-background,
-#searchbar {
-    border: none !important;
-    box-shadow: none !important;
-}
-
-.sidebar-splitter {
-    -moz-appearance: none;
-    border: none !important;
-}
-
-:root[sessionrestored] .customization-target {
-    padding: 14px !important;
-}
-
-#statuspanel-label {
-    background-color: #111111 !important;
-    border: 1px none #111111 !important;
-    border-top-style: solid !important;
-    color: #98cfe5 !important;
-}
-
-#urlbar,
-#searchbar {
-    border: none !important;
-}
-
-/*Transition color while opening websites - disable if you like flashbangs */
-#browser vbox#appcontent tabbrowser,
-#content,
-#tabbrowser-tabpanels,
-browser[type="content-primary"],
-browser[type="content"]>html {
-    background: #111 !important;
-}
-
-#tabbrowser-tabpanels,
-#webextpanels-window,
-#webext-panels-stack,
-#webext-panels-browser {
-    background: #111 !important;
 }
 
 #tabs-newtab-button {
     display: none !important;
 }
 
-/* Download progress text */
-#downloadsPanel .downloadProgress {
-    color: #ffffff !important;
-    /* White text for download progress */
+#trust-icon-container,
+#tracking-protection-icon-container,
+#tracking-protection-icon-box,
+#urlbar .urlbar-go-button {
+    display: none !important;
+    visibility: collapse !important;
 }
 
-/* Tooltip text for all panels */
-.tooltip {
-    color: #ffffff !important;
-    background-color: #111111 !important;
+#identity-icon-box,
+#identity-icon,
+#identity-icon-label,
+#identity-icon-labels,
+#identity-icon-label-box,
+#identity-icon-country-label {
+    display: none !important;
+    visibility: collapse !important;
 }
 
-#unified-extensions-view,
-#unified-extensions-view .unified-extensions-item {
-    color: #ffffff !important;
-    /* Sets the text color to white */
+#identity-permission-box:not([hidden]) {
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    color: var(--uc-accent) !important;
+    fill: var(--uc-accent) !important;
+    fill-opacity: 1 !important;
 }
 
-#unified-extensions-view .toolbarbutton-text {
-    color: #ffffff !important;
-    /* Ensures toolbar button text is white */
+#permissions-granted-icon:not([hidden]) {
+    display: flex !important;
+    height: 16px !important;
+    margin: 0 !important;
+    width: 16px !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    color: var(--uc-accent) !important;
+    fill: var(--uc-accent) !important;
+    fill-opacity: 1 !important;
 }
 
-#unified-extensions-view .unified-extensions-item:hover {
-    color: #ffffff !important;
-    /* Keeps the text white on hover */
+#identity-permission-box .sharing-icon,
+#blocked-permissions-container,
+#blocked-permissions-container > *,
+.identity-permission-icon,
+.blocked-permission-icon,
+#notification-popup-box {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: collapse !important;
 }
 
+#urlbar .urlbar-icon {
+    color: var(--uc-accent) !important;
+    fill: var(--uc-accent) !important;
+    fill-opacity: 1 !important;
+}
 
-/* General panel styling */
+#page-action-buttons > *,
+.urlbar-history-dropmarker {
+    display: none !important;
+    opacity: 0 !important;
+}
+
+#reader-mode-button:not([hidden]),
+#translations-button:not([hidden]) {
+    display: flex !important;
+    opacity: 1 !important;
+    color: var(--uc-accent) !important;
+    fill: var(--uc-accent) !important;
+    fill-opacity: 1 !important;
+}
+
+#reader-mode-button:not([hidden]) .urlbar-icon,
+#translations-button:not([hidden]) .urlbar-icon {
+    opacity: 1 !important;
+    color: var(--uc-accent) !important;
+    fill: var(--uc-accent) !important;
+    fill-opacity: 1 !important;
+}
+
+#urlbar,
+#searchbar,
+#urlbar-input,
+.urlbar-input-box,
+.urlbar-input-container {
+    color: var(--uc-url-text) !important;
+    text-shadow: none !important;
+}
+
+#urlbar-input {
+    caret-color: var(--uc-url-domain) !important;
+}
+
+#urlbar-scheme,
+.urlbar-scheme,
+#urlbar-display-box,
+#urlbar .urlbar-input-box:not(:focus-within) {
+    color: var(--uc-url-muted) !important;
+}
+
+#urlbar-host,
+.urlbar-host,
+#urlbar-domain,
+.urlbar-domain,
+#urlbar .urlbar-input-box .urlbar-host,
+#urlbar .urlbar-input-box .urlbar-domain {
+    color: var(--uc-url-domain) !important;
+}
+
+#urlbar,
+#searchbar {
+    border: 0 !important;
+    box-shadow: none !important;
+}
+
+#urlbar-background,
+#urlbar > .urlbar-background,
+#searchbar {
+    appearance: none !important;
+    background: var(--uc-bg) !important;
+    background-image: none !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    outline: 0 !important;
+}
+
+#urlbar > .urlbar-background::before,
+#urlbar > .urlbar-background::after {
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    content: none !important;
+    filter: none !important;
+    outline: 0 !important;
+}
+
+#urlbar:hover > .urlbar-background,
+#urlbar:focus-within > .urlbar-background,
+#urlbar[focused="true"] > .urlbar-background,
+#urlbar[open] > .urlbar-background {
+    background: var(--uc-bg) !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    outline: 0 !important;
+}
+
+#urlbar-zoom-button,
+#urlbar-zoom-button:hover,
+#urlbar-zoom-button:active,
+#urlbar-zoom-button[open="true"],
+#urlbar .urlbar-input-container toolbarbutton,
+#urlbar .urlbar-input-container toolbarbutton:hover,
+#urlbar .urlbar-input-container toolbarbutton:active,
+#urlbar .urlbar-input-container toolbarbutton[open="true"] {
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+}
+
+.urlbarView {
+    background: var(--uc-bg) !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    color: var(--uc-text) !important;
+}
+
+.urlbarView-favicon {
+    display: none !important;
+}
+
+.urlbarView-row:not([type="tip"])[selected],
+.urlbarView-row:not([type="tip"])[selected] > .urlbarView-row-inner {
+    background: var(--uc-bg-hover) !important;
+    color: var(--uc-accent) !important;
+    fill-opacity: 1 !important;
+}
+
 panel,
+menupopup,
+menupopup::part(content),
+#contentAreaContextMenu,
+#toolbar-context-menu,
+#tabContextMenu,
+#placesContext,
+#downloadsContextMenu,
+#customizationPanelItemContextMenu,
+#unified-extensions-context-menu,
 #appMenu-popup,
+#appMenu-multiView,
+#appMenu-popup panelmultiview,
+#appMenu-popup .panel-viewcontainer,
+#appMenu-popup .panel-viewstack,
+#appMenu-popup .panel-subview-body,
+#appMenu-popup .PanelUI-subView,
 #downloadsPanel,
-#widget-overflow {
-    background-color: #111111 !important;
-    /* Dark background for all panels */
-    color: #ffffff !important;
-    /* White text color */
-    border: none !important;
-    /* Remove borders for a clean look */
+#widget-overflow,
+#widget-overflow-mainView,
+#widget-overflow .panel-viewcontainer,
+#widget-overflow .panel-viewstack,
+#widget-overflow .panel-subview-body,
+#unified-extensions-panel,
+#unified-extensions-view,
+#unified-extensions-panel .panel-viewcontainer,
+#unified-extensions-panel .panel-viewstack,
+#unified-extensions-panel .panel-subview-body,
+#allTabsMenu-allTabsView,
+#allTabsMenu-allTabsView .panel-viewcontainer,
+#allTabsMenu-allTabsView .panel-viewstack,
+#allTabsMenu-allTabsView .panel-subview-body,
+#allTabsMenu-tabs,
+#allTabsMenu-tabs > vbox {
+    appearance: none !important;
+    background: var(--uc-bg) !important;
+    background-color: var(--uc-bg) !important;
+    border: 0 !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    outline: 0 !important;
+    color: var(--uc-text) !important;
 }
 
-/* Text inside panels */
+panel::part(content),
+menupopup::part(content),
+#appMenu-popup::part(content),
+#widget-overflow::part(content),
+#unified-extensions-panel::part(content),
+#allTabsMenu-allTabsView::part(content) {
+    border: 0 !important;
+    box-shadow: none !important;
+    outline: 0 !important;
+}
+
+menupopup menu,
+menupopup menuitem,
+menupopup menucaption,
+.subviewbutton,
+.unified-extensions-item,
+.unified-extensions-item-action-button,
+.unified-extensions-item-menu-button,
+#allTabsMenu-allTabsView .subviewbutton,
+#allTabsMenu-tabs .all-tabs-item,
+#allTabsMenu-tabs toolbarbutton {
+    appearance: none !important;
+    background: transparent !important;
+    color: var(--uc-text) !important;
+    fill: var(--uc-accent) !important;
+}
+
 panel .toolbarbutton-text,
 panel .menuitem-text,
-panel .menuitem-label {
-    color: #ffffff !important;
-    /* White text for items in panels */
-}
-
-/* Specific styling for overflow menu */
+panel .menuitem-label,
+#appMenu-popup .toolbarbutton-text,
+#appMenu-popup .subviewbutton,
+#appMenu-popup .subviewbutton-label,
+#appMenu-popup .subviewbutton-iconic,
+#appMenu-popup .subviewbutton-nav,
+#appMenu-popup .toolbarbutton-icon,
+#appMenu-popup .toolbarbutton-badge-stack,
+#appMenu-popup .subviewbutton-iconic > .toolbarbutton-icon,
+#appMenu-popup .subviewbutton-shortcut,
+#widget-overflow .subviewbutton,
+#widget-overflow .toolbarbutton-icon,
+#widget-overflow .toolbarbutton-badge-stack,
+#widget-overflow .subviewbutton-shortcut,
 #widget-overflow .toolbarbutton-text,
-#widget-overflow .menuitem-text {
-    color: #ffffff !important;
-}
-
-/* Specific styling for downloads panel */
+.menu-iconic-text,
+.menu-text,
+.menu-accel,
+.menu-iconic-icon,
+.menu-right,
+#widget-overflow .menuitem-text,
 #downloadsPanel .downloadContainer,
 #downloadsPanel .downloadSummary,
-#downloadsPanel .downloadProgress {
-    color: #ffffff !important;
-    /* White text for downloads panel */
+#downloadsPanel .downloadProgress,
+#unified-extensions-panel,
+#unified-extensions-panel .panel-header,
+#unified-extensions-panel .panel-header > label,
+#unified-extensions-view,
+#unified-extensions-view .toolbarbutton-text,
+#unified-extensions-view .unified-extensions-item,
+#unified-extensions-view .unified-extensions-item-name,
+#unified-extensions-view .unified-extensions-item-message,
+#unified-extensions-view .unified-extensions-item:hover,
+#allTabsMenu-allTabsView .toolbarbutton-text,
+#allTabsMenu-allTabsView .subviewbutton,
+#allTabsMenu-tabs .all-tabs-item,
+#allTabsMenu-tabs toolbarbutton,
+#allTabsMenu-tabs .all-tabs-button-label,
+#allTabsMenu-tabs .all-tabs-secondary-button {
+    color: var(--uc-text) !important;
 }
 
-/* Hover effect for panel items */
 panel menuitem:hover,
 panel button:hover,
+#appMenu-popup .subviewbutton:hover,
+#appMenu-popup .subviewbutton[_moz-menuactive="true"],
+#appMenu-popup toolbarbutton:hover,
 #widget-overflow .toolbarbutton:hover,
-#downloadsPanel .download:hover {
-    background-color: #21252B !important;
-    /* Darker hover effect */
-    color: #ffffff !important;
-    /* Keeps text white on hover */
+#widget-overflow .subviewbutton:hover,
+#downloadsPanel .download:hover,
+menupopup menu:hover,
+menupopup menuitem:hover,
+menupopup menu[_moz-menuactive="true"],
+menupopup menuitem[_moz-menuactive="true"],
+.subviewbutton:hover,
+.subviewbutton[_moz-menuactive="true"],
+.unified-extensions-item:hover,
+.unified-extensions-item-action-button:hover,
+.unified-extensions-item-menu-button:hover,
+#allTabsMenu-allTabsView .subviewbutton:hover,
+#allTabsMenu-allTabsView .subviewbutton[_moz-menuactive="true"],
+#allTabsMenu-tabs .all-tabs-item:hover,
+#allTabsMenu-tabs toolbarbutton:hover,
+#allTabsMenu-tabs toolbarbutton[_moz-menuactive="true"] {
+    background: var(--uc-bg-hover) !important;
+    color: var(--uc-accent) !important;
+    fill: var(--uc-accent) !important;
 }
 
-/* Panel buttons */
-panel button {
-    color: #ffffff !important;
-    background-color: #111111 !important;
-    border: none !important;
+panel button,
+#appMenu-popup toolbarbutton,
+#appMenu-popup .subviewbutton,
+#appMenu-popup .toolbarbutton-1,
+#widget-overflow toolbarbutton,
+#widget-overflow .subviewbutton,
+#widget-overflow .toolbarbutton-1,
+#allTabsMenu-allTabsView toolbarbutton,
+#allTabsMenu-allTabsView .subviewbutton,
+.subviewbutton {
+    background: var(--uc-bg) !important;
+    border: 0 !important;
+    color: var(--uc-text) !important;
 }
 
-/* Panel borders */
-panel,
-panel[role="tooltip"] {
-    border: 1px solid #21252B !important;
-    /* Subtle border for panels */
-}
-
-/* Tooltip styling */
-panel[role="tooltip"] {
-    background-color: #111111 !important;
-    color: #ffffff !important;
-}
-
-/* Additional styling for separators in panels */
-panel menuseparator {
-    background-color: #21252B !important;
+panel menuseparator,
+menupopup menuseparator,
+toolbarseparator,
+#appMenu-popup toolbarseparator,
+#widget-overflow toolbarseparator,
+#allTabsMenu-allTabsView toolbarseparator,
+#allTabsMenu-tabsSeparator,
+.panel-subview-body > toolbarseparator {
+    appearance: none !important;
+    background: transparent !important;
+    border: 0 !important;
+    border-top: 1px solid var(--uc-menu-separator) !important;
+    box-shadow: none !important;
+    min-height: 0 !important;
     height: 1px !important;
-    margin: 4px 0 !important;
-    border: none !important;
+    margin: 6px 18px !important;
+    padding: 0 !important;
 }
 
-url(chrome://browser/content/browser.xhtml){
+#appMenu-popup toolbarseparator::before,
+#appMenu-popup toolbarseparator::after,
+#widget-overflow toolbarseparator::before,
+#widget-overflow toolbarseparator::after,
+#allTabsMenu-allTabsView toolbarseparator::before,
+#allTabsMenu-allTabsView toolbarseparator::after,
+.panel-subview-body > toolbarseparator::before,
+.panel-subview-body > toolbarseparator::after {
+    display: none !important;
+}
 
-#main-window,
-browser[type="content-primary"],
-browser[type="content"],
-tabbrowser#content,
+menupopup menuseparator {
+    appearance: none !important;
+    background: transparent !important;
+    border: 0 !important;
+    border-top: 1px solid var(--uc-menu-separator) !important;
+    box-shadow: none !important;
+    height: 1px !important;
+    margin: 6px 12px !important;
+    padding: 0 !important;
+}
+
+menupopup menu[disabled="true"],
+menupopup menuitem[disabled="true"],
+.subviewbutton[disabled="true"] {
+    color: color-mix(in srgb, var(--uc-text) 45%, transparent) !important;
+    fill-opacity: 0.45 !important;
+}
+
+#allTabsMenu-allTabsView {
+    border: 0 !important;
+    border-radius: 8px !important;
+    box-shadow: none !important;
+}
+
+#allTabsMenu-allTabsView .panel-header,
+#allTabsMenu-allTabsView .panel-subview-body {
+    border: 0 !important;
+}
+
+#allTabsMenu-allTabsView label,
+#allTabsMenu-allTabsView .panel-header > label,
+#allTabsMenu-allTabsView .all-tabs-section-title {
+    color: color-mix(in srgb, var(--uc-text) 70%, transparent) !important;
+}
+
+#allTabsMenu-allTabsView .all-tabs-secondary-button,
+#allTabsMenu-allTabsView .all-tabs-close-button {
+    color: var(--uc-accent) !important;
+    fill: var(--uc-accent) !important;
+    opacity: 1 !important;
+}
+
+#identity-popup,
+#permission-popup,
+#trustpanel-popup,
+#identity-popup::part(content),
+#permission-popup::part(content),
+#trustpanel-popup::part(content),
+#identity-popup-mainView,
+#permission-popup-mainView,
+#trustpanel-popup-mainView,
+#identity-popup .panel-viewcontainer,
+#permission-popup .panel-viewcontainer,
+#trustpanel-popup .panel-viewcontainer,
+#identity-popup .panel-viewstack,
+#permission-popup .panel-viewstack,
+#trustpanel-popup .panel-viewstack,
+#identity-popup .panel-subview-body,
+#permission-popup .panel-subview-body,
+#trustpanel-popup .panel-subview-body,
+#permission-popup-permissions-content,
+.permission-popup-section {
+    appearance: none !important;
+    background: var(--uc-bg) !important;
+    background-color: var(--uc-bg) !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    color: var(--uc-text) !important;
+    outline: 0 !important;
+}
+
+#identity-popup .panel-header,
+#permission-popup .panel-header,
+#trustpanel-popup .panel-header,
+#identity-popup label,
+#permission-popup label,
+#trustpanel-popup label,
+#identity-popup description,
+#permission-popup description,
+#trustpanel-popup description,
+.permission-popup-permission-label,
+.permission-popup-permission-header-label,
+.permission-popup-permission-label-subitem,
+.permission-popup-permission-state-label {
+    color: var(--uc-text) !important;
+}
+
+#permission-popup-permissions-content {
+    padding: 10px 14px !important;
+}
+
+.permission-popup-permission-item,
+#permission-popup-storage-access-permission-list-header {
+    align-items: center !important;
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 6px !important;
+    color: var(--uc-text) !important;
+    margin-block: 3px !important;
+    padding: 6px 8px !important;
+}
+
+.permission-popup-permission-item:hover,
+.permission-popup-permission-item[_moz-menuactive="true"] {
+    background: var(--uc-bg-hover) !important;
+    color: var(--uc-accent) !important;
+}
+
+.permission-popup-permission-icon,
+.permission-popup-permission-item image,
+#identity-popup image,
+#permission-popup image,
+#trustpanel-popup image {
+    color: var(--uc-accent) !important;
+    fill: var(--uc-accent) !important;
+    fill-opacity: 1 !important;
+}
+
+#permission-popup-menulist,
+#permission-popup-menulist > menupopup {
+    appearance: none !important;
+    background: var(--uc-bg-hover) !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    color: var(--uc-text) !important;
+    outline: 0 !important;
+}
+
+#permission-popup-menulist:hover {
+    color: var(--uc-accent) !important;
+}
+
+.permission-popup-permission-remove-button,
+#identity-popup button,
+#permission-popup button,
+#trustpanel-popup button,
+#identity-popup .subviewbutton,
+#permission-popup .subviewbutton,
+#trustpanel-popup .subviewbutton {
+    appearance: none !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    color: var(--uc-text) !important;
+    outline: 0 !important;
+}
+
+.permission-popup-permission-remove-button:hover,
+#identity-popup button:hover,
+#permission-popup button:hover,
+#trustpanel-popup button:hover,
+#identity-popup .subviewbutton:hover,
+#permission-popup .subviewbutton:hover,
+#trustpanel-popup .subviewbutton:hover {
+    background: var(--uc-bg-hover) !important;
+    color: var(--uc-accent) !important;
+}
+
+#identity-popup toolbarseparator,
+#permission-popup toolbarseparator,
+#trustpanel-popup toolbarseparator {
+    appearance: none !important;
+    background: transparent !important;
+    border: 0 !important;
+    border-top: 1px solid var(--uc-menu-separator) !important;
+    box-shadow: none !important;
+    height: 1px !important;
+    margin: 6px 18px !important;
+    padding: 0 !important;
+}
+
+.panel-arrowcontainer,
+.panel-arrowcontent {
+    border-radius: 8px !important;
+}
+
+#sidebar-box,
+#sidebar-header,
+#sidebar,
+#sidebar-search-container,
+.sidebar-placesTree {
+    background: var(--uc-bg) !important;
+    border: 0 !important;
+    color: var(--uc-text) !important;
+}
+
+.sidebar-splitter {
+    appearance: none !important;
+    border: 0 !important;
+    background: var(--uc-bg) !important;
+}
+
+#statuspanel-label,
+tooltip,
+.tooltip,
+panel[role="tooltip"] {
+    background: var(--uc-bg) !important;
+    border: 0 !important;
+    color: var(--uc-text) !important;
+}
+
+#browser vbox#appcontent tabbrowser,
 #content,
-browser[type="content"]>html {
-    background: #111111 !important;
-}
-}
-
-/* Source file https://github.com/MrOtherGuy/firefox-csshacks/tree/master/chrome/tabs_on_bottom_v2.css made available under Mozilla Public License v. 2.0
-See the above repository for updates as well as full license text. */
-
-/* This reorders toolbar to place tabs below other toolbars. Requires Firefox 133+ */
-
-@media (-moz-bool-pref: "userchrome.force-window-controls-on-left.enabled"),
--moz-pref("userchrome.force-window-controls-on-left.enabled") {
-    #nav-bar>.titlebar-buttonbox-container {
-        order: -1 !important;
-
-        >.titlebar-buttonbox {
-            flex-direction: row-reverse;
-        }
-    }
-}
-
-@media not (-moz-bool-pref: "sidebar.verticalTabs"),
-not -moz-pref("sidebar.verticalTabs") {
-
-    .global-notificationbox,
-    #tab-notification-deck,
-    #TabsToolbar {
-        order: 1;
-    }
-
-    #TabsToolbar> :is(.titlebar-spacer, .titlebar-buttonbox-container) {
-        display: none;
-    }
-
-    :root[sizemode="fullscreen"] #nav-bar>.titlebar-buttonbox-container {
-        display: flex !important;
-    }
-
-    :root:is([tabsintitlebar], [customtitlebar]) #toolbar-menubar:not([autohide="false"])~#nav-bar {
-        >.titlebar-buttonbox-container {
-            display: flex !important;
-        }
-
-        :root[sizemode="normal"] & {
-            >.titlebar-spacer {
-                display: flex !important;
-            }
-        }
-
-        :root[sizemode="maximized"] & {
-            >.titlebar-spacer[type="post-tabs"] {
-                display: flex !important;
-            }
-
-            @media (-moz-bool-pref: "userchrome.force-window-controls-on-left.enabled"),
-            -moz-pref("userchrome.force-window-controls-on-left.enabled"),
-            (-moz-gtk-csd-reversed-placement),
-            (-moz-platform: macos) {
-                >.titlebar-spacer[type="post-tabs"] {
-                    display: none !important;
-                }
-
-                >.titlebar-spacer[type="pre-tabs"] {
-                    display: flex !important;
-                }
-            }
-        }
-    }
+#tabbrowser-tabpanels,
+#webextpanels-window,
+#webext-panels-stack,
+#webext-panels-browser,
+browser[type="content-primary"],
+browser[type="content"] > html {
+    background: var(--uc-bg) !important;
 }

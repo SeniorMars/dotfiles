@@ -1,0 +1,1355 @@
+%% Cookie -- a LuaLaTeX-first Beamer theme
+%%
+%% Copyright (c) 2026 Charlie Cruz and contributors
+%% Inspired by Lukas Pietzschmann's awesome-beamer (BSD-3-Clause)
+%% and by the public interface/design ideas of Metropolis.
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{beamerthemecookie}[2026/06/21 v0.1.0 Cookie Beamer theme]
+
+\RequirePackage{iftex}
+\RequirePackage{etoolbox}
+\RequirePackage{pgfopts}
+\RequirePackage{xcolor}
+\RequirePackage{tikz}
+\RequirePackage{calc}
+\RequirePackage{microtype}
+\RequirePackage{adjustbox}
+\RequirePackage{listings}
+\RequirePackage{tcolorbox}
+\tcbuselibrary{skins,listings,breakable}
+\usetikzlibrary{calc,positioning,fit,backgrounds,arrows.meta,shapes.geometric}
+
+\mode<presentation>
+\makeatletter
+
+% Optional, TeX-Live-standard helpers. Cookie keeps graceful fallbacks so the
+% theme still compiles in deliberately minimal installations.
+\newif\ifcookie@qrcodeavailable
+\IfFileExists{qrcode.sty}{\RequirePackage{qrcode}\cookie@qrcodeavailabletrue}{\cookie@qrcodeavailablefalse}
+\newif\ifcookie@penguinavailable
+\IfFileExists{tikzlings-penguins.sty}{\RequirePackage{tikzlings-penguins}\cookie@penguinavailabletrue}{\cookie@penguinavailablefalse}
+\newif\ifcookie@tikzsymbolsavailable
+\IfFileExists{tikzsymbols.sty}{\RequirePackage{tikzsymbols}\cookie@tikzsymbolsavailabletrue}{\cookie@tikzsymbolsavailablefalse}
+\newif\ifcookie@algorithmavailable
+\@ifpackageloaded{algorithm2e}{%
+  \cookie@algorithmavailabletrue
+}{%
+  \IfFileExists{algorithm2e.sty}{%
+    \RequirePackage[ruled,vlined,linesnumbered]{algorithm2e}%
+    \cookie@algorithmavailabletrue
+  }{\cookie@algorithmavailablefalse}%
+}
+
+% -----------------------------------------------------------------------------
+% Palette
+% -----------------------------------------------------------------------------
+\definecolor{cookieInk}{HTML}{20242E}
+\definecolor{cookiePaper}{HTML}{FBFAF7}
+\definecolor{cookieAccentDefault}{HTML}{2D68F0}
+\definecolor{cookieMuted}{HTML}{717784}
+\definecolor{cookieLine}{HTML}{DADDE4}
+\definecolor{cookieSoft}{HTML}{F0F2F6}
+\definecolor{cookieAlert}{HTML}{CF3F4F}
+\definecolor{cookieExample}{HTML}{27845F}
+\definecolor{cookieWarm}{HTML}{F2A900}
+\definecolor{cookieTheorem}{HTML}{6757C8}
+\colorlet{cookieAccent}{cookieAccentDefault}
+\colorlet{cookieAlgorithmKeyword}{cookieInk}
+\colorlet{cookieAlgorithmComment}{cookieMuted}
+\colorlet{cookieAlgorithmNumber}{cookieMuted}
+
+% -----------------------------------------------------------------------------
+% Options
+% -----------------------------------------------------------------------------
+\def\cookie@progressbar{foot}
+\def\cookie@sectionpage{progressbar}
+\def\cookie@subsectionpage{none}
+\def\cookie@numbering{fraction}
+\def\cookie@blockstyle{fill}
+\def\cookie@background{light}
+\def\cookie@titleformat{regular}
+\def\cookie@fonts{auto}
+\def\cookie@mathfonts{libertinus}
+\def\cookie@toc{none}
+\def\cookie@numberrail{subsection}
+\def\cookie@numberrailcolor{muted}
+\def\cookie@closing{none}
+\def\cookie@covered{invisible}
+\def\cookie@notes{hide}
+
+\pgfkeys{
+  /cookie/.is family,
+  /cookie/.cd,
+  progressbar/.is choice,
+  progressbar/none/.code       = \def\cookie@progressbar{none},
+  progressbar/head/.code       = \def\cookie@progressbar{head},
+  progressbar/frametitle/.code = \def\cookie@progressbar{frametitle},
+  progressbar/foot/.code       = \def\cookie@progressbar{foot},
+  sectionpage/.is choice,
+  sectionpage/none/.code        = \def\cookie@sectionpage{none},
+  sectionpage/simple/.code      = \def\cookie@sectionpage{simple},
+  sectionpage/progressbar/.code = \def\cookie@sectionpage{progressbar},
+  subsectionpage/.is choice,
+  subsectionpage/none/.code        = \def\cookie@subsectionpage{none},
+  subsectionpage/simple/.code      = \def\cookie@subsectionpage{simple},
+  subsectionpage/progressbar/.code = \def\cookie@subsectionpage{progressbar},
+  numbering/.is choice,
+  numbering/none/.code     = \def\cookie@numbering{none},
+  numbering/counter/.code  = \def\cookie@numbering{counter},
+  numbering/fraction/.code = \def\cookie@numbering{fraction},
+  block/.is choice,
+  block/transparent/.code = \def\cookie@blockstyle{transparent},
+  block/fill/.code        = \def\cookie@blockstyle{fill},
+  background/.is choice,
+  background/light/.code = \def\cookie@background{light},
+  background/dark/.code  = \def\cookie@background{dark},
+  titleformat/.is choice,
+  titleformat/regular/.code   = \def\cookie@titleformat{regular},
+  titleformat/smallcaps/.code = \def\cookie@titleformat{smallcaps},
+  titleformat/allcaps/.code   = \def\cookie@titleformat{allcaps},
+  fonts/.is choice,
+  fonts/auto/.code = \def\cookie@fonts{auto},
+  fonts/none/.code = \def\cookie@fonts{none},
+  mathfonts/.is choice,
+  mathfonts/libertinus/.code = \def\cookie@mathfonts{libertinus},
+  mathfonts/none/.code      = \def\cookie@mathfonts{none},
+  toc/.is choice,
+  toc/none/.code       = \def\cookie@toc{none},
+  toc/aftertitle/.code = \def\cookie@toc{aftertitle},
+  numberrail/.is choice,
+  numberrail/none/.code       = \def\cookie@numberrail{none},
+  numberrail/section/.code    = \def\cookie@numberrail{section},
+  numberrail/subsection/.code = \def\cookie@numberrail{subsection},
+  numberrailcolor/.is choice,
+  numberrailcolor/muted/.code  = \def\cookie@numberrailcolor{muted},
+  numberrailcolor/accent/.code = \def\cookie@numberrailcolor{accent},
+  closing/.is choice,
+  closing/none/.code    = \def\cookie@closing{none},
+  closing/contact/.code = \def\cookie@closing{contact},
+  covered/.is choice,
+  covered/invisible/.code   = \def\cookie@covered{invisible},
+  covered/transparent/.code = \def\cookie@covered{transparent},
+  notes/.is choice,
+  notes/hide/.code   = \def\cookie@notes{hide},
+  notes/show/.code   = \def\cookie@notes{show},
+  notes/second/.code = \def\cookie@notes{second},
+  notes/only/.code   = \def\cookie@notes{only},
+  accent/.code      = \colorlet{cookieAccent}{#1},
+  coloraccent/.code = \colorlet{cookieAccent}{#1},
+  % Compatibility with common awesome-beamer options.
+  english/.code = {},
+  german/.code  = {},
+  color/.code   = {},
+  notoc/.code   = \def\cookie@toc{none},
+  secslide/.code    = \def\cookie@sectionpage{progressbar},
+  subsecslide/.code = \def\cookie@subsectionpage{progressbar},
+  nonumbersinframetitle/.code = \def\cookie@numberrail{none},
+  .unknown/.code = {\PackageWarning{beamerthemecookie}{Unknown option `\pgfkeyscurrentname' ignored}}
+}
+
+\ProcessPgfPackageOptions{/cookie}
+
+% -----------------------------------------------------------------------------
+% Fonts: no bundled font files; use installed system fonts with safe fallbacks.
+% -----------------------------------------------------------------------------
+\newcommand{\cookie@setuplibertinusmath}{%
+  \ifPDFTeX
+    \PackageWarning{beamerthemecookie}{Libertinus Math requires LuaLaTeX or XeLaTeX; using Beamer's default math fonts}%
+  \else
+    \IfFileExists{unicode-math.sty}{%
+      \RequirePackage{fontspec}%
+      \RequirePackage{unicode-math}%
+      \usefonttheme{professionalfonts}%
+      \IfFileExists{LibertinusMath-Regular.otf}{%
+        \setmathfont{LibertinusMath-Regular.otf}[BoldFont=LibertinusMath-Regular.otf]%
+      }{%
+        \IfFontExistsTF{Libertinus Math}{%
+          \setmathfont{Libertinus Math}%
+        }{%
+          \PackageWarning{beamerthemecookie}{Libertinus Math not found; using unicode-math's default math font}%
+        }%
+      }%
+    }{%
+      \PackageWarning{beamerthemecookie}{unicode-math.sty not found; using Beamer's default math fonts}%
+    }%
+  \fi
+}
+
+\newcommand{\cookie@setupmathfonts}{%
+  \ifdefstring{\cookie@mathfonts}{libertinus}{%
+    \cookie@setuplibertinusmath
+  }{}%
+}
+\cookie@setupmathfonts
+
+\newcommand{\cookie@setupfonts}{%
+  \ifdefstring{\cookie@fonts}{auto}{%
+    \ifPDFTeX
+      \RequirePackage[T1]{fontenc}%
+      \IfFileExists{FiraSans.sty}{\RequirePackage[sfdefault]{FiraSans}}{\RequirePackage{lmodern}}%
+    \else
+      \RequirePackage{fontspec}%
+      \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}%
+      \IfFileExists{NotoSans-Regular.ttf}{%
+        \setmainfont{NotoSans-Regular.ttf}[
+          BoldFont=NotoSans-Bold.ttf,
+          ItalicFont=NotoSans-Italic.ttf,
+          BoldItalicFont=NotoSans-BoldItalic.ttf
+        ]%
+        \setsansfont{NotoSans-Regular.ttf}[
+          BoldFont=NotoSans-Bold.ttf,
+          ItalicFont=NotoSans-Italic.ttf,
+          BoldItalicFont=NotoSans-BoldItalic.ttf
+        ]%
+      }{%
+        \IfFontExistsTF{Noto Sans}{%
+          \setmainfont{Noto Sans}%
+          \setsansfont{Noto Sans}%
+        }{%
+          \IfFontExistsTF{TeX Gyre Heros}{\setmainfont{TeX Gyre Heros}\setsansfont{TeX Gyre Heros}}{}%
+        }%
+      }%
+      \IfFileExists{NotoSansMono-Regular.ttf}{%
+        \setmonofont{NotoSansMono-Regular.ttf}[
+          Scale=0.90,
+          BoldFont=NotoSansMono-Bold.ttf,
+          ItalicFont=NotoSansMono-Regular.ttf,
+          BoldItalicFont=NotoSansMono-Bold.ttf
+        ]%
+      }{%
+        \IfFontExistsTF{Noto Sans Mono}{%
+          \setmonofont{Noto Sans Mono}[Scale=0.90]%
+        }{%
+          \IfFontExistsTF{DejaVu Sans Mono}{\setmonofont{DejaVu Sans Mono}[Scale=0.90]}{}%
+        }%
+      }%
+    \fi
+    \renewcommand{\familydefault}{\sfdefault}%
+  }{}%
+}
+\cookie@setupfonts
+
+% -----------------------------------------------------------------------------
+% Formatting helpers
+% -----------------------------------------------------------------------------
+\newcommand{\cookie@format}[1]{%
+  \ifdefstring{\cookie@titleformat}{allcaps}{\MakeUppercase{#1}}{%
+    \ifdefstring{\cookie@titleformat}{smallcaps}{\textsc{#1}}{#1}%
+  }%
+}
+
+\newcommand{\cookie@applycovered}{%
+  \ifdefstring{\cookie@covered}{transparent}{%
+    \setbeamercovered{transparent=18}%
+  }{%
+    \setbeamercovered{invisible}%
+  }%
+}
+
+\newcommand{\cookie@applynotes}{%
+  \ifdefstring{\cookie@notes}{show}{%
+    \setbeameroption{show notes}%
+  }{%
+    \ifdefstring{\cookie@notes}{second}{%
+      \setbeameroption{show notes on second screen=right}%
+    }{%
+      \ifdefstring{\cookie@notes}{only}{%
+        \setbeameroption{show only notes}%
+      }{%
+        \setbeameroption{hide notes}%
+      }%
+    }%
+  }%
+}
+
+\newcommand{\cookieset}[1]{%
+  \pgfkeys{/cookie/.cd,#1}%
+  \cookie@applycolors
+  \cookie@applycovered
+  \cookie@applynotes
+}
+
+\newcommand{\cookiekicker}[1]{%
+  {\usebeamerfont{cookie kicker}\color{cookieAccent}\MakeUppercase{#1}}%
+}
+\newcommand{\cookiebadge}[1]{%
+  \tikz[baseline=(cookie@badge.base)]\node[
+    rounded corners=1.2mm,
+    inner xsep=1.1mm,
+    inner ysep=.45mm,
+    fill=cookieAccent!12,
+    text=cookieAccent,
+    font=\scriptsize\bfseries
+  ] (cookie@badge) {#1};%
+}
+\newcommand{\cookieseparator}{%
+  \par\vspace{.4em}{\color{cookieAccent}\rule{.16\linewidth}{1.1pt}}\par\vspace{.4em}%
+}
+\newcommand{\cookiecheck}{%
+  \tikz[baseline=-.55ex,line cap=round,line join=round,x=.72ex,y=.72ex]
+    \draw[cookieExample,line width=.36ex] (0,.58) -- (.42,.12) -- (1.08,1.02);%
+}
+\newcommand{\cookiecross}{%
+  \tikz[baseline=-.45ex,line cap=round,x=.72ex,y=.72ex]
+    \draw[cookieAlert,line width=.34ex] (0,0) -- (.95,.95) (0,.95) -- (.95,0);%
+}
+
+% Useful TikZ overlay styles inherited conceptually from awesome-beamer.
+\tikzset{
+  invisible/.style={opacity=0,text opacity=0},
+  muted/.style={opacity=.42,text opacity=.42},
+  visible on/.style={alt={#1{}{invisible}}},
+  hidden on/.style={alt={#1{invisible}{}}},
+  muted on/.style={alt={#1{muted}{}}},
+  unmuted on/.style={alt={#1{}{muted}}},
+  alt/.code args={<#1>#2#3}{\alt<#1>{\pgfkeysalso{#2}}{\pgfkeysalso{#3}}},
+  cookie node/.style={rounded corners=1.5mm,draw=cookieLine,fill=white,inner sep=2mm},
+  cookie accent node/.style={cookie node,draw=cookieAccent,fill=cookieAccent!7},
+  cookie arrow/.style={-{Latex[length=2mm]},line width=.8pt,draw=cookieInk,rounded corners=1mm},
+  cookie modal backdrop/.style={fill=cookieInk,opacity=.72},
+  cookie modal box/.style={
+    draw=cookieInk,
+    line width=.9pt,
+    fill=cookiePaper,
+    text=cookieInk,
+    rounded corners=2mm,
+    inner xsep=5mm,
+    inner ysep=4mm,
+    text width=.68\paperwidth,
+    align=left
+  },
+  cookie modal title/.style={
+    fill=cookieInk,
+    text=white,
+    rounded corners=1.8mm,
+    inner xsep=3.5mm,
+    inner ysep=1.45mm,
+    font=\bfseries
+  }
+}
+
+% -----------------------------------------------------------------------------
+% Metadata helpers (all optional and safe when empty)
+% -----------------------------------------------------------------------------
+\newcommand{\insertcookieemail}{}
+\newcommand{\insertcookielocation}{}
+\newcommand{\insertcookieuni}{}
+\newcommand{\insertcookietagline}{}
+\newcommand{\insertcookiebackground}{}
+\newcommand{\insertcookiebackgroundimage}{}
+\newcommand{\insertcookieclosingtitle}{Thank you}
+\newcommand{\insertcookieclosingtext}{Questions?}
+\newcommand{\insertcookieclosingqr}{}
+\newcommand{\insertcookieclosingqrlabel}{Scan for the slides}
+
+\newcommand{\cookieemail}[1]{\gdef\insertcookieemail{#1}}
+\newcommand{\cookielocation}[1]{\gdef\insertcookielocation{#1}}
+\newcommand{\cookieuni}[1]{\gdef\insertcookieuni{#1}}
+\newcommand{\cookietagline}[1]{\gdef\insertcookietagline{#1}}
+\newcommand{\cookietitleimage}[1]{\gdef\insertcookiebackground{#1}}
+\newcommand{\cookiebackgroundimage}[1]{\gdef\insertcookiebackgroundimage{#1}}
+\newcommand{\cookieclearbackgroundimage}{\gdef\insertcookiebackgroundimage{}}
+\newcommand{\cookieclosingtitle}[1]{\gdef\insertcookieclosingtitle{#1}}
+\newcommand{\cookieclosingtext}[1]{\gdef\insertcookieclosingtext{#1}}
+\newcommand{\cookieclosingqr}[1]{\gdef\insertcookieclosingqr{#1}}
+\newcommand{\cookieclosingqrlabel}[1]{\gdef\insertcookieclosingqrlabel{#1}}
+
+
+% Full-canvas background images.  The global command applies to subsequent
+% frames; frame keys override it locally.  A dark or light translucent wash
+% keeps photo treatment separate from the source image.
+\newif\ifcookie@backgroundframe
+\cookie@backgroundframefalse
+\def\cookie@framebgimage{}
+\def\cookie@framebgfit{cover}
+\def\cookie@framebgopacity{1}
+\def\cookie@framebgoverlay{cookieInk}
+\def\cookie@framebgoverlayopacity{0}
+
+\define@key{beamerframe}{bgimage}{\global\cookie@backgroundframetrue\gdef\cookie@framebgimage{#1}}
+\define@key{beamerframe}{bgfit}{\global\cookie@backgroundframetrue\gdef\cookie@framebgfit{#1}}
+\define@key{beamerframe}{bgopacity}{\global\cookie@backgroundframetrue\gdef\cookie@framebgopacity{#1}}
+\define@key{beamerframe}{bgoverlay}{\global\cookie@backgroundframetrue\gdef\cookie@framebgoverlay{#1}}
+\define@key{beamerframe}{bgoverlayopacity}{\global\cookie@backgroundframetrue\gdef\cookie@framebgoverlayopacity{#1}}
+
+\newcommand{\cookie@railsectioncolor}{%
+  \ifdefstring{\cookie@background}{dark}{\color{cookieAccent!78!cookiePaper}}{\color{cookieAccent}}%
+}
+\newcommand{\cookie@railsubsectioncolor}{%
+  \ifdefstring{\cookie@background}{dark}{\color{cookiePaper!45!cookieInk}}{\color{cookieMuted}}%
+}
+\newcommand{\cookie@frametitledivider}{%
+  {\color{cookieLine}\rule{\paperwidth}{.35pt}}%
+}
+\newcommand{\cookie@footersection}[1]{%
+  \textcolor{cookieMuted}{#1}%
+}
+
+\newcommand{\cookie@backgroundgraphic}[1]{%
+  \ifdefstring{\cookie@framebgfit}{contain}{%
+    \includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]{#1}%
+  }{%
+    \ifdefstring{\cookie@framebgfit}{stretch}{%
+      \includegraphics[width=\paperwidth,height=\paperheight]{#1}%
+    }{%
+      \adjustbox{min size={\paperwidth}{\paperheight},center}{\includegraphics{#1}}%
+    }%
+  }%
+}
+
+\setbeamertemplate{background canvas}{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \usebeamercolor{background canvas}%
+    \fill[bg] (current page.south west) rectangle (current page.north east);
+    \def\cookie@activebg{}%
+    \ifdefempty{\cookie@framebgimage}{%
+      \let\cookie@activebg\insertcookiebackgroundimage
+    }{%
+      \let\cookie@activebg\cookie@framebgimage
+    }%
+    \ifdefempty{\cookie@activebg}{}{%
+      \begin{scope}
+        \clip (current page.south west) rectangle (current page.north east);
+        \node[anchor=center,inner sep=0,opacity=\cookie@framebgopacity]
+          at (current page.center) {\cookie@backgroundgraphic{\cookie@activebg}};
+        \fill[\cookie@framebgoverlay,opacity=\cookie@framebgoverlayopacity]
+          (current page.south west) rectangle (current page.north east);
+      \end{scope}
+    }%
+  \end{tikzpicture}%
+}
+
+% -----------------------------------------------------------------------------
+% Theme colors
+% -----------------------------------------------------------------------------
+\newcommand{\cookie@applycolors}{%
+  \ifdefstring{\cookie@background}{dark}{%
+    \setbeamercolor{normal text}{fg=cookiePaper,bg=cookieInk}%
+    \setbeamercolor{background canvas}{bg=cookieInk}%
+    \setbeamercolor{structure}{fg=cookiePaper}%
+    \setbeamercolor{frametitle}{fg=cookiePaper,bg=cookieInk}%
+    \setbeamercolor{framesubtitle}{fg=cookiePaper!70!cookieInk,bg=cookieInk}%
+    \setbeamercolor{footline}{fg=cookiePaper!78!cookieInk,bg=cookieInk!88!black}%
+    \setbeamercolor{footline right}{fg=white,bg=cookieAccent}%
+    \setbeamercolor{title}{fg=cookiePaper}%
+    \setbeamercolor{subtitle}{fg=cookiePaper!72!cookieInk}%
+    \setbeamercolor{author}{fg=cookiePaper}%
+    \setbeamercolor{date}{fg=cookiePaper!70!cookieInk}%
+    \setbeamercolor{institute}{fg=cookiePaper!70!cookieInk}%
+    \setbeamercolor{section title}{fg=cookiePaper}%
+    \setbeamercolor{subsection title}{fg=cookiePaper}%
+    \setbeamercolor{bibliography entry author}{fg=cookiePaper}%
+    \setbeamercolor{bibliography entry title}{fg=cookiePaper}%
+    \setbeamercolor{bibliography entry location}{fg=cookiePaper!70!cookieInk}%
+    \setbeamercolor{bibliography entry note}{fg=cookiePaper!70!cookieInk}%
+  }{%
+    \setbeamercolor{normal text}{fg=cookieInk,bg=cookiePaper}%
+    \setbeamercolor{background canvas}{bg=cookiePaper}%
+    \setbeamercolor{structure}{fg=cookieInk}%
+    \setbeamercolor{frametitle}{fg=cookieInk,bg=cookiePaper}%
+    \setbeamercolor{framesubtitle}{fg=cookieMuted,bg=cookiePaper}%
+    \setbeamercolor{footline}{fg=cookieMuted,bg=cookieSoft}%
+    \setbeamercolor{footline right}{fg=white,bg=cookieAccent}%
+    \setbeamercolor{title}{fg=cookieInk}%
+    \setbeamercolor{subtitle}{fg=cookieMuted}%
+    \setbeamercolor{author}{fg=cookieInk}%
+    \setbeamercolor{date}{fg=cookieMuted}%
+    \setbeamercolor{institute}{fg=cookieMuted}%
+    \setbeamercolor{section title}{fg=cookieInk}%
+    \setbeamercolor{subsection title}{fg=cookieInk}%
+    \setbeamercolor{bibliography entry author}{fg=cookieInk}%
+    \setbeamercolor{bibliography entry title}{fg=cookieInk}%
+    \setbeamercolor{bibliography entry location}{fg=cookieMuted}%
+    \setbeamercolor{bibliography entry note}{fg=cookieMuted}%
+  }%
+  \setbeamercolor{alerted text}{fg=cookieAccent}%
+  \setbeamercolor{example text}{fg=cookieExample}%
+  \setbeamercolor{progress bar}{fg=cookieAccent,bg=cookieLine}%
+  \setbeamercolor{page number in head/foot}{fg=white,bg=cookieAccent}%
+  \setbeamercolor{caption name}{fg=cookieAccent}%
+
+  \ifdefstring{\cookie@blockstyle}{transparent}{%
+    \setbeamercolor{block title}{fg=cookieAccent,bg=}%
+    \setbeamercolor{block body}{fg=,bg=}%
+    \setbeamercolor{block title alerted}{fg=cookieAlert,bg=}%
+    \setbeamercolor{block body alerted}{fg=,bg=}%
+    \setbeamercolor{block title example}{fg=cookieExample,bg=}%
+    \setbeamercolor{block body example}{fg=,bg=}%
+  }{%
+    \setbeamercolor{block title}{fg=cookieInk,bg=cookieAccent!16}%
+    \setbeamercolor{block body}{fg=cookieInk,bg=cookieAccent!5}%
+    \setbeamercolor{block title alerted}{fg=cookieInk,bg=cookieAlert!18}%
+    \setbeamercolor{block body alerted}{fg=cookieInk,bg=cookieAlert!6}%
+    \setbeamercolor{block title example}{fg=cookieInk,bg=cookieExample!18}%
+    \setbeamercolor{block body example}{fg=cookieInk,bg=cookieExample!6}%
+  }%
+}
+\cookie@applycolors
+\cookie@applycovered
+
+% Frame keys are processed outside the body group in Beamer.  Reset the
+% frame-local background state after shipout so a photo never leaks into the
+% next slide.
+\apptocmd{\beamer@reseteecodes}{%
+  \ifcookie@backgroundframe
+    \gdef\cookie@framebgimage{}%
+    \gdef\cookie@framebgfit{cover}%
+    \gdef\cookie@framebgopacity{1}%
+    \gdef\cookie@framebgoverlay{cookieInk}%
+    \gdef\cookie@framebgoverlayopacity{0}%
+    \global\cookie@backgroundframefalse
+  \fi
+}{}{%
+  \PackageWarning{beamerthemecookie}{Could not patch \string\beamer@reseteecodes; frame-local background state may leak}%
+}
+
+% -----------------------------------------------------------------------------
+% Fonts and spacing
+% -----------------------------------------------------------------------------
+\setbeamerfont{normal text}{size=\fontsize{11.8}{14.4}}
+\setbeamerfont{title}{size=\fontsize{27}{31},series=\bfseries}
+\setbeamerfont{subtitle}{size=\fontsize{11.4}{15}}
+\setbeamerfont{author}{size=\normalsize,series=\bfseries}
+\setbeamerfont{institute}{size=\small}
+\setbeamerfont{date}{size=\small}
+\setbeamerfont{frametitle}{size=\fontsize{17}{20},series=\bfseries}
+\setbeamerfont{framesubtitle}{size=\fontsize{9.5}{12}}
+\setbeamerfont{number rail}{size=\fontsize{17}{20},series=\bfseries}
+\setbeamerfont{section title}{size=\fontsize{27}{31},series=\bfseries}
+\setbeamerfont{subsection title}{size=\fontsize{22}{26},series=\bfseries}
+\setbeamerfont{standout}{size=\fontsize{29}{34},series=\bfseries}
+\setbeamerfont{footline}{size=\fontsize{6.8}{8}}
+\setbeamerfont{footline number}{size=\fontsize{7.2}{8.4},series=\bfseries}
+\setbeamerfont{block title}{series=\bfseries}
+\setbeamerfont{caption}{size=\scriptsize}
+\setbeamerfont{cookie kicker}{size=\fontsize{7.5}{9},series=\bfseries}
+\setbeamerfont{cookie quote}{size=\fontsize{16}{21},shape=\itshape}
+\setbeamerfont{cookie quote author}{size=\small,series=\bfseries}
+\setbeamerfont{note page}{size=\small}
+
+\setbeamersize{text margin left=.070\paperwidth,text margin right=.055\paperwidth}
+\setbeamersize{description width=.7cm}
+
+% -----------------------------------------------------------------------------
+% Progress bars
+% -----------------------------------------------------------------------------
+\newdimen\cookie@progresswidth
+\newdimen\cookie@sectionbarwidth
+\cookie@sectionbarwidth=.58\paperwidth
+
+\newcommand{\cookie@computeprogress}[1]{%
+  \cookie@progresswidth=0pt%
+  \@tempcnta=\inserttotalframenumber\relax
+  \@tempcntb=\insertframenumber\relax
+  % On the first run Beamer may report a total smaller than the current frame.
+  % Cap the ratio at 1 so the intermediate dimension never overflows.
+  \ifnum\@tempcnta<\@tempcntb\relax\@tempcnta=\@tempcntb\relax\fi
+  \ifnum\@tempcnta>0\relax
+    \cookie@progresswidth=#1\relax
+    \divide\cookie@progresswidth by \@tempcnta
+    \multiply\cookie@progresswidth by \@tempcntb
+  \fi
+}
+
+\newcommand{\cookie@progressrule}[1]{%
+  \cookie@computeprogress{#1}%
+  \begin{tikzpicture}[baseline]
+    \path[use as bounding box] (0,-.055cm) rectangle (#1,.10cm);
+    \clip (0,-.055cm) rectangle (#1,.10cm);
+    \fill[cookieLine] (0,0) rectangle (#1,.045cm);
+    \fill[cookieAccent] (0,0) rectangle (\cookie@progresswidth,.045cm);
+    \fill[cookieAccent] (\cookie@progresswidth,.0225cm) circle[radius=.055cm];
+  \end{tikzpicture}%
+}
+
+% -----------------------------------------------------------------------------
+% Core Beamer templates
+% -----------------------------------------------------------------------------
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{headline}{%
+  \ifdefstring{\cookie@progressbar}{head}{\hbox{\cookie@progressrule{\paperwidth}}}{}%
+}
+\setbeamertemplate{caption label separator}{: }
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{bibliography item}{\tikz[baseline=-.50ex]\fill[cookieAccent] (0,0) circle[radius=.28ex];}
+\setbeamertemplate{itemize item}{\tikz[baseline=-.55ex]\fill[cookieAccent] (0,0) circle[radius=.34ex];}
+\setbeamertemplate{itemize subitem}{\tikz[baseline=-.48ex]\fill[cookieMuted] (0,0) circle[radius=.25ex];}
+\setbeamertemplate{itemize subsubitem}{\tikz[baseline=-.42ex]\fill[cookieLine] (0,0) circle[radius=.20ex];}
+\setbeamertemplate{enumerate item}{\color{cookieAccent}\bfseries\insertenumlabel.}
+\setbeamertemplate{enumerate subitem}{\color{cookieAccent}\insertenumlabel.\insertsubenumlabel}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+\newcommand{\cookie@qedglyph}{%
+  \ifcookie@tikzsymbolsavailable
+    \textcolor{cookieAccent}{\ensuremath{\Laughey}}%
+  \else
+    \textcolor{cookieAccent}{\ensuremath{\square}}%
+  \fi
+}
+\def\qedsymbol{\cookie@qedglyph}
+\setbeamertemplate{qed symbol}{\cookie@qedglyph}
+
+\newcommand{\cookie@definitionblockcolors}{%
+  \ifdefstring{\cookie@blockstyle}{transparent}{%
+    \setbeamercolor{block title}{fg=cookieAccent,bg=}%
+    \setbeamercolor{block body}{fg=cookieInk,bg=}%
+  }{%
+    \setbeamercolor{block title}{fg=cookieInk,bg=cookieAccent!18}%
+    \setbeamercolor{block body}{fg=cookieInk,bg=cookieAccent!5}%
+  }%
+}
+\newcommand{\cookie@theoremblockcolors}{%
+  \ifdefstring{\cookie@blockstyle}{transparent}{%
+    \setbeamercolor{block title}{fg=cookieTheorem,bg=}%
+    \setbeamercolor{block body}{fg=cookieInk,bg=}%
+  }{%
+    \setbeamercolor{block title}{fg=cookieInk,bg=cookieTheorem!20!cookiePaper}%
+    \setbeamercolor{block body}{fg=cookieInk,bg=cookieTheorem!6!cookiePaper}%
+  }%
+}
+\newcommand{\cookie@proofblockcolors}{%
+  \ifdefstring{\cookie@blockstyle}{transparent}{%
+    \setbeamercolor{block title}{fg=cookieMuted,bg=}%
+    \setbeamercolor{block body}{fg=cookieInk,bg=}%
+  }{%
+    \setbeamercolor{block title}{fg=cookieInk,bg=cookieLine!68!cookiePaper}%
+    \setbeamercolor{block body}{fg=cookieInk,bg=cookieSoft!55!cookiePaper}%
+  }%
+}
+
+\newenvironment{cookiedefinitionblock}[1]{%
+  \begingroup
+  \cookie@definitionblockcolors
+  \begin{block}{#1}%
+}{%
+  \end{block}%
+  \endgroup
+}
+\newenvironment{cookietheoremblock}[1]{%
+  \begingroup
+  \cookie@theoremblockcolors
+  \begin{block}{#1}%
+}{%
+  \end{block}%
+  \endgroup
+}
+\newenvironment{cookieproofblock}[1]{%
+  \begingroup
+  \cookie@proofblockcolors
+  \begin{block}{#1}%
+}{%
+  \end{block}%
+  \endgroup
+}
+
+\let\cookie@plainthmstyle\th@plain
+\def\th@plain{%
+  \cookie@plainthmstyle
+  \def\inserttheoremblockenv{cookietheoremblock}%
+}
+\let\cookie@definitionthmstyle\th@definition
+\def\th@definition{%
+  \cookie@definitionthmstyle
+  \def\inserttheoremblockenv{cookiedefinitionblock}%
+}
+\setbeamertemplate{proof begin}{\begin{cookieproofblock}{\insertproofname}}
+\setbeamertemplate{proof end}{\end{cookieproofblock}}
+
+% TOC styling
+\setbeamertemplate{section in toc}{%
+  \leavevmode
+  \parbox[t]{2.4em}{\raggedleft\textcolor{cookieAccent}{\bfseries\inserttocsectionnumber.}}%
+  \hspace{.85em}%
+  \parbox[t]{.74\linewidth}{\inserttocsection}\par\vspace{.30em}%
+}
+\setbeamertemplate{subsection in toc}{%
+  \leavevmode
+  \hspace*{3.25em}%
+  \parbox[t]{2.4em}{\raggedleft\textcolor{cookieMuted}{\inserttocsectionnumber.\inserttocsubsectionnumber}}%
+  \hspace{.85em}%
+  \parbox[t]{.64\linewidth}{\textcolor{cookieMuted}{\inserttocsubsection}}\par\vspace{.18em}%
+}
+
+\newcommand{\cookie@agendatoc}[1][]{%
+  \begingroup
+    \setbeamertemplate{section in toc}{%
+      \par\vspace{.18em}%
+      {\fontsize{10.8}{13}\selectfont\bfseries
+        \noindent\hangindent=4.10em\hangafter=1%
+        \makebox[3.05em][r]{%
+          \raisebox{-.20ex}{\textcolor{cookieAccent}{\fontsize{13.5}{15}\selectfont\bfseries\inserttocsectionnumber}}%
+        }%
+        \hspace{1.05em}%
+        \textcolor{cookieInk}{\strut\inserttocsection\strut}\par}%
+      \par\vspace{.22em}%
+    }%
+    \setbeamertemplate{subsection in toc}{%
+      {\fontsize{8.3}{10}\selectfont
+        \noindent\hspace*{4.10em}%
+        \hangindent=7.97em\hangafter=1%
+        \makebox[3.05em][r]{%
+          \textcolor{cookieMuted}{\fontsize{7.7}{9}\selectfont\bfseries
+            \inserttocsectionnumber.\inserttocsubsectionnumber}%
+        }%
+        \hspace{.82em}%
+        \textcolor{cookieMuted}{\strut\inserttocsubsection\strut}\par}%
+      \par\vspace{.12em}%
+    }%
+    \ifblank{#1}{\tableofcontents}{\tableofcontents[#1]}%
+  \endgroup
+}
+
+% Frame-title number rail
+\newcommand{\cookie@railnumber}{%
+  \ifdefstring{\cookie@numberrail}{none}{}{%
+    \ifnum\value{section}>0
+      {\cookie@railsectioncolor\insertsectionnumber}%
+      \ifdefstring{\cookie@numberrail}{subsection}{%
+        \ifnum\value{subsection}>0{\cookie@railsubsectioncolor.\insertsubsectionnumber}\fi
+      }{}%
+    \else
+      % The rail is structural, not a duplicate page counter.  Introductory
+      % frames (including the automatic agenda) therefore leave it empty.
+    \fi
+  }%
+}
+
+% Compact title band with natural height.  A real vertical box gives the
+% title predictable top padding, while the subtitle simply increases the band
+% before the divider is drawn.
+\setbeamertemplate{frametitle}{%
+  \nointerlineskip
+  \hbox to \textwidth{\hspace*{-\beamer@leftmargin}%
+  \begin{beamercolorbox}[wd=\paperwidth,sep=0pt]{frametitle}%
+    \vbox{%
+      \vskip.18cm
+      \hbox to \paperwidth{%
+        \hskip.044\paperwidth
+        \vtop{%
+          \hsize=.072\paperwidth
+          \raggedleft
+          \usebeamerfont{number rail}%
+          \strut\cookie@railnumber\strut\par
+        }%
+        \hskip.014\paperwidth
+        \vtop{%
+          \hsize=.80\paperwidth
+          \raggedright
+          {\usebeamerfont{frametitle}\cookie@format{\strut\insertframetitle\strut}\par}%
+          \ifx\insertframesubtitle\@empty\else
+            \vskip.04cm
+            {\usebeamerfont{framesubtitle}\usebeamercolor[fg]{framesubtitle}%
+              \strut\insertframesubtitle\strut\par}%
+          \fi
+        }%
+        \hfil
+      }%
+      \vskip.16cm
+    }%
+  \end{beamercolorbox}\hss}%
+  \par\nointerlineskip
+  \hbox to \textwidth{\hspace*{-\beamer@leftmargin}%
+  \ifdefstring{\cookie@progressbar}{frametitle}{%
+    \hbox{\cookie@progressrule{\paperwidth}}%
+  }{%
+    \cookie@frametitledivider
+  }\hss}%
+}
+
+% Preserve awesome-beamer's useful optional right-side frame-title note:
+\newcommand{\cookie@insertnumber}{%
+  \ifdefstring{\cookie@numbering}{none}{}{%
+    \ifdefstring{\cookie@numbering}{counter}{\insertframenumber}{\insertframenumber\,/\,\inserttotalframenumber}%
+  }%
+}
+
+\setbeamertemplate{footline}{%
+  \leavevmode\vbox{%
+    \ifdefstring{\cookie@progressbar}{foot}{\hbox{\cookie@progressrule{\paperwidth}}}{}%
+    \hbox{%
+      \begin{beamercolorbox}[wd=.18\paperwidth,ht=2.7ex,dp=1.15ex,leftskip=.045\paperwidth]{footline}%
+        \usebeamerfont{footline}\insertshortauthor
+      \end{beamercolorbox}%
+      \begin{beamercolorbox}[wd=.64\paperwidth,ht=2.7ex,dp=1.15ex,leftskip=.012\paperwidth,rightskip=.012\paperwidth]{footline}%
+        \usebeamerfont{footline}\insertshorttitle%
+        \ifx\insertsectionhead\@empty\else\hfill\cookie@footersection{\insertsectionhead}\fi%
+      \end{beamercolorbox}%
+      \begin{beamercolorbox}[
+        wd=.18\paperwidth,
+        ht=2.7ex,
+        dp=1.15ex,
+        leftskip=.027\paperwidth,
+        rightskip=.014\paperwidth plus 1fil
+      ]{footline right}%
+        \usebeamerfont{footline number}\strut\cookie@insertnumber
+      \end{beamercolorbox}%
+    }%
+  }%
+}
+
+
+% A clean note page for notes=show, notes=second, and notes=only. It includes a
+% small slide preview but gives most of the page to actual speaking prompts.
+\setbeamertemplate{note page}{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[cookiePaper] (current page.south west) rectangle (current page.north east);
+    \fill[cookieAccent] (current page.south west) rectangle ($(current page.north west)+(.014\paperwidth,0)$);
+  \end{tikzpicture}%
+  \begingroup\color{cookieInk}\usebeamerfont{note page}
+  \vspace*{.045\paperheight}%
+  \begin{minipage}[t]{.61\paperwidth}
+    \cookiekicker{Speaker notes}\par\vspace{.55em}
+    {\fontsize{18}{22}\selectfont\bfseries\insertshortframetitle\par}%
+    \vspace{.35em}
+    {\footnotesize\color{cookieMuted}%
+      \insertsectionhead%
+      \ifx\insertsubsectionhead\@empty\else\hspace{.55em}/\hspace{.55em}\insertsubsectionhead\fi
+    }%
+  \end{minipage}%
+  \hfill
+  \begin{minipage}[t]{.27\paperwidth}
+    \raggedleft\insertslideintonotes{0.25}
+  \end{minipage}%
+  \par\vspace{.55em}
+  {\color{cookieLine}\rule{\textwidth}{.45pt}}\par\vspace{.8em}
+  \insertnote
+  \endgroup
+}
+
+% -----------------------------------------------------------------------------
+% Title page
+% -----------------------------------------------------------------------------
+\newcommand{\cookie@drawtitleart}{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \coordinate (cookie@cuttop) at ($(current page.north east)+(-.31\paperwidth,0)$);
+    \coordinate (cookie@cutbottom) at ($(current page.south east)+(-.43\paperwidth,0)$);
+    \path[fill=cookieAccent]
+      (cookie@cuttop) -- (current page.north east) -- (current page.south east) -- (cookie@cutbottom) -- cycle;
+    \ifdefempty{\insertcookiebackground}{%
+      \draw[white,opacity=.18,line width=4pt] ($(current page.center)+(.34\paperwidth,.10\paperheight)$) circle[radius=.115\paperheight];
+      \draw[white,opacity=.12,line width=3pt] ($(current page.center)+(.27\paperwidth,-.15\paperheight)$) circle[radius=.072\paperheight];
+      \fill[white,opacity=.18] ($(current page.center)+(.40\paperwidth,-.22\paperheight)$) circle[radius=.018\paperheight];
+      \fill[white,opacity=.22] ($(current page.center)+(.34\paperwidth,.26\paperheight)$) circle[radius=.012\paperheight];
+    }{%
+      \begin{scope}
+        \clip (cookie@cuttop) -- (current page.north east) -- (current page.south east) -- (cookie@cutbottom) -- cycle;
+        \node[anchor=center,inner sep=0] at ($(current page.east)+(-.16\paperwidth,0)$)
+          {\includegraphics[height=\paperheight]{\insertcookiebackground}};
+        \fill[cookieAccent,opacity=.24] (current page.south west) rectangle (current page.north east);
+      \end{scope}
+    }%
+    \ifx\inserttitlegraphic\@empty\else
+      \node[anchor=center] at ($(current page.east)+(-.16\paperwidth,0)$) {\inserttitlegraphic};
+    \fi
+  \end{tikzpicture}%
+}
+
+\setbeamertemplate{title page}{%
+  \cookie@drawtitleart
+  \vspace*{.055\paperheight}%
+  \begin{minipage}[t]{.58\paperwidth}
+    \raggedright
+    \ifdefempty{\insertcookietagline}{}{\cookiekicker{\insertcookietagline}\par\vspace{.9em}}%
+    {\usebeamerfont{title}\usebeamercolor[fg]{title}\cookie@format{\inserttitle}\par}%
+    \ifx\@subtitle\@empty\else\vspace{.45em}{\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\par}\fi%
+    \vspace{1.05em}{\color{cookieAccent}\rule{.16\paperwidth}{1.4pt}}\par
+    \vspace{1.25em}
+    \ifx\@author\@empty\else\usebeamerfont{author}\usebeamercolor[fg]{author}\insertauthor\par\fi%
+    \ifdefempty{\insertcookieemail}{}{\vspace{.18em}{\small\href{mailto:\insertcookieemail}{\insertcookieemail}\par}}%
+    \vspace{1.2em}
+    \ifx\@institute\@empty\else\usebeamerfont{institute}\usebeamercolor[fg]{institute}\insertinstitute\par\fi%
+    \ifdefempty{\insertcookieuni}{}{\usebeamerfont{institute}\usebeamercolor[fg]{institute}\insertcookieuni\par}%
+    \vfill
+    \ifdefempty{\insertcookielocation}{}{\usebeamerfont{date}\usebeamercolor[fg]{date}\insertcookielocation\hspace{.55em}\textcolor{cookieLine}{/}\hspace{.55em}}%
+    \ifx\@date\@empty\else\usebeamerfont{date}\usebeamercolor[fg]{date}\insertdate\fi%
+  \end{minipage}%
+}
+
+\newcommand{\makeagenda}[1][]{%
+  \begin{frame}[plain,t]
+    \begin{tikzpicture}[remember picture,overlay]
+      \fill[cookieAccent!7]
+        (current page.south west) rectangle ($(current page.north west)+(.060\paperwidth,0)$);
+      \fill[cookieAccent]
+        (current page.south west) rectangle ($(current page.north west)+(.012\paperwidth,0)$);
+      \node[anchor=east,text=cookieAccent!7,font=\fontsize{86}{86}\selectfont\bfseries]
+        at ($(current page.east)+(-.060\paperwidth,-.185\paperheight)$) {TOC};
+      \node[anchor=west,text=cookieAccent,font=\fontsize{7.5}{9}\selectfont\bfseries]
+        at ($(current page.west)+(.087\paperwidth,.145\paperheight)$) {ROADMAP};
+      \node[anchor=west,text=cookieInk,font=\fontsize{31}{35}\selectfont\bfseries]
+        at ($(current page.west)+(.087\paperwidth,.005\paperheight)$) {Agenda};
+      \draw[cookieAccent,line width=1.2pt]
+        ($(current page.west)+(.087\paperwidth,-.120\paperheight)$)
+        -- ($(current page.west)+(.177\paperwidth,-.120\paperheight)$);
+      \node[anchor=north west,inner sep=0pt,text width=.56\paperwidth]
+        at ($(current page.west)+(.330\paperwidth,.235\paperheight)$)
+        {\begin{minipage}[t]{.56\paperwidth}
+          \cookie@agendatoc[#1]%
+        \end{minipage}};
+    \end{tikzpicture}%
+  \end{frame}%
+}
+
+\renewcommand{\maketitle}{%
+  \ifbeamer@inframe
+    \titlepage
+    \ifdefstring{\cookie@toc}{aftertitle}{%
+      \PackageWarning{beamerthemecookie}{toc=aftertitle ignored because \string\maketitle\space was used inside a frame; call \string\makeagenda\space after the frame}%
+    }{}%
+  \else
+    \begin{frame}[plain,noframenumbering]
+      \titlepage
+    \end{frame}
+    \ifdefstring{\cookie@toc}{aftertitle}{\makeagenda}{}%
+  \fi
+}
+
+% -----------------------------------------------------------------------------
+% Section and subsection pages
+% -----------------------------------------------------------------------------
+\providecommand{\cookie@totalsections}{1}
+\AtEndDocument{%
+  \immediate\write\@auxout{\string\gdef\string\cookie@totalsections{\arabic{section}}}%
+}
+
+% Track subsection totals per section in the auxiliary file.  This lets the
+% subsection interstitial show meaningful local progress instead of reusing the
+% deck-wide frame counter.
+\newcommand{\cookie@writesubsectiontotal}{%
+  \ifnum\value{section}>0\relax
+    \immediate\write\@auxout{%
+      \string\expandafter\string\gdef
+      \string\csname\space cookie@subsections@\arabic{section}\string\endcsname
+      {\arabic{subsection}}%
+    }%
+  \fi
+}
+\pretocmd{\section}{\cookie@writesubsectiontotal}{}{%
+  \PackageWarning{beamerthemecookie}{Could not patch \string\section; subsection totals may be unavailable}%
+}
+\AtEndDocument{\cookie@writesubsectiontotal}
+
+\newcommand{\cookie@subsectiontotal}{%
+  \ifcsdef{cookie@subsections@\arabic{section}}{%
+    \csuse{cookie@subsections@\arabic{section}}%
+  }{%
+    \insertsubsectionnumber
+  }%
+}
+
+\newdimen\cookie@subsectionbarwidth
+\cookie@subsectionbarwidth=.30\paperwidth
+\newcommand{\cookie@subsectionprogress}{%
+  \@tempcnta=\cookie@subsectiontotal\relax
+  \ifnum\@tempcnta<\value{subsection}\relax\@tempcnta=\value{subsection}\relax\fi
+  \cookie@progresswidth=\cookie@subsectionbarwidth
+  \divide\cookie@progresswidth by \@tempcnta
+  \multiply\cookie@progresswidth by \value{subsection}
+  \begin{tikzpicture}[baseline]
+    \fill[cookieLine] (0,0) rectangle (\cookie@subsectionbarwidth,.045cm);
+    \fill[cookieAccent] (0,0) rectangle (\cookie@progresswidth,.045cm);
+  \end{tikzpicture}%
+}
+
+\newcommand{\cookie@sectionprogress}{%
+  \@tempcnta=\cookie@totalsections\relax
+  \ifnum\@tempcnta<\insertsectionnumber\relax\@tempcnta=\insertsectionnumber\relax\fi
+  \cookie@progresswidth=\cookie@sectionbarwidth
+  \divide\cookie@progresswidth by \@tempcnta
+  \multiply\cookie@progresswidth by \insertsectionnumber
+  \begin{tikzpicture}[baseline]
+    \fill[cookieLine] (0,0) rectangle (\cookie@sectionbarwidth,.055cm);
+    \fill[cookieAccent] (0,0) rectangle (\cookie@progresswidth,.055cm);
+  \end{tikzpicture}%
+}
+
+\newcommand{\cookie@sectionpageframe}{%
+  \begin{frame}[plain,noframenumbering,c]
+    \begin{tikzpicture}[remember picture,overlay]
+      \fill[cookieAccent]
+        (current page.south west) rectangle ($(current page.north west)+(.012\paperwidth,0)$);
+      \node[anchor=west,text=cookieAccent,font=\fontsize{46}{46}\selectfont\bfseries]
+        at ($(current page.west)+(.07\paperwidth,.12\paperheight)$) {\insertsectionnumber};
+      \node[anchor=west,text width=.70\paperwidth,align=left]
+        at ($(current page.west)+(.07\paperwidth,-.01\paperheight)$)
+        {{\usebeamerfont{section title}\usebeamercolor[fg]{section title}\cookie@format{\insertsectionhead}}};
+      \ifdefstring{\cookie@sectionpage}{progressbar}{%
+        \node[anchor=west] at ($(current page.west)+(.07\paperwidth,-.20\paperheight)$) {\cookie@sectionprogress};
+      }{}%
+      \fill[cookieAccent] ($(current page.east)+(-.095\paperwidth,.24\paperheight)$) circle[radius=.014\paperheight];
+      \fill[cookieAccent,opacity=.45] ($(current page.east)+(-.072\paperwidth,.18\paperheight)$) circle[radius=.008\paperheight];
+      \fill[cookieAccent,opacity=.20] ($(current page.east)+(-.12\paperwidth,.13\paperheight)$) circle[radius=.005\paperheight];
+    \end{tikzpicture}
+  \end{frame}%
+}
+
+\newcommand{\cookie@subsectionpageframe}{%
+  \begin{frame}[plain,noframenumbering,c]
+    \begin{tikzpicture}[remember picture,overlay]
+      % The airy 0.3 composition, with one horizontal signal instead of two.
+      \fill[cookieAccent]
+        (current page.south west) rectangle ($(current page.north west)+(.012\paperwidth,0)$);
+
+      \node[anchor=west,text=cookieAccent,font=\fontsize{7.5}{9}\selectfont\bfseries]
+        at ($(current page.west)+(.085\paperwidth,.145\paperheight)$)
+        {SECTION~\insertsectionnumber\hspace{.65em}\textcolor{cookieLine}{/}\hspace{.65em}\MakeUppercase{\insertsectionhead}};
+
+      \node[anchor=west,text width=.58\paperwidth,align=left]
+        at ($(current page.west)+(.085\paperwidth,.005\paperheight)$)
+        {{\usebeamerfont{subsection title}\usebeamercolor[fg]{subsection title}%
+          \cookie@format{\insertsubsectionhead}}};
+
+      \ifdefstring{\cookie@subsectionpage}{progressbar}{%
+        % Here the local progress bar is also the underline.
+        \node[anchor=west] at ($(current page.west)+(.085\paperwidth,-.205\paperheight)$)
+          {\cookie@subsectionprogress};
+        \node[anchor=west,text=cookieMuted,font=\fontsize{6.8}{8}\selectfont\bfseries]
+          at ($(current page.west)+(.405\paperwidth,-.205\paperheight)$)
+          {\insertsubsectionnumber\,/\,\cookie@subsectiontotal};
+      }{%
+        \draw[cookieAccent,line width=1.4pt]
+          ($(current page.west)+(.085\paperwidth,-.145\paperheight)$)
+          -- ($(current page.west)+(.185\paperwidth,-.145\paperheight)$);
+      }%
+
+      \node[anchor=east,text=cookieAccent!12,font=\fontsize{58}{58}\selectfont\bfseries]
+        at ($(current page.east)+(-.070\paperwidth,.225\paperheight)$)
+        {\insertsectionnumber.\insertsubsectionnumber};
+    \end{tikzpicture}
+  \end{frame}%
+}
+
+\AtBeginSection[]{%
+  \ifdefstring{\cookie@sectionpage}{none}{}{\cookie@sectionpageframe}%
+}
+\AtBeginSubsection[]{%
+  \ifdefstring{\cookie@subsectionpage}{none}{}{\cookie@subsectionpageframe}%
+}
+
+% -----------------------------------------------------------------------------
+% Overlay helpers and modal cards
+% -----------------------------------------------------------------------------
+% Standard Beamer overlays work unchanged. These helpers keep common narrative
+% patterns compact and preserve the modal syntax used by awesome-beamer decks.
+\newcommand<>{\cookiereveal}[1]{\uncover#2{#1}}
+\newcommand<>{\cookiefocus}[1]{%
+  \alt#2{#1}{{\color{cookieMuted!62}#1}}%
+}
+
+\newenvironment<>{cookiemodal}[1][]{%
+  \def\cookie@modaltitle{#1}%
+  \begin{visibleenv}#2%
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[cookie modal backdrop]
+      (current page.south west) rectangle (current page.north east);
+    \node[cookie modal box] (cookie@modalcontent) at (current page.center) \bgroup
+      \begin{minipage}{.68\paperwidth}
+        \color{cookieInk}%
+        \ifblank{#1}{}{\vspace*{.35em}}%
+        \ignorespaces
+}{%
+        \unskip
+      \end{minipage}
+    \egroup;
+    \ifblank{\cookie@modaltitle}{}{%
+      \node[cookie modal title,anchor=center]
+        at (cookie@modalcontent.north) {\cookie@modaltitle};%
+    }%
+  \end{tikzpicture}%
+  \end{visibleenv}%
+}
+
+% Compatibility alias: \begin{modal}<2>[Title] ... \end{modal}
+\@ifundefined{modal}{%
+  \let\modal\cookiemodal
+  \let\endmodal\endcookiemodal
+}{%
+  \PackageWarning{beamerthemecookie}{Environment `modal' already defined; use `cookiemodal'}%
+}
+
+% -----------------------------------------------------------------------------
+% Standout / plain frames
+% -----------------------------------------------------------------------------
+\newif\ifcookie@standoutframe
+\define@key{beamerframe}{standout}[true]{%
+  \global\cookie@standoutframetrue
+  \begingroup
+  \let\cookie@savedKVprefix\KV@prefix
+  \beamer@plainframetrue
+  \def\beamer@frametemplate{\beamer@frametemplate@plain}%
+  \beamer@frametopskip=0pt plus 1fill\relax
+  \beamer@framebottomskip=0pt plus 1.5fill\relax
+  \beamer@frametopskipautobreak=0pt plus .4\paperheight\relax
+  \beamer@framebottomskipautobreak=0pt plus .6\paperheight\relax
+  \setbeamercolor{background canvas}{bg=cookieAccent}%
+  \setbeamercolor{normal text}{fg=white,bg=cookieAccent}%
+  \setbeamercolor{structure}{fg=white}%
+  \setbeamercolor{alerted text}{fg=white}%
+  \setbeamertemplate{frametitle}{}%
+  \setbeamertemplate{footline}{}%
+  \centering
+  \usebeamerfont{standout}%
+  \color{white}%
+  \let\KV@prefix\cookie@savedKVprefix
+}
+
+% Beamer processes frame keys before the frame body. The explicit group keeps
+% the standout colors, font selection, and empty templates local to one frame.
+\apptocmd{\beamer@reseteecodes}{%
+  \ifcookie@standoutframe
+    \endgroup
+    \global\cookie@standoutframefalse
+  \fi
+}{}{%
+  \PackageWarning{beamerthemecookie}{Could not patch \string\beamer@reseteecodes; standout frame state may leak}%
+}
+
+\newcommand{\cookieplain}[2][cookieAccent]{%
+  \begingroup\colorlet{cookieAccent}{#1}%
+  \begin{frame}[noframenumbering,standout]#2\end{frame}%
+  \endgroup
+}
+
+% Full-width content helper; unlike the old theme this does not alter global
+% Beamer margins or depend on frame internals.
+\newenvironment{wide}{%
+  \par\begingroup
+  \hspace*{\dimexpr-\beamer@leftmargin+.035\paperwidth\relax}%
+  \begin{minipage}{.91\paperwidth}%
+}{%
+  \end{minipage}\endgroup\par
+}
+
+% -----------------------------------------------------------------------------
+% Mascot and quotations
+% -----------------------------------------------------------------------------
+\newcommand{\cookiepenguin}[1][]{%
+  \begin{tikzpicture}[baseline=-.55ex,#1]
+    \ifcookie@penguinavailable
+      \penguin[body=cookieInk,belly=cookiePaper,bill=cookieWarm,feet=cookieWarm]
+    \else
+      \fill[cookieInk] (0,1.05) ellipse[x radius=.58,y radius=.88];
+      \fill[cookiePaper] (0,.78) ellipse[x radius=.40,y radius=.52];
+      \fill[cookiePaper] (-.18,1.52) ellipse[x radius=.09,y radius=.13];
+      \fill[cookiePaper] (.18,1.52) ellipse[x radius=.09,y radius=.13];
+      \fill[cookieInk] (-.16,1.50) circle[radius=.035];
+      \fill[cookieInk] (.16,1.50) circle[radius=.035];
+      \fill[cookieWarm] (0,1.34) -- (-.14,1.46) -- (.14,1.46) -- cycle;
+      \fill[cookieWarm] (-.27,.22) ellipse[x radius=.22,y radius=.07];
+      \fill[cookieWarm] (.27,.22) ellipse[x radius=.22,y radius=.07];
+    \fi
+    \draw[cookieAccent,line width=1.05pt] (0,2.25) ellipse[x radius=.48,y radius=.10];
+    \fill[cookieAccent]
+      (0,.72) .. controls (-.18,.88) and (-.34,.68) .. (0,.42)
+      .. controls (.34,.68) and (.18,.88) .. (0,.72) -- cycle;
+  \end{tikzpicture}%
+}
+
+\newenvironment{cookiequote}[1][]{%
+  \def\cookie@quoteauthor{#1}%
+  \begin{tcolorbox}[
+    enhanced,
+    frame hidden,
+    colback=cookieSoft!56!cookiePaper,
+    coltext=cookieInk,
+    borderline west={1.5pt}{0pt}{cookieAccent},
+    sharp corners,
+    left=5mm,right=4mm,top=3.2mm,bottom=3.0mm,
+    before skip=.7em,after skip=.7em
+  ]%
+  \usebeamerfont{cookie quote}\ignorespaces
+}{%
+  \unskip\par\vspace{.65em}%
+  \ifblank{\cookie@quoteauthor}{}{%
+    \hfill{\usebeamerfont{cookie quote author}\normalfont\textcolor{cookieMuted}{--- \cookie@quoteauthor}}%
+  }%
+  \end{tcolorbox}%
+}
+
+% -----------------------------------------------------------------------------
+% Cards and code
+% -----------------------------------------------------------------------------
+\newtcolorbox{cookiecard}[1][]{%
+  enhanced,
+  colback=cookieSoft!58!cookiePaper,
+  colframe=cookieLine,
+  coltext=cookieInk,
+  colbacktitle=cookieAccent!12,
+  coltitle=cookieInk,
+  fonttitle=\bfseries,
+  boxrule=.55pt,
+  arc=1.6mm,
+  outer arc=1.6mm,
+  left=2.2mm,
+  right=2.2mm,
+  top=1.8mm,
+  bottom=1.8mm,
+  before skip=.45em,
+  after skip=.45em,
+  #1
+}
+
+% A listings-backed code card.  The language is the mandatory argument; all
+% ordinary tcolorbox keys (for example title=...) remain available.
+\newtcblisting{cookiecode}[2][]{%
+  enhanced,
+  listing only,
+  listing engine=listings,
+  listing options={style=cookiebare,language=#2},
+  colback=cookieSoft!72!cookiePaper,
+  colframe=cookieLine,
+  coltext=cookieInk,
+  colbacktitle=cookieAccent!12,
+  coltitle=cookieInk,
+  fonttitle=\bfseries\small,
+  boxrule=.55pt,
+  arc=1.6mm,
+  outer arc=1.6mm,
+  left=1.5mm,
+  right=1.5mm,
+  top=1.2mm,
+  bottom=1.2mm,
+  before skip=.45em,
+  after skip=.45em,
+  #1
+}
+
+% -----------------------------------------------------------------------------
+% Algorithms
+% -----------------------------------------------------------------------------
+\newcommand{\cookiealgokw}[1]{\textcolor{cookieAlgorithmKeyword}{\bfseries\sffamily #1}}
+\newcommand{\cookiealgoarg}[1]{\emph{#1}}
+\newcommand{\cookiealgofunc}[1]{\textsc{#1}}
+\newcommand{\cookiealgodata}[1]{\textsf{#1}}
+\newcommand{\cookiealgonumber}[1]{\textcolor{cookieAlgorithmNumber}{#1}}
+\newcommand{\cookiealgocomment}[1]{{\footnotesize\sffamily\itshape\textcolor{cookieAlgorithmComment}{#1}}}
+
+\newcommand{\cookie@setupalgorithm}{%
+  \ifcookie@algorithmavailable
+    \RestyleAlgo{ruled}%
+    \SetAlgoVlined
+    \LinesNumbered
+    \SetAlFnt{\small}%
+    \SetKwSty{cookiealgokw}%
+    \SetArgSty{cookiealgoarg}%
+    \SetFuncSty{cookiealgofunc}%
+    \SetDataSty{cookiealgodata}%
+    \SetCommentSty{cookiealgocomment}%
+    \SetNoFillComment
+    \SetNlSty{cookiealgonumber}{\scriptsize\sffamily}{}%
+    \SetAlgoNlRelativeSize{-1}%
+    \SetAlgoInsideSkip{smallskip}%
+    \SetAlgoSkip{medskip}%
+    \SetAlgoHangIndent{1.2em}%
+    \SetAlCapFnt{\small\sffamily\bfseries}%
+    \SetAlCapNameFnt{\small\sffamily}%
+    \SetAlCapHSkip{0pt}%
+    \SetAlgoCaptionLayout{centerline}%
+    \SetAlgoCaptionSeparator{:}%
+    \SetKwInput{KwIn}{Input}%
+    \SetKwInput{KwOut}{Output}%
+    \setlength{\algoheightrule}{0.6pt}%
+    \setlength{\algotitleheightrule}{0.6pt}%
+    \setlength{\interspacetitleruled}{4pt}%
+    \setlength{\interspacealgoruled}{4pt}%
+  \fi
+}
+
+% -----------------------------------------------------------------------------
+% Closing frame
+% -----------------------------------------------------------------------------
+\newcommand{\makeclosing}{%
+  \begin{frame}[noframenumbering,standout]
+    \begin{minipage}[c]{.62\paperwidth}
+      \raggedright
+      {\usebeamerfont{standout}\insertcookieclosingtitle\par}
+      \vspace{.55em}
+      {\Large\mdseries\insertcookieclosingtext\par}
+      \vspace{1.15em}
+      {\small\mdseries
+        \ifx\@author\@empty\else\insertauthor\fi%
+        \ifdefempty{\insertcookieemail}{}{\par\vspace{.22em}\href{mailto:\insertcookieemail}{\insertcookieemail}}%
+      }
+    \end{minipage}%
+    \hfill
+    \begin{minipage}[c]{.25\paperwidth}
+      \centering
+      \ifdefempty{\insertcookieclosingqr}{%
+        \cookiepenguin[scale=.78]
+      }{%
+        \ifcookie@qrcodeavailable
+          \begingroup
+          \setlength{\fboxsep}{2.0mm}%
+          \href{\insertcookieclosingqr}{\colorbox{white}{{\color{black}\normalfont\normalsize\qrcode[height=.18\paperheight]{\insertcookieclosingqr}}}}%
+          \endgroup
+        \else
+          {\small\ttfamily\url{\insertcookieclosingqr}}%
+        \fi
+        \par\vspace{.45em}
+        {\fontsize{7.2}{9}\selectfont\mdseries\insertcookieclosingqrlabel\par}%
+        \vspace{.45em}
+        \cookiepenguin[scale=.36]
+      }%
+    \end{minipage}%
+  \end{frame}%
+}
+
+\AtEndDocument{%
+  \ifdefstring{\cookie@closing}{contact}{\makeclosing}{}%
+}
+
+% -----------------------------------------------------------------------------
+% Gentle defaults for optional packages, applied only when they are loaded.
+% -----------------------------------------------------------------------------
+\BeforeBeginEnvironment{tabular}{\renewcommand{\arraystretch}{1.12}}
+\newcommand{\cookie@setuplistingstyle}{%
+  \@ifpackageloaded{listings}{%
+    \lstdefinestyle{cookiebase}{
+      basicstyle=\ttfamily\small,
+      numbers=none,
+      breaklines=true,
+      breakatwhitespace=false,
+      columns=fullflexible,
+      keepspaces=true,
+      showstringspaces=false,
+      tabsize=2,
+      keywordstyle=\color{cookieAccent}\bfseries,
+      commentstyle=\color{cookieMuted}\itshape,
+      stringstyle=\color{cookieExample},
+      emphstyle=\color{cookieAlert}\bfseries
+    }%
+    \lstdefinestyle{cookie}{
+      style=cookiebase,
+      backgroundcolor=\color{cookieAccent!4},
+      frame=single,
+      rulecolor=\color{cookieLine},
+      framerule=.5pt,
+      framesep=2mm,
+      xleftmargin=.4mm,
+      xrightmargin=.4mm
+    }%
+    \lstdefinestyle{cookiebare}{
+      style=cookiebase,
+      frame=none,
+      backgroundcolor={},
+      xleftmargin=0pt,
+      xrightmargin=0pt
+    }%
+  }{}%
+}
+\cookie@setuplistingstyle
+\AtBeginDocument{%
+  \cookie@applynotes
+  \cookie@setupalgorithm
+  \hypersetup{
+    linkcolor=cookieAccent,
+    urlcolor=cookieAccent,
+    citecolor=cookieAccent
+  }%
+  \cookie@setuplistingstyle
+  \@ifpackageloaded{minted}{\setminted{breaklines,fontsize=\small}}{}%
+}
+
+\makeatother
+\mode<all>
+\endinput
