@@ -154,9 +154,9 @@ menupopup {
 }
 
 #urlbar-container {
-    flex: 1 1 var(--uc-urlbar-max-width) !important;
-    margin-inline: auto !important;
-    max-width: min(var(--uc-urlbar-max-width), calc(100vw - 260px)) !important;
+    flex: 1 1 auto !important;
+    margin-inline: 0 !important;
+    max-width: none !important;
     min-width: 260px !important;
     padding-block: 5px !important;
     padding-inline: 6px 12px !important;
