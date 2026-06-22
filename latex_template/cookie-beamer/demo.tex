@@ -807,6 +807,7 @@ The audience sees this.
           accent & any xcolor name \\
           background & light, dark \\
           block & transparent, fill \\
+          numberrailcolor & muted, accent \\
           titleformat & regular, smallcaps, allcaps
         \end{tabularx}
       \end{block}
@@ -821,7 +822,7 @@ The audience sees this.
   \begin{columns}[T,onlytextwidth]
     \column{.48\textwidth}
       \begin{cookiecard}[title=Title-page wedge]
-        \texttt{\textbackslash background\{image.jpg\}}
+        \texttt{\textbackslash cookietitleimage\{image.jpg\}}
 
         \vspace{.45em}
         Clips the image into Cookie's asymmetric title art.
@@ -849,18 +850,18 @@ The audience sees this.
   \end{block}
 \end{frame}
 
-\begin{frame}{Build with LuaLaTeX}
-  \cookiekicker{Command}
+\begin{frame}{Build the demo with LuaLaTeX}
+  \cookiekicker{Local build}
   \vspace{.55em}
 
-  \begin{block}{Command line}
-    \texttt{latexmk -lualatex starter.tex}
+  \begin{block}{Repository command}
+    \texttt{latexmk demo.tex}
   \end{block}
 
   \begin{itemize}
-    \item Run at least twice when section, subsection, bibliography, or total frame counts change.
-    \item \texttt{latexmk} runs LuaLaTeX and Biber as many times as the document needs.
-    \item The included CI workflow compiles the starter and the full demo.
+    \item The local \texttt{.latexmkrc} selects LuaLaTeX and Biber for this demo.
+    \item \texttt{latexmk} reruns TeX when section, frame, QR, or bibliography data changes.
+    \item If you copy only the theme file into another deck, build that deck with LuaLaTeX.
   \end{itemize}
 \end{frame}
 

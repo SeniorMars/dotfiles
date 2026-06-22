@@ -10,7 +10,9 @@ for technical slides.
 
 ## Quick start
 
-Cookie is a single `.sty` file. Download it beside your presentation:
+Cookie is a single `.sty` file. There is no package installer, scaffold, or
+Cookie-specific CLI; put the theme file beside the Beamer document that uses it.
+Download it directly:
 
 ```sh
 curl -LO https://raw.githubusercontent.com/SeniorMars/dotfiles/main/latex_template/cookie-beamer/beamerthemecookie.sty
@@ -52,11 +54,15 @@ Then write your deck:
 \end{document}
 ```
 
-Build with:
+Build the deck with LuaLaTeX. `latexmk` is convenient because it reruns TeX and
+Biber when references, frame counts, or bibliography data change:
 
 ```sh
 latexmk -lualatex my-talk.tex
 ```
+
+Inside this repository, `.latexmkrc` already selects LuaLaTeX and Biber for the
+demo, so `latexmk demo.tex` rebuilds `demo.pdf`.
 
 ## Theme options
 
@@ -81,9 +87,9 @@ latexmk -lualatex my-talk.tex
 
 `coloraccent=<color>` is accepted as an alias for `accent=<color>`.
 
-The structural number rail is muted by default so values such as `1.1` support
-the title instead of competing with it. Use `numberrailcolor=accent` to restore
-the brighter legacy treatment.
+The structural number rail uses a dimmed accent for the section number and gray
+for the subsection suffix, so values such as `1.1` support the title instead of
+competing with it. Use `numberrailcolor=accent` for a brighter section number.
 
 The progress subsection page reports the current subsection and the number of
 subsections in its section. Run LuaLaTeX twice after changing the section
@@ -281,8 +287,13 @@ A reusable agenda frame is available independently of `toc=aftertitle`:
 
 ```tex
 \makeagenda
-\makeagenda[currentsection]
+\makeagenda[currentsection] % section-local detail after a \section
 ```
+
+By default, `\makeagenda` and `toc=aftertitle` hide subsections. This keeps the
+roadmap readable for decks with many sections or with subsection-heavy sections;
+for detailed agendas, prefer `currentsection` near the relevant section instead
+of a global list of every subsection.
 
 A Metropolis-style emphasis frame is available:
 
@@ -416,8 +427,7 @@ TikZ libraries explicitly when a deck uses them.
   composition, and image backgrounds.
 - `refs.bib` - bibliography data used by the demo.
 - `assets/cookie-background.png` - demo image; replace it with your own.
-- `.latexmkrc` - local builds with LuaLaTeX and Biber.
-- `.github/workflows/build.yml` - CI build for the demo.
+- `.latexmkrc` - local demo builds with LuaLaTeX and Biber.
 
 ## License and credit
 

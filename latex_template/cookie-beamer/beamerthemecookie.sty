@@ -374,7 +374,11 @@
 \define@key{beamerframe}{bgoverlayopacity}{\global\cookie@backgroundframetrue\gdef\cookie@framebgoverlayopacity{#1}}
 
 \newcommand{\cookie@railsectioncolor}{%
-  \ifdefstring{\cookie@background}{dark}{\color{cookieAccent!78!cookiePaper}}{\color{cookieAccent}}%
+  \ifdefstring{\cookie@background}{dark}{%
+    \ifdefstring{\cookie@numberrailcolor}{accent}{\color{cookieAccent!88!cookiePaper}}{\color{cookieAccent!70!cookiePaper}}%
+  }{%
+    \ifdefstring{\cookie@numberrailcolor}{accent}{\color{cookieAccent}}{\color{cookieAccent!78!cookieInk}}%
+  }%
 }
 \newcommand{\cookie@railsubsectioncolor}{%
   \ifdefstring{\cookie@background}{dark}{\color{cookiePaper!45!cookieInk}}{\color{cookieMuted}}%
@@ -670,18 +674,47 @@
   \parbox[t]{.64\linewidth}{\textcolor{cookieMuted}{\inserttocsubsection}}\par\vspace{.18em}%
 }
 
+\newcount\cookie@agendatotal
+\newcount\cookie@agendasplit
+\newcount\cookie@agendarightstart
+
+\newcommand{\cookie@agendarendertoc}[1][]{%
+  \ifblank{#1}{%
+    \cookie@agendatotal=\cookie@totalsections\relax
+    \ifnum\cookie@agendatotal>8\relax
+      \cookie@agendasplit=\cookie@agendatotal
+      \advance\cookie@agendasplit by 1\relax
+      \divide\cookie@agendasplit by 2\relax
+      \cookie@agendarightstart=\cookie@agendasplit
+      \advance\cookie@agendarightstart by 1\relax
+      \begin{minipage}[t]{.48\linewidth}
+        \tableofcontents[hideallsubsections,sections={1-\number\cookie@agendasplit}]%
+      \end{minipage}%
+      \hfill
+      \begin{minipage}[t]{.48\linewidth}
+        \tableofcontents[hideallsubsections,sections={\number\cookie@agendarightstart-\number\cookie@agendatotal}]%
+      \end{minipage}%
+    \else
+      \tableofcontents[hideallsubsections]%
+    \fi
+  }{%
+    \tableofcontents[hideallsubsections,#1]%
+  }%
+}
+
 \newcommand{\cookie@agendatoc}[1][]{%
   \begingroup
     \setbeamertemplate{section in toc}{%
-      \par\vspace{.18em}%
-      {\fontsize{10.8}{13}\selectfont\bfseries
-        \noindent\hangindent=4.10em\hangafter=1%
-        \makebox[3.05em][r]{%
-          \raisebox{-.20ex}{\textcolor{cookieAccent}{\fontsize{13.5}{15}\selectfont\bfseries\inserttocsectionnumber}}%
+      \par\vspace{.08em}%
+      {\fontsize{9.3}{11}\selectfont\bfseries\raggedright
+        \hyphenpenalty=10000\exhyphenpenalty=10000
+        \noindent\hangindent=3.05em\hangafter=1%
+        \makebox[2.18em][r]{%
+          \raisebox{-.18ex}{\textcolor{cookieAccent}{\fontsize{12}{13.2}\selectfont\bfseries\inserttocsectionnumber}}%
         }%
-        \hspace{1.05em}%
+        \hspace{.75em}%
         \textcolor{cookieInk}{\strut\inserttocsection\strut}\par}%
-      \par\vspace{.22em}%
+      \par\vspace{.08em}%
     }%
     \setbeamertemplate{subsection in toc}{%
       {\fontsize{8.3}{10}\selectfont
@@ -695,11 +728,23 @@
         \textcolor{cookieMuted}{\strut\inserttocsubsection\strut}\par}%
       \par\vspace{.12em}%
     }%
-    \ifblank{#1}{\tableofcontents}{\tableofcontents[#1]}%
+    \cookie@agendarendertoc[#1]%
   \endgroup
 }
 
 % Frame-title number rail
+\newdimen\cookie@frametitleleftmargin
+\newdimen\cookie@frametitlerightmargin
+\newdimen\cookie@numberrailwidth
+\newdimen\cookie@frametitlegap
+\newcommand{\cookie@setframetitledimensions}{%
+  \cookie@frametitleleftmargin=.105\paperwidth
+  \cookie@frametitlerightmargin=.055\paperwidth
+  \cookie@numberrailwidth=.065\paperwidth
+  \cookie@frametitlegap=.014\paperwidth
+}
+\cookie@setframetitledimensions
+
 \newcommand{\cookie@railnumber}{%
   \ifdefstring{\cookie@numberrail}{none}{}{%
     \ifnum\value{section}>0
@@ -719,21 +764,23 @@
 % before the divider is drawn.
 \setbeamertemplate{frametitle}{%
   \nointerlineskip
+  \cookie@setframetitledimensions
   \hbox to \textwidth{\hspace*{-\beamer@leftmargin}%
   \begin{beamercolorbox}[wd=\paperwidth,sep=0pt]{frametitle}%
     \vbox{%
       \vskip.18cm
       \hbox to \paperwidth{%
-        \hskip.044\paperwidth
+        \hskip\cookie@frametitleleftmargin
         \vtop{%
-          \hsize=.072\paperwidth
-          \raggedleft
+          \hsize=\cookie@numberrailwidth
           \usebeamerfont{number rail}%
-          \strut\cookie@railnumber\strut\par
+          \makebox[\hsize][l]{%
+            \adjustbox{max width=\hsize}{\strut\cookie@railnumber\strut}%
+          }\par
         }%
-        \hskip.014\paperwidth
+        \hskip\cookie@frametitlegap
         \vtop{%
-          \hsize=.80\paperwidth
+          \hsize=\dimexpr\paperwidth-\cookie@frametitleleftmargin-\cookie@numberrailwidth-\cookie@frametitlegap-\cookie@frametitlerightmargin\relax
           \raggedright
           {\usebeamerfont{frametitle}\cookie@format{\strut\insertframetitle\strut}\par}%
           \ifx\insertframesubtitle\@empty\else
@@ -881,9 +928,9 @@
       \draw[cookieAccent,line width=1.2pt]
         ($(current page.west)+(.087\paperwidth,-.120\paperheight)$)
         -- ($(current page.west)+(.177\paperwidth,-.120\paperheight)$);
-      \node[anchor=north west,inner sep=0pt,text width=.56\paperwidth]
-        at ($(current page.west)+(.330\paperwidth,.235\paperheight)$)
-        {\begin{minipage}[t]{.56\paperwidth}
+      \node[anchor=north west,inner sep=0pt,text width=.62\paperwidth]
+        at ($(current page.west)+(.300\paperwidth,.235\paperheight)$)
+        {\begin{minipage}[t]{.62\paperwidth}
           \cookie@agendatoc[#1]%
         \end{minipage}};
     \end{tikzpicture}%
@@ -978,7 +1025,6 @@
       }{}%
       \fill[cookieAccent] ($(current page.east)+(-.095\paperwidth,.24\paperheight)$) circle[radius=.014\paperheight];
       \fill[cookieAccent,opacity=.45] ($(current page.east)+(-.072\paperwidth,.18\paperheight)$) circle[radius=.008\paperheight];
-      \fill[cookieAccent,opacity=.20] ($(current page.east)+(-.12\paperwidth,.13\paperheight)$) circle[radius=.005\paperheight];
     \end{tikzpicture}
   \end{frame}%
 }
